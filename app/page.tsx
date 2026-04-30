@@ -979,16 +979,11 @@ export default function Home() {
   <section class="contact" id="contact">
     <p class="section-label fade-in">Aanmelden</p>
     <h2 class="fade-in">Klaar om te starten?</h2>
-    <p class="section-sub fade-in">Meld u aan en probeer SlimmeKascontrole gratis. Binnen een minuut aan de slag.</p>
-    <form class="contact-form fade-in" onsubmit="handleSubmit(event)">
-      <div class="form-row">
-        <input type="text" placeholder="Uw naam" required />
-        <input type="email" placeholder="E-mailadres" required />
-      </div>
-      <input type="text" placeholder="Naam van uw vereniging" />
-      <textarea placeholder="Uw bericht of vraag (optioneel)"></textarea>
-      <button type="submit" class="btn-submit">Stuur aanmelding →</button>
-    </form>
+    <p class="section-sub fade-in">Maak een account aan, upload uw bestanden en ontvang uw kascontrolerapport voor €59.</p>
+    <div class="fade-in" style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-top:8px;">
+      <a href="/registreer" class="btn-primary" style="font-size:1.05rem;padding:16px 40px;">Maak account aan</a>
+      <a href="/mijn-omgeving" style="color:rgba(255,255,255,0.7);display:flex;align-items:center;gap:6px;font-size:0.95rem;text-decoration:none;padding:16px 0;">Inloggen →</a>
+    </div>
   </section>
 
   <!-- FOOTER -->
