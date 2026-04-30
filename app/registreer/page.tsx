@@ -4,13 +4,14 @@ import { supabase } from '@/lib/supabase'
 import { useRouter } from 'next/navigation'
 
 export default function Registreer() {
-  const [mode, setMode] = useState<'registreer' | 'login'>('registreer')
+  const [mode, setMode] = useState<'registreer' | 'login' | 'reset'>('registreer')
   const [email, setEmail] = useState('')
   const [wachtwoord, setWachtwoord] = useState('')
   const [wachtwoord2, setWachtwoord2] = useState('')
   const [naam, setNaam] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
+  const [succes, setSucces] = useState('')
   const router = useRouter()
 
   async function handleRegistreer(e: React.FormEvent) {
@@ -18,15 +19,9 @@ export default function Registreer() {
     if (wachtwoord !== wachtwoord2) { setError('Wachtwoorden komen niet overeen'); return }
     if (wachtwoord.length < 6) { setError('Wachtwoord moet minimaal 6 tekens zijn'); return }
     setLoading(true); setError('')
-
-    const { error } = await supabase.auth.signUp({
-      email,
-      password: wachtwoord,
-      options: { data: { naam } }
-    })
-
+    const { error } = await supabase.auth.signUp({ email, password: wachtwoord, options: { data: { naam } } })
     if (error) {
-      setError(error.message === 'User already registered' ? 'Dit e-mailadres is al geregistreerd. Log in.' : 'Er ging iets mis. Probeer het opnieuw.')
+      setError(error.message === 'User already registered' ? 'Dit e-mailadres is al geregistreerd. Log in.' : 'Er ging iets mis.')
     } else {
       router.push('/mijn-omgeving')
     }
@@ -36,13 +31,25 @@ export default function Registreer() {
   async function handleLogin(e: React.FormEvent) {
     e.preventDefault()
     setLoading(true); setError('')
-
     const { error } = await supabase.auth.signInWithPassword({ email, password: wachtwoord })
-
     if (error) {
       setError('Ongeldig e-mailadres of wachtwoord')
     } else {
       router.push('/mijn-omgeving')
+    }
+    setLoading(false)
+  }
+
+  async function handleReset(e: React.FormEvent) {
+    e.preventDefault()
+    setLoading(true); setError(''); setSucces('')
+    const { error } = await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: `${window.location.origin}/mijn-omgeving`,
+    })
+    if (error) {
+      setError('Er ging iets mis. Controleer uw e-mailadres.')
+    } else {
+      setSucces('E-mail verstuurd! Controleer uw inbox voor de resetlink.')
     }
     setLoading(false)
   }
@@ -60,8 +67,6 @@ export default function Registreer() {
   return (
     <main style={{ minHeight: '100vh', background: '#faf8f3', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'Inter, sans-serif', padding: '40px 20px' }}>
       <div style={{ width: '100%', maxWidth: '420px' }}>
-
-        {/* Logo */}
         <div style={{ textAlign: 'center', marginBottom: '32px' }}>
           <a href="/" style={{ display: 'inline-flex', alignItems: 'center', gap: '10px', textDecoration: 'none', marginBottom: '20px' }}>
             <div style={{ background: '#3a6b1e', width: '44px', height: '44px', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -73,58 +78,93 @@ export default function Registreer() {
             </div>
           </a>
           <h1 style={{ fontSize: '1.6rem', fontWeight: '700', color: '#0d3d2e', marginBottom: '4px' }}>
-            {mode === 'registreer' ? 'Gratis account aanmaken' : 'Inloggen'}
+            {mode === 'registreer' ? 'Account aanmaken' : mode === 'login' ? 'Inloggen' : 'Wachtwoord vergeten'}
           </h1>
           <p style={{ color: '#4a4a45', fontSize: '0.9rem' }}>
-            {mode === 'registreer' ? 'Upload bestanden en ontvang uw rapport' : 'Welkom terug!'}
+            {mode === 'registreer' ? 'Upload bestanden en ontvang uw rapport' : mode === 'login' ? 'Welkom terug!' : 'Vul uw e-mailadres in voor een resetlink'}
           </p>
         </div>
 
-        {/* Tabs */}
-        <div style={{ display: 'flex', background: '#e8f4ee', borderRadius: '10px', padding: '4px', marginBottom: '24px' }}>
-          {(['registreer', 'login'] as const).map(m => (
-            <button key={m} onClick={() => { setMode(m); setError('') }}
-              style={{ flex: 1, padding: '10px', borderRadius: '8px', border: 'none', fontFamily: 'Inter, sans-serif', fontSize: '0.9rem', fontWeight: '600', cursor: 'pointer', background: mode === m ? 'white' : 'transparent', color: mode === m ? '#0d3d2e' : '#4a4a45', boxShadow: mode === m ? '0 2px 8px rgba(0,0,0,0.08)' : 'none', transition: 'all 0.2s' }}>
-              {m === 'registreer' ? 'Nieuw account' : 'Inloggen'}
-            </button>
-          ))}
-        </div>
+        {mode !== 'reset' && (
+          <div style={{ display: 'flex', background: '#e8f4ee', borderRadius: '10px', padding: '4px', marginBottom: '24px' }}>
+            {(['registreer', 'login'] as const).map(m => (
+              <button key={m} onClick={() => { setMode(m); setError('') }}
+                style={{ flex: 1, padding: '10px', borderRadius: '8px', border: 'none', fontFamily: 'Inter, sans-serif', fontSize: '0.9rem', fontWeight: '600', cursor: 'pointer', background: mode === m ? 'white' : 'transparent', color: mode === m ? '#0d3d2e' : '#4a4a45', boxShadow: mode === m ? '0 2px 8px rgba(0,0,0,0.08)' : 'none', transition: 'all 0.2s' }}>
+                {m === 'registreer' ? 'Nieuw account' : 'Inloggen'}
+              </button>
+            ))}
+          </div>
+        )}
 
         <div style={{ background: 'white', borderRadius: '16px', padding: '32px', boxShadow: '0 4px 24px rgba(13,61,46,0.08)' }}>
-          <form onSubmit={mode === 'registreer' ? handleRegistreer : handleLogin}>
-            {mode === 'registreer' && (
+          
+          {/* Registreer */}
+          {mode === 'registreer' && (
+            <form onSubmit={handleRegistreer}>
               <div style={{ marginBottom: '16px' }}>
                 <label style={labelStyle}>Uw naam</label>
                 <input type="text" value={naam} onChange={e => setNaam(e.target.value)} style={inputStyle} placeholder="Voor- en achternaam" required />
               </div>
-            )}
-            <div style={{ marginBottom: '16px' }}>
-              <label style={labelStyle}>E-mailadres</label>
-              <input type="email" value={email} onChange={e => setEmail(e.target.value)} style={inputStyle} placeholder="uw@emailadres.nl" required />
-            </div>
-            <div style={{ marginBottom: mode === 'registreer' ? '16px' : '24px' }}>
-              <label style={labelStyle}>Wachtwoord</label>
-              <input type="password" value={wachtwoord} onChange={e => setWachtwoord(e.target.value)} style={inputStyle} placeholder="Minimaal 6 tekens" required />
-            </div>
-            {mode === 'registreer' && (
+              <div style={{ marginBottom: '16px' }}>
+                <label style={labelStyle}>E-mailadres</label>
+                <input type="email" value={email} onChange={e => setEmail(e.target.value)} style={inputStyle} placeholder="uw@emailadres.nl" required />
+              </div>
+              <div style={{ marginBottom: '16px' }}>
+                <label style={labelStyle}>Wachtwoord</label>
+                <input type="password" value={wachtwoord} onChange={e => setWachtwoord(e.target.value)} style={inputStyle} placeholder="Minimaal 6 tekens" required />
+              </div>
               <div style={{ marginBottom: '24px' }}>
                 <label style={labelStyle}>Wachtwoord bevestigen</label>
                 <input type="password" value={wachtwoord2} onChange={e => setWachtwoord2(e.target.value)} style={inputStyle} placeholder="Herhaal wachtwoord" required />
               </div>
-            )}
-            {error && <p style={{ color: '#d44', fontSize: '0.85rem', marginBottom: '12px' }}>{error}</p>}
-            <button type="submit" disabled={loading}
-              style={{ width: '100%', padding: '14px', background: '#0d3d2e', color: 'white', border: 'none', borderRadius: '8px', fontSize: '1rem', fontWeight: '700', cursor: loading ? 'not-allowed' : 'pointer', opacity: loading ? 0.7 : 1 }}>
-              {loading ? 'Bezig...' : mode === 'registreer' ? 'Account aanmaken' : 'Inloggen'}
-            </button>
-          </form>
+              {error && <p style={{ color: '#d44', fontSize: '0.85rem', marginBottom: '12px' }}>{error}</p>}
+              <button type="submit" disabled={loading} style={{ width: '100%', padding: '14px', background: '#0d3d2e', color: 'white', border: 'none', borderRadius: '8px', fontSize: '1rem', fontWeight: '700', cursor: 'pointer' }}>
+                {loading ? 'Bezig...' : 'Account aanmaken'}
+              </button>
+            </form>
+          )}
 
-          {mode === 'registreer' && (
-            <div style={{ marginTop: '20px', padding: '14px', background: '#e8f4ee', borderRadius: '8px' }}>
-              <p style={{ margin: 0, fontSize: '0.83rem', color: '#0d3d2e' }}>
-                ✓ Gratis account · ✓ Bestanden uploaden · ✓ Rapport na betaling €59
-              </p>
-            </div>
+          {/* Login */}
+          {mode === 'login' && (
+            <form onSubmit={handleLogin}>
+              <div style={{ marginBottom: '16px' }}>
+                <label style={labelStyle}>E-mailadres</label>
+                <input type="email" value={email} onChange={e => setEmail(e.target.value)} style={inputStyle} placeholder="uw@emailadres.nl" required />
+              </div>
+              <div style={{ marginBottom: '8px' }}>
+                <label style={labelStyle}>Wachtwoord</label>
+                <input type="password" value={wachtwoord} onChange={e => setWachtwoord(e.target.value)} style={inputStyle} placeholder="Uw wachtwoord" required />
+              </div>
+              <div style={{ textAlign: 'right', marginBottom: '20px' }}>
+                <button type="button" onClick={() => { setMode('reset'); setError('') }}
+                  style={{ background: 'none', border: 'none', color: '#1e7a55', fontSize: '0.85rem', cursor: 'pointer', textDecoration: 'underline' }}>
+                  Wachtwoord vergeten?
+                </button>
+              </div>
+              {error && <p style={{ color: '#d44', fontSize: '0.85rem', marginBottom: '12px' }}>{error}</p>}
+              <button type="submit" disabled={loading} style={{ width: '100%', padding: '14px', background: '#0d3d2e', color: 'white', border: 'none', borderRadius: '8px', fontSize: '1rem', fontWeight: '700', cursor: 'pointer' }}>
+                {loading ? 'Bezig...' : 'Inloggen'}
+              </button>
+            </form>
+          )}
+
+          {/* Wachtwoord reset */}
+          {mode === 'reset' && (
+            <form onSubmit={handleReset}>
+              <div style={{ marginBottom: '24px' }}>
+                <label style={labelStyle}>E-mailadres</label>
+                <input type="email" value={email} onChange={e => setEmail(e.target.value)} style={inputStyle} placeholder="uw@emailadres.nl" required />
+              </div>
+              {error && <p style={{ color: '#d44', fontSize: '0.85rem', marginBottom: '12px' }}>{error}</p>}
+              {succes && <p style={{ color: '#1e7a55', fontSize: '0.85rem', marginBottom: '12px' }}>{succes}</p>}
+              <button type="submit" disabled={loading} style={{ width: '100%', padding: '14px', background: '#0d3d2e', color: 'white', border: 'none', borderRadius: '8px', fontSize: '1rem', fontWeight: '700', cursor: 'pointer' }}>
+                {loading ? 'Bezig...' : '✉️ Stuur resetlink'}
+              </button>
+              <button type="button" onClick={() => { setMode('login'); setError(''); setSucces('') }}
+                style={{ width: '100%', marginTop: '12px', padding: '12px', background: 'none', border: '1.5px solid #c8e0d4', color: '#0d3d2e', borderRadius: '8px', fontSize: '0.9rem', fontWeight: '600', cursor: 'pointer' }}>
+                ← Terug naar inloggen
+              </button>
+            </form>
           )}
         </div>
       </div>
