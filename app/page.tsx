@@ -1,8 +1,8 @@
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Slimme Kascontrole – Kascontrole voor verenigingen, eenvoudig en slim',
-  description: 'Upload de financiële gegevens van uw vereniging en ontvang automatisch een professioneel kascontrolerapport.',
+  title: 'Slimme Kascontrole – Kascontrole voor verenigingen',
+  description: 'Professioneel kascontrolerapport voor uw vereniging. Rapport €59 per boekjaar.',
 }
 
 export default function Home() {
@@ -760,18 +760,18 @@ export default function Home() {
       <li><a href="#hoe-het-werkt">Hoe het werkt</a></li>
       <li><a href="#functies">Functies</a></li>
       <li><a href="#tarieven">Tarieven</a></li>
-      <li><a href="/tarieven" class="btn-nav">Aanmelden</a></li>
+      <li><a href="#contact" class="btn-nav">Aanmelden</a></li>
     </ul>
   </nav>
 
   <!-- HERO -->
   <section class="hero">
     <div class="hero-text">
-      <div class="hero-badge">Voor verenigingen in Nederland</div>
+      <div class="hero-badge">Upload uw bestanden · Rapport €59</div>
       <h1>Kascontrole die <em>echt</em> slim is</h1>
-      <p class="hero-sub">Upload de financiële gegevens van uw vereniging en ontvang automatisch een helder, professioneel kascontrolerapport. In minuten, niet dagen.</p>
+      <p class="hero-sub">Upload de financiële gegevens van uw vereniging en ontvang automatisch een professioneel kascontrolerapport. Upload uw bestanden · Rapport €59.</p>
       <div class="hero-ctas">
-        <a href="/tarieven" class="btn-primary">Gratis proberen</a>
+        <a href="#contact" class="btn-primary">Gratis proberen</a>
         <a href="#hoe-het-werkt" class="btn-secondary">Bekijk hoe het werkt</a>
       </div>
     </div>
@@ -928,7 +928,7 @@ export default function Home() {
         <div class="feature-li">Eigen logo op rapport</div>
         <div class="feature-li">PDF-export</div>
         <div class="feature-li">E-mail ondersteuning</div>
-        <a href="/tarieven" class="btn-plan btn-plan-solid">Nu aanmelden</a>
+        <a href="#contact" class="btn-plan btn-plan-solid">Bestel nu – €59</a>
       </div>
 
       <div class="price-card fade-in">
@@ -941,7 +941,7 @@ export default function Home() {
         <div class="feature-li">Geconsolideerde rapportage</div>
         <div class="feature-li">API-integratie mogelijk</div>
         <div class="feature-li">Dedicated support</div>
-        <a href="/tarieven" class="btn-plan btn-plan-outline">Neem contact op</a>
+        <a href="#contact" class="btn-plan btn-plan-outline">Neem contact op</a>
       </div>
     </div>
   </section>
@@ -979,11 +979,16 @@ export default function Home() {
   <section class="contact" id="contact">
     <p class="section-label fade-in">Aanmelden</p>
     <h2 class="fade-in">Klaar om te starten?</h2>
-    <p class="section-sub fade-in">Meld u aan en begin direct met SlimmeKascontrole voor uw vereniging.</p>
-    <div class="fade-in" style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-top:8px;">
-      <a href="/tarieven" class="btn-primary" style="font-size:1.05rem;padding:16px 40px;">Bekijk tarieven & bestel</a>
-      <a href="/mijn-omgeving" style="color:rgba(255,255,255,0.7);display:flex;align-items:center;gap:6px;font-size:0.95rem;text-decoration:none;padding:16px 0;">Inloggen op mijn omgeving →</a>
-    </div>
+    <p class="section-sub fade-in">Meld u aan en probeer SlimmeKascontrole gratis. Binnen een minuut aan de slag.</p>
+    <form class="contact-form fade-in" onsubmit="handleSubmit(event)">
+      <div class="form-row">
+        <input type="text" placeholder="Uw naam" required />
+        <input type="email" placeholder="E-mailadres" required />
+      </div>
+      <input type="text" placeholder="Naam van uw vereniging" />
+      <textarea placeholder="Uw bericht of vraag (optioneel)"></textarea>
+      <button type="submit" class="btn-submit">Stuur aanmelding →</button>
+    </form>
   </section>
 
   <!-- FOOTER -->
@@ -1003,7 +1008,7 @@ export default function Home() {
     <div>
       <a href="#">Privacy</a>
       <a href="#">Voorwaarden</a>
-      <a href="/tarieven">Contact</a>
+      <a href="#contact">Contact</a>
     </div>
   </footer>
 
