@@ -111,10 +111,13 @@ export default function MijnOmgeving() {
     <main style={{ minHeight: '100vh', background: '#faf8f3', fontFamily: 'Inter, sans-serif' }}>
       <nav style={{ background: 'white', borderBottom: '1px solid #e0ede6', padding: '16px 48px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <a href="/" style={{ display: 'flex', alignItems: 'center', gap: '10px', textDecoration: 'none' }}>
-          <div style={{ background: '#3a6b1e', width: '32px', height: '32px', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <svg width="18" height="18" viewBox="0 0 22 22" fill="none"><polyline points="3,12 9,18 19,6" stroke="white" strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round" /></svg>
+          <div style={{ background: '#3a6b1e', width: '36px', height: '36px', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <svg width="20" height="20" viewBox="0 0 22 22" fill="none"><polyline points="3,12 9,18 19,6" stroke="white" strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round" /></svg>
           </div>
-          <span style={{ fontWeight: '700', color: '#0d3d2e' }}>Slimme Kascontrole</span>
+          <div>
+            <div style={{ fontWeight: '700', fontSize: '1rem', color: '#2d5a0e', lineHeight: 1.1 }}>slimme</div>
+            <div style={{ fontWeight: '500', fontSize: '1rem', color: '#6aaa2a', lineHeight: 1.1 }}>kascontrole</div>
+          </div>
         </a>
         <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
           <span style={{ fontSize: '0.85rem', color: '#4a4a45' }}>{user?.email}</span>
