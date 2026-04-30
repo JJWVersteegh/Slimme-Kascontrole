@@ -11,6 +11,8 @@ interface Upload {
   toelichting: string
   bestanden: string[]
   rapport_beschikbaar: boolean
+  rapport_tekst?: string
+  rapport_gegenereerd_op?: string
 }
 
 export default function MijnOmgeving() {
@@ -19,11 +21,13 @@ export default function MijnOmgeving() {
   const [loading, setLoading] = useState(true)
   const [uploading, setUploading] = useState(false)
   const [betaalLoading, setBetaalLoading] = useState<string | null>(null)
+  const [rapportLoading, setRapportLoading] = useState<string | null>(null)
   const [files, setFiles] = useState<FileList | null>(null)
   const [boekjaar, setBoekjaar] = useState(new Date().getFullYear().toString())
   const [toelichting, setToelichting] = useState('')
   const [uploadSuccess, setUploadSuccess] = useState(false)
   const [error, setError] = useState('')
+  const [geselecteerdRapport, setGeselecteerdRapport] = useState<Upload | null>(null)
   const router = useRouter()
 
   const currentYear = new Date().getFullYear()
@@ -50,8 +54,7 @@ export default function MijnOmgeving() {
   async function handleUpload(e: React.FormEvent) {
     e.preventDefault()
     if (!files || files.length === 0) { setError('Selecteer minimaal één bestand'); return }
-    setUploading(true)
-    setError('')
+    setUploading(true); setError('')
 
     const formData = new FormData()
     formData.append('user_id', user.id)
@@ -89,6 +92,24 @@ export default function MijnOmgeving() {
     setBetaalLoading(null)
   }
 
+  async function handleGenereerRapport(uploadId: string) {
+    setRapportLoading(uploadId)
+    try {
+      const res = await fetch('/api/genereer-rapport', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ upload_id: uploadId }),
+      })
+      const data = await res.json()
+      if (data.success) {
+        loadUploads(user.id)
+      } else {
+        setError('Rapport genereren mislukt: ' + data.error)
+      }
+    } catch { setError('Er ging iets mis') }
+    setRapportLoading(null)
+  }
+
   async function handleLogout() {
     await supabase.auth.signOut()
     router.push('/registreer')
@@ -104,6 +125,55 @@ export default function MijnOmgeving() {
   if (loading) return (
     <main style={{ minHeight: '100vh', background: '#faf8f3', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'Inter, sans-serif' }}>
       <p style={{ color: '#4a4a45' }}>Laden...</p>
+    </main>
+  )
+
+  // Rapport weergave
+  if (geselecteerdRapport) return (
+    <main style={{ minHeight: '100vh', background: '#faf8f3', fontFamily: 'Inter, sans-serif' }}>
+      <style>{`@media print { .no-print { display: none !important; } body { background: white !important; } }`}</style>
+      <nav className="no-print" style={{ background: 'white', borderBottom: '1px solid #e0ede6', padding: '16px 48px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <div style={{ background: '#3a6b1e', width: '36px', height: '36px', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <svg width="20" height="20" viewBox="0 0 22 22" fill="none"><polyline points="3,12 9,18 19,6" stroke="white" strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round" /></svg>
+          </div>
+          <div>
+            <div style={{ fontWeight: '700', fontSize: '1rem', color: '#2d5a0e', lineHeight: 1.1 }}>slimme</div>
+            <div style={{ fontWeight: '500', fontSize: '1rem', color: '#6aaa2a', lineHeight: 1.1 }}>kascontrole</div>
+          </div>
+        </div>
+        <div style={{ display: 'flex', gap: '12px' }}>
+          <button onClick={() => window.print()} style={{ background: '#0d3d2e', color: 'white', padding: '10px 20px', borderRadius: '8px', border: 'none', cursor: 'pointer', fontWeight: '600', fontSize: '0.9rem' }}>🖨️ Afdrukken / PDF</button>
+          <button onClick={() => setGeselecteerdRapport(null)} style={{ background: 'white', color: '#0d3d2e', padding: '10px 20px', borderRadius: '8px', border: '1.5px solid #c8e0d4', cursor: 'pointer', fontWeight: '600', fontSize: '0.9rem' }}>← Terug</button>
+        </div>
+      </nav>
+      <div style={{ maxWidth: '800px', margin: '0 auto', padding: '48px 24px' }}>
+        <div style={{ background: 'white', borderRadius: '16px', padding: '48px', border: '1px solid #e0ede6', lineHeight: '1.8' }}>
+          <div style={{ textAlign: 'center', borderBottom: '2px solid #0d3d2e', paddingBottom: '24px', marginBottom: '32px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px', marginBottom: '12px' }}>
+              <div style={{ background: '#3a6b1e', width: '36px', height: '36px', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <svg width="20" height="20" viewBox="0 0 22 22" fill="none"><polyline points="3,12 9,18 19,6" stroke="white" strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round" /></svg>
+              </div>
+              <span style={{ fontWeight: '700', color: '#0d3d2e' }}>slimmekascontrole.nl</span>
+            </div>
+            <h2 style={{ fontSize: '1.4rem', fontWeight: '700', color: '#0d3d2e', margin: '0 0 4px' }}>KASCOMMISSIE RAPPORT</h2>
+            <p style={{ color: '#4a4a45', margin: 0 }}>Boekjaar {geselecteerdRapport.boekjaar}</p>
+          </div>
+          <div style={{ fontSize: '0.95rem', color: '#1a1a18' }}>
+            {geselecteerdRapport.rapport_tekst?.split('\n').map((line, i) => {
+              if (line.startsWith('[AANDACHTSPUNT:')) {
+                return <div key={i} style={{ background: '#fff8e6', borderLeft: '4px solid #c9a84c', padding: '12px 16px', margin: '12px 0', borderRadius: '0 8px 8px 0' }}>
+                  <strong>⚠️ Aandachtspunt</strong><br />{line.replace('[AANDACHTSPUNT:', '').replace(']', '')}
+                </div>
+              }
+              if (line.startsWith('# ') || line.startsWith('## ')) {
+                return <h3 key={i} style={{ fontSize: '1.05rem', fontWeight: '700', color: '#0d3d2e', marginTop: '24px', marginBottom: '8px' }}>{line.replace(/^#+\s/, '')}</h3>
+              }
+              return <p key={i} style={{ margin: '4px 0' }}>{line}</p>
+            })}
+          </div>
+        </div>
+      </div>
     </main>
   )
 
@@ -136,19 +206,13 @@ export default function MijnOmgeving() {
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '16px' }}>
               <div>
                 <label style={{ display: 'block', fontWeight: '600', color: '#0d3d2e', marginBottom: '6px', fontSize: '0.9rem' }}>Boekjaar</label>
-                <select
-                  value={boekjaar} onChange={e => setBoekjaar(e.target.value)}
-                  style={{ width: '100%', padding: '11px 14px', borderRadius: '8px', border: '1.5px solid #c8e0d4', fontSize: '0.95rem', background: 'white', outline: 'none' }}
-                >
+                <select value={boekjaar} onChange={e => setBoekjaar(e.target.value)} style={{ width: '100%', padding: '11px 14px', borderRadius: '8px', border: '1.5px solid #c8e0d4', fontSize: '0.95rem', background: 'white', outline: 'none' }}>
                   {jaren.map(j => <option key={j} value={j}>{j}</option>)}
                 </select>
               </div>
               <div>
                 <label style={{ display: 'block', fontWeight: '600', color: '#0d3d2e', marginBottom: '6px', fontSize: '0.9rem' }}>Bestanden</label>
-                <div
-                  onClick={() => document.getElementById('fileInput')?.click()}
-                  style={{ border: '2px dashed #a8d5bc', borderRadius: '8px', padding: '12px 16px', textAlign: 'center', cursor: 'pointer', background: '#f8faf9', fontSize: '0.9rem', color: '#4a4a45' }}
-                >
+                <div onClick={() => document.getElementById('fileInput')?.click()} style={{ border: '2px dashed #a8d5bc', borderRadius: '8px', padding: '12px 16px', textAlign: 'center', cursor: 'pointer', background: '#f8faf9', fontSize: '0.9rem', color: '#4a4a45' }}>
                   {files ? `${files.length} bestand(en) geselecteerd ✓` : '📎 Klik om te selecteren'}
                 </div>
                 <input id="fileInput" type="file" multiple accept=".pdf,.xlsx,.xls,.csv,.png,.jpg,.jpeg" style={{ display: 'none' }} onChange={e => setFiles(e.target.files)} />
@@ -157,12 +221,7 @@ export default function MijnOmgeving() {
             </div>
             <div style={{ marginBottom: '16px' }}>
               <label style={{ display: 'block', fontWeight: '600', color: '#0d3d2e', marginBottom: '6px', fontSize: '0.9rem' }}>Toelichting <span style={{ fontWeight: '400', color: '#999' }}>(optioneel)</span></label>
-              <textarea
-                value={toelichting} onChange={e => setToelichting(e.target.value)}
-                placeholder="Bijzonderheden, vragen of extra informatie..."
-                rows={2}
-                style={{ width: '100%', padding: '11px 14px', borderRadius: '8px', border: '1.5px solid #c8e0d4', fontSize: '0.9rem', background: 'white', outline: 'none', resize: 'vertical', fontFamily: 'Inter, sans-serif' }}
-              />
+              <textarea value={toelichting} onChange={e => setToelichting(e.target.value)} placeholder="Bijzonderheden, vragen of extra informatie..." rows={2} style={{ width: '100%', padding: '11px 14px', borderRadius: '8px', border: '1.5px solid #c8e0d4', fontSize: '0.9rem', background: 'white', outline: 'none', resize: 'vertical', fontFamily: 'Inter, sans-serif' }} />
             </div>
             {error && <p style={{ color: '#d44', fontSize: '0.85rem', marginBottom: '12px' }}>{error}</p>}
             {uploadSuccess && <p style={{ color: '#1e7a55', fontSize: '0.85rem', marginBottom: '12px' }}>✓ Bestanden succesvol geüpload!</p>}
@@ -177,7 +236,6 @@ export default function MijnOmgeving() {
           <div style={{ padding: '20px 24px', borderBottom: '1px solid #e0ede6' }}>
             <h2 style={{ fontSize: '1.1rem', fontWeight: '700', color: '#0d3d2e', margin: 0 }}>Mijn uploads & rapporten</h2>
           </div>
-
           {uploads.length === 0 ? (
             <div style={{ padding: '48px', textAlign: 'center' }}>
               <div style={{ fontSize: '2rem', marginBottom: '12px' }}>📂</div>
@@ -196,23 +254,23 @@ export default function MijnOmgeving() {
                     </div>
                     <p style={{ fontSize: '0.82rem', color: '#4a4a45', margin: 0 }}>
                       {upload.bestanden?.length || 0} bestand(en) · {new Date(upload.upload_datum).toLocaleDateString('nl-NL')}
-                      {upload.toelichting && ` · "${upload.toelichting.substring(0, 50)}..."`}
                     </p>
                   </div>
-                  <div>
+                  <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
                     {upload.rapport_beschikbaar ? (
-                      <a
-                        href={`/rapport/${upload.id}`}
-                        style={{ background: '#0d3d2e', color: 'white', padding: '10px 20px', borderRadius: '8px', textDecoration: 'none', fontSize: '0.9rem', fontWeight: '600' }}
-                      >
-                        📄 Bekijk rapport
-                      </a>
+                      <>
+                        {upload.rapport_tekst ? (
+                          <button onClick={() => setGeselecteerdRapport(upload)} style={{ background: '#0d3d2e', color: 'white', padding: '10px 20px', borderRadius: '8px', border: 'none', fontSize: '0.9rem', fontWeight: '600', cursor: 'pointer' }}>
+                            📄 Bekijk rapport
+                          </button>
+                        ) : (
+                          <button onClick={() => handleGenereerRapport(upload.id)} disabled={rapportLoading === upload.id} style={{ background: '#1e7a55', color: 'white', padding: '10px 20px', borderRadius: '8px', border: 'none', fontSize: '0.9rem', fontWeight: '600', cursor: 'pointer' }}>
+                            {rapportLoading === upload.id ? '⏳ Rapport genereren...' : '🤖 Genereer rapport'}
+                          </button>
+                        )}
+                      </>
                     ) : (
-                      <button
-                        onClick={() => handleBetaal(upload.id)}
-                        disabled={betaalLoading === upload.id}
-                        style={{ background: '#c9a84c', color: 'white', padding: '10px 20px', borderRadius: '8px', border: 'none', fontSize: '0.9rem', fontWeight: '600', cursor: 'pointer' }}
-                      >
+                      <button onClick={() => handleBetaal(upload.id)} disabled={betaalLoading === upload.id} style={{ background: '#c9a84c', color: 'white', padding: '10px 20px', borderRadius: '8px', border: 'none', fontSize: '0.9rem', fontWeight: '600', cursor: 'pointer' }}>
                         {betaalLoading === upload.id ? 'Laden...' : '🔒 Rapport ophalen – €59'}
                       </button>
                     )}
