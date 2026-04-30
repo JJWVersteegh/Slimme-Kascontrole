@@ -1,0 +1,12 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --green-dark: #0d3d2e;
+  --green-soft: #1e7a55;
+  --green-pale: #e8f4ee;
+  --gold: #c9a84c;
+  --cream: #faf8f3;
+}
+body { background: #faf8f3; font-family: 'Inter', sans-serif; }
