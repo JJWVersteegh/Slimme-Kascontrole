@@ -43,7 +43,7 @@ nav.scrolled{box-shadow:0 4px 24px rgba(0,0,0,0.08)}
 .hero{position:relative;min-height:100vh;width:100%;display:flex;align-items:center;overflow:hidden}
 .hero-bg{position:absolute;inset:0;z-index:0}
 .hero-bg img{width:100%;height:100%;object-fit:cover;object-position:center}
-.hero-overlay{position:absolute;inset:0;background:linear-gradient(110deg,rgba(10,20,60,0.65) 0%,rgba(20,50,140,0.45) 50%,rgba(10,20,50,0.20) 100%)}
+
 .hero-content{position:relative;z-index:1;max-width:1100px;margin:0 auto;padding:120px 48px 80px;width:100%}
 .hero-eyebrow{display:inline-flex;align-items:center;gap:8px;background:rgba(37,99,235,0.35);border:1px solid rgba(147,197,253,0.5);color:#bfdbfe;font-size:0.72rem;font-weight:700;padding:5px 13px;border-radius:20px;margin-bottom:24px;letter-spacing:0.05em;text-transform:uppercase}
 .hero h1{font-family:'Playfair Display',serif;font-size:clamp(2rem,4.5vw,3.8rem);font-weight:700;line-height:1.1;color:white;margin-bottom:20px;letter-spacing:-0.02em}
@@ -245,7 +245,7 @@ footer a:hover{color:#93c5fd}
 <!-- HERO -->
 <section class="hero">
   <div class="hero-bg">
-    <img src="https://images.unsplash.com/photo-1554224154-26032ffc0d8f?w=1800&q=85" alt="Kascontrole voor verenigingen"/>
+    <img src="https://images.unsplash.com/photo-1600880292089-90a7e086ee0c?auto=format&fit=crop&w=1800&q=80" alt="Kascontrole voor verenigingen"/>
     <div class="hero-overlay"></div>
   </div>
   <div class="hero-content">
