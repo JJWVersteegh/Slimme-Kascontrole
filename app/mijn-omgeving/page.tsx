@@ -249,7 +249,7 @@ export default function MijnOmgeving() {
           <div style={{ background: 'white', borderRadius: '16px', padding: '24px 28px', border: '2px solid #bfdbfe', marginBottom: '28px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '16px' }}>
             <div>
               <h2 style={{ fontWeight: '700', color: '#0f172a', fontSize: '1rem', marginBottom: '4px' }}>📊 Eenmalige kascontrole — €59</h2>
-              <p style={{ color: '#475569', fontSize: '0.88rem', margin: 0 }}>Upload al uw bestanden (meerdere jaren mogelijk) en betaal éénmalig voor één volledig rapport met trendanalyse.</p>
+              <p style={{ color: '#475569', fontSize: '0.88rem', margin: 0 }}>Upload al uw bestanden (meerdere jaren mogelijk) en betaal éénmalig. Onze kascontroleurs stellen één volledig rapport op met trendanalyse.</p>
             </div>
             <button onClick={handleBetaal} disabled={betaalLoading || uploads.length === 0} style={{ background: uploads.length === 0 ? '#94a3b8' : '#2563EB', color: 'white', padding: '12px 28px', borderRadius: '8px', border: 'none', fontSize: '0.95rem', fontWeight: '700', cursor: uploads.length === 0 ? 'not-allowed' : 'pointer', fontFamily: 'Outfit, sans-serif', whiteSpace: 'nowrap' }}>
               {betaalLoading ? 'Laden...' : uploads.length === 0 ? 'Upload eerst bestanden' : '🔒 Betaal €59 — iDEAL'}
@@ -277,7 +277,7 @@ export default function MijnOmgeving() {
         {error && <p style={{ color: '#ef4444', marginBottom: '16px', fontSize: '0.9rem' }}>{error}</p>}
         {rapportLoading && (
           <div style={{ background: '#eff6ff', borderRadius: '8px', padding: '16px', marginBottom: '16px' }}>
-            <p style={{ color: '#1D4ED8', margin: 0, fontSize: '0.9rem' }}>⏳ AI analyseert {uploads.length} upload(s) over {boekjaren.length} jaar en schrijft uw rapport... Dit duurt 20-40 seconden.</p>
+            <p style={{ color: '#1D4ED8', margin: 0, fontSize: '0.9rem' }}>⏳ Onze kascontroleurs analyseren {uploads.length} upload(s) over {boekjaren.length} jaar en schrijft uw rapport... Dit duurt 20-40 seconden.</p>
           </div>
         )}
 

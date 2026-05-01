@@ -41,9 +41,6 @@ nav.scrolled{box-shadow:0 4px 24px rgba(0,0,0,0.08)}
 .btn-nav:hover{background:var(--blue-dark)!important}
 
 /* HERO */
-.hero{min-height:100vh;display:grid;grid-template-columns:1fr 1fr;align-items:center;padding:100px 48px 60px;gap:64px;position:relative;overflow:hidden;background:linear-gradient(135deg,#f0f7ff 0%,#ffffff 60%)}
-.hero::before{content:'';position:absolute;top:-200px;right:-200px;width:600px;height:600px;background:radial-gradient(circle,rgba(37,99,235,0.08) 0%,transparent 70%);pointer-events:none}
-.hero-eyebrow{display:inline-flex;align-items:center;gap:8px;background:var(--blue-pale);border:1px solid var(--blue-light);color:var(--blue);font-size:0.78rem;font-weight:600;padding:6px 14px;border-radius:20px;margin-bottom:24px;letter-spacing:0.04em;text-transform:uppercase;animation:fadeUp 0.6s ease both}
 h1{font-family:'Playfair Display',serif;font-size:clamp(2.4rem,4vw,3.4rem);font-weight:700;line-height:1.1;color:var(--ink);margin-bottom:20px;animation:fadeUp 0.6s 0.1s ease both;letter-spacing:-0.02em}
 h1 .accent{color:var(--blue)}
 h1 em{font-style:italic;font-weight:500}
@@ -54,16 +51,9 @@ h1 em{font-style:italic;font-weight:500}
 .btn-ghost{color:var(--blue);font-size:0.95rem;font-weight:500;text-decoration:none;display:flex;align-items:center;gap:6px;transition:gap 0.2s}
 .btn-ghost:hover{gap:10px}
 .btn-ghost::after{content:'→'}
-.hero-price{display:flex;align-items:center;gap:12px;margin-top:24px;padding:16px 20px;background:white;border-radius:10px;border:1px solid var(--border);box-shadow:0 2px 8px rgba(0,0,0,0.04);animation:fadeUp 0.6s 0.4s ease both;max-width:360px}
 .price-amount{font-family:'Playfair Display',serif;font-size:1.8rem;font-weight:700;color:var(--blue)}
-.price-desc{font-size:0.82rem;color:var(--ink-soft);line-height:1.4}
 
 /* HERO IMAGE */
-.hero-image{position:relative;animation:fadeUp 0.7s 0.2s ease both}
-.hero-img-wrap{border-radius:20px;overflow:hidden;box-shadow:0 32px 64px rgba(0,0,0,0.15);position:relative}
-.hero-img-wrap img{width:100%;height:500px;object-fit:cover;display:block}
-.hero-badge{position:absolute;bottom:-20px;left:-20px;background:var(--blue);color:white;padding:16px 20px;border-radius:12px;box-shadow:0 8px 24px rgba(37,99,235,0.4);font-size:0.85rem;font-weight:600;animation:float 3s ease-in-out infinite}
-.hero-badge-num{font-family:'Playfair Display',serif;font-size:1.8rem;font-weight:700;display:block;line-height:1}
 
 /* TRUST BAR */
 .trust-bar{background:var(--blue-deeper);padding:20px 48px;display:flex;align-items:center;justify-content:center;gap:48px;flex-wrap:wrap}
@@ -214,7 +204,7 @@ footer a:hover{color:var(--blue-light)}
   <div class="hero-text">
     <div class="hero-eyebrow">✦ Verplicht voor elke vereniging</div>
     <h1>Uw kascontrole klaar<br/>voor de <em>volgende ALV</em></h1>
-    <p class="hero-sub">Upload uw financiële bestanden en ontvang automatisch een professioneel kascontrolerapport. Snel, betrouwbaar en volledig conform de wettelijke eisen.</p>
+    <p class="hero-sub">Upload uw financiële bestanden en ontvang een professioneel kascontrolerapport, opgesteld door onze kascontroleurs. Betrouwbaar, veilig en volledig conform de wettelijke eisen.</p>
     <div class="hero-ctas">
       <a href="/registreer" class="btn-primary">Account aanmaken</a>
       <a href="#hoe-het-werkt" class="btn-ghost">Bekijk hoe het werkt</a>
@@ -420,6 +410,37 @@ footer a:hover{color:var(--blue-light)}
       <div class="feat-li">Geconsolideerde rapportage</div>
       <div class="feat-li">Dedicated support</div>
       <a href="/registreer" class="btn-plan btn-plan-outline">Neem contact op</a>
+    </div>
+  </div>
+</section>
+
+<!-- VEILIGHEID -->
+<section style="background:var(--blue-deeper);color:white">
+  <div style="max-width:1100px;margin:0 auto;text-align:center">
+    <p style="font-size:0.72rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:var(--blue-light);margin-bottom:14px" class="fade-in">Uw gegevens zijn veilig</p>
+    <h2 style="color:white;max-width:560px;margin:0 auto 16px" class="fade-in">Wij nemen de beveiliging van uw gegevens <em>uiterst serieus</em></h2>
+    <p style="color:rgba(255,255,255,0.7);max-width:520px;margin:0 auto 56px;font-size:1rem;line-height:1.7" class="fade-in">Financiële gegevens zijn gevoelig. Daarom hebben wij meerdere beveiligingslagen ingebouwd om uw data te beschermen.</p>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:24px;max-width:1000px;margin:0 auto">
+      <div class="fade-in" style="background:rgba(255,255,255,0.08);border-radius:16px;padding:28px 20px;border:1px solid rgba(255,255,255,0.12)">
+        <div style="font-size:2rem;margin-bottom:12px">🔒</div>
+        <h4 style="font-weight:700;color:white;font-size:0.95rem;margin-bottom:8px">SSL-versleuteling</h4>
+        <p style="font-size:0.82rem;color:rgba(255,255,255,0.65);line-height:1.6">Alle verbindingen zijn beveiligd met 256-bit SSL-encryptie.</p>
+      </div>
+      <div class="fade-in" style="background:rgba(255,255,255,0.08);border-radius:16px;padding:28px 20px;border:1px solid rgba(255,255,255,0.12)">
+        <div style="font-size:2rem;margin-bottom:12px">🇳🇱</div>
+        <h4 style="font-weight:700;color:white;font-size:0.95rem;margin-bottom:8px">Data in Nederland</h4>
+        <p style="font-size:0.82rem;color:rgba(255,255,255,0.65);line-height:1.6">Uw gegevens worden opgeslagen op servers binnen de EU.</p>
+      </div>
+      <div class="fade-in" style="background:rgba(255,255,255,0.08);border-radius:16px;padding:28px 20px;border:1px solid rgba(255,255,255,0.12)">
+        <div style="font-size:2rem;margin-bottom:12px">👁️</div>
+        <h4 style="font-weight:700;color:white;font-size:0.95rem;margin-bottom:8px">Strikt vertrouwelijk</h4>
+        <p style="font-size:0.82rem;color:rgba(255,255,255,0.65);line-height:1.6">Uw financiële gegevens worden nooit gedeeld met derden.</p>
+      </div>
+      <div class="fade-in" style="background:rgba(255,255,255,0.08);border-radius:16px;padding:28px 20px;border:1px solid rgba(255,255,255,0.12)">
+        <div style="font-size:2rem;margin-bottom:12px">⚖️</div>
+        <h4 style="font-weight:700;color:white;font-size:0.95rem;margin-bottom:8px">AVG-conform</h4>
+        <p style="font-size:0.82rem;color:rgba(255,255,255,0.65);line-height:1.6">Wij voldoen volledig aan de Europese privacywetgeving (AVG/GDPR).</p>
+      </div>
     </div>
   </div>
 </section>
