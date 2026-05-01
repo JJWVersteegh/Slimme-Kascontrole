@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react'
 import { supabase } from '@/lib/supabase'
 import { useRouter } from 'next/navigation'
+import { RapportRenderer } from '@/components/RapportRenderer'
 
 interface Upload {
   id: string
@@ -164,12 +165,8 @@ export default function MijnOmgeving() {
             <h2 style={{ fontSize: '1.4rem', fontWeight: '700', color: '#0f172a', margin: '0 0 4px', fontFamily: 'Outfit, sans-serif' }}>KASCOMMISSIE RAPPORT</h2>
             <p style={{ color: '#475569', margin: 0 }}>Boekjaar {geselecteerdRapport.boekjaar}</p>
           </div>
-          <div style={{ fontSize: '0.95rem', color: '#0f172a' }}>
-            {geselecteerdRapport.rapport_tekst?.split('\n').map((line, i) => {
-              if (line.startsWith('[AANDACHTSPUNT:')) return <div key={i} style={{ background: '#fffbeb', borderLeft: '4px solid #f59e0b', padding: '12px 16px', margin: '12px 0', borderRadius: '0 8px 8px 0' }}><strong>⚠️ Aandachtspunt</strong><br />{line.replace('[AANDACHTSPUNT:', '').replace(']', '')}</div>
-              if (line.startsWith('# ') || line.startsWith('## ')) return <h3 key={i} style={{ fontSize: '1.05rem', fontWeight: '700', color: '#1e3a8a', marginTop: '24px', marginBottom: '8px', fontFamily: 'Outfit, sans-serif' }}>{line.replace(/^#+\s/, '')}</h3>
-              return <p key={i} style={{ margin: '4px 0' }}>{line}</p>
-            })}
+          <div style={{ fontSize: '0.92rem', color: '#0f172a', lineHeight: 1.7 }}>
+            <RapportRenderer tekst={geselecteerdRapport.rapport_tekst || ''} />
           </div>
         </div>
       </div>
