@@ -171,11 +171,10 @@ footer a:hover{color:var(--blue-light)}
   .features-grid,.why-grid,.pricing-grid{grid-template-columns:1fr}
   footer{flex-direction:column;text-align:center}
   footer a{margin:0 12px}
+  .hero-badges-desktop{display:none!important}
 }
-@media(max-width:700px){
-  .hero-price-box{flex-direction:column;gap:12px;align-items:flex-start}
-  .hero-trust-badges{display:none!important}
-  .hero-content{padding:80px 20px 60px!important}
+@media(max-width:600px){
+  .hero-badges-desktop{display:none!important}
 }
 </style>
 </head>
@@ -204,41 +203,39 @@ footer a:hover{color:var(--blue-light)}
 </nav>
 
 <!-- HERO -->
-<section style="position:relative;min-height:100svh;display:flex;align-items:center;overflow:hidden;padding-top:72px">
-  <div style="position:absolute;inset:0;z-index:0">
-    <img src="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?w=1600&q=85" alt="Kascontrole" style="width:100%;height:100%;object-fit:cover;object-position:center top"/>
-    <div style="position:absolute;inset:0;background:linear-gradient(105deg,rgba(15,23,42,0.78) 0%,rgba(30,58,138,0.65) 45%,rgba(15,23,42,0.35) 100%)"></div>
+<section style="position:relative;min-height:100vh;width:100%;display:flex;align-items:center;overflow:hidden">
+  <div style="position:absolute;top:0;left:0;right:0;bottom:0;z-index:0">
+    <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=1800&q=90" alt="Kascontrole" style="width:100%;height:100%;object-fit:cover;object-position:center"/>
+    <div style="position:absolute;top:0;left:0;right:0;bottom:0;background:linear-gradient(110deg,rgba(10,20,50,0.82) 0%,rgba(20,50,140,0.65) 50%,rgba(10,20,50,0.40) 100%)"></div>
   </div>
-  <div class="hero-content" style="position:relative;z-index:1;max-width:1100px;margin:0 auto;padding:80px 48px 120px;width:100%">
-    <div style="max-width:640px">
-      <div style="display:inline-flex;align-items:center;gap:8px;background:rgba(37,99,235,0.3);border:1px solid rgba(147,197,253,0.4);color:#93c5fd;font-size:0.78rem;font-weight:600;padding:6px 14px;border-radius:20px;margin-bottom:28px;letter-spacing:0.04em;text-transform:uppercase;animation:fadeUp 0.6s ease both">✦ Verplicht voor elke vereniging</div>
-      <h1 style="font-family:'Playfair Display',serif;font-size:clamp(2.4rem,4.5vw,3.8rem);font-weight:700;line-height:1.1;color:white;margin-bottom:20px;letter-spacing:-0.02em;animation:fadeUp 0.6s 0.1s ease both">Uw kascontrole klaar<br/>voor de <em style="font-style:italic;font-weight:400;color:#93c5fd">volgende ALV</em></h1>
-      <p style="font-size:1.1rem;color:rgba(255,255,255,0.88);font-weight:400;line-height:1.7;max-width:520px;margin-bottom:36px;animation:fadeUp 0.6s 0.2s ease both">Upload uw financiële bestanden en ontvang een volledig gecontroleerd kascontrolerapport, opgesteld door onze kascontroleurs. Betrouwbaar, veilig en conform de wettelijke eisen.</p>
-      <div style="display:flex;gap:16px;align-items:center;flex-wrap:wrap;margin-bottom:44px;animation:fadeUp 0.6s 0.3s ease both">
-        <a href="/registreer" style="background:#2563EB;color:white;padding:16px 36px;border-radius:8px;font-size:1rem;font-weight:700;text-decoration:none;box-shadow:0 4px 20px rgba(37,99,235,0.5);font-family:Outfit,sans-serif;display:inline-block">Account aanmaken</a>
-        <a href="#hoe-het-werkt" style="color:rgba(255,255,255,0.85);font-size:0.95rem;font-weight:500;text-decoration:none;display:flex;align-items:center;gap:6px">Bekijk hoe het werkt →</a>
+  <div style="position:relative;z-index:1;width:100%;max-width:1100px;margin:0 auto;padding:120px 48px 80px">
+    <div style="max-width:600px">
+      <div style="display:inline-flex;align-items:center;gap:8px;background:rgba(37,99,235,0.35);border:1px solid rgba(147,197,253,0.5);color:#bfdbfe;font-size:0.75rem;font-weight:700;padding:6px 14px;border-radius:20px;margin-bottom:24px;letter-spacing:0.05em;text-transform:uppercase">✦ Verplicht voor elke vereniging</div>
+      <h1 style="font-family:'Playfair Display',serif;font-size:clamp(2rem,5vw,3.8rem);font-weight:700;line-height:1.1;color:white;margin-bottom:20px;letter-spacing:-0.02em">Uw kascontrole klaar<br/>voor de <em style="font-style:italic;font-weight:400;color:#93c5fd">volgende ALV</em></h1>
+      <p style="font-size:clamp(0.95rem,2.5vw,1.1rem);color:rgba(255,255,255,0.88);line-height:1.7;margin-bottom:32px;max-width:480px">Upload uw financiële bestanden en ontvang een volledig gecontroleerd kascontrolerapport, opgesteld door onze kascontroleurs. Betrouwbaar, veilig en conform de wettelijke eisen.</p>
+      <div style="display:flex;gap:14px;align-items:center;flex-wrap:wrap;margin-bottom:36px">
+        <a href="/registreer" style="background:#2563EB;color:white;padding:15px 32px;border-radius:8px;font-size:0.95rem;font-weight:700;text-decoration:none;box-shadow:0 4px 20px rgba(37,99,235,0.5);font-family:Outfit,sans-serif;white-space:nowrap">Account aanmaken</a>
+        <a href="#hoe-het-werkt" style="color:rgba(255,255,255,0.85);font-size:0.9rem;font-weight:500;text-decoration:none;display:flex;align-items:center;gap:6px;white-space:nowrap">Bekijk hoe het werkt →</a>
       </div>
-      <div style="display:flex;flex-wrap:wrap;align-items:center;gap:16px;padding:18px 20px;background:rgba(255,255,255,0.10);backdrop-filter:blur(12px);border-radius:12px;border:1px solid rgba(255,255,255,0.18);animation:fadeUp 0.6s 0.4s ease both">
-        <div>
-          <div style="font-size:0.7rem;font-weight:600;color:rgba(255,255,255,0.55);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:2px">Prijs per boekjaar</div>
-          <div style="display:flex;align-items:baseline;gap:2px">
-            <span style="font-size:1rem;font-weight:700;color:#93c5fd">€</span>
-            <span style="font-family:'Playfair Display',serif;font-size:2.4rem;font-weight:700;color:white;line-height:1">59</span>
-          </div>
+      <div style="display:inline-flex;align-items:center;gap:16px;padding:16px 20px;background:rgba(255,255,255,0.10);backdrop-filter:blur(12px);border-radius:12px;border:1px solid rgba(255,255,255,0.20)">
+        <div style="flex-shrink:0">
+          <div style="font-size:0.65rem;font-weight:700;color:rgba(255,255,255,0.55);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:2px">Per boekjaar</div>
+          <div style="display:flex;align-items:baseline;gap:1px"><span style="font-size:0.9rem;font-weight:700;color:#93c5fd">€</span><span style="font-family:'Playfair Display',serif;font-size:2rem;font-weight:700;color:white;line-height:1">59</span></div>
         </div>
-        <div style="width:1px;height:48px;background:rgba(255,255,255,0.18)"></div>
-        <div style="display:flex;flex-direction:column;gap:7px">
-          <div style="font-size:0.83rem;color:rgba(255,255,255,0.88);display:flex;align-items:center;gap:8px"><span style="color:#93c5fd;font-weight:700">✓</span> Volledig gecontroleerd rapport</div>
-          <div style="font-size:0.83rem;color:rgba(255,255,255,0.88);display:flex;align-items:center;gap:8px"><span style="color:#93c5fd;font-weight:700">✓</span> Trendanalyse meerdere jaren</div>
-          <div style="font-size:0.83rem;color:rgba(255,255,255,0.88);display:flex;align-items:center;gap:8px"><span style="color:#93c5fd;font-weight:700">✓</span> PDF-export voor de ALV</div>
+        <div style="width:1px;height:40px;background:rgba(255,255,255,0.2);flex-shrink:0"></div>
+        <div style="display:flex;flex-direction:column;gap:6px">
+          <div style="font-size:0.8rem;color:rgba(255,255,255,0.9);display:flex;align-items:center;gap:6px"><span style="color:#93c5fd;font-weight:700;font-size:0.9rem">✓</span>Volledig gecontroleerd rapport</div>
+          <div style="font-size:0.8rem;color:rgba(255,255,255,0.9);display:flex;align-items:center;gap:6px"><span style="color:#93c5fd;font-weight:700;font-size:0.9rem">✓</span>Trendanalyse meerdere jaren</div>
+          <div style="font-size:0.8rem;color:rgba(255,255,255,0.9);display:flex;align-items:center;gap:6px"><span style="color:#93c5fd;font-weight:700;font-size:0.9rem">✓</span>PDF-export voor de ALV</div>
         </div>
       </div>
     </div>
-    <div class="hero-trust-badges" style="position:absolute;bottom:32px;right:48px;display:flex;gap:10px;flex-wrap:wrap">
-      <div style="background:rgba(255,255,255,0.10);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.18);border-radius:8px;padding:9px 14px;font-size:0.78rem;color:white;display:flex;align-items:center;gap:6px">🔒 SSL-versleuteld</div>
-      <div style="background:rgba(255,255,255,0.10);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.18);border-radius:8px;padding:9px 14px;font-size:0.78rem;color:white;display:flex;align-items:center;gap:6px">🏛️ AVG-conform</div>
-      <div style="background:rgba(255,255,255,0.10);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.18);border-radius:8px;padding:9px 14px;font-size:0.78rem;color:white;display:flex;align-items:center;gap:6px">🇳🇱 Data in Nederland</div>
-    </div>
+  </div>
+  <!-- Trust badges desktop only -->
+  <div style="position:absolute;bottom:28px;left:48px;display:flex;gap:10px" class="hero-badges-desktop">
+    <div style="background:rgba(255,255,255,0.10);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.20);border-radius:8px;padding:8px 14px;font-size:0.75rem;color:white;display:flex;align-items:center;gap:6px">🔒 SSL-versleuteld</div>
+    <div style="background:rgba(255,255,255,0.10);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.20);border-radius:8px;padding:8px 14px;font-size:0.75rem;color:white;display:flex;align-items:center;gap:6px">🏛️ AVG-conform</div>
+    <div style="background:rgba(255,255,255,0.10);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.20);border-radius:8px;padding:8px 14px;font-size:0.75rem;color:white;display:flex;align-items:center;gap:6px">🇳🇱 Data in Nederland</div>
   </div>
 </section>
 
