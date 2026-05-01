@@ -164,17 +164,16 @@ footer a:hover{color:var(--blue-light)}
 /* RESPONSIVE */
 @media(max-width:900px){
   nav{padding:0 20px}
-  .nav-links{display:none}
-  .btn-nav-mobile{display:block!important}
+  .nav-links{display:none!important}
+  #hamburger{display:flex!important}
   section{padding:64px 24px}
   .steps,.sources-grid,.testi-grid{grid-template-columns:1fr}
   .features-grid,.why-grid,.pricing-grid{grid-template-columns:1fr}
   footer{flex-direction:column;text-align:center}
   footer a{margin:0 12px}
   .hero-badges-desktop{display:none!important}
-}
-@media(max-width:600px){
-  .hero-badges-desktop{display:none!important}
+  .sources-grid{grid-template-columns:1fr 1fr}
+  .testi-grid{grid-template-columns:1fr}
 }
 </style>
 </head>
@@ -515,6 +514,32 @@ const obs=new IntersectionObserver((entries)=>{
   entries.forEach((e,i)=>{if(e.isIntersecting)setTimeout(()=>e.target.classList.add('visible'),i*80)})
 },{threshold:0.1})
 document.querySelectorAll('.fade-in').forEach(el=>obs.observe(el))
+
+function toggleMenu(){
+  const menu=document.getElementById('mobile-menu')
+  const b1=document.getElementById('bar1')
+  const b2=document.getElementById('bar2')
+  const b3=document.getElementById('bar3')
+  const open=menu.style.display==='block'
+  menu.style.display=open?'none':'block'
+  b1.style.transform=open?'':'rotate(45deg) translate(5px,5px)'
+  b2.style.opacity=open?'1':'0'
+  b3.style.transform=open?'':'rotate(-45deg) translate(5px,-5px)'
+}
+function closeMenu(){
+  document.getElementById('mobile-menu').style.display='none'
+  document.getElementById('bar1').style.transform=''
+  document.getElementById('bar2').style.opacity='1'
+  document.getElementById('bar3').style.transform=''
+}
+// Close menu when clicking outside
+document.addEventListener('click',function(e){
+  const menu=document.getElementById('mobile-menu')
+  const hamburger=document.getElementById('hamburger')
+  if(menu.style.display==='block' && !menu.contains(e.target) && !hamburger.contains(e.target)){
+    closeMenu()
+  }
+})
 </script>
 </body>
 </html>`
