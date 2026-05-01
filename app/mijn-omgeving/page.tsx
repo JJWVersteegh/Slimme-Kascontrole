@@ -11,45 +11,72 @@ interface Upload {
   upload_datum: string
   toelichting: string
   bestanden: string[]
+}
+
+interface Klant {
+  id: string
+  email: string
+  plan: string
   rapport_beschikbaar: boolean
   rapport_tekst?: string
+  rapport_gegenereerd_op?: string
 }
 
 export default function MijnOmgeving() {
   const [user, setUser] = useState<any>(null)
+  const [klant, setKlant] = useState<Klant | null>(null)
   const [uploads, setUploads] = useState<Upload[]>([])
   const [loading, setLoading] = useState(true)
   const [uploading, setUploading] = useState(false)
-  const [betaalLoading, setBetaalLoading] = useState<string | null>(null)
-  const [rapportLoading, setRapportLoading] = useState<string | null>(null)
+  const [betaalLoading, setBetaalLoading] = useState(false)
+  const [rapportLoading, setRapportLoading] = useState(false)
   const [deleteLoading, setDeleteLoading] = useState<string | null>(null)
   const [files, setFiles] = useState<FileList | null>(null)
   const [boekjaar, setBoekjaar] = useState(new Date().getFullYear().toString())
   const [toelichting, setToelichting] = useState('')
   const [uploadSuccess, setUploadSuccess] = useState(false)
   const [error, setError] = useState('')
-  const [geselecteerdRapport, setGeselecteerdRapport] = useState<Upload | null>(null)
+  const [toonRapport, setToonRapport] = useState(false)
   const [bevestigDelete, setBevestigDelete] = useState<string | null>(null)
   const router = useRouter()
 
   const currentYear = new Date().getFullYear()
-  const jaren = [currentYear, currentYear - 1, currentYear - 2, currentYear - 3]
+  const jaren = [currentYear + 1, currentYear, currentYear - 1, currentYear - 2, currentYear - 3]
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (!session) { router.push('/registreer'); return }
       setUser(session.user)
-      loadUploads(session.user.id)
+      loadData(session.user.id, session.user.email!)
     })
   }, [])
 
-  async function loadUploads(userId: string) {
-    const { data } = await supabase
+  async function loadData(userId: string, email: string) {
+    // Load or create klant record
+    let { data: klantData } = await supabase
+      .from('klanten')
+      .select('*')
+      .eq('user_id', userId)
+      .single()
+
+    if (!klantData) {
+      const { data: newKlant } = await supabase
+        .from('klanten')
+        .insert({ user_id: userId, email, rapport_beschikbaar: false })
+        .select()
+        .single()
+      klantData = newKlant
+    }
+
+    setKlant(klantData)
+
+    const { data: uploadsData } = await supabase
       .from('uploads')
       .select('*')
       .eq('user_id', userId)
-      .order('upload_datum', { ascending: false })
-    setUploads(data || [])
+      .order('boekjaar', { ascending: false })
+
+    setUploads(uploadsData || [])
     setLoading(false)
   }
 
@@ -69,51 +96,52 @@ export default function MijnOmgeving() {
         setUploadSuccess(true)
         setFiles(null)
         setToelichting('')
-        loadUploads(user.id)
+        loadData(user.id, user.email)
         setTimeout(() => setUploadSuccess(false), 4000)
       } else { setError(data.error || 'Er ging iets mis') }
     } catch { setError('Er ging iets mis') }
     setUploading(false)
   }
 
-  async function handleBetaal(uploadId: string) {
-    setBetaalLoading(uploadId)
+  async function handleBetaal() {
+    setBetaalLoading(true)
     try {
       const res = await fetch('/api/checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ plan: 'vereniging', email: user.email, upload_id: uploadId }),
+        body: JSON.stringify({ plan: 'vereniging', email: user.email, user_id: user.id }),
       })
       const data = await res.json()
       if (data.url) window.location.href = data.url
     } catch { }
-    setBetaalLoading(null)
+    setBetaalLoading(false)
   }
 
-  async function handleGenereerRapport(uploadId: string) {
-    setRapportLoading(uploadId)
+  async function handleGenereerRapport() {
+    setRapportLoading(true)
+    setError('')
     try {
-      const res = await fetch('/api/genereer-rapport', {
+      const res = await fetch('/api/genereer-rapport-totaal', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ upload_id: uploadId }),
+        body: JSON.stringify({ user_id: user.id }),
       })
       const data = await res.json()
-      if (data.success) { loadUploads(user.id) }
-      else { setError('Rapport genereren mislukt: ' + data.error) }
+      if (data.success) {
+        loadData(user.id, user.email)
+        setToonRapport(true)
+      } else { setError('Rapport genereren mislukt: ' + data.error) }
     } catch { setError('Er ging iets mis') }
-    setRapportLoading(null)
+    setRapportLoading(false)
   }
 
   async function handleDelete(uploadId: string) {
     setDeleteLoading(uploadId)
     try {
-      // Delete files from storage
       const upload = uploads.find(u => u.id === uploadId)
       if (upload?.bestanden?.length) {
         await supabase.storage.from('kascontrole-bestanden').remove(upload.bestanden)
       }
-      // Delete record
       await supabase.from('uploads').delete().eq('id', uploadId)
       setUploads(prev => prev.filter(u => u.id !== uploadId))
       setBevestigDelete(null)
@@ -126,7 +154,8 @@ export default function MijnOmgeving() {
     router.push('/registreer')
   }
 
-  const inp = { width: '100%', padding: '11px 14px', borderRadius: '8px', border: '1.5px solid #bfdbfe', fontSize: '0.95rem', background: 'white', outline: 'none' }
+  const inp: any = { width: '100%', padding: '11px 14px', borderRadius: '8px', border: '1.5px solid #bfdbfe', fontSize: '0.95rem', background: 'white', outline: 'none', fontFamily: 'Outfit, sans-serif' }
+  const boekjaren = [...new Set(uploads.map(u => u.boekjaar))].sort().reverse()
 
   if (loading) return (
     <main style={{ minHeight: '100vh', background: '#f8fafc', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'Outfit, sans-serif' }}>
@@ -135,7 +164,7 @@ export default function MijnOmgeving() {
   )
 
   // Rapport weergave
-  if (geselecteerdRapport) return (
+  if (toonRapport && klant?.rapport_tekst) return (
     <main style={{ minHeight: '100vh', background: '#f8fafc', fontFamily: 'Outfit, sans-serif' }}>
       <style>{`@media print { .no-print { display: none !important; } body { background: white !important; } }`}</style>
       <nav className="no-print" style={{ background: 'white', borderBottom: '1px solid #e2e8f0', padding: '0 48px', height: '72px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
@@ -150,24 +179,25 @@ export default function MijnOmgeving() {
         </a>
         <div style={{ display: 'flex', gap: '12px' }}>
           <button onClick={() => window.print()} style={{ background: '#2563EB', color: 'white', padding: '10px 20px', borderRadius: '8px', border: 'none', cursor: 'pointer', fontWeight: '600', fontSize: '0.9rem', fontFamily: 'Outfit, sans-serif' }}>🖨️ Afdrukken / PDF</button>
-          <button onClick={() => setGeselecteerdRapport(null)} style={{ background: 'white', color: '#1e3a8a', padding: '10px 20px', borderRadius: '8px', border: '1.5px solid #bfdbfe', cursor: 'pointer', fontWeight: '600', fontSize: '0.9rem', fontFamily: 'Outfit, sans-serif' }}>← Terug</button>
+          <button onClick={() => setToonRapport(false)} style={{ background: 'white', color: '#1e3a8a', padding: '10px 20px', borderRadius: '8px', border: '1.5px solid #bfdbfe', cursor: 'pointer', fontWeight: '600', fontSize: '0.9rem', fontFamily: 'Outfit, sans-serif' }}>← Terug</button>
         </div>
       </nav>
-      <div style={{ maxWidth: '800px', margin: '0 auto', padding: '48px 24px' }}>
-        <div style={{ background: 'white', borderRadius: '16px', padding: '48px', border: '1px solid #e2e8f0', lineHeight: '1.8' }}>
-          <div style={{ textAlign: 'center', borderBottom: '2px solid #2563EB', paddingBottom: '24px', marginBottom: '32px' }}>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px', marginBottom: '12px' }}>
-              <div style={{ background: '#2563EB', width: '36px', height: '36px', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <svg width="20" height="20" viewBox="0 0 22 22" fill="none"><polyline points="3,12 9,18 19,6" stroke="white" strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round" /></svg>
+      <div style={{ maxWidth: '860px', margin: '0 auto', padding: '48px 24px' }}>
+        <div style={{ background: 'white', borderRadius: '16px', padding: '56px', border: '1px solid #e2e8f0', boxShadow: '0 4px 24px rgba(0,0,0,0.06)' }}>
+          {/* Header */}
+          <div style={{ textAlign: 'center', borderBottom: '3px solid #2563EB', paddingBottom: '28px', marginBottom: '36px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '12px', marginBottom: '16px' }}>
+              <div style={{ background: '#2563EB', width: '44px', height: '44px', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <svg width="24" height="24" viewBox="0 0 22 22" fill="none"><polyline points="3,12 9,18 19,6" stroke="white" strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round" /></svg>
               </div>
-              <span style={{ fontWeight: '700', color: '#1D4ED8', fontSize: '1rem' }}>slimmekascontrole.nl</span>
+              <span style={{ fontWeight: '700', color: '#1D4ED8', fontSize: '1.1rem', fontFamily: 'Outfit, sans-serif' }}>slimmekascontrole.nl</span>
             </div>
-            <h2 style={{ fontSize: '1.4rem', fontWeight: '700', color: '#0f172a', margin: '0 0 4px', fontFamily: 'Outfit, sans-serif' }}>KASCOMMISSIE RAPPORT</h2>
-            <p style={{ color: '#475569', margin: 0 }}>Boekjaar {geselecteerdRapport.boekjaar}</p>
+            <div style={{ fontSize: '0.72rem', fontWeight: '700', letterSpacing: '0.15em', textTransform: 'uppercase', color: '#94a3b8', marginBottom: '8px' }}>Een dienst van Vertras B.V.</div>
+            <h1 style={{ fontFamily: 'Outfit, sans-serif', fontSize: '1.6rem', fontWeight: '800', color: '#0f172a', margin: '0 0 8px' }}>KASCOMMISSIE RAPPORT</h1>
+            {boekjaren.length > 0 && <p style={{ color: '#475569', margin: 0, fontSize: '0.95rem' }}>Boekjaar{boekjaren.length > 1 ? 'en' : ''} {boekjaren.join(', ')} · {uploads.length} upload{uploads.length > 1 ? 's' : ''}</p>}
+            {klant?.rapport_gegenereerd_op && <p style={{ color: '#94a3b8', margin: '4px 0 0', fontSize: '0.82rem' }}>Gegenereerd op {new Date(klant.rapport_gegenereerd_op).toLocaleDateString('nl-NL', { day: 'numeric', month: 'long', year: 'numeric' })}</p>}
           </div>
-          <div style={{ fontSize: '0.92rem', color: '#0f172a', lineHeight: 1.7 }}>
-            <RapportRenderer tekst={geselecteerdRapport.rapport_tekst || ''} />
-          </div>
+          <RapportRenderer tekst={klant.rapport_tekst} />
         </div>
       </div>
     </main>
@@ -175,17 +205,17 @@ export default function MijnOmgeving() {
 
   return (
     <main style={{ minHeight: '100vh', background: '#f8fafc', fontFamily: 'Outfit, sans-serif' }}>
-      {/* Delete bevestiging modal */}
+      {/* Delete modal */}
       {bevestigDelete && (
         <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)', zIndex: 200, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px' }}>
-          <div style={{ background: 'white', borderRadius: '16px', padding: '32px', maxWidth: '400px', width: '100%', boxShadow: '0 24px 64px rgba(0,0,0,0.2)' }}>
-            <div style={{ fontSize: '2rem', marginBottom: '16px' }}>🗑️</div>
-            <h3 style={{ fontWeight: '700', color: '#0f172a', marginBottom: '8px', fontSize: '1.1rem' }}>Upload verwijderen?</h3>
-            <p style={{ color: '#475569', fontSize: '0.9rem', marginBottom: '24px', lineHeight: 1.6 }}>Dit verwijdert alle geüploade bestanden én het rapport (indien aanwezig). Dit kan niet ongedaan worden gemaakt.</p>
+          <div style={{ background: 'white', borderRadius: '16px', padding: '32px', maxWidth: '400px', width: '100%' }}>
+            <div style={{ fontSize: '2rem', marginBottom: '12px' }}>🗑️</div>
+            <h3 style={{ fontWeight: '700', color: '#0f172a', marginBottom: '8px' }}>Upload verwijderen?</h3>
+            <p style={{ color: '#475569', fontSize: '0.9rem', marginBottom: '24px', lineHeight: 1.6 }}>Dit verwijdert alle geüploade bestanden. Het rapport blijft bewaard.</p>
             <div style={{ display: 'flex', gap: '12px' }}>
-              <button onClick={() => setBevestigDelete(null)} style={{ flex: 1, padding: '12px', background: 'white', border: '1.5px solid #e2e8f0', borderRadius: '8px', cursor: 'pointer', fontWeight: '600', fontFamily: 'Outfit, sans-serif', color: '#475569' }}>Annuleren</button>
+              <button onClick={() => setBevestigDelete(null)} style={{ flex: 1, padding: '12px', background: 'white', border: '1.5px solid #e2e8f0', borderRadius: '8px', cursor: 'pointer', fontWeight: '600', fontFamily: 'Outfit, sans-serif' }}>Annuleren</button>
               <button onClick={() => handleDelete(bevestigDelete)} disabled={deleteLoading !== null} style={{ flex: 1, padding: '12px', background: '#ef4444', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer', fontWeight: '600', fontFamily: 'Outfit, sans-serif' }}>
-                {deleteLoading ? 'Verwijderen...' : 'Ja, verwijder'}
+                {deleteLoading ? 'Bezig...' : 'Verwijder'}
               </button>
             </div>
           </div>
@@ -209,36 +239,74 @@ export default function MijnOmgeving() {
       </nav>
 
       <div style={{ maxWidth: '900px', margin: '0 auto', padding: '48px 24px' }}>
-        <h1 style={{ fontSize: '1.8rem', fontWeight: '700', color: '#0f172a', marginBottom: '4px' }}>Mijn omgeving</h1>
-        <p style={{ color: '#475569', marginBottom: '40px' }}>Upload uw financiële bestanden en ontvang een professioneel kascontrolerapport.</p>
+        <div style={{ marginBottom: '32px' }}>
+          <h1 style={{ fontSize: '1.8rem', fontWeight: '700', color: '#0f172a', marginBottom: '4px' }}>Mijn omgeving</h1>
+          <p style={{ color: '#475569' }}>Upload uw financiële bestanden en ontvang één professioneel kascontrolerapport met trendanalyse.</p>
+        </div>
 
-        {/* Upload */}
-        <div style={{ background: 'white', borderRadius: '16px', padding: '32px', border: '1px solid #e2e8f0', marginBottom: '32px' }}>
-          <h2 style={{ fontSize: '1.1rem', fontWeight: '700', color: '#0f172a', marginBottom: '20px' }}>📁 Bestanden uploaden</h2>
+        {/* Status banner */}
+        {!klant?.rapport_beschikbaar ? (
+          <div style={{ background: 'white', borderRadius: '16px', padding: '24px 28px', border: '2px solid #bfdbfe', marginBottom: '28px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '16px' }}>
+            <div>
+              <h2 style={{ fontWeight: '700', color: '#0f172a', fontSize: '1rem', marginBottom: '4px' }}>📊 Eenmalige kascontrole — €59</h2>
+              <p style={{ color: '#475569', fontSize: '0.88rem', margin: 0 }}>Upload al uw bestanden (meerdere jaren mogelijk) en betaal éénmalig voor één volledig rapport met trendanalyse.</p>
+            </div>
+            <button onClick={handleBetaal} disabled={betaalLoading || uploads.length === 0} style={{ background: uploads.length === 0 ? '#94a3b8' : '#2563EB', color: 'white', padding: '12px 28px', borderRadius: '8px', border: 'none', fontSize: '0.95rem', fontWeight: '700', cursor: uploads.length === 0 ? 'not-allowed' : 'pointer', fontFamily: 'Outfit, sans-serif', whiteSpace: 'nowrap' }}>
+              {betaalLoading ? 'Laden...' : uploads.length === 0 ? 'Upload eerst bestanden' : '🔒 Betaal €59 — iDEAL'}
+            </button>
+          </div>
+        ) : (
+          <div style={{ background: '#eff6ff', borderRadius: '16px', padding: '24px 28px', border: '2px solid #2563EB', marginBottom: '28px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '16px' }}>
+            <div>
+              <h2 style={{ fontWeight: '700', color: '#1D4ED8', fontSize: '1rem', marginBottom: '4px' }}>✅ Betaald — rapport beschikbaar</h2>
+              <p style={{ color: '#475569', fontSize: '0.88rem', margin: 0 }}>U kunt nu uw rapport genereren. Upload extra bestanden voor een uitgebreidere analyse.</p>
+            </div>
+            <div style={{ display: 'flex', gap: '12px' }}>
+              {klant?.rapport_tekst && (
+                <button onClick={() => setToonRapport(true)} style={{ background: 'white', color: '#1D4ED8', padding: '12px 20px', borderRadius: '8px', border: '1.5px solid #2563EB', fontSize: '0.9rem', fontWeight: '600', cursor: 'pointer', fontFamily: 'Outfit, sans-serif' }}>
+                  📄 Bekijk rapport
+                </button>
+              )}
+              <button onClick={handleGenereerRapport} disabled={rapportLoading} style={{ background: '#2563EB', color: 'white', padding: '12px 24px', borderRadius: '8px', border: 'none', fontSize: '0.9rem', fontWeight: '700', cursor: rapportLoading ? 'not-allowed' : 'pointer', fontFamily: 'Outfit, sans-serif' }}>
+                {rapportLoading ? '⏳ Genereren...' : klant?.rapport_tekst ? '🔄 Rapport vernieuwen' : '🤖 Genereer rapport'}
+              </button>
+            </div>
+          </div>
+        )}
+
+        {error && <p style={{ color: '#ef4444', marginBottom: '16px', fontSize: '0.9rem' }}>{error}</p>}
+        {rapportLoading && (
+          <div style={{ background: '#eff6ff', borderRadius: '8px', padding: '16px', marginBottom: '16px' }}>
+            <p style={{ color: '#1D4ED8', margin: 0, fontSize: '0.9rem' }}>⏳ AI analyseert {uploads.length} upload(s) over {boekjaren.length} jaar en schrijft uw rapport... Dit duurt 20-40 seconden.</p>
+          </div>
+        )}
+
+        {/* Upload sectie */}
+        <div style={{ background: 'white', borderRadius: '16px', padding: '28px', border: '1px solid #e2e8f0', marginBottom: '24px' }}>
+          <h2 style={{ fontSize: '1rem', fontWeight: '700', color: '#0f172a', marginBottom: '16px' }}>📁 Bestanden uploaden</h2>
           <form onSubmit={handleUpload}>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '16px' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '14px' }}>
               <div>
-                <label style={{ display: 'block', fontWeight: '600', color: '#0f172a', marginBottom: '6px', fontSize: '0.9rem' }}>Boekjaar</label>
-                <select value={boekjaar} onChange={e => setBoekjaar(e.target.value)} style={inp as any}>
+                <label style={{ display: 'block', fontWeight: '600', color: '#0f172a', marginBottom: '6px', fontSize: '0.88rem' }}>Boekjaar</label>
+                <select value={boekjaar} onChange={e => setBoekjaar(e.target.value)} style={inp}>
                   {jaren.map(j => <option key={j} value={j}>{j}</option>)}
                 </select>
               </div>
               <div>
-                <label style={{ display: 'block', fontWeight: '600', color: '#0f172a', marginBottom: '6px', fontSize: '0.9rem' }}>Bestanden</label>
-                <div onClick={() => document.getElementById('fileInput')?.click()} style={{ border: '2px dashed #93c5fd', borderRadius: '8px', padding: '12px 16px', textAlign: 'center', cursor: 'pointer', background: '#f8fafc', fontSize: '0.9rem', color: '#475569' }}>
+                <label style={{ display: 'block', fontWeight: '600', color: '#0f172a', marginBottom: '6px', fontSize: '0.88rem' }}>Bestanden</label>
+                <div onClick={() => document.getElementById('fileInput')?.click()} style={{ border: '2px dashed #93c5fd', borderRadius: '8px', padding: '12px 16px', textAlign: 'center', cursor: 'pointer', background: '#f8fafc', fontSize: '0.88rem', color: '#475569' }}>
                   {files ? `${files.length} bestand(en) ✓` : '📎 Klik om te selecteren'}
                 </div>
                 <input id="fileInput" type="file" multiple accept=".pdf,.xlsx,.xls,.csv,.png,.jpg,.jpeg" style={{ display: 'none' }} onChange={e => setFiles(e.target.files)} />
-                <p style={{ fontSize: '0.75rem', color: '#94a3b8', marginTop: '4px' }}>PDF, Excel, CSV, afbeeldingen</p>
+                <p style={{ fontSize: '0.72rem', color: '#94a3b8', marginTop: '3px' }}>PDF, Excel, CSV, afbeeldingen</p>
               </div>
             </div>
-            <div style={{ marginBottom: '16px' }}>
-              <label style={{ display: 'block', fontWeight: '600', color: '#0f172a', marginBottom: '6px', fontSize: '0.9rem' }}>Toelichting <span style={{ fontWeight: '400', color: '#94a3b8' }}>(optioneel)</span></label>
-              <textarea value={toelichting} onChange={e => setToelichting(e.target.value)} placeholder="Bijzonderheden, vragen of extra informatie..." rows={2} style={{ ...inp, resize: 'vertical' } as any} />
+            <div style={{ marginBottom: '14px' }}>
+              <label style={{ display: 'block', fontWeight: '600', color: '#0f172a', marginBottom: '6px', fontSize: '0.88rem' }}>Toelichting <span style={{ fontWeight: '400', color: '#94a3b8' }}>(optioneel)</span></label>
+              <textarea value={toelichting} onChange={e => setToelichting(e.target.value)} placeholder="Bijzonderheden voor dit boekjaar..." rows={2} style={{ ...inp, resize: 'vertical' }} />
             </div>
-            {error && <p style={{ color: '#ef4444', fontSize: '0.85rem', marginBottom: '12px' }}>{error}</p>}
-            {uploadSuccess && <p style={{ color: '#2563EB', fontSize: '0.85rem', marginBottom: '12px' }}>✓ Bestanden succesvol geüpload!</p>}
-            <button type="submit" disabled={uploading} style={{ background: '#2563EB', color: 'white', padding: '12px 28px', borderRadius: '8px', border: 'none', fontSize: '0.95rem', fontWeight: '600', cursor: uploading ? 'not-allowed' : 'pointer', fontFamily: 'Outfit, sans-serif' }}>
+            {uploadSuccess && <p style={{ color: '#16a34a', fontSize: '0.85rem', marginBottom: '10px' }}>✓ Bestanden geüpload!</p>}
+            <button type="submit" disabled={uploading} style={{ background: '#0f172a', color: 'white', padding: '11px 24px', borderRadius: '8px', border: 'none', fontSize: '0.9rem', fontWeight: '600', cursor: uploading ? 'not-allowed' : 'pointer', fontFamily: 'Outfit, sans-serif' }}>
               {uploading ? 'Uploaden...' : '📤 Upload bestanden'}
             </button>
           </form>
@@ -246,56 +314,38 @@ export default function MijnOmgeving() {
 
         {/* Uploads overzicht */}
         <div style={{ background: 'white', borderRadius: '16px', border: '1px solid #e2e8f0', overflow: 'hidden' }}>
-          <div style={{ padding: '20px 24px', borderBottom: '1px solid #e2e8f0' }}>
-            <h2 style={{ fontSize: '1.1rem', fontWeight: '700', color: '#0f172a', margin: 0 }}>Mijn uploads & rapporten</h2>
+          <div style={{ padding: '18px 24px', borderBottom: '1px solid #e2e8f0', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <h2 style={{ fontSize: '1rem', fontWeight: '700', color: '#0f172a', margin: 0 }}>Geüploade bestanden</h2>
+            {boekjaren.length > 0 && <span style={{ fontSize: '0.82rem', color: '#475569' }}>{uploads.length} upload(s) · {boekjaren.join(', ')}</span>}
           </div>
           {uploads.length === 0 ? (
-            <div style={{ padding: '48px', textAlign: 'center' }}>
-              <div style={{ fontSize: '2rem', marginBottom: '12px' }}>📂</div>
-              <p style={{ color: '#475569' }}>Nog geen uploads. Upload uw eerste bestanden hierboven!</p>
+            <div style={{ padding: '40px', textAlign: 'center' }}>
+              <div style={{ fontSize: '2rem', marginBottom: '8px' }}>📂</div>
+              <p style={{ color: '#475569', fontSize: '0.9rem' }}>Nog geen uploads. Upload uw eerste bestanden hierboven!</p>
             </div>
           ) : (
             <div>
               {uploads.map(upload => (
-                <div key={upload.id} style={{ padding: '20px 24px', borderBottom: '1px solid #f1f5f9', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '12px' }}>
+                <div key={upload.id} style={{ padding: '16px 24px', borderBottom: '1px solid #f1f5f9', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '12px' }}>
                   <div>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '4px' }}>
-                      <span style={{ fontWeight: '700', color: '#0f172a', fontSize: '1rem' }}>Boekjaar {upload.boekjaar}</span>
-                      <span style={{ background: '#eff6ff', color: '#2563EB', padding: '3px 10px', borderRadius: '20px', fontSize: '0.75rem', fontWeight: '600' }}>
-                        {upload.rapport_tekst ? '✓ Rapport klaar' : upload.rapport_beschikbaar ? '⚙️ Betaald' : '📥 Ontvangen'}
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '2px' }}>
+                      <span style={{ fontWeight: '700', color: '#0f172a' }}>Boekjaar {upload.boekjaar}</span>
+                      <span style={{ background: '#eff6ff', color: '#2563EB', padding: '2px 8px', borderRadius: '20px', fontSize: '0.72rem', fontWeight: '600' }}>
+                        {upload.bestanden?.length || 0} bestand(en)
                       </span>
                     </div>
-                    <p style={{ fontSize: '0.82rem', color: '#475569', margin: 0 }}>
-                      {upload.bestanden?.length || 0} bestand(en) · {new Date(upload.upload_datum).toLocaleDateString('nl-NL')}
+                    <p style={{ fontSize: '0.8rem', color: '#94a3b8', margin: 0 }}>
+                      {new Date(upload.upload_datum).toLocaleDateString('nl-NL')}
+                      {upload.toelichting && ` · ${upload.toelichting.substring(0, 50)}`}
                     </p>
                   </div>
-                  <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-                    {upload.rapport_beschikbaar ? (
-                      upload.rapport_tekst ? (
-                        <button onClick={() => setGeselecteerdRapport(upload)} style={{ background: '#2563EB', color: 'white', padding: '10px 18px', borderRadius: '8px', border: 'none', fontSize: '0.88rem', fontWeight: '600', cursor: 'pointer', fontFamily: 'Outfit, sans-serif' }}>
-                          📄 Bekijk rapport
-                        </button>
-                      ) : (
-                        <button onClick={() => handleGenereerRapport(upload.id)} disabled={rapportLoading === upload.id} style={{ background: '#1D4ED8', color: 'white', padding: '10px 18px', borderRadius: '8px', border: 'none', fontSize: '0.88rem', fontWeight: '600', cursor: 'pointer', fontFamily: 'Outfit, sans-serif' }}>
-                          {rapportLoading === upload.id ? '⏳ Genereren...' : '🤖 Genereer rapport'}
-                        </button>
-                      )
-                    ) : (
-                      <button onClick={() => handleBetaal(upload.id)} disabled={betaalLoading === upload.id} style={{ background: '#f59e0b', color: 'white', padding: '10px 18px', borderRadius: '8px', border: 'none', fontSize: '0.88rem', fontWeight: '600', cursor: 'pointer', fontFamily: 'Outfit, sans-serif' }}>
-                        {betaalLoading === upload.id ? 'Laden...' : '🔒 Rapport ophalen – €59'}
-                      </button>
-                    )}
-                    {/* Delete knop */}
-                    <button
-                      onClick={() => setBevestigDelete(upload.id)}
-                      title="Verwijder upload"
-                      style={{ background: 'none', border: '1.5px solid #fecaca', color: '#ef4444', padding: '10px 12px', borderRadius: '8px', cursor: 'pointer', fontSize: '0.9rem', transition: 'background 0.2s' }}
-                      onMouseOver={e => (e.currentTarget.style.background = '#fef2f2')}
-                      onMouseOut={e => (e.currentTarget.style.background = 'none')}
-                    >
-                      🗑️
-                    </button>
-                  </div>
+                  <button
+                    onClick={() => setBevestigDelete(upload.id)}
+                    title="Verwijder upload"
+                    style={{ background: 'none', border: '1.5px solid #fecaca', color: '#ef4444', padding: '8px 12px', borderRadius: '8px', cursor: 'pointer', fontSize: '0.85rem' }}
+                  >
+                    🗑️
+                  </button>
                 </div>
               ))}
             </div>
