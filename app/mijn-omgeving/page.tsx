@@ -116,48 +116,48 @@ export default function MijnOmgeving() {
   }
 
   const statusColor: Record<string, string> = {
-    ontvangen: '#c9a84c', 'in behandeling': '#1e7a55', gereed: '#0d3d2e',
+    ontvangen: '#f59e0b', 'in behandeling': '#2563EB', gereed: '#1e3a8a',
   }
   const statusLabel: Record<string, string> = {
     ontvangen: '📥 Ontvangen', 'in behandeling': '⚙️ In behandeling', gereed: '✓ Gereed',
   }
 
   if (loading) return (
-    <main style={{ minHeight: '100vh', background: '#faf8f3', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'Inter, sans-serif' }}>
-      <p style={{ color: '#4a4a45' }}>Laden...</p>
+    <main style={{ minHeight: '100vh', background: '#f8fafc', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'Inter, sans-serif' }}>
+      <p style={{ color: '#475569' }}>Laden...</p>
     </main>
   )
 
   // Rapport weergave
   if (geselecteerdRapport) return (
-    <main style={{ minHeight: '100vh', background: '#faf8f3', fontFamily: 'Inter, sans-serif' }}>
+    <main style={{ minHeight: '100vh', background: '#f8fafc', fontFamily: 'Inter, sans-serif' }}>
       <style>{`@media print { .no-print { display: none !important; } body { background: white !important; } }`}</style>
       <nav className="no-print" style={{ background: 'white', borderBottom: '1px solid #e0ede6', padding: '16px 48px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-          <div style={{ background: '#3a6b1e', width: '36px', height: '36px', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <div style={{ background: '#2563EB', width: '36px', height: '36px', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <svg width="20" height="20" viewBox="0 0 22 22" fill="none"><polyline points="3,12 9,18 19,6" stroke="white" strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round" /></svg>
           </div>
           <div>
-            <div style={{ fontWeight: '700', fontSize: '1rem', color: '#2d5a0e', lineHeight: 1.1 }}>slimme</div>
-            <div style={{ fontWeight: '500', fontSize: '1rem', color: '#6aaa2a', lineHeight: 1.1 }}>kascontrole</div>
+            <div style={{ fontWeight: '700', fontSize: '1rem', color: '#1D4ED8', lineHeight: 1.1 }}>slimme</div>
+            <div style={{ fontWeight: '500', fontSize: '1rem', color: '#3b82f6', lineHeight: 1.1 }}>kascontrole</div>
           </div>
         </div>
         <div style={{ display: 'flex', gap: '12px' }}>
-          <button onClick={() => window.print()} style={{ background: '#0d3d2e', color: 'white', padding: '10px 20px', borderRadius: '8px', border: 'none', cursor: 'pointer', fontWeight: '600', fontSize: '0.9rem' }}>🖨️ Afdrukken / PDF</button>
-          <button onClick={() => setGeselecteerdRapport(null)} style={{ background: 'white', color: '#0d3d2e', padding: '10px 20px', borderRadius: '8px', border: '1.5px solid #c8e0d4', cursor: 'pointer', fontWeight: '600', fontSize: '0.9rem' }}>← Terug</button>
+          <button onClick={() => window.print()} style={{ background: '#1e3a8a', color: 'white', padding: '10px 20px', borderRadius: '8px', border: 'none', cursor: 'pointer', fontWeight: '600', fontSize: '0.9rem' }}>🖨️ Afdrukken / PDF</button>
+          <button onClick={() => setGeselecteerdRapport(null)} style={{ background: 'white', color: '#1e3a8a', padding: '10px 20px', borderRadius: '8px', border: '1.5px solid #c8e0d4', cursor: 'pointer', fontWeight: '600', fontSize: '0.9rem' }}>← Terug</button>
         </div>
       </nav>
       <div style={{ maxWidth: '800px', margin: '0 auto', padding: '48px 24px' }}>
         <div style={{ background: 'white', borderRadius: '16px', padding: '48px', border: '1px solid #e0ede6', lineHeight: '1.8' }}>
           <div style={{ textAlign: 'center', borderBottom: '2px solid #0d3d2e', paddingBottom: '24px', marginBottom: '32px' }}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px', marginBottom: '12px' }}>
-              <div style={{ background: '#3a6b1e', width: '36px', height: '36px', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <div style={{ background: '#2563EB', width: '36px', height: '36px', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <svg width="20" height="20" viewBox="0 0 22 22" fill="none"><polyline points="3,12 9,18 19,6" stroke="white" strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round" /></svg>
               </div>
-              <span style={{ fontWeight: '700', color: '#0d3d2e' }}>slimmekascontrole.nl</span>
+              <span style={{ fontWeight: '700', color: '#1e3a8a' }}>slimmekascontrole.nl</span>
             </div>
-            <h2 style={{ fontSize: '1.4rem', fontWeight: '700', color: '#0d3d2e', margin: '0 0 4px' }}>KASCOMMISSIE RAPPORT</h2>
-            <p style={{ color: '#4a4a45', margin: 0 }}>Boekjaar {geselecteerdRapport.boekjaar}</p>
+            <h2 style={{ fontSize: '1.4rem', fontWeight: '700', color: '#1e3a8a', margin: '0 0 4px' }}>KASCOMMISSIE RAPPORT</h2>
+            <p style={{ color: '#475569', margin: 0 }}>Boekjaar {geselecteerdRapport.boekjaar}</p>
           </div>
           <div style={{ fontSize: '0.95rem', color: '#1a1a18' }}>
             {geselecteerdRapport.rapport_tekst?.split('\n').map((line, i) => {
@@ -167,7 +167,7 @@ export default function MijnOmgeving() {
                 </div>
               }
               if (line.startsWith('# ') || line.startsWith('## ')) {
-                return <h3 key={i} style={{ fontSize: '1.05rem', fontWeight: '700', color: '#0d3d2e', marginTop: '24px', marginBottom: '8px' }}>{line.replace(/^#+\s/, '')}</h3>
+                return <h3 key={i} style={{ fontSize: '1.05rem', fontWeight: '700', color: '#1e3a8a', marginTop: '24px', marginBottom: '8px' }}>{line.replace(/^#+\s/, '')}</h3>
               }
               return <p key={i} style={{ margin: '4px 0' }}>{line}</p>
             })}
@@ -178,41 +178,41 @@ export default function MijnOmgeving() {
   )
 
   return (
-    <main style={{ minHeight: '100vh', background: '#faf8f3', fontFamily: 'Inter, sans-serif' }}>
+    <main style={{ minHeight: '100vh', background: '#f8fafc', fontFamily: 'Inter, sans-serif' }}>
       <nav style={{ background: 'white', borderBottom: '1px solid #e0ede6', padding: '16px 48px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <a href="/" style={{ display: 'flex', alignItems: 'center', gap: '10px', textDecoration: 'none' }}>
-          <div style={{ background: '#3a6b1e', width: '36px', height: '36px', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <div style={{ background: '#2563EB', width: '36px', height: '36px', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <svg width="20" height="20" viewBox="0 0 22 22" fill="none"><polyline points="3,12 9,18 19,6" stroke="white" strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round" /></svg>
           </div>
           <div>
-            <div style={{ fontWeight: '700', fontSize: '1rem', color: '#2d5a0e', lineHeight: 1.1 }}>slimme</div>
-            <div style={{ fontWeight: '500', fontSize: '1rem', color: '#6aaa2a', lineHeight: 1.1 }}>kascontrole</div>
+            <div style={{ fontWeight: '700', fontSize: '1rem', color: '#1D4ED8', lineHeight: 1.1 }}>slimme</div>
+            <div style={{ fontWeight: '500', fontSize: '1rem', color: '#3b82f6', lineHeight: 1.1 }}>kascontrole</div>
           </div>
         </a>
         <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
-          <span style={{ fontSize: '0.85rem', color: '#4a4a45' }}>{user?.email}</span>
-          <button onClick={handleLogout} style={{ background: 'none', border: '1px solid #c8e0d4', color: '#0d3d2e', padding: '8px 16px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.85rem' }}>Uitloggen</button>
+          <span style={{ fontSize: '0.85rem', color: '#475569' }}>{user?.email}</span>
+          <button onClick={handleLogout} style={{ background: 'none', border: '1px solid #c8e0d4', color: '#1e3a8a', padding: '8px 16px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.85rem' }}>Uitloggen</button>
         </div>
       </nav>
 
       <div style={{ maxWidth: '900px', margin: '0 auto', padding: '48px 24px' }}>
-        <h1 style={{ fontSize: '1.8rem', fontWeight: '700', color: '#0d3d2e', marginBottom: '4px' }}>Mijn omgeving</h1>
-        <p style={{ color: '#4a4a45', marginBottom: '40px' }}>Upload uw financiële bestanden en ontvang een professioneel kascontrolerapport.</p>
+        <h1 style={{ fontSize: '1.8rem', fontWeight: '700', color: '#1e3a8a', marginBottom: '4px' }}>Mijn omgeving</h1>
+        <p style={{ color: '#475569', marginBottom: '40px' }}>Upload uw financiële bestanden en ontvang een professioneel kascontrolerapport.</p>
 
         {/* Upload sectie */}
         <div style={{ background: 'white', borderRadius: '16px', padding: '32px', border: '1px solid #e0ede6', marginBottom: '32px' }}>
-          <h2 style={{ fontSize: '1.1rem', fontWeight: '700', color: '#0d3d2e', marginBottom: '20px' }}>📁 Bestanden uploaden</h2>
+          <h2 style={{ fontSize: '1.1rem', fontWeight: '700', color: '#1e3a8a', marginBottom: '20px' }}>📁 Bestanden uploaden</h2>
           <form onSubmit={handleUpload}>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '16px' }}>
               <div>
-                <label style={{ display: 'block', fontWeight: '600', color: '#0d3d2e', marginBottom: '6px', fontSize: '0.9rem' }}>Boekjaar</label>
+                <label style={{ display: 'block', fontWeight: '600', color: '#1e3a8a', marginBottom: '6px', fontSize: '0.9rem' }}>Boekjaar</label>
                 <select value={boekjaar} onChange={e => setBoekjaar(e.target.value)} style={{ width: '100%', padding: '11px 14px', borderRadius: '8px', border: '1.5px solid #c8e0d4', fontSize: '0.95rem', background: 'white', outline: 'none' }}>
                   {jaren.map(j => <option key={j} value={j}>{j}</option>)}
                 </select>
               </div>
               <div>
-                <label style={{ display: 'block', fontWeight: '600', color: '#0d3d2e', marginBottom: '6px', fontSize: '0.9rem' }}>Bestanden</label>
-                <div onClick={() => document.getElementById('fileInput')?.click()} style={{ border: '2px dashed #a8d5bc', borderRadius: '8px', padding: '12px 16px', textAlign: 'center', cursor: 'pointer', background: '#f8faf9', fontSize: '0.9rem', color: '#4a4a45' }}>
+                <label style={{ display: 'block', fontWeight: '600', color: '#1e3a8a', marginBottom: '6px', fontSize: '0.9rem' }}>Bestanden</label>
+                <div onClick={() => document.getElementById('fileInput')?.click()} style={{ border: '2px dashed #a8d5bc', borderRadius: '8px', padding: '12px 16px', textAlign: 'center', cursor: 'pointer', background: '#f8faf9', fontSize: '0.9rem', color: '#475569' }}>
                   {files ? `${files.length} bestand(en) geselecteerd ✓` : '📎 Klik om te selecteren'}
                 </div>
                 <input id="fileInput" type="file" multiple accept=".pdf,.xlsx,.xls,.csv,.png,.jpg,.jpeg" style={{ display: 'none' }} onChange={e => setFiles(e.target.files)} />
@@ -220,12 +220,12 @@ export default function MijnOmgeving() {
               </div>
             </div>
             <div style={{ marginBottom: '16px' }}>
-              <label style={{ display: 'block', fontWeight: '600', color: '#0d3d2e', marginBottom: '6px', fontSize: '0.9rem' }}>Toelichting <span style={{ fontWeight: '400', color: '#999' }}>(optioneel)</span></label>
+              <label style={{ display: 'block', fontWeight: '600', color: '#1e3a8a', marginBottom: '6px', fontSize: '0.9rem' }}>Toelichting <span style={{ fontWeight: '400', color: '#999' }}>(optioneel)</span></label>
               <textarea value={toelichting} onChange={e => setToelichting(e.target.value)} placeholder="Bijzonderheden, vragen of extra informatie..." rows={2} style={{ width: '100%', padding: '11px 14px', borderRadius: '8px', border: '1.5px solid #c8e0d4', fontSize: '0.9rem', background: 'white', outline: 'none', resize: 'vertical', fontFamily: 'Inter, sans-serif' }} />
             </div>
             {error && <p style={{ color: '#d44', fontSize: '0.85rem', marginBottom: '12px' }}>{error}</p>}
-            {uploadSuccess && <p style={{ color: '#1e7a55', fontSize: '0.85rem', marginBottom: '12px' }}>✓ Bestanden succesvol geüpload!</p>}
-            <button type="submit" disabled={uploading} style={{ background: '#0d3d2e', color: 'white', padding: '12px 28px', borderRadius: '8px', border: 'none', fontSize: '0.95rem', fontWeight: '700', cursor: uploading ? 'not-allowed' : 'pointer' }}>
+            {uploadSuccess && <p style={{ color: '#2563EB', fontSize: '0.85rem', marginBottom: '12px' }}>✓ Bestanden succesvol geüpload!</p>}
+            <button type="submit" disabled={uploading} style={{ background: '#1e3a8a', color: 'white', padding: '12px 28px', borderRadius: '8px', border: 'none', fontSize: '0.95rem', fontWeight: '700', cursor: uploading ? 'not-allowed' : 'pointer' }}>
               {uploading ? 'Uploaden...' : '📤 Upload bestanden'}
             </button>
           </form>
@@ -234,12 +234,12 @@ export default function MijnOmgeving() {
         {/* Uploads overzicht */}
         <div style={{ background: 'white', borderRadius: '16px', border: '1px solid #e0ede6', overflow: 'hidden' }}>
           <div style={{ padding: '20px 24px', borderBottom: '1px solid #e0ede6' }}>
-            <h2 style={{ fontSize: '1.1rem', fontWeight: '700', color: '#0d3d2e', margin: 0 }}>Mijn uploads & rapporten</h2>
+            <h2 style={{ fontSize: '1.1rem', fontWeight: '700', color: '#1e3a8a', margin: 0 }}>Mijn uploads & rapporten</h2>
           </div>
           {uploads.length === 0 ? (
             <div style={{ padding: '48px', textAlign: 'center' }}>
               <div style={{ fontSize: '2rem', marginBottom: '12px' }}>📂</div>
-              <p style={{ color: '#4a4a45' }}>Nog geen uploads. Upload uw eerste bestanden hierboven!</p>
+              <p style={{ color: '#475569' }}>Nog geen uploads. Upload uw eerste bestanden hierboven!</p>
             </div>
           ) : (
             <div>
@@ -247,12 +247,12 @@ export default function MijnOmgeving() {
                 <div key={upload.id} style={{ padding: '20px 24px', borderBottom: '1px solid #f0f4f2', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '12px' }}>
                   <div>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '4px' }}>
-                      <span style={{ fontWeight: '700', color: '#0d3d2e', fontSize: '1rem' }}>Boekjaar {upload.boekjaar}</span>
-                      <span style={{ background: (statusColor[upload.status] || '#4a4a45') + '20', color: statusColor[upload.status] || '#4a4a45', padding: '3px 10px', borderRadius: '20px', fontSize: '0.75rem', fontWeight: '600' }}>
+                      <span style={{ fontWeight: '700', color: '#1e3a8a', fontSize: '1rem' }}>Boekjaar {upload.boekjaar}</span>
+                      <span style={{ background: (statusColor[upload.status] || '#475569') + '20', color: statusColor[upload.status] || '#475569', padding: '3px 10px', borderRadius: '20px', fontSize: '0.75rem', fontWeight: '600' }}>
                         {statusLabel[upload.status] || upload.status}
                       </span>
                     </div>
-                    <p style={{ fontSize: '0.82rem', color: '#4a4a45', margin: 0 }}>
+                    <p style={{ fontSize: '0.82rem', color: '#475569', margin: 0 }}>
                       {upload.bestanden?.length || 0} bestand(en) · {new Date(upload.upload_datum).toLocaleDateString('nl-NL')}
                     </p>
                   </div>
@@ -260,17 +260,17 @@ export default function MijnOmgeving() {
                     {upload.rapport_beschikbaar ? (
                       <>
                         {upload.rapport_tekst ? (
-                          <button onClick={() => setGeselecteerdRapport(upload)} style={{ background: '#0d3d2e', color: 'white', padding: '10px 20px', borderRadius: '8px', border: 'none', fontSize: '0.9rem', fontWeight: '600', cursor: 'pointer' }}>
+                          <button onClick={() => setGeselecteerdRapport(upload)} style={{ background: '#1e3a8a', color: 'white', padding: '10px 20px', borderRadius: '8px', border: 'none', fontSize: '0.9rem', fontWeight: '600', cursor: 'pointer' }}>
                             📄 Bekijk rapport
                           </button>
                         ) : (
-                          <button onClick={() => handleGenereerRapport(upload.id)} disabled={rapportLoading === upload.id} style={{ background: '#1e7a55', color: 'white', padding: '10px 20px', borderRadius: '8px', border: 'none', fontSize: '0.9rem', fontWeight: '600', cursor: 'pointer' }}>
+                          <button onClick={() => handleGenereerRapport(upload.id)} disabled={rapportLoading === upload.id} style={{ background: '#2563EB', color: 'white', padding: '10px 20px', borderRadius: '8px', border: 'none', fontSize: '0.9rem', fontWeight: '600', cursor: 'pointer' }}>
                             {rapportLoading === upload.id ? '⏳ Rapport genereren...' : '🤖 Genereer rapport'}
                           </button>
                         )}
                       </>
                     ) : (
-                      <button onClick={() => handleBetaal(upload.id)} disabled={betaalLoading === upload.id} style={{ background: '#c9a84c', color: 'white', padding: '10px 20px', borderRadius: '8px', border: 'none', fontSize: '0.9rem', fontWeight: '600', cursor: 'pointer' }}>
+                      <button onClick={() => handleBetaal(upload.id)} disabled={betaalLoading === upload.id} style={{ background: '#f59e0b', color: 'white', padding: '10px 20px', borderRadius: '8px', border: 'none', fontSize: '0.9rem', fontWeight: '600', cursor: 'pointer' }}>
                         {betaalLoading === upload.id ? 'Laden...' : '🔒 Rapport ophalen – €59'}
                       </button>
                     )}

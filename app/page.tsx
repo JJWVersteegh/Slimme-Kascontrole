@@ -1,1040 +1,493 @@
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Slimme Kascontrole – Kascontrole voor verenigingen',
-  description: 'Professioneel kascontrolerapport voor uw vereniging. Rapport €59 per boekjaar.',
+  title: 'Slimme Kascontrole – Uw kascontrole klaar voor de ALV',
+  description: 'Professioneel kascontrolerapport voor uw vereniging. Voor slechts €59.',
 }
 
 export default function Home() {
   return (
-    <div dangerouslySetInnerHTML={{ __html: `<!DOCTYPE html>
+    <div dangerouslySetInnerHTML={{ __html: getLandingHTML() }} />
+  )
+}
+
+function getLandingHTML() {
+  return `<!DOCTYPE html>
 <html lang="nl">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Slimme Kascontrole – Kascontrole voor verenigingen, eenvoudig en slim</title>
-  <meta name="description" content="Upload de financiële gegevens van uw vereniging en ontvang automatisch een professioneel kascontrolerapport. Snel, betrouwbaar en veilig." />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,600;0,9..144,700;1,9..144,300&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,700;1,500&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --blue:#2563EB;--blue-dark:#1D4ED8;--blue-deeper:#1e3a8a;
+  --blue-light:#93c5fd;--blue-pale:#eff6ff;--blue-mid:#3b82f6;
+  --gold:#f59e0b;--white:#ffffff;--ink:#0f172a;--ink-soft:#475569;
+  --cream:#f8fafc;--border:#e2e8f0;
+}
+html{scroll-behavior:smooth}
+body{font-family:'Outfit',sans-serif;color:var(--ink);background:var(--white);overflow-x:hidden}
 
-    :root {
-      --green-dark:  #0d3d2e;
-      --green-mid:   #155c42;
-      --green-soft:  #1e7a55;
-      --green-light: #a8d5bc;
-      --green-pale:  #e8f4ee;
-      --gold:        #c9a84c;
-      --gold-light:  #f0d98a;
-      --cream:       #faf8f3;
-      --ink:         #1a1a18;
-      --ink-soft:    #4a4a45;
-      --white:       #ffffff;
-      --radius:      12px;
-    }
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(255,255,255,0.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 48px;height:72px;display:flex;align-items:center;justify-content:space-between;transition:box-shadow 0.3s}
+nav.scrolled{box-shadow:0 4px 24px rgba(0,0,0,0.08)}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.logo-icon{background:var(--blue);width:38px;height:38px;border-radius:8px;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(37,99,235,0.3)}
+.logo-text-top{font-weight:700;font-size:1.05rem;color:var(--blue);line-height:1.1;letter-spacing:-0.01em}
+.logo-text-bot{font-weight:400;font-size:1.05rem;color:var(--ink-soft);line-height:1.1;letter-spacing:-0.01em}
+.logo-tag{font-weight:300;font-size:0.62rem;color:#94a3b8;letter-spacing:0.03em}
+.nav-links{display:flex;gap:32px;list-style:none;align-items:center}
+.nav-links a{font-size:0.9rem;font-weight:500;color:var(--ink-soft);text-decoration:none;transition:color 0.2s}
+.nav-links a:hover{color:var(--blue)}
+.btn-nav{background:var(--blue);color:white!important;padding:10px 22px;border-radius:6px;font-weight:600;transition:background 0.2s!important}
+.btn-nav:hover{background:var(--blue-dark)!important}
 
-    html { scroll-behavior: smooth; }
+/* HERO */
+.hero{min-height:100vh;display:grid;grid-template-columns:1fr 1fr;align-items:center;padding:100px 48px 60px;gap:64px;position:relative;overflow:hidden;background:linear-gradient(135deg,#f0f7ff 0%,#ffffff 60%)}
+.hero::before{content:'';position:absolute;top:-200px;right:-200px;width:600px;height:600px;background:radial-gradient(circle,rgba(37,99,235,0.08) 0%,transparent 70%);pointer-events:none}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:8px;background:var(--blue-pale);border:1px solid var(--blue-light);color:var(--blue);font-size:0.78rem;font-weight:600;padding:6px 14px;border-radius:20px;margin-bottom:24px;letter-spacing:0.04em;text-transform:uppercase;animation:fadeUp 0.6s ease both}
+h1{font-family:'Playfair Display',serif;font-size:clamp(2.4rem,4vw,3.4rem);font-weight:700;line-height:1.1;color:var(--ink);margin-bottom:20px;animation:fadeUp 0.6s 0.1s ease both;letter-spacing:-0.02em}
+h1 .accent{color:var(--blue)}
+h1 em{font-style:italic;font-weight:500}
+.hero-sub{font-size:1.05rem;color:var(--ink-soft);font-weight:400;line-height:1.7;max-width:500px;margin-bottom:36px;animation:fadeUp 0.6s 0.2s ease both}
+.hero-ctas{display:flex;gap:16px;align-items:center;flex-wrap:wrap;animation:fadeUp 0.6s 0.3s ease both}
+.btn-primary{background:var(--blue);color:white;padding:15px 32px;border-radius:8px;font-size:0.95rem;font-weight:600;text-decoration:none;transition:transform 0.2s,box-shadow 0.2s,background 0.2s;box-shadow:0 4px 16px rgba(37,99,235,0.3);font-family:'Outfit',sans-serif}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(37,99,235,0.4);background:var(--blue-dark)}
+.btn-ghost{color:var(--blue);font-size:0.95rem;font-weight:500;text-decoration:none;display:flex;align-items:center;gap:6px;transition:gap 0.2s}
+.btn-ghost:hover{gap:10px}
+.btn-ghost::after{content:'→'}
+.hero-price{display:flex;align-items:center;gap:12px;margin-top:24px;padding:16px 20px;background:white;border-radius:10px;border:1px solid var(--border);box-shadow:0 2px 8px rgba(0,0,0,0.04);animation:fadeUp 0.6s 0.4s ease both;max-width:360px}
+.price-amount{font-family:'Playfair Display',serif;font-size:1.8rem;font-weight:700;color:var(--blue)}
+.price-desc{font-size:0.82rem;color:var(--ink-soft);line-height:1.4}
 
-    body {
-      font-family: 'DM Sans', sans-serif;
-      background: var(--cream);
-      color: var(--ink);
-      font-size: 16px;
-      line-height: 1.6;
-      overflow-x: hidden;
-    }
+/* HERO IMAGE */
+.hero-image{position:relative;animation:fadeUp 0.7s 0.2s ease both}
+.hero-img-wrap{border-radius:20px;overflow:hidden;box-shadow:0 32px 64px rgba(0,0,0,0.15);position:relative}
+.hero-img-wrap img{width:100%;height:500px;object-fit:cover;display:block}
+.hero-badge{position:absolute;bottom:-20px;left:-20px;background:var(--blue);color:white;padding:16px 20px;border-radius:12px;box-shadow:0 8px 24px rgba(37,99,235,0.4);font-size:0.85rem;font-weight:600;animation:float 3s ease-in-out infinite}
+.hero-badge-num{font-family:'Playfair Display',serif;font-size:1.8rem;font-weight:700;display:block;line-height:1}
 
-    /* NAV */
-    nav {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      z-index: 100;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 20px 48px;
-      background: rgba(250, 248, 243, 0.92);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid rgba(21, 92, 66, 0.1);
-      transition: box-shadow 0.3s;
-    }
-    nav.scrolled { box-shadow: 0 2px 24px rgba(13,61,46,0.08); }
+/* TRUST BAR */
+.trust-bar{background:var(--blue-deeper);padding:20px 48px;display:flex;align-items:center;justify-content:center;gap:48px;flex-wrap:wrap}
+.trust-item{display:flex;align-items:center;gap:10px;color:rgba(255,255,255,0.8);font-size:0.85rem}
+.trust-item strong{color:white}
+.trust-dot{width:6px;height:6px;background:var(--blue-light);border-radius:50%}
 
-    .logo {
-      text-decoration: none;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    .logo-icon {
-      width: 36px; height: 36px;
-      background: #3a6b1e;
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-    }
-    .logo-text { display: flex; flex-direction: column; line-height: 1.1; }
-    .logo-slimme {
-      font-family: 'DM Sans', sans-serif;
-      font-weight: 700;
-      font-size: 1.05rem;
-      color: #2d5a0e;
-      letter-spacing: -0.01em;
-    }
-    .logo-kas {
-      font-family: 'DM Sans', sans-serif;
-      font-weight: 500;
-      font-size: 1.05rem;
-      color: #6aaa2a;
-      letter-spacing: -0.01em;
-    }
-    .logo-tagline {
-      font-size: 0.62rem;
-      color: #999;
-      font-weight: 400;
-      letter-spacing: 0.01em;
-    }
+/* SECTIONS */
+section{padding:96px 48px}
+.section-label{font-size:0.72rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:var(--blue);margin-bottom:14px}
+h2{font-family:'Playfair Display',serif;font-size:clamp(1.8rem,3vw,2.6rem);font-weight:700;color:var(--ink);letter-spacing:-0.02em;line-height:1.15;margin-bottom:16px}
+h2 em{font-style:italic;color:var(--blue)}
+.section-sub{font-size:1rem;color:var(--ink-soft);font-weight:400;line-height:1.7;max-width:560px;margin-bottom:56px}
 
-    .nav-links {
-      display: flex;
-      gap: 36px;
-      list-style: none;
-    }
-    .nav-links a {
-      font-size: 0.9rem;
-      font-weight: 500;
-      color: var(--ink-soft);
-      text-decoration: none;
-      transition: color 0.2s;
-    }
-    .nav-links a:hover { color: var(--green-soft); }
+/* WHY SECTION */
+.why-grid{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center;max-width:1100px;margin:0 auto}
+.why-text p{font-size:0.95rem;color:var(--ink-soft);line-height:1.8;margin-bottom:16px}
+.why-text p strong{color:var(--ink)}
+.why-callout{background:var(--blue-pale);border-left:4px solid var(--blue);border-radius:0 12px 12px 0;padding:20px 24px;margin:24px 0;font-size:0.9rem;color:var(--blue-deeper);line-height:1.7}
+.why-image{border-radius:16px;overflow:hidden;box-shadow:0 16px 48px rgba(0,0,0,0.1)}
+.why-image img{width:100%;height:400px;object-fit:cover;display:block}
 
-    .btn-nav {
-      background: var(--green-dark);
-      color: var(--white) !important;
-      padding: 10px 22px;
-      border-radius: 6px;
-      font-weight: 500;
-      transition: background 0.2s !important;
-    }
-    .btn-nav:hover { background: var(--green-soft) !important; color: var(--white) !important; }
+/* HOW IT WORKS */
+.how-bg{background:var(--cream)}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:40px;max-width:1100px;margin:0 auto}
+.step{background:white;border-radius:16px;padding:36px;border:1px solid var(--border);transition:transform 0.2s,box-shadow 0.2s;position:relative}
+.step:hover{transform:translateY(-4px);box-shadow:0 16px 48px rgba(0,0,0,0.08)}
+.step-num{font-family:'Playfair Display',serif;font-size:3rem;font-weight:700;color:var(--blue-pale);line-height:1;margin-bottom:16px}
+.step-icon{width:52px;height:52px;background:var(--blue-pale);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.4rem;margin-bottom:20px}
+.step h3{font-family:'Outfit',sans-serif;font-size:1.1rem;font-weight:700;color:var(--ink);margin-bottom:10px}
+.step p{font-size:0.88rem;color:var(--ink-soft);line-height:1.7}
 
-    /* HERO */
-    .hero {
-      min-height: 100vh;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      align-items: center;
-      padding: 120px 48px 80px;
-      gap: 64px;
-      position: relative;
-      overflow: hidden;
-    }
+/* SOURCES */
+.sources-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;max-width:1100px;margin:0 auto}
+.source-card{background:white;border-radius:12px;padding:24px;border:1px solid var(--border);text-align:center;transition:transform 0.2s,box-shadow 0.2s}
+.source-card:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(0,0,0,0.08)}
+.source-icon{font-size:2rem;margin-bottom:12px}
+.source-name{font-weight:700;color:var(--ink);font-size:0.95rem;margin-bottom:4px}
+.source-desc{font-size:0.78rem;color:var(--ink-soft)}
 
-    .hero::before {
-      content: '';
-      position: absolute;
-      top: -200px; right: -200px;
-      width: 700px; height: 700px;
-      background: radial-gradient(circle, rgba(168,213,188,0.3) 0%, transparent 70%);
-      pointer-events: none;
-    }
-    .hero::after {
-      content: '';
-      position: absolute;
-      bottom: -100px; left: -100px;
-      width: 500px; height: 500px;
-      background: radial-gradient(circle, rgba(201,168,76,0.1) 0%, transparent 70%);
-      pointer-events: none;
-    }
+/* FEATURES */
+.features-grid{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center;max-width:1100px;margin:0 auto}
+.feature-list{display:flex;flex-direction:column;gap:24px}
+.feature-item{display:flex;gap:16px;align-items:flex-start}
+.feature-icon{width:44px;height:44px;background:var(--blue-pale);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;transition:background 0.2s}
+.feature-item:hover .feature-icon{background:var(--blue-light)}
+.feature-text h4{font-weight:700;color:var(--ink);font-size:0.95rem;margin-bottom:4px}
+.feature-text p{font-size:0.85rem;color:var(--ink-soft);line-height:1.6}
+.feature-visual{background:var(--blue-deeper);border-radius:20px;padding:40px;color:white;position:relative;overflow:hidden}
+.feature-visual::before{content:'';position:absolute;top:-60px;right:-60px;width:200px;height:200px;background:radial-gradient(circle,rgba(147,197,253,0.15) 0%,transparent 70%)}
+.fv-title{font-family:'Playfair Display',serif;font-size:1.1rem;margin-bottom:24px;color:var(--blue-light)}
+.check-list{list-style:none;display:flex;flex-direction:column;gap:14px}
+.check-list li{display:flex;gap:12px;font-size:0.88rem;color:rgba(255,255,255,0.8);line-height:1.5}
+.check-list li::before{content:'✓';color:var(--blue-light);font-weight:700;flex-shrink:0}
 
-    .hero-text { position: relative; z-index: 1; }
+/* PRICING */
+.pricing-bg{background:var(--cream)}
+.pricing-grid{display:grid;grid-template-columns:1fr 1fr;gap:28px;max-width:760px;margin:0 auto}
+.price-card{background:white;border-radius:16px;padding:36px;border:2px solid var(--border);transition:transform 0.2s,box-shadow 0.2s;position:relative}
+.price-card:hover{transform:translateY(-4px);box-shadow:0 16px 48px rgba(0,0,0,0.08)}
+.price-card.featured{border-color:var(--blue);background:var(--blue-deeper);color:white}
+.price-card.featured h3,.price-card.featured .price-amount{color:white}
+.price-card.featured .price-sub{color:rgba(255,255,255,0.6)}
+.price-card.featured .feat-li{color:rgba(255,255,255,0.85)}
+.price-card.featured .feat-li::before{color:var(--blue-light)}
+.popular-tag{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--gold);color:white;font-size:0.7rem;font-weight:700;padding:4px 14px;border-radius:20px;letter-spacing:0.05em;text-transform:uppercase;white-space:nowrap}
+.price-card h3{font-family:'Outfit',sans-serif;font-size:1.1rem;font-weight:700;color:var(--ink);margin-bottom:6px}
+.price-amount{font-family:'Playfair Display',serif;font-size:2.6rem;font-weight:700;color:var(--ink);line-height:1;margin:16px 0 4px}
+.price-sub{font-size:0.82rem;color:var(--ink-soft);margin-bottom:24px}
+.feat-li{font-size:0.87rem;color:var(--ink-soft);display:flex;gap:8px;margin-bottom:10px;align-items:flex-start}
+.feat-li::before{content:'✓';color:var(--blue);font-weight:700;flex-shrink:0;margin-top:1px}
+.btn-plan{display:block;text-align:center;margin-top:28px;padding:13px;border-radius:8px;font-size:0.9rem;font-weight:600;text-decoration:none;transition:all 0.2s;font-family:'Outfit',sans-serif}
+.btn-plan-outline{border:1.5px solid var(--blue-light);color:var(--blue)}
+.btn-plan-outline:hover{background:var(--blue-pale)}
+.btn-plan-solid{background:var(--gold);color:white}
+.btn-plan-solid:hover{background:#d97706}
 
-    .hero-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: var(--green-pale);
-      border: 1px solid var(--green-light);
-      color: var(--green-mid);
-      font-size: 0.8rem;
-      font-weight: 500;
-      padding: 6px 14px;
-      border-radius: 20px;
-      margin-bottom: 28px;
-      letter-spacing: 0.02em;
-      animation: fadeUp 0.6s ease both;
-    }
-    .hero-badge::before { content: '✦'; font-size: 0.7rem; }
+/* TESTIMONIALS */
+.testi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;max-width:1100px;margin:0 auto}
+.testi{background:white;border-radius:16px;padding:32px;border:1px solid var(--border)}
+.stars{font-size:0.85rem;color:var(--gold);letter-spacing:3px;margin-bottom:14px}
+.testi blockquote{font-size:0.9rem;color:var(--ink-soft);line-height:1.7;margin-bottom:20px;font-style:italic}
+.testi-author{font-size:0.85rem;font-weight:700;color:var(--ink)}
+.testi-role{font-size:0.78rem;color:var(--ink-soft)}
 
-    h1 {
-      font-family: 'Fraunces', serif;
-      font-size: clamp(2.4rem, 4.5vw, 3.6rem);
-      font-weight: 700;
-      line-height: 1.1;
-      letter-spacing: -0.03em;
-      color: var(--green-dark);
-      margin-bottom: 24px;
-      animation: fadeUp 0.6s 0.1s ease both;
-    }
-    h1 em {
-      font-style: italic;
-      font-weight: 300;
-      color: var(--green-soft);
-    }
+/* CTA */
+.cta-section{background:var(--blue);color:white;text-align:center}
+.cta-section h2{color:white;font-family:'Playfair Display',serif}
+.cta-section .section-label{color:rgba(255,255,255,0.7)}
+.cta-section .section-sub{color:rgba(255,255,255,0.7);margin:0 auto 40px}
+.btn-cta-white{background:white;color:var(--blue);padding:16px 40px;border-radius:8px;font-size:1rem;font-weight:700;text-decoration:none;transition:transform 0.2s,box-shadow 0.2s;display:inline-block;font-family:'Outfit',sans-serif}
+.btn-cta-white:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,0.2)}
+.btn-cta-ghost{color:rgba(255,255,255,0.8);font-size:0.95rem;font-weight:500;text-decoration:none;display:inline-flex;align-items:center;gap:6px;margin-left:24px;transition:color 0.2s}
+.btn-cta-ghost:hover{color:white}
+.btn-cta-ghost::after{content:'→'}
 
-    .hero-sub {
-      font-size: 1.1rem;
-      color: var(--ink-soft);
-      font-weight: 300;
-      max-width: 480px;
-      margin-bottom: 40px;
-      animation: fadeUp 0.6s 0.2s ease both;
-    }
+/* FOOTER */
+footer{background:#0f172a;color:rgba(255,255,255,0.5);padding:48px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;font-size:0.83rem}
+footer a{color:rgba(255,255,255,0.5);text-decoration:none;margin-left:24px}
+footer a:hover{color:var(--blue-light)}
 
-    .hero-ctas {
-      display: flex;
-      gap: 16px;
-      align-items: center;
-      flex-wrap: wrap;
-      animation: fadeUp 0.6s 0.3s ease both;
-    }
+/* ANIMATIONS */
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.fade-in{opacity:0;transform:translateY(20px);transition:opacity 0.7s ease,transform 0.7s ease}
+.fade-in.visible{opacity:1;transform:translateY(0)}
 
-    .btn-primary {
-      background: var(--green-dark);
-      color: var(--white);
-      padding: 14px 32px;
-      border-radius: var(--radius);
-      font-size: 0.95rem;
-      font-weight: 500;
-      text-decoration: none;
-      transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
-      box-shadow: 0 4px 24px rgba(13,61,46,0.25);
-    }
-    .btn-primary:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 32px rgba(13,61,46,0.3);
-      background: var(--green-soft);
-    }
-
-    .btn-secondary {
-      color: var(--green-dark);
-      font-size: 0.95rem;
-      font-weight: 500;
-      text-decoration: none;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      transition: gap 0.2s;
-    }
-    .btn-secondary:hover { gap: 10px; }
-    .btn-secondary::after { content: '→'; }
-
-    /* HERO VISUAL */
-    .hero-visual {
-      position: relative;
-      z-index: 1;
-      animation: fadeUp 0.7s 0.2s ease both;
-    }
-
-    .dashboard-card {
-      background: var(--white);
-      border-radius: 20px;
-      box-shadow: 0 24px 80px rgba(13,61,46,0.12), 0 4px 20px rgba(0,0,0,0.04);
-      padding: 32px;
-      position: relative;
-    }
-
-    .card-header {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 28px;
-    }
-    .card-dot { width: 12px; height: 12px; border-radius: 50%; }
-    .card-dot:nth-child(1) { background: #ff5f57; }
-    .card-dot:nth-child(2) { background: #febc2e; }
-    .card-dot:nth-child(3) { background: #28c840; }
-
-    .card-title-bar {
-      margin-left: 8px;
-      font-size: 0.85rem;
-      font-weight: 500;
-      color: var(--ink-soft);
-    }
-
-    .report-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 12px 0;
-      border-bottom: 1px solid #f0f0ec;
-      font-size: 0.9rem;
-    }
-    .report-row:last-of-type { border-bottom: none; }
-    .report-label { color: var(--ink-soft); }
-    .report-value { font-weight: 600; }
-    .report-value.pos { color: var(--green-soft); }
-    .report-value.neg { color: #d44; }
-    .report-value.neutral { color: var(--gold); }
-
-    .status-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 4px 10px;
-      border-radius: 20px;
-      font-size: 0.75rem;
-      font-weight: 600;
-    }
-    .status-pill.ok { background: var(--green-pale); color: var(--green-soft); }
-    .status-pill.warn { background: #fff8e6; color: #b07800; }
-
-    .bar-chart {
-      margin-top: 20px;
-      display: flex;
-      align-items: flex-end;
-      gap: 8px;
-      height: 80px;
-    }
-    .bar {
-      flex: 1;
-      border-radius: 4px 4px 0 0;
-      background: var(--green-light);
-      transition: background 0.2s;
-      animation: barGrow 1s ease both;
-    }
-    .bar:nth-child(1) { height: 45%; animation-delay: 0.4s; }
-    .bar:nth-child(2) { height: 70%; animation-delay: 0.5s; background: var(--green-soft); }
-    .bar:nth-child(3) { height: 55%; animation-delay: 0.6s; }
-    .bar:nth-child(4) { height: 80%; animation-delay: 0.7s; background: var(--green-soft); }
-    .bar:nth-child(5) { height: 60%; animation-delay: 0.8s; }
-    .bar:nth-child(6) { height: 90%; animation-delay: 0.9s; background: var(--green-dark); }
-
-    .float-badge {
-      position: absolute;
-      top: -18px; right: -18px;
-      background: var(--gold);
-      color: var(--white);
-      font-family: 'Fraunces', serif;
-      font-size: 0.8rem;
-      font-weight: 600;
-      padding: 10px 16px;
-      border-radius: 10px;
-      box-shadow: 0 4px 16px rgba(201,168,76,0.4);
-      animation: float 3s ease-in-out infinite;
-    }
-
-    /* TRUST BAR */
-    .trust-bar {
-      background: var(--green-dark);
-      color: var(--green-light);
-      padding: 18px 48px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 48px;
-      font-size: 0.85rem;
-      font-weight: 400;
-      flex-wrap: wrap;
-    }
-    .trust-item {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .trust-item strong { color: var(--white); }
-    .trust-icon { font-size: 1rem; }
-
-    /* SECTIONS */
-    section { padding: 100px 48px; }
-
-    .section-label {
-      font-size: 0.75rem;
-      font-weight: 600;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--green-soft);
-      margin-bottom: 16px;
-    }
-
-    h2 {
-      font-family: 'Fraunces', serif;
-      font-size: clamp(1.8rem, 3vw, 2.8rem);
-      font-weight: 700;
-      color: var(--green-dark);
-      letter-spacing: -0.02em;
-      line-height: 1.15;
-      margin-bottom: 20px;
-    }
-    h2 em { font-style: italic; font-weight: 300; }
-
-    .section-sub {
-      font-size: 1.05rem;
-      color: var(--ink-soft);
-      font-weight: 300;
-      max-width: 520px;
-      margin-bottom: 60px;
-    }
-
-    /* HOW IT WORKS */
-    .how-it-works { background: var(--white); }
-    .steps {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 40px;
-      max-width: 1100px;
-      margin: 0 auto;
-    }
-
-    .step {
-      position: relative;
-      padding-top: 20px;
-    }
-    .step-num {
-      font-family: 'Fraunces', serif;
-      font-size: 3.5rem;
-      font-weight: 700;
-      color: var(--green-pale);
-      line-height: 1;
-      margin-bottom: 12px;
-      transition: color 0.3s;
-    }
-    .step:hover .step-num { color: var(--green-light); }
-    .step-icon {
-      width: 52px; height: 52px;
-      background: var(--green-pale);
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.4rem;
-      margin-bottom: 20px;
-    }
-    .step h3 {
-      font-family: 'Fraunces', serif;
-      font-size: 1.2rem;
-      font-weight: 600;
-      color: var(--green-dark);
-      margin-bottom: 10px;
-    }
-    .step p {
-      font-size: 0.92rem;
-      color: var(--ink-soft);
-      line-height: 1.7;
-    }
-
-    /* FEATURES */
-    .features-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 60px;
-      align-items: center;
-      max-width: 1100px;
-      margin: 0 auto;
-    }
-
-    .feature-list { display: flex; flex-direction: column; gap: 28px; }
-
-    .feature-item {
-      display: flex;
-      gap: 20px;
-      align-items: flex-start;
-    }
-    .feature-icon {
-      width: 44px; height: 44px;
-      background: var(--green-pale);
-      border: 1px solid var(--green-light);
-      border-radius: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.2rem;
-      flex-shrink: 0;
-      transition: background 0.2s;
-    }
-    .feature-item:hover .feature-icon { background: var(--green-light); }
-    .feature-text h4 {
-      font-family: 'Fraunces', serif;
-      font-size: 1rem;
-      font-weight: 600;
-      color: var(--green-dark);
-      margin-bottom: 4px;
-    }
-    .feature-text p {
-      font-size: 0.88rem;
-      color: var(--ink-soft);
-      line-height: 1.6;
-    }
-
-    .feature-visual {
-      background: var(--green-dark);
-      border-radius: 20px;
-      padding: 40px;
-      color: var(--white);
-      position: relative;
-      overflow: hidden;
-    }
-    .feature-visual::before {
-      content: '';
-      position: absolute;
-      top: -60px; right: -60px;
-      width: 200px; height: 200px;
-      background: radial-gradient(circle, rgba(168,213,188,0.15) 0%, transparent 70%);
-    }
-    .fv-title {
-      font-family: 'Fraunces', serif;
-      font-size: 1.1rem;
-      font-weight: 600;
-      margin-bottom: 24px;
-      color: var(--green-light);
-    }
-    .check-list { list-style: none; display: flex; flex-direction: column; gap: 14px; }
-    .check-list li {
-      display: flex;
-      gap: 12px;
-      font-size: 0.9rem;
-      color: rgba(255,255,255,0.8);
-    }
-    .check-list li::before {
-      content: '✓';
-      color: var(--green-light);
-      font-weight: 700;
-      flex-shrink: 0;
-    }
-
-    /* PRICING */
-    .pricing { background: var(--green-pale); }
-    .pricing-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 28px;
-      max-width: 960px;
-      margin: 0 auto;
-    }
-
-    .price-card {
-      background: var(--white);
-      border-radius: 16px;
-      padding: 36px 28px;
-      border: 2px solid transparent;
-      transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
-      position: relative;
-    }
-    .price-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 16px 48px rgba(13,61,46,0.1);
-    }
-    .price-card.featured {
-      border-color: var(--green-soft);
-      background: var(--green-dark);
-      color: var(--white);
-    }
-    .price-card.featured h3,
-    .price-card.featured .price-amount { color: var(--white); }
-    .price-card.featured .price-sub { color: rgba(255,255,255,0.6); }
-    .price-card.featured .feature-li { color: rgba(255,255,255,0.85); }
-    .price-card.featured .feature-li::before { color: var(--green-light); }
-
-    .popular-tag {
-      position: absolute;
-      top: -12px; left: 50%;
-      transform: translateX(-50%);
-      background: var(--gold);
-      color: var(--white);
-      font-size: 0.7rem;
-      font-weight: 700;
-      padding: 4px 14px;
-      border-radius: 20px;
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
-    }
-
-    .price-card h3 {
-      font-family: 'Fraunces', serif;
-      font-size: 1.1rem;
-      font-weight: 700;
-      color: var(--green-dark);
-      margin-bottom: 8px;
-    }
-    .price-amount {
-      font-family: 'Fraunces', serif;
-      font-size: 2.4rem;
-      font-weight: 700;
-      color: var(--green-dark);
-      line-height: 1;
-      margin: 16px 0 4px;
-    }
-    .price-sub {
-      font-size: 0.82rem;
-      color: var(--ink-soft);
-      margin-bottom: 24px;
-    }
-    .feature-li {
-      font-size: 0.88rem;
-      color: var(--ink-soft);
-      display: flex;
-      gap: 8px;
-      margin-bottom: 10px;
-    }
-    .feature-li::before { content: '✓'; color: var(--green-soft); font-weight: 700; }
-
-    .btn-plan {
-      display: block;
-      text-align: center;
-      margin-top: 28px;
-      padding: 12px;
-      border-radius: 8px;
-      font-size: 0.9rem;
-      font-weight: 500;
-      text-decoration: none;
-      transition: all 0.2s;
-    }
-    .btn-plan-outline {
-      border: 1.5px solid var(--green-light);
-      color: var(--green-dark);
-    }
-    .btn-plan-outline:hover { background: var(--green-pale); border-color: var(--green-soft); }
-    .btn-plan-solid {
-      background: var(--gold);
-      color: var(--white);
-    }
-    .btn-plan-solid:hover { background: #b8962f; }
-
-    /* TESTIMONIALS */
-    .testimonials-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 28px;
-      max-width: 1100px;
-      margin: 0 auto;
-    }
-    .testimonial {
-      background: var(--white);
-      border-radius: 16px;
-      padding: 32px;
-      border: 1px solid rgba(168,213,188,0.3);
-    }
-    .stars { font-size: 0.9rem; margin-bottom: 14px; color: var(--gold); letter-spacing: 2px; }
-    .testimonial blockquote {
-      font-size: 0.92rem;
-      color: var(--ink-soft);
-      line-height: 1.7;
-      margin-bottom: 20px;
-      font-style: italic;
-    }
-    .testimonial-author { font-size: 0.85rem; font-weight: 600; color: var(--green-dark); }
-    .testimonial-role { font-size: 0.8rem; color: var(--ink-soft); }
-
-    /* CONTACT */
-    .contact { background: var(--green-dark); color: var(--white); text-align: center; }
-    .contact h2 { color: var(--white); }
-    .contact .section-label { color: var(--green-light); }
-    .contact .section-sub { color: rgba(255,255,255,0.6); margin: 0 auto 48px; }
-
-    .contact-form {
-      max-width: 560px;
-      margin: 0 auto;
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-    }
-    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-    .contact-form input,
-    .contact-form textarea,
-    .contact-form select {
-      background: rgba(255,255,255,0.08);
-      border: 1px solid rgba(168,213,188,0.25);
-      border-radius: 8px;
-      padding: 14px 18px;
-      color: var(--white);
-      font-family: 'DM Sans', sans-serif;
-      font-size: 0.9rem;
-      width: 100%;
-      transition: border-color 0.2s, background 0.2s;
-      outline: none;
-    }
-    .contact-form input::placeholder,
-    .contact-form textarea::placeholder { color: rgba(255,255,255,0.35); }
-    .contact-form input:focus,
-    .contact-form textarea:focus { border-color: var(--green-light); background: rgba(255,255,255,0.12); }
-    .contact-form textarea { resize: vertical; min-height: 120px; }
-
-    .btn-submit {
-      background: var(--gold);
-      color: var(--white);
-      border: none;
-      padding: 16px 40px;
-      border-radius: 8px;
-      font-family: 'DM Sans', sans-serif;
-      font-size: 1rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: background 0.2s, transform 0.2s;
-    }
-    .btn-submit:hover { background: #b8962f; transform: translateY(-2px); }
-
-    /* FOOTER */
-    footer {
-      background: #081f17;
-      color: rgba(255,255,255,0.5);
-      padding: 40px 48px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 0.83rem;
-      flex-wrap: wrap;
-      gap: 16px;
-    }
-    .footer-logo {
-      font-family: 'Fraunces', serif;
-      font-size: 1.1rem;
-      font-weight: 700;
-      color: var(--white);
-    }
-    .footer-logo span { color: var(--gold); }
-    footer a { color: rgba(255,255,255,0.5); text-decoration: none; margin-left: 24px; }
-    footer a:hover { color: var(--green-light); }
-
-    /* ANIMATIONS */
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(28px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-    @keyframes barGrow {
-      from { transform: scaleY(0); transform-origin: bottom; }
-      to   { transform: scaleY(1); transform-origin: bottom; }
-    }
-    @keyframes float {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-8px); }
-    }
-
-    .fade-in {
-      opacity: 0;
-      transform: translateY(24px);
-      transition: opacity 0.7s ease, transform 0.7s ease;
-    }
-    .fade-in.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    /* RESPONSIVE */
-    @media (max-width: 900px) {
-      nav { padding: 16px 24px; }
-      .nav-links { display: none; }
-      .hero { grid-template-columns: 1fr; padding: 100px 24px 60px; }
-      .hero-visual { display: none; }
-      section { padding: 64px 24px; }
-      .steps, .pricing-grid, .testimonials-grid { grid-template-columns: 1fr; }
-      .features-grid { grid-template-columns: 1fr; }
-      .form-row { grid-template-columns: 1fr; }
-      .trust-bar { padding: 16px 24px; gap: 20px; }
-      footer { flex-direction: column; text-align: center; }
-      footer a { margin: 0 12px; }
-    }
-  </style>
+/* RESPONSIVE */
+@media(max-width:900px){
+  nav{padding:0 20px}
+  .nav-links{display:none}
+  .hero{grid-template-columns:1fr;padding:100px 24px 60px}
+  .hero-image{display:none}
+  section{padding:64px 24px}
+  .steps,.sources-grid,.testi-grid{grid-template-columns:1fr}
+  .features-grid,.why-grid,.pricing-grid{grid-template-columns:1fr}
+  .trust-bar{padding:16px 24px;gap:20px}
+  footer{flex-direction:column;text-align:center}
+  footer a{margin:0 12px}
+}
+</style>
 </head>
 <body>
 
-  <!-- NAV -->
-  <nav id="navbar">
-    <a href="#" class="logo">
-      <div class="logo-icon">
-        <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <polyline points="3,12 9,18 19,6" stroke="white" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-      </div>
-      <div class="logo-text">
-        <span class="logo-slimme">slimme</span>
-        <span class="logo-kas">kascontrole</span>
-        <span class="logo-tagline">voor elke vereniging</span>
-      </div>
-    </a>
-    <ul class="nav-links">
-      <li><a href="#hoe-het-werkt">Hoe het werkt</a></li>
-      <li><a href="#functies">Functies</a></li>
-      <li><a href="#tarieven">Tarieven</a></li>
-      <li><a href="#contact" class="btn-nav">Aanmelden</a></li>
-    </ul>
-  </nav>
-
-  <!-- HERO -->
-  <section class="hero">
-    <div class="hero-text">
-      <div class="hero-badge">Upload uw bestanden · Rapport €59</div>
-      <h1>Kascontrole die <em>echt</em> slim is</h1>
-      <p class="hero-sub">Upload de financiële gegevens van uw vereniging en ontvang automatisch een professioneel kascontrolerapport. Upload uw bestanden · Rapport €59.</p>
-      <div class="hero-ctas">
-        <a href="#contact" class="btn-primary">Gratis proberen</a>
-        <a href="#hoe-het-werkt" class="btn-secondary">Bekijk hoe het werkt</a>
-      </div>
+<!-- NAV -->
+<nav id="navbar">
+  <a href="/" class="logo">
+    <div class="logo-icon">
+      <svg width="20" height="20" viewBox="0 0 22 22" fill="none"><polyline points="3,12 9,18 19,6" stroke="white" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
     </div>
-
-    <div class="hero-visual">
-      <div class="dashboard-card">
-        <div class="float-badge">✓ Goedgekeurd</div>
-        <div class="card-header">
-          <div class="card-dot"></div>
-          <div class="card-dot"></div>
-          <div class="card-dot"></div>
-          <span class="card-title-bar">Kascontrolerapport — TV Groen 2024</span>
-        </div>
-        <div class="report-row">
-          <span class="report-label">Beginsaldo</span>
-          <span class="report-value neutral">€ 4.280,00</span>
-        </div>
-        <div class="report-row">
-          <span class="report-label">Totaal inkomsten</span>
-          <span class="report-value pos">+ € 18.540,00</span>
-        </div>
-        <div class="report-row">
-          <span class="report-label">Totaal uitgaven</span>
-          <span class="report-value neg">− € 15.120,50</span>
-        </div>
-        <div class="report-row">
-          <span class="report-label">Eindsaldo</span>
-          <span class="report-value pos">€ 7.699,50</span>
-        </div>
-        <div class="report-row">
-          <span class="report-label">Status</span>
-          <span class="report-value">
-            <span class="status-pill ok">✓ Akkoord</span>
-          </span>
-        </div>
-        <div class="bar-chart">
-          <div class="bar"></div>
-          <div class="bar"></div>
-          <div class="bar"></div>
-          <div class="bar"></div>
-          <div class="bar"></div>
-          <div class="bar"></div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- TRUST BAR -->
-  <div class="trust-bar">
-    <div class="trust-item"><span class="trust-icon">🔒</span> <strong>Veilig &amp; privé</strong> — uw gegevens verlaten nooit onze beveiligde omgeving</div>
-    <div class="trust-item"><span class="trust-icon">⚡</span> <strong>Rapport binnen minuten</strong> — geen gedoe met Excel</div>
-    <div class="trust-item"><span class="trust-icon">📄</span> <strong>PDF-export</strong> — direct klaar voor de ledenvergadering</div>
-  </div>
-
-  <!-- HOW IT WORKS -->
-  <section class="how-it-works" id="hoe-het-werkt">
-    <div style="max-width:1100px; margin:0 auto;">
-      <p class="section-label fade-in">Hoe het werkt</p>
-      <h2 class="fade-in">Drie stappen naar een <em>perfect</em> rapport</h2>
-      <p class="section-sub fade-in">Geen boekhoudkundige kennis vereist. SlimmeKascontrole begeleidt u stap voor stap.</p>
-      <div class="steps">
-        <div class="step fade-in">
-          <div class="step-num">01</div>
-          <div class="step-icon">📁</div>
-          <h3>Upload uw bestanden</h3>
-          <p>Laad uw bankafschriften, Excel-overzichten of boekhouding eenvoudig up. We ondersteunen alle gangbare formaten.</p>
-        </div>
-        <div class="step fade-in">
-          <div class="step-num">02</div>
-          <div class="step-icon">🤖</div>
-          <h3>AI analyseert automatisch</h3>
-          <p>Onze slimme analyses vergelijken inkomsten en uitgaven, detecteren afwijkingen en controleren de balans automatisch.</p>
-        </div>
-        <div class="step fade-in">
-          <div class="step-num">03</div>
-          <div class="step-icon">📊</div>
-          <h3>Download uw rapport</h3>
-          <p>Ontvang een helder, professioneel kascontrolerapport als PDF. Direct te presenteren op uw ledenvergadering.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- FEATURES -->
-  <section id="functies" style="background: var(--cream);">
-    <div class="features-grid">
-      <div>
-        <p class="section-label fade-in">Functies</p>
-        <h2 class="fade-in">Alles wat een kascommissie <em>nodig heeft</em></h2>
-        <p class="section-sub fade-in">Speciaal ontwikkeld voor sport-, hobby- en buurtverenigingen in Nederland.</p>
-        <div class="feature-list">
-          <div class="feature-item fade-in">
-            <div class="feature-icon">🔍</div>
-            <div class="feature-text">
-              <h4>Automatische controle</h4>
-              <p>Saldi, categorieën en afwijkingen worden automatisch gedetecteerd en gemarkeerd.</p>
-            </div>
-          </div>
-          <div class="feature-item fade-in">
-            <div class="feature-icon">📋</div>
-            <div class="feature-text">
-              <h4>Professionele rapportage</h4>
-              <p>Exporteer naar PDF met uw verenigingslogo en alle wettelijk vereiste onderdelen.</p>
-            </div>
-          </div>
-          <div class="feature-item fade-in">
-            <div class="feature-icon">🔐</div>
-            <div class="feature-text">
-              <h4>Eigen beveiligde omgeving</h4>
-              <p>Elke vereniging beheert zijn eigen gegevens in een afgeschermde, versleutelde omgeving.</p>
-            </div>
-          </div>
-          <div class="feature-item fade-in">
-            <div class="feature-icon">📅</div>
-            <div class="feature-text">
-              <h4>Historisch overzicht</h4>
-              <p>Vergelijk meerdere jaren en volg de financiële gezondheid van uw vereniging over tijd.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="feature-visual fade-in">
-        <p class="fv-title">Wat controleert SlimmeKascontrole?</p>
-        <ul class="check-list">
-          <li>Klopt het begin- en eindsaldo met de bankafschriften?</li>
-          <li>Zijn alle inkomsten volledig verantwoord?</li>
-          <li>Kloppen de totalen per categorie?</li>
-          <li>Zijn er ongebruikelijke of dubbele posten?</li>
-          <li>Is de boekhouding intern consistent?</li>
-          <li>Ontbreken er bewijsstukken of toelichting?</li>
-          <li>Voldoet het rapport aan de eisen voor de ALV?</li>
-        </ul>
-      </div>
-    </div>
-  </section>
-
-  <!-- PRICING -->
-  <section class="pricing" id="tarieven">
-    <div style="max-width:960px; margin:0 auto; text-align:center;">
-      <p class="section-label fade-in">Tarieven</p>
-      <h2 class="fade-in">Eerlijke prijzen, <em>geen verrassingen</em></h2>
-      <p class="section-sub fade-in" style="margin:0 auto 60px;">Kies het plan dat past bij uw vereniging. Altijd opzegbaar, nooit verborgen kosten.</p>
-    </div>
-    <div class="pricing-grid" style="grid-template-columns: repeat(2,1fr); max-width:700px; margin:0 auto;">
-      <div class="price-card featured fade-in">
-        <div class="popular-tag">Meest gekozen</div>
-        <h3>Vereniging</h3>
-        <p style="font-size:0.85rem; color:rgba(255,255,255,0.55); margin-bottom:8px;">Voor actieve verenigingen</p>
-        <div class="price-amount">€ 59</div>
-        <p class="price-sub">per jaar</p>
-        <div class="feature-li">Onbeperkt rapporten</div>
-        <div class="feature-li">AI-analyse &amp; afwijkingsdetectie</div>
-        <div class="feature-li">Meerdere boekjaren</div>
-        <div class="feature-li">Eigen logo op rapport</div>
-        <div class="feature-li">PDF-export</div>
-        <div class="feature-li">E-mail ondersteuning</div>
-        <a href="#contact" class="btn-plan btn-plan-solid">Bestel nu – €59</a>
-      </div>
-
-      <div class="price-card fade-in">
-        <h3>Koepel</h3>
-        <p style="font-size:0.85rem; color:var(--ink-soft); margin-bottom:8px;">Voor meerdere afdelingen</p>
-        <div class="price-amount">€ 149</div>
-        <p class="price-sub">per jaar</p>
-        <div class="feature-li">Tot 10 verenigingen</div>
-        <div class="feature-li">Centraal beheerportaal</div>
-        <div class="feature-li">Geconsolideerde rapportage</div>
-        <div class="feature-li">API-integratie mogelijk</div>
-        <div class="feature-li">Dedicated support</div>
-        <a href="#contact" class="btn-plan btn-plan-outline">Neem contact op</a>
-      </div>
-    </div>
-  </section>
-
-  <!-- TESTIMONIALS -->
-  <section style="background: var(--white);">
-    <div style="max-width:1100px; margin:0 auto;">
-      <p class="section-label fade-in" style="text-align:center;">Ervaringen</p>
-      <h2 class="fade-in" style="text-align:center;">Wat zeggen onze gebruikers?</h2>
-      <p class="section-sub fade-in" style="text-align:center; margin: 0 auto 60px;">Honderden Nederlandse verenigingen werken al met SlimmeKascontrole.</p>
-      <div class="testimonials-grid">
-        <div class="testimonial fade-in">
-          <div class="stars">★★★★★</div>
-          <blockquote>"Vroeger kostte onze kascontrole een heel weekend. Nu is het in een uurtje klaar en ziet het rapport er ook nog eens professioneel uit."</blockquote>
-          <p class="testimonial-author">Marieke van den Berg</p>
-          <p class="testimonial-role">Penningmeester, SV Oranje</p>
-        </div>
-        <div class="testimonial fade-in">
-          <div class="stars">★★★★★</div>
-          <blockquote>"De automatische controle vond een dubbele boeking die wij jarenlang over het hoofd hadden gezien. Ontzettend fijn dat dit nu automatisch gaat."</blockquote>
-          <p class="testimonial-author">Jan Plomp</p>
-          <p class="testimonial-role">Kascommissielid, Buurtvereniging De Eiken</p>
-        </div>
-        <div class="testimonial fade-in">
-          <div class="stars">★★★★★</div>
-          <blockquote>"Eindelijk een tool die echt voor verenigingen is gemaakt, niet voor accountants. Onze leden op de ALV waren onder de indruk van het rapport."</blockquote>
-          <p class="testimonial-author">Sandra Kuipers</p>
-          <p class="testimonial-role">Secretaris, Hobbyclub Atelier</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- CONTACT -->
-  <section class="contact" id="contact">
-    <p class="section-label fade-in">Aanmelden</p>
-    <h2 class="fade-in">Klaar om te starten?</h2>
-    <p class="section-sub fade-in">Maak een account aan, upload uw bestanden en ontvang uw kascontrolerapport voor €59.</p>
-    <div class="fade-in" style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-top:8px;">
-      <a href="/registreer" class="btn-primary" style="font-size:1.05rem;padding:16px 40px;">Maak account aan</a>
-      <a href="/mijn-omgeving" style="color:rgba(255,255,255,0.7);display:flex;align-items:center;gap:6px;font-size:0.95rem;text-decoration:none;padding:16px 0;">Inloggen →</a>
-    </div>
-  </section>
-
-  <!-- FOOTER -->
-  <footer>
-    <a href="#" class="logo" style="filter: brightness(1.8);">
-      <div class="logo-icon">
-        <svg width="20" height="20" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <polyline points="3,12 9,18 19,6" stroke="white" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-      </div>
-      <div class="logo-text">
-        <span class="logo-slimme" style="color:#aed88a;">slimme</span>
-        <span class="logo-kas" style="color:#6aaa2a;">kascontrole</span>
-      </div>
-    </a>
-    <span>© 2025 SlimmeKascontrole.nl — Alle rechten voorbehouden</span>
     <div>
-      <a href="#">Privacy</a>
-      <a href="#">Voorwaarden</a>
-      <a href="#contact">Contact</a>
+      <div class="logo-text-top">slimme</div>
+      <div class="logo-text-bot">kascontrole</div>
+      <div class="logo-tag">voor elke vereniging</div>
     </div>
-  </footer>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#waarom">Waarom</a></li>
+    <li><a href="#hoe-het-werkt">Hoe het werkt</a></li>
+    <li><a href="#tarieven">Tarieven</a></li>
+    <li><a href="/mijn-omgeving">Mijn omgeving</a></li>
+    <li><a href="/registreer" class="btn-nav">Account aanmaken</a></li>
+  </ul>
+</nav>
 
-  <script>
-    // Sticky nav shadow
-    window.addEventListener('scroll', () => {
-      document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 10);
-    });
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-text">
+    <div class="hero-eyebrow">✦ Verplicht voor elke vereniging</div>
+    <h1>Uw kascontrole klaar<br/>voor de <em>volgende ALV</em></h1>
+    <p class="hero-sub">Upload uw financiële bestanden en ontvang automatisch een professioneel kascontrolerapport. Snel, betrouwbaar en volledig conform de wettelijke eisen.</p>
+    <div class="hero-ctas">
+      <a href="/registreer" class="btn-primary">Account aanmaken</a>
+      <a href="#hoe-het-werkt" class="btn-ghost">Bekijk hoe het werkt</a>
+    </div>
+    <div class="hero-price">
+      <div>
+        <div class="price-amount" style="font-size:2rem">€ 59,-</div>
+      </div>
+      <div class="price-desc">Per boekjaar · Inclusief AI-analyse · Direct als PDF beschikbaar</div>
+    </div>
+  </div>
+  <div class="hero-image">
+    <div class="hero-img-wrap">
+      <img src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=800&q=80" alt="Kascontrole voor verenigingen" loading="lazy"/>
+      <div class="hero-badge">
+        <span class="hero-badge-num">✓</span>
+        Rapport klaar
+      </div>
+    </div>
+  </div>
+</section>
 
-    // Scroll animations
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry, i) => {
-        if (entry.isIntersecting) {
-          setTimeout(() => entry.target.classList.add('visible'), i * 80);
-        }
-      });
-    }, { threshold: 0.12 });
+<!-- TRUST BAR -->
+<div class="trust-bar">
+  <div class="trust-item"><span>🔒</span> <strong>Veilig & privé</strong> — uw gegevens zijn versleuteld</div>
+  <div class="trust-dot"></div>
+  <div class="trust-item"><span>⚡</span> <strong>Rapport binnen minuten</strong> — AI analyseert direct</div>
+  <div class="trust-dot"></div>
+  <div class="trust-item"><span>📄</span> <strong>PDF-export</strong> — direct klaar voor de ALV</div>
+  <div class="trust-dot"></div>
+  <div class="trust-item"><span>🏛️</span> <strong>Wettelijk verplicht</strong> — wij regelen de controle</div>
+</div>
 
-    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+<!-- WAAROM SECTIE -->
+<section id="waarom">
+  <div class="why-grid">
+    <div class="why-text fade-in">
+      <p class="section-label">Waarom kascontrole?</p>
+      <h2>Elke vereniging is <em>wettelijk verplicht</em> tot kascontrole</h2>
+      <p>Volgens de statuten van vrijwel elke vereniging én de algemene ledenvergadering (ALV) is het bestuur verplicht verantwoording af te leggen over het financiële beheer. Een kascommissie controleert of de penningmeester en beheerder alles correct hebben geboekt.</p>
+      <div class="why-callout">
+        <strong>Belangrijk:</strong> Als uw vereniging een externe beheerder heeft — zoals een VvE-beheerder of sportbeheerder — dan heeft u als lid het recht én de plicht om te controleren of deze partij uw geld correct beheert. Slimme Kascontrole helpt u daarbij.
+      </div>
+      <p>Veel kascommissies missen de tijd of kennis om een gedegen rapport op te stellen. Slimme Kascontrole neemt dit werk volledig van u over — u uploadt de stukken, wij leveren het rapport.</p>
+    </div>
+    <div class="why-image fade-in">
+      <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=700&q=80" alt="Financiële controle" loading="lazy"/>
+    </div>
+  </div>
+</section>
 
-    // Form submit
-    function handleSubmit(e) {
-      e.preventDefault();
-      const btn = e.target.querySelector('.btn-submit');
-      btn.textContent = '✓ Aanmelding ontvangen!';
-      btn.style.background = '#1e7a55';
-      btn.disabled = true;
-    }
-  </script>
+<!-- HOW IT WORKS -->
+<section class="how-bg" id="hoe-het-werkt">
+  <div style="max-width:1100px;margin:0 auto;text-align:center">
+    <p class="section-label fade-in">Hoe het werkt</p>
+    <h2 class="fade-in">Drie stappen naar een <em>perfect rapport</em></h2>
+    <p class="section-sub fade-in" style="margin:0 auto 56px">Geen boekhoudkundige kennis vereist. Upload uw bestanden en ontvang direct een professioneel rapport.</p>
+    <div class="steps">
+      <div class="step fade-in">
+        <div class="step-num">01</div>
+        <div class="step-icon">🏦</div>
+        <h3>Download uw bankgegevens</h3>
+        <p>Download uw bankafschriften of boekhouding via Twinq, Isabel, uw bank-app of boekhoudprogramma als PDF, Excel of CSV.</p>
+      </div>
+      <div class="step fade-in">
+        <div class="step-num">02</div>
+        <div class="step-icon">📤</div>
+        <h3>Upload naar uw omgeving</h3>
+        <p>Maak een account aan, upload uw bestanden en voeg eventueel een toelichting toe. Alles staat veilig opgeslagen.</p>
+      </div>
+      <div class="step fade-in">
+        <div class="step-num">03</div>
+        <div class="step-icon">📊</div>
+        <h3>Ontvang uw rapport</h3>
+        <p>Na betaling van €59 analyseert onze AI uw bestanden en genereert direct een professioneel kascontrolerapport als PDF.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BRONNEN SECTIE -->
+<section>
+  <div style="max-width:1100px;margin:0 auto;text-align:center">
+    <p class="section-label fade-in">Waar haalt u uw gegevens vandaan?</p>
+    <h2 class="fade-in">Ondersteunde <em>bronnen</em></h2>
+    <p class="section-sub fade-in" style="margin:0 auto 48px">Wij verwerken bestanden uit alle gangbare boekhoud- en banksystemen.</p>
+    <div class="sources-grid">
+      <div class="source-card fade-in">
+        <div class="source-icon">🏦</div>
+        <div class="source-name">Uw bank</div>
+        <div class="source-desc">ING, Rabobank, ABN AMRO — exporteer als PDF of CSV</div>
+      </div>
+      <div class="source-card fade-in">
+        <div class="source-icon">📊</div>
+        <div class="source-name">Twinq</div>
+        <div class="source-desc">Export via Twinq dashboard als Excel of PDF</div>
+      </div>
+      <div class="source-card fade-in">
+        <div class="source-icon">💼</div>
+        <div class="source-name">Isabel / Yuki</div>
+        <div class="source-desc">Boekhoudexport als CSV of Excel</div>
+      </div>
+      <div class="source-card fade-in">
+        <div class="source-icon">📁</div>
+        <div class="source-name">Eigen Excel</div>
+        <div class="source-desc">Uw eigen kasboek of Excel-overzicht</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section style="background:var(--cream)">
+  <div class="features-grid">
+    <div>
+      <p class="section-label fade-in">Functies</p>
+      <h2 class="fade-in">Alles wat een kascommissie <em>nodig heeft</em></h2>
+      <p class="section-sub fade-in">Speciaal ontwikkeld voor Nederlandse verenigingen, VvE's en stichtingen.</p>
+      <div class="feature-list">
+        <div class="feature-item fade-in">
+          <div class="feature-icon">🤖</div>
+          <div class="feature-text">
+            <h4>AI-analyse van uw bestanden</h4>
+            <p>Upload PDF, Excel of CSV — onze AI leest en analyseert alles automatisch.</p>
+          </div>
+        </div>
+        <div class="feature-item fade-in">
+          <div class="feature-icon">🔍</div>
+          <div class="feature-text">
+            <h4>Automatische controle</h4>
+            <p>Saldi, categorieën en afwijkingen worden automatisch gedetecteerd en gemarkeerd.</p>
+          </div>
+        </div>
+        <div class="feature-item fade-in">
+          <div class="feature-icon">📅</div>
+          <div class="feature-text">
+            <h4>Meerdere boekjaren</h4>
+            <p>Bewaar rapporten van meerdere jaren en volg trends in uw financiële gezondheid.</p>
+          </div>
+        </div>
+        <div class="feature-item fade-in">
+          <div class="feature-icon">📋</div>
+          <div class="feature-text">
+            <h4>Direct klaar voor de ALV</h4>
+            <p>Download als PDF en presenteer direct op uw algemene ledenvergadering.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="feature-visual fade-in">
+      <p class="fv-title">Wat controleert Slimme Kascontrole?</p>
+      <ul class="check-list">
+        <li>Klopt het begin- en eindsaldo met de bankafschriften?</li>
+        <li>Zijn alle inkomsten volledig verantwoord?</li>
+        <li>Kloppen de totalen per categorie?</li>
+        <li>Zijn er ongebruikelijke of dubbele posten?</li>
+        <li>Is de boekhouding intern consistent?</li>
+        <li>Ontbreken er bewijsstukken of toelichting?</li>
+        <li>Voldoet het rapport aan de eisen voor de ALV?</li>
+        <li>Heeft de beheerder alles correct afgehandeld?</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- TARIEVEN -->
+<section class="pricing-bg" id="tarieven">
+  <div style="max-width:760px;margin:0 auto;text-align:center">
+    <p class="section-label fade-in">Tarieven</p>
+    <h2 class="fade-in">Eerlijke prijzen, <em>geen verrassingen</em></h2>
+    <p class="section-sub fade-in" style="margin:0 auto 56px">Kies het plan dat past bij uw vereniging.</p>
+  </div>
+  <div class="pricing-grid">
+    <div class="price-card featured fade-in">
+      <div class="popular-tag">Meest gekozen</div>
+      <h3>Vereniging</h3>
+      <p style="font-size:0.85rem;color:rgba(255,255,255,0.55);margin-bottom:8px">Voor actieve verenigingen</p>
+      <div class="price-amount">€ 59</div>
+      <p class="price-sub">per boekjaar</p>
+      <div class="feat-li">Onbeperkt bestanden uploaden</div>
+      <div class="feat-li">AI-analyse & afwijkingsdetectie</div>
+      <div class="feat-li">Meerdere boekjaren bewaren</div>
+      <div class="feat-li">PDF-export voor de ALV</div>
+      <div class="feat-li">E-mail ondersteuning</div>
+      <a href="/registreer" class="btn-plan btn-plan-solid">Account aanmaken</a>
+    </div>
+    <div class="price-card fade-in">
+      <h3>Koepel</h3>
+      <p style="font-size:0.85rem;color:var(--ink-soft);margin-bottom:8px">Voor meerdere afdelingen</p>
+      <div class="price-amount">€ 149</div>
+      <p class="price-sub">per jaar</p>
+      <div class="feat-li">Tot 10 verenigingen</div>
+      <div class="feat-li">Centraal beheerportaal</div>
+      <div class="feat-li">Geconsolideerde rapportage</div>
+      <div class="feat-li">Dedicated support</div>
+      <a href="/registreer" class="btn-plan btn-plan-outline">Neem contact op</a>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section>
+  <div style="max-width:1100px;margin:0 auto;text-align:center">
+    <p class="section-label fade-in">Ervaringen</p>
+    <h2 class="fade-in">Wat zeggen onze gebruikers?</h2>
+    <p class="section-sub fade-in" style="margin:0 auto 56px">Honderden Nederlandse verenigingen werken al met Slimme Kascontrole.</p>
+    <div class="testi-grid">
+      <div class="testi fade-in">
+        <div class="stars">★★★★★</div>
+        <blockquote>"Vroeger kostte onze kascontrole een heel weekend. Nu is het in een uurtje klaar en ziet het rapport er ook nog eens professioneel uit."</blockquote>
+        <p class="testi-author">Marieke van den Berg</p>
+        <p class="testi-role">Penningmeester, SV Oranje</p>
+      </div>
+      <div class="testi fade-in">
+        <div class="stars">★★★★★</div>
+        <blockquote>"De automatische controle vond een dubbele boeking die wij jarenlang over het hoofd hadden gezien. Ontzettend fijn dat dit nu automatisch gaat."</blockquote>
+        <p class="testi-author">Jan Plomp</p>
+        <p class="testi-role">Kascommissielid, Buurtvereniging De Eiken</p>
+      </div>
+      <div class="testi fade-in">
+        <div class="stars">★★★★★</div>
+        <blockquote>"Eindelijk een tool die echt voor verenigingen is gemaakt. Onze leden op de ALV waren onder de indruk van het professionele rapport."</blockquote>
+        <p class="testi-author">Sandra Kuipers</p>
+        <p class="testi-role">Secretaris, VvE De Linden</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section" id="contact">
+  <p class="section-label fade-in">Aan de slag</p>
+  <h2 class="fade-in" style="max-width:560px;margin:0 auto 16px">Klaar voor uw volgende ALV?</h2>
+  <p class="section-sub fade-in" style="color:rgba(255,255,255,0.7);margin:0 auto 40px;max-width:480px">Maak een account aan, upload uw bestanden en ontvang uw kascontrolerapport voor €59 per boekjaar.</p>
+  <div class="fade-in">
+    <a href="/registreer" class="btn-cta-white">Account aanmaken</a>
+    <a href="/mijn-omgeving" class="btn-cta-ghost">Inloggen</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <a href="/" class="logo" style="filter:brightness(2)">
+    <div class="logo-icon">
+      <svg width="18" height="18" viewBox="0 0 22 22" fill="none"><polyline points="3,12 9,18 19,6" stroke="white" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </div>
+    <div>
+      <div class="logo-text-top" style="color:white">slimme</div>
+      <div class="logo-text-bot" style="color:rgba(255,255,255,0.6)">kascontrole</div>
+    </div>
+  </a>
+  <span>© 2025 SlimmeKascontrole.nl — Alle rechten voorbehouden</span>
+  <div>
+    <a href="#">Privacy</a>
+    <a href="#">Voorwaarden</a>
+    <a href="/registreer">Contact</a>
+  </div>
+</footer>
+
+<script>
+window.addEventListener('scroll',()=>{
+  document.getElementById('navbar').classList.toggle('scrolled',window.scrollY>10)
+})
+const obs=new IntersectionObserver((entries)=>{
+  entries.forEach((e,i)=>{if(e.isIntersecting)setTimeout(()=>e.target.classList.add('visible'),i*80)})
+},{threshold:0.1})
+document.querySelectorAll('.fade-in').forEach(el=>obs.observe(el))
+</script>
 </body>
-</html>
-` }} />
-  )
+</html>`
 }

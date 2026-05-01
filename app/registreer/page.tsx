@@ -61,35 +61,35 @@ export default function Registreer() {
   }
   const labelStyle = {
     display: 'block' as const, fontWeight: '600' as const,
-    color: '#0d3d2e', marginBottom: '6px', fontSize: '0.9rem'
+    color: '#1e3a8a', marginBottom: '6px', fontSize: '0.9rem'
   }
 
   return (
-    <main style={{ minHeight: '100vh', background: '#faf8f3', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'Inter, sans-serif', padding: '40px 20px' }}>
+    <main style={{ minHeight: '100vh', background: '#f8fafc', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'Inter, sans-serif', padding: '40px 20px' }}>
       <div style={{ width: '100%', maxWidth: '420px' }}>
         <div style={{ textAlign: 'center', marginBottom: '32px' }}>
           <a href="/" style={{ display: 'inline-flex', alignItems: 'center', gap: '10px', textDecoration: 'none', marginBottom: '20px' }}>
-            <div style={{ background: '#3a6b1e', width: '44px', height: '44px', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <div style={{ background: '#2563EB', width: '44px', height: '44px', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
               <svg width="24" height="24" viewBox="0 0 22 22" fill="none"><polyline points="3,12 9,18 19,6" stroke="white" strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round" /></svg>
             </div>
             <div style={{ textAlign: 'left' }}>
-              <div style={{ fontWeight: '700', color: '#2d5a0e', fontSize: '1rem', lineHeight: 1.1 }}>slimme</div>
-              <div style={{ fontWeight: '500', color: '#6aaa2a', fontSize: '1rem', lineHeight: 1.1 }}>kascontrole</div>
+              <div style={{ fontWeight: '700', color: '#1D4ED8', fontSize: '1rem', lineHeight: 1.1 }}>slimme</div>
+              <div style={{ fontWeight: '500', color: '#3b82f6', fontSize: '1rem', lineHeight: 1.1 }}>kascontrole</div>
             </div>
           </a>
-          <h1 style={{ fontSize: '1.6rem', fontWeight: '700', color: '#0d3d2e', marginBottom: '4px' }}>
+          <h1 style={{ fontSize: '1.6rem', fontWeight: '700', color: '#1e3a8a', marginBottom: '4px' }}>
             {mode === 'registreer' ? 'Account aanmaken' : mode === 'login' ? 'Inloggen' : 'Wachtwoord vergeten'}
           </h1>
-          <p style={{ color: '#4a4a45', fontSize: '0.9rem' }}>
+          <p style={{ color: '#475569', fontSize: '0.9rem' }}>
             {mode === 'registreer' ? 'Upload bestanden en ontvang uw rapport' : mode === 'login' ? 'Welkom terug!' : 'Vul uw e-mailadres in voor een resetlink'}
           </p>
         </div>
 
         {mode !== 'reset' && (
-          <div style={{ display: 'flex', background: '#e8f4ee', borderRadius: '10px', padding: '4px', marginBottom: '24px' }}>
+          <div style={{ display: 'flex', background: '#eff6ff', borderRadius: '10px', padding: '4px', marginBottom: '24px' }}>
             {(['registreer', 'login'] as const).map(m => (
               <button key={m} onClick={() => { setMode(m); setError('') }}
-                style={{ flex: 1, padding: '10px', borderRadius: '8px', border: 'none', fontFamily: 'Inter, sans-serif', fontSize: '0.9rem', fontWeight: '600', cursor: 'pointer', background: mode === m ? 'white' : 'transparent', color: mode === m ? '#0d3d2e' : '#4a4a45', boxShadow: mode === m ? '0 2px 8px rgba(0,0,0,0.08)' : 'none', transition: 'all 0.2s' }}>
+                style={{ flex: 1, padding: '10px', borderRadius: '8px', border: 'none', fontFamily: 'Inter, sans-serif', fontSize: '0.9rem', fontWeight: '600', cursor: 'pointer', background: mode === m ? 'white' : 'transparent', color: mode === m ? '#1e3a8a' : '#475569', boxShadow: mode === m ? '0 2px 8px rgba(0,0,0,0.08)' : 'none', transition: 'all 0.2s' }}>
                 {m === 'registreer' ? 'Nieuw account' : 'Inloggen'}
               </button>
             ))}
@@ -118,7 +118,7 @@ export default function Registreer() {
                 <input type="password" value={wachtwoord2} onChange={e => setWachtwoord2(e.target.value)} style={inputStyle} placeholder="Herhaal wachtwoord" required />
               </div>
               {error && <p style={{ color: '#d44', fontSize: '0.85rem', marginBottom: '12px' }}>{error}</p>}
-              <button type="submit" disabled={loading} style={{ width: '100%', padding: '14px', background: '#0d3d2e', color: 'white', border: 'none', borderRadius: '8px', fontSize: '1rem', fontWeight: '700', cursor: 'pointer' }}>
+              <button type="submit" disabled={loading} style={{ width: '100%', padding: '14px', background: '#1e3a8a', color: 'white', border: 'none', borderRadius: '8px', fontSize: '1rem', fontWeight: '700', cursor: 'pointer' }}>
                 {loading ? 'Bezig...' : 'Account aanmaken'}
               </button>
             </form>
@@ -137,12 +137,12 @@ export default function Registreer() {
               </div>
               <div style={{ textAlign: 'right', marginBottom: '20px' }}>
                 <button type="button" onClick={() => { setMode('reset'); setError('') }}
-                  style={{ background: 'none', border: 'none', color: '#1e7a55', fontSize: '0.85rem', cursor: 'pointer', textDecoration: 'underline' }}>
+                  style={{ background: 'none', border: 'none', color: '#2563EB', fontSize: '0.85rem', cursor: 'pointer', textDecoration: 'underline' }}>
                   Wachtwoord vergeten?
                 </button>
               </div>
               {error && <p style={{ color: '#d44', fontSize: '0.85rem', marginBottom: '12px' }}>{error}</p>}
-              <button type="submit" disabled={loading} style={{ width: '100%', padding: '14px', background: '#0d3d2e', color: 'white', border: 'none', borderRadius: '8px', fontSize: '1rem', fontWeight: '700', cursor: 'pointer' }}>
+              <button type="submit" disabled={loading} style={{ width: '100%', padding: '14px', background: '#1e3a8a', color: 'white', border: 'none', borderRadius: '8px', fontSize: '1rem', fontWeight: '700', cursor: 'pointer' }}>
                 {loading ? 'Bezig...' : 'Inloggen'}
               </button>
             </form>
@@ -156,12 +156,12 @@ export default function Registreer() {
                 <input type="email" value={email} onChange={e => setEmail(e.target.value)} style={inputStyle} placeholder="uw@emailadres.nl" required />
               </div>
               {error && <p style={{ color: '#d44', fontSize: '0.85rem', marginBottom: '12px' }}>{error}</p>}
-              {succes && <p style={{ color: '#1e7a55', fontSize: '0.85rem', marginBottom: '12px' }}>{succes}</p>}
-              <button type="submit" disabled={loading} style={{ width: '100%', padding: '14px', background: '#0d3d2e', color: 'white', border: 'none', borderRadius: '8px', fontSize: '1rem', fontWeight: '700', cursor: 'pointer' }}>
+              {succes && <p style={{ color: '#2563EB', fontSize: '0.85rem', marginBottom: '12px' }}>{succes}</p>}
+              <button type="submit" disabled={loading} style={{ width: '100%', padding: '14px', background: '#1e3a8a', color: 'white', border: 'none', borderRadius: '8px', fontSize: '1rem', fontWeight: '700', cursor: 'pointer' }}>
                 {loading ? 'Bezig...' : '✉️ Stuur resetlink'}
               </button>
               <button type="button" onClick={() => { setMode('login'); setError(''); setSucces('') }}
-                style={{ width: '100%', marginTop: '12px', padding: '12px', background: 'none', border: '1.5px solid #c8e0d4', color: '#0d3d2e', borderRadius: '8px', fontSize: '0.9rem', fontWeight: '600', cursor: 'pointer' }}>
+                style={{ width: '100%', marginTop: '12px', padding: '12px', background: 'none', border: '1.5px solid #c8e0d4', color: '#1e3a8a', borderRadius: '8px', fontSize: '0.9rem', fontWeight: '600', cursor: 'pointer' }}>
                 ← Terug naar inloggen
               </button>
             </form>
