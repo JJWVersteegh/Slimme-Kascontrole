@@ -203,6 +203,7 @@ footer a:hover{color:var(--blue-light)}
     <li><a href="#waarom">Waarom</a></li>
     <li><a href="#hoe-het-werkt">Hoe het werkt</a></li>
     <li><a href="#tarieven">Tarieven</a></li>
+    <li><a href="/contact">Contact</a></li>
     <li><a href="/mijn-omgeving">Mijn omgeving</a></li>
     <li><a href="/registreer" class="btn-nav">Account aanmaken</a></li>
   </ul>
@@ -218,19 +219,25 @@ footer a:hover{color:var(--blue-light)}
       <a href="/registreer" class="btn-primary">Account aanmaken</a>
       <a href="#hoe-het-werkt" class="btn-ghost">Bekijk hoe het werkt</a>
     </div>
-    <div class="hero-price">
-      <div style="display:flex;align-items:baseline;gap:4px">
-        <span style="font-size:1rem;font-weight:600;color:#2563EB">€</span>
-        <span style="font-family:'Playfair Display',serif;font-size:2.4rem;font-weight:700;color:#2563EB;line-height:1">59</span>
-        <span style="font-size:0.9rem;color:#475569;font-weight:400">/ boekjaar</span>
+    <div style="display:inline-flex;align-items:center;gap:20px;margin-top:24px;padding:18px 24px;background:white;border-radius:12px;border:1px solid #e2e8f0;box-shadow:0 2px 8px rgba(0,0,0,0.04);animation:fadeUp 0.6s 0.4s ease both">
+      <div>
+        <div style="font-size:0.72rem;font-weight:600;color:#94a3b8;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:2px">Prijs per boekjaar</div>
+        <div style="display:flex;align-items:baseline;gap:2px">
+          <span style="font-size:1rem;font-weight:700;color:#2563EB">€</span>
+          <span style="font-family:'Playfair Display',serif;font-size:2.2rem;font-weight:700;color:#2563EB;line-height:1">59</span>
+        </div>
       </div>
-      <div style="width:1px;height:36px;background:#e2e8f0"></div>
-      <div class="price-desc">✓ AI-analyse &nbsp;·&nbsp; ✓ PDF-export &nbsp;·&nbsp; ✓ Direct beschikbaar</div>
+      <div style="width:1px;height:44px;background:#e2e8f0"></div>
+      <div style="display:flex;flex-direction:column;gap:6px">
+        <div style="font-size:0.82rem;color:#475569;display:flex;align-items:center;gap:6px"><span style="color:#2563EB;font-weight:700">✓</span> AI-analyse van uw bestanden</div>
+        <div style="font-size:0.82rem;color:#475569;display:flex;align-items:center;gap:6px"><span style="color:#2563EB;font-weight:700">✓</span> PDF-export voor de ALV</div>
+        <div style="font-size:0.82rem;color:#475569;display:flex;align-items:center;gap:6px"><span style="color:#2563EB;font-weight:700">✓</span> Direct beschikbaar na betaling</div>
+      </div>
     </div>
   </div>
   <div class="hero-image">
     <div class="hero-img-wrap">
-      <img src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=800&q=80" alt="Kascontrole voor verenigingen" loading="lazy"/>
+      <img src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=800&q=80" alt="Kascontrole voor verenigingen" loading="lazy"/>
       <div class="hero-badge">
         <span class="hero-badge-num">✓</span>
         Rapport klaar
@@ -240,14 +247,14 @@ footer a:hover{color:var(--blue-light)}
 </section>
 
 <!-- TRUST BAR -->
-<div class="trust-bar">
-  <div class="trust-item"><span>🔒</span> <strong>Veilig & privé</strong> — uw gegevens zijn versleuteld</div>
-  <div class="trust-dot"></div>
-  <div class="trust-item"><span>⚡</span> <strong>Rapport binnen minuten</strong> — AI analyseert direct</div>
-  <div class="trust-dot"></div>
-  <div class="trust-item"><span>📄</span> <strong>PDF-export</strong> — direct klaar voor de ALV</div>
-  <div class="trust-dot"></div>
-  <div class="trust-item"><span>🏛️</span> <strong>Wettelijk verplicht</strong> — wij regelen de controle</div>
+<div style="background:#1e3a8a;padding:18px 48px;display:flex;align-items:center;justify-content:center;gap:40px;flex-wrap:nowrap;overflow:hidden">
+  <div style="display:flex;align-items:center;gap:8px;color:rgba(255,255,255,0.85);font-size:0.82rem;white-space:nowrap"><span>🔒</span><span><strong style="color:white">Veilig & privé</strong> — versleuteld</span></div>
+  <div style="width:4px;height:4px;background:rgba(255,255,255,0.3);border-radius:50%;flex-shrink:0"></div>
+  <div style="display:flex;align-items:center;gap:8px;color:rgba(255,255,255,0.85);font-size:0.82rem;white-space:nowrap"><span>⚡</span><span><strong style="color:white">Rapport binnen minuten</strong> — AI analyseert direct</span></div>
+  <div style="width:4px;height:4px;background:rgba(255,255,255,0.3);border-radius:50%;flex-shrink:0"></div>
+  <div style="display:flex;align-items:center;gap:8px;color:rgba(255,255,255,0.85);font-size:0.82rem;white-space:nowrap"><span>📄</span><span><strong style="color:white">PDF-export</strong> — direct voor de ALV</span></div>
+  <div style="width:4px;height:4px;background:rgba(255,255,255,0.3);border-radius:50%;flex-shrink:0"></div>
+  <div style="display:flex;align-items:center;gap:8px;color:rgba(255,255,255,0.85);font-size:0.82rem;white-space:nowrap"><span>🏛️</span><span><strong style="color:white">Wettelijk verplicht</strong> — wij regelen het</span></div>
 </div>
 
 <!-- WAAROM SECTIE -->
@@ -278,8 +285,8 @@ footer a:hover{color:var(--blue-light)}
       <div class="step fade-in">
         <div class="step-num">01</div>
         <div class="step-icon">🏦</div>
-        <h3>Download uw bankgegevens</h3>
-        <p>Download uw bankafschriften of boekhouding via Twinq, Isabel, uw bank-app of boekhoudprogramma als PDF, Excel of CSV.</p>
+        <h3>Download uw verenigingsgegevens</h3>
+        <p>Download de jaarrekening of het financiële overzicht van uw VVE of vereniging via Twinq, Isabel, uw beheerder of boekhoudprogramma als PDF, Excel of CSV.</p>
       </div>
       <div class="step fade-in">
         <div class="step-num">02</div>

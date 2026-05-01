@@ -9,6 +9,8 @@ export default function Registreer() {
   const [wachtwoord, setWachtwoord] = useState('')
   const [wachtwoord2, setWachtwoord2] = useState('')
   const [naam, setNaam] = useState('')
+  const [vereniging, setVereniging] = useState('')
+  const [kvk, setKvk] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [succes, setSucces] = useState('')
@@ -104,6 +106,14 @@ export default function Registreer() {
               <div style={{ marginBottom: '16px' }}>
                 <label style={labelStyle}>Uw naam</label>
                 <input type="text" value={naam} onChange={e => setNaam(e.target.value)} style={inputStyle} placeholder="Voor- en achternaam" required />
+              </div>
+              <div style={{ marginBottom: '16px' }}>
+                <label style={labelStyle}>Naam vereniging</label>
+                <input type="text" value={vereniging} onChange={e => setVereniging(e.target.value)} style={inputStyle} placeholder="bijv. VvE De Goudstraat" required />
+              </div>
+              <div style={{ marginBottom: '16px' }}>
+                <label style={labelStyle}>KvK-nummer <span style={{ fontWeight: '400', color: '#94a3b8' }}>(optioneel)</span></label>
+                <input type="text" value={kvk} onChange={e => setKvk(e.target.value)} style={inputStyle} placeholder="bijv. 12345678" />
               </div>
               <div style={{ marginBottom: '16px' }}>
                 <label style={labelStyle}>E-mailadres</label>
