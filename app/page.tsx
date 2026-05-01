@@ -34,11 +34,6 @@ body{font-family:'Outfit',sans-serif;color:var(--ink);background:var(--white);ov
 /* NAV */
 nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(255,255,255,0.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 48px;height:72px;display:flex;align-items:center;justify-content:space-between;transition:box-shadow 0.3s}
 nav.scrolled{box-shadow:0 4px 24px rgba(0,0,0,0.08)}
-.logo{display:flex;align-items:center;gap:10px;text-decoration:none}
-.logo-icon{background:var(--blue);width:38px;height:38px;border-radius:8px;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(37,99,235,0.3)}
-.logo-text-top{font-weight:700;font-size:1.05rem;color:var(--blue);line-height:1.1;letter-spacing:-0.01em}
-.logo-text-bot{font-weight:400;font-size:1.05rem;color:var(--ink-soft);line-height:1.1;letter-spacing:-0.01em}
-.logo-tag{font-weight:300;font-size:0.62rem;color:#94a3b8;letter-spacing:0.03em}
 .nav-links{display:flex;gap:32px;list-style:none;align-items:center}
 .nav-links a{font-size:0.9rem;font-weight:500;color:var(--ink-soft);text-decoration:none;transition:color 0.2s}
 .nav-links a:hover{color:var(--blue)}
@@ -195,14 +190,13 @@ footer a:hover{color:var(--blue-light)}
 
 <!-- NAV -->
 <nav id="navbar">
-  <a href="/" class="logo">
-    <div class="logo-icon">
+  <a href="/" style="display:inline-flex;align-items:center;gap:10px;text-decoration:none">
+    <div style="background:#2563EB;width:38px;height:38px;border-radius:8px;display:flex;align-items:center;justify-content:center">
       <svg width="20" height="20" viewBox="0 0 22 22" fill="none"><polyline points="3,12 9,18 19,6" stroke="white" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
     </div>
-    <div>
-      <div class="logo-text-top">slimme</div>
-      <div class="logo-text-bot">kascontrole</div>
-      <div class="logo-tag">voor elke vereniging</div>
+    <div style="line-height:1.1">
+      <div style="font-weight:700;font-size:1.05rem;color:#1D4ED8;font-family:Outfit,sans-serif">slimme</div>
+      <div style="font-weight:500;font-size:1.05rem;color:#3b82f6;font-family:Outfit,sans-serif">kascontrole</div>
     </div>
   </a>
   <ul class="nav-links">
@@ -225,10 +219,13 @@ footer a:hover{color:var(--blue-light)}
       <a href="#hoe-het-werkt" class="btn-ghost">Bekijk hoe het werkt</a>
     </div>
     <div class="hero-price">
-      <div>
-        <div class="price-amount" style="font-size:2rem">€ 59,-</div>
+      <div style="display:flex;align-items:baseline;gap:4px">
+        <span style="font-size:1rem;font-weight:600;color:#2563EB">€</span>
+        <span style="font-family:'Playfair Display',serif;font-size:2.4rem;font-weight:700;color:#2563EB;line-height:1">59</span>
+        <span style="font-size:0.9rem;color:#475569;font-weight:400">/ boekjaar</span>
       </div>
-      <div class="price-desc">Per boekjaar · Inclusief AI-analyse · Direct als PDF beschikbaar</div>
+      <div style="width:1px;height:36px;background:#e2e8f0"></div>
+      <div class="price-desc">✓ AI-analyse &nbsp;·&nbsp; ✓ PDF-export &nbsp;·&nbsp; ✓ Direct beschikbaar</div>
     </div>
   </div>
   <div class="hero-image">
@@ -462,13 +459,13 @@ footer a:hover{color:var(--blue-light)}
 
 <!-- FOOTER -->
 <footer>
-  <a href="/" class="logo" style="filter:brightness(2)">
-    <div class="logo-icon">
+  <a href="/" style="display:inline-flex;align-items:center;gap:10px;text-decoration:none">
+    <div style="background:#2563EB;width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center">
       <svg width="18" height="18" viewBox="0 0 22 22" fill="none"><polyline points="3,12 9,18 19,6" stroke="white" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
     </div>
-    <div>
-      <div class="logo-text-top" style="color:white">slimme</div>
-      <div class="logo-text-bot" style="color:rgba(255,255,255,0.6)">kascontrole</div>
+    <div style="line-height:1.1">
+      <div style="font-weight:700;font-size:0.95rem;color:white;font-family:Outfit,sans-serif">slimme</div>
+      <div style="font-weight:500;font-size:0.95rem;color:rgba(255,255,255,0.6);font-family:Outfit,sans-serif">kascontrole</div>
     </div>
   </a>
   <span>© 2025 SlimmeKascontrole.nl — Alle rechten voorbehouden</span>
