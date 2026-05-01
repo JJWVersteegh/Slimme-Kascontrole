@@ -200,38 +200,40 @@ footer a:hover{color:var(--blue-light)}
 </nav>
 
 <!-- HERO -->
-<section class="hero">
-  <div class="hero-text">
-    <div class="hero-eyebrow">✦ Verplicht voor elke vereniging</div>
-    <h1>Uw kascontrole klaar<br/>voor de <em>volgende ALV</em></h1>
-    <p class="hero-sub">Upload uw financiële bestanden en ontvang een professioneel kascontrolerapport, opgesteld door onze kascontroleurs. Betrouwbaar, veilig en volledig conform de wettelijke eisen.</p>
-    <div class="hero-ctas">
-      <a href="/registreer" class="btn-primary">Account aanmaken</a>
-      <a href="#hoe-het-werkt" class="btn-ghost">Bekijk hoe het werkt</a>
-    </div>
-    <div style="display:inline-flex;align-items:center;gap:20px;margin-top:24px;padding:18px 24px;background:white;border-radius:12px;border:1px solid #e2e8f0;box-shadow:0 2px 8px rgba(0,0,0,0.04);animation:fadeUp 0.6s 0.4s ease both">
-      <div>
-        <div style="font-size:0.72rem;font-weight:600;color:#94a3b8;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:2px">Prijs per boekjaar</div>
-        <div style="display:flex;align-items:baseline;gap:2px">
-          <span style="font-size:1rem;font-weight:700;color:#2563EB">€</span>
-          <span style="font-family:'Playfair Display',serif;font-size:2.2rem;font-weight:700;color:#2563EB;line-height:1">59</span>
+<section style="position:relative;min-height:100vh;display:flex;align-items:center;overflow:hidden;padding-top:72px">
+  <div style="position:absolute;inset:0;z-index:0">
+    <img src="https://images.unsplash.com/photo-1521791136064-7986c2920216?w=1600&q=85" alt="Kascontrole" style="width:100%;height:100%;object-fit:cover;object-position:center top"/>
+    <div style="position:absolute;inset:0;background:linear-gradient(105deg,rgba(15,23,42,0.90) 0%,rgba(30,58,138,0.80) 45%,rgba(15,23,42,0.50) 100%)"></div>
+  </div>
+  <div style="position:relative;z-index:1;max-width:1100px;margin:0 auto;padding:80px 48px;width:100%">
+    <div style="max-width:640px">
+      <div style="display:inline-flex;align-items:center;gap:8px;background:rgba(37,99,235,0.3);border:1px solid rgba(147,197,253,0.4);color:#93c5fd;font-size:0.78rem;font-weight:600;padding:6px 14px;border-radius:20px;margin-bottom:28px;letter-spacing:0.04em;text-transform:uppercase;animation:fadeUp 0.6s ease both">✦ Verplicht voor elke vereniging</div>
+      <h1 style="font-family:'Playfair Display',serif;font-size:clamp(2.4rem,4.5vw,3.8rem);font-weight:700;line-height:1.1;color:white;margin-bottom:20px;letter-spacing:-0.02em;animation:fadeUp 0.6s 0.1s ease both">Uw kascontrole klaar<br/>voor de <em style="font-style:italic;font-weight:400;color:#93c5fd">volgende ALV</em></h1>
+      <p style="font-size:1.1rem;color:rgba(255,255,255,0.88);font-weight:400;line-height:1.7;max-width:520px;margin-bottom:36px;animation:fadeUp 0.6s 0.2s ease both">Upload uw financiële bestanden en ontvang een volledig gecontroleerd kascontrolerapport, opgesteld door onze kascontroleurs. Betrouwbaar, veilig en conform de wettelijke eisen.</p>
+      <div style="display:flex;gap:16px;align-items:center;flex-wrap:wrap;margin-bottom:44px;animation:fadeUp 0.6s 0.3s ease both">
+        <a href="/registreer" style="background:#2563EB;color:white;padding:16px 36px;border-radius:8px;font-size:1rem;font-weight:700;text-decoration:none;box-shadow:0 4px 20px rgba(37,99,235,0.5);font-family:Outfit,sans-serif;display:inline-block">Account aanmaken</a>
+        <a href="#hoe-het-werkt" style="color:rgba(255,255,255,0.85);font-size:0.95rem;font-weight:500;text-decoration:none;display:flex;align-items:center;gap:6px">Bekijk hoe het werkt →</a>
+      </div>
+      <div style="display:inline-flex;align-items:center;gap:20px;padding:18px 24px;background:rgba(255,255,255,0.10);backdrop-filter:blur(12px);border-radius:12px;border:1px solid rgba(255,255,255,0.18);animation:fadeUp 0.6s 0.4s ease both">
+        <div>
+          <div style="font-size:0.7rem;font-weight:600;color:rgba(255,255,255,0.55);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:2px">Prijs per boekjaar</div>
+          <div style="display:flex;align-items:baseline;gap:2px">
+            <span style="font-size:1rem;font-weight:700;color:#93c5fd">€</span>
+            <span style="font-family:'Playfair Display',serif;font-size:2.4rem;font-weight:700;color:white;line-height:1">59</span>
+          </div>
+        </div>
+        <div style="width:1px;height:48px;background:rgba(255,255,255,0.18)"></div>
+        <div style="display:flex;flex-direction:column;gap:7px">
+          <div style="font-size:0.83rem;color:rgba(255,255,255,0.88);display:flex;align-items:center;gap:8px"><span style="color:#93c5fd;font-weight:700">✓</span> Volledig gecontroleerd rapport</div>
+          <div style="font-size:0.83rem;color:rgba(255,255,255,0.88);display:flex;align-items:center;gap:8px"><span style="color:#93c5fd;font-weight:700">✓</span> Trendanalyse meerdere jaren</div>
+          <div style="font-size:0.83rem;color:rgba(255,255,255,0.88);display:flex;align-items:center;gap:8px"><span style="color:#93c5fd;font-weight:700">✓</span> PDF-export voor de ALV</div>
         </div>
       </div>
-      <div style="width:1px;height:44px;background:#e2e8f0"></div>
-      <div style="display:flex;flex-direction:column;gap:6px">
-        <div style="font-size:0.82rem;color:#475569;display:flex;align-items:center;gap:6px"><span style="color:#2563EB;font-weight:700">✓</span> AI-analyse van uw bestanden</div>
-        <div style="font-size:0.82rem;color:#475569;display:flex;align-items:center;gap:6px"><span style="color:#2563EB;font-weight:700">✓</span> PDF-export voor de ALV</div>
-        <div style="font-size:0.82rem;color:#475569;display:flex;align-items:center;gap:6px"><span style="color:#2563EB;font-weight:700">✓</span> Direct beschikbaar na betaling</div>
-      </div>
     </div>
-  </div>
-  <div class="hero-image">
-    <div class="hero-img-wrap">
-      <img src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=800&q=80" alt="Kascontrole voor verenigingen" loading="lazy"/>
-      <div class="hero-badge">
-        <span class="hero-badge-num">✓</span>
-        Rapport klaar
-      </div>
+    <div style="position:absolute;bottom:32px;right:48px;display:flex;gap:10px;flex-wrap:wrap">
+      <div style="background:rgba(255,255,255,0.10);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.18);border-radius:8px;padding:9px 14px;font-size:0.78rem;color:white;display:flex;align-items:center;gap:6px">🔒 SSL-versleuteld</div>
+      <div style="background:rgba(255,255,255,0.10);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.18);border-radius:8px;padding:9px 14px;font-size:0.78rem;color:white;display:flex;align-items:center;gap:6px">🏛️ AVG-conform</div>
+      <div style="background:rgba(255,255,255,0.10);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.18);border-radius:8px;padding:9px 14px;font-size:0.78rem;color:white;display:flex;align-items:center;gap:6px">🇳🇱 Data in Nederland</div>
     </div>
   </div>
 </section>
