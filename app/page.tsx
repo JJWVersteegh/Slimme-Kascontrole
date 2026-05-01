@@ -165,14 +165,17 @@ footer a:hover{color:var(--blue-light)}
 @media(max-width:900px){
   nav{padding:0 20px}
   .nav-links{display:none}
-  .hero{grid-template-columns:1fr;padding:100px 24px 60px}
-  .hero-image{display:none}
+  .btn-nav-mobile{display:block!important}
   section{padding:64px 24px}
   .steps,.sources-grid,.testi-grid{grid-template-columns:1fr}
   .features-grid,.why-grid,.pricing-grid{grid-template-columns:1fr}
-  .trust-bar{padding:16px 24px;gap:20px}
   footer{flex-direction:column;text-align:center}
   footer a{margin:0 12px}
+}
+@media(max-width:700px){
+  .hero-price-box{flex-direction:column;gap:12px;align-items:flex-start}
+  .hero-trust-badges{display:none!important}
+  .hero-content{padding:80px 20px 60px!important}
 }
 </style>
 </head>
@@ -197,15 +200,16 @@ footer a:hover{color:var(--blue-light)}
     <li><a href="/mijn-omgeving">Mijn omgeving</a></li>
     <li><a href="/registreer" class="btn-nav">Account aanmaken</a></li>
   </ul>
+  <a href="/registreer" class="btn-nav-mobile" style="display:none;background:var(--blue);color:white;padding:9px 18px;border-radius:6px;font-weight:600;font-size:0.85rem;text-decoration:none">Account aanmaken</a>
 </nav>
 
 <!-- HERO -->
-<section style="position:relative;min-height:100vh;display:flex;align-items:center;overflow:hidden;padding-top:72px">
+<section style="position:relative;min-height:100svh;display:flex;align-items:center;overflow:hidden;padding-top:72px">
   <div style="position:absolute;inset:0;z-index:0">
-    <img src="https://images.unsplash.com/photo-1521791136064-7986c2920216?w=1600&q=85" alt="Kascontrole" style="width:100%;height:100%;object-fit:cover;object-position:center top"/>
-    <div style="position:absolute;inset:0;background:linear-gradient(105deg,rgba(15,23,42,0.90) 0%,rgba(30,58,138,0.80) 45%,rgba(15,23,42,0.50) 100%)"></div>
+    <img src="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?w=1600&q=85" alt="Kascontrole" style="width:100%;height:100%;object-fit:cover;object-position:center top"/>
+    <div style="position:absolute;inset:0;background:linear-gradient(105deg,rgba(15,23,42,0.78) 0%,rgba(30,58,138,0.65) 45%,rgba(15,23,42,0.35) 100%)"></div>
   </div>
-  <div style="position:relative;z-index:1;max-width:1100px;margin:0 auto;padding:80px 48px;width:100%">
+  <div class="hero-content" style="position:relative;z-index:1;max-width:1100px;margin:0 auto;padding:80px 48px 120px;width:100%">
     <div style="max-width:640px">
       <div style="display:inline-flex;align-items:center;gap:8px;background:rgba(37,99,235,0.3);border:1px solid rgba(147,197,253,0.4);color:#93c5fd;font-size:0.78rem;font-weight:600;padding:6px 14px;border-radius:20px;margin-bottom:28px;letter-spacing:0.04em;text-transform:uppercase;animation:fadeUp 0.6s ease both">✦ Verplicht voor elke vereniging</div>
       <h1 style="font-family:'Playfair Display',serif;font-size:clamp(2.4rem,4.5vw,3.8rem);font-weight:700;line-height:1.1;color:white;margin-bottom:20px;letter-spacing:-0.02em;animation:fadeUp 0.6s 0.1s ease both">Uw kascontrole klaar<br/>voor de <em style="font-style:italic;font-weight:400;color:#93c5fd">volgende ALV</em></h1>
@@ -214,7 +218,7 @@ footer a:hover{color:var(--blue-light)}
         <a href="/registreer" style="background:#2563EB;color:white;padding:16px 36px;border-radius:8px;font-size:1rem;font-weight:700;text-decoration:none;box-shadow:0 4px 20px rgba(37,99,235,0.5);font-family:Outfit,sans-serif;display:inline-block">Account aanmaken</a>
         <a href="#hoe-het-werkt" style="color:rgba(255,255,255,0.85);font-size:0.95rem;font-weight:500;text-decoration:none;display:flex;align-items:center;gap:6px">Bekijk hoe het werkt →</a>
       </div>
-      <div style="display:inline-flex;align-items:center;gap:20px;padding:18px 24px;background:rgba(255,255,255,0.10);backdrop-filter:blur(12px);border-radius:12px;border:1px solid rgba(255,255,255,0.18);animation:fadeUp 0.6s 0.4s ease both">
+      <div style="display:flex;flex-wrap:wrap;align-items:center;gap:16px;padding:18px 20px;background:rgba(255,255,255,0.10);backdrop-filter:blur(12px);border-radius:12px;border:1px solid rgba(255,255,255,0.18);animation:fadeUp 0.6s 0.4s ease both">
         <div>
           <div style="font-size:0.7rem;font-weight:600;color:rgba(255,255,255,0.55);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:2px">Prijs per boekjaar</div>
           <div style="display:flex;align-items:baseline;gap:2px">
@@ -230,7 +234,7 @@ footer a:hover{color:var(--blue-light)}
         </div>
       </div>
     </div>
-    <div style="position:absolute;bottom:32px;right:48px;display:flex;gap:10px;flex-wrap:wrap">
+    <div class="hero-trust-badges" style="position:absolute;bottom:32px;right:48px;display:flex;gap:10px;flex-wrap:wrap">
       <div style="background:rgba(255,255,255,0.10);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.18);border-radius:8px;padding:9px 14px;font-size:0.78rem;color:white;display:flex;align-items:center;gap:6px">🔒 SSL-versleuteld</div>
       <div style="background:rgba(255,255,255,0.10);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.18);border-radius:8px;padding:9px 14px;font-size:0.78rem;color:white;display:flex;align-items:center;gap:6px">🏛️ AVG-conform</div>
       <div style="background:rgba(255,255,255,0.10);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.18);border-radius:8px;padding:9px 14px;font-size:0.78rem;color:white;display:flex;align-items:center;gap:6px">🇳🇱 Data in Nederland</div>
