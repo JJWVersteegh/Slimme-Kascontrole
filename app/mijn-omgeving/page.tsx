@@ -383,7 +383,7 @@ export default function MijnOmgeving() {
             <strong>Optioneel:</strong> Wilt u ook een trendanalyse? Verander dan het boekjaar in de dropdown naar {parseInt(rapportBoekjaar) - 2}, {parseInt(rapportBoekjaar) - 1} of {parseInt(rapportBoekjaar) + 1}, selecteer de bestanden en klik opnieuw op <strong>Upload bestanden</strong>.
           </div>
           <form onSubmit={handleUpload}>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '14px' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '14px', alignItems: 'end' }}>
               <div>
                 <label style={{ display: 'block', fontWeight: '600', color: '#0f172a', marginBottom: '6px', fontSize: '0.88rem' }}>Boekjaar van deze bestanden <span style={{ fontWeight: '400', color: '#2563EB', fontSize: '0.8rem' }}>— standaard het gekozen rapportjaar</span></label>
                 <select value={boekjaar} onChange={e => setBoekjaar(e.target.value)} style={inp}>
