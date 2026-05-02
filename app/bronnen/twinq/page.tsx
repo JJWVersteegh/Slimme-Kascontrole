@@ -4,7 +4,7 @@ export default function TwinqBron() {
 
       {/* Nav */}
       <nav style={{ background: 'white', borderBottom: '1px solid #e2e8f0', padding: '0 48px', height: '72px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <a href="/" style={{ display: 'flex', alignItems: 'center', gap: '10px', textDecoration: 'none' }}>
+        <a href="/#handleidingen" style={{ display: 'flex', alignItems: 'center', gap: '10px', textDecoration: 'none' }}>
           <div style={{ background: '#2563EB', width: '38px', height: '38px', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <svg width="20" height="20" viewBox="0 0 22 22" fill="none"><polyline points="3,12 9,18 19,6" stroke="white" strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round"/></svg>
           </div>
@@ -13,7 +13,7 @@ export default function TwinqBron() {
             <div style={{ fontWeight: '500', fontSize: '1.05rem', color: '#3b82f6' }}>kascontrole</div>
           </div>
         </a>
-        <a href="/#bronnen" style={{ color: '#475569', textDecoration: 'none', fontSize: '0.9rem', fontWeight: '500', display: 'flex', alignItems: 'center', gap: '6px' }}>← Terug</a>
+        <a href="/#handleidingen" style={{ color: '#475569', textDecoration: 'none', fontSize: '0.9rem', fontWeight: '500', display: 'flex', alignItems: 'center', gap: '6px' }}>← Terug</a>
       </nav>
 
       <div style={{ maxWidth: '860px', margin: '0 auto', padding: '64px 24px' }}>
@@ -171,7 +171,7 @@ export default function TwinqBron() {
       <footer style={{ background: '#0f172a', color: 'rgba(255,255,255,0.5)', padding: '32px 48px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px', fontSize: '0.83rem', marginTop: '64px' }}>
         <span>© 2025 SlimmeKascontrole.nl — Een dienst van Vertras B.V.</span>
         <div style={{ display: 'flex', gap: '24px' }}>
-          <a href="/" style={{ color: 'rgba(255,255,255,0.5)', textDecoration: 'none' }}>Home</a>
+          <a href="/#handleidingen" style={{ color: 'rgba(255,255,255,0.5)', textDecoration: 'none' }}>Home</a>
           <a href="/bronnen/isabel-yuki" style={{ color: 'rgba(255,255,255,0.5)', textDecoration: 'none' }}>Isabel / Yuki</a>
           <a href="/bronnen/eigen-excel" style={{ color: 'rgba(255,255,255,0.5)', textDecoration: 'none' }}>Eigen Excel</a>
         </div>
