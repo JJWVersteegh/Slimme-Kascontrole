@@ -39,6 +39,7 @@ export default function MijnOmgeving() {
   const [deleteLoading, setDeleteLoading] = useState<string | null>(null)
   const [files, setFiles] = useState<FileList | null>(null)
   const [boekjaar, setBoekjaar] = useState(new Date().getFullYear().toString())
+  // Sync upload boekjaar met rapport boekjaar
   const [toelichting, setToelichting] = useState('')
   const [uploadSuccess, setUploadSuccess] = useState(false)
   const [error, setError] = useState('')
@@ -363,9 +364,9 @@ export default function MijnOmgeving() {
         {/* Punt 10: Rapport boekjaar kiezen */}
         <div style={{ background: 'white', borderRadius: '16px', padding: '24px 28px', border: '2px solid #bfdbfe', marginBottom: '24px' }}>
           <h2 style={{ fontWeight: '700', color: '#0f172a', fontSize: '1rem', marginBottom: '6px' }}>📅 Voor welk boekjaar wilt u het rapport?</h2>
-          <p style={{ color: '#475569', fontSize: '0.85rem', marginBottom: '14px' }}>Upload minimaal de bestanden van het gekozen boekjaar. Voeg ook bestanden van voorgaande jaren toe voor een trendanalyse — dit is optioneel maar geeft een completer beeld.</p>
+          <p style={{ color: '#475569', fontSize: '0.85rem', marginBottom: '14px' }}>Kies het boekjaar waarvoor u het rapport wilt. Hieronder kunt u dan de bestanden van dat jaar uploaden.</p>
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
-            <select value={rapportBoekjaar} onChange={e => setRapportBoekjaar(e.target.value)} style={{ ...inp, width: 'auto', minWidth: '120px' }}>
+            <select value={rapportBoekjaar} onChange={e => { setRapportBoekjaar(e.target.value); setBoekjaar(e.target.value) }} style={{ ...inp, width: 'auto', minWidth: '120px' }}>
               {jaren.map(j => <option key={j} value={j}>{j}</option>)}
             </select>
             <span style={{ fontSize: '0.82rem', color: '#64748b' }}>
@@ -376,11 +377,15 @@ export default function MijnOmgeving() {
 
         {/* Punt 12: Upload sectie eerst, daarna betaalknop */}
         <div style={{ background: 'white', borderRadius: '16px', padding: '28px', border: '1px solid #e2e8f0', marginBottom: '24px' }}>
-          <h2 style={{ fontSize: '1rem', fontWeight: '700', color: '#0f172a', marginBottom: '16px' }}>📁 Bestanden uploaden</h2>
+          <h2 style={{ fontSize: '1rem', fontWeight: '700', color: '#0f172a', marginBottom: '8px' }}>📁 Bestanden uploaden</h2>
+          <div style={{ background: '#eff6ff', borderRadius: '8px', padding: '10px 14px', marginBottom: '16px', fontSize: '0.83rem', color: '#1e3a8a', lineHeight: 1.6 }}>
+            <strong>Stap 1:</strong> Upload de bestanden van boekjaar <strong>{rapportBoekjaar}</strong> — dit is verplicht.<br/>
+            <strong>Optioneel:</strong> Upload ook bestanden van {parseInt(rapportBoekjaar) - 2}, {parseInt(rapportBoekjaar) - 1} of {parseInt(rapportBoekjaar) + 1} voor een trendanalyse. Verander dan het boekjaar in de dropdown hieronder.
+          </div>
           <form onSubmit={handleUpload}>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '14px' }}>
               <div>
-                <label style={{ display: 'block', fontWeight: '600', color: '#0f172a', marginBottom: '6px', fontSize: '0.88rem' }}>Boekjaar van deze bestanden</label>
+                <label style={{ display: 'block', fontWeight: '600', color: '#0f172a', marginBottom: '6px', fontSize: '0.88rem' }}>Boekjaar van deze bestanden <span style={{ fontWeight: '400', color: '#2563EB', fontSize: '0.8rem' }}>— standaard het gekozen rapportjaar</span></label>
                 <select value={boekjaar} onChange={e => setBoekjaar(e.target.value)} style={inp}>
                   {jaren.map(j => <option key={j} value={j}>{j}</option>)}
                 </select>

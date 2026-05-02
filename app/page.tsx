@@ -100,7 +100,7 @@ h2 em{font-style:italic;color:#2563EB}
 .step p{font-size:0.85rem;color:#475569;line-height:1.7}
 
 /* SOURCES */
-.sources-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;max-width:1100px;margin:0 auto}
+.sources-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;max-width:800px;margin:0 auto}
 .source-card{background:white;border-radius:12px;padding:22px;border:1px solid #e2e8f0;text-align:center;transition:transform 0.2s,box-shadow 0.2s}
 .source-card:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(0,0,0,0.07)}
 .source-icon{font-size:1.8rem;margin-bottom:10px}
