@@ -168,6 +168,29 @@ Beschrijf eventuele voorwaarden concreet.
 ---
 *Vertrouwelijk — uitsluitend bestemd voor leden · Opgesteld door slimmekascontrole.nl, een dienst van Vertras B.V.*
 
+---
+
+## SAMENVATTING VOOR DE ALV
+*Deze pagina is bedoeld om voor te lezen tijdens de Algemene Ledenvergadering*
+
+Schrijf hier een korte, begrijpelijke samenvatting van maximaal 15 zinnen die de kascommissie kan voorlezen op de ALV. Gebruik gewone taal, geen vakjargon. Behandel:
+1. Wat er gecontroleerd is en over welk boekjaar
+2. De belangrijkste bevindingen in 2-3 zinnen
+3. Het eindadvies (goedkeuring / voorwaardelijk / aanhouding) met een korte toelichting
+4. Eventuele concrete actiepunten voor het bestuur
+
+Sluit af met een ondertekeningsblok:
+
+| | |
+| --- | --- |
+| Naam kascommissielid 1: | _________________________ |
+| Handtekening: | _________________________ |
+| | |
+| Naam kascommissielid 2: | _________________________ |
+| Handtekening: | _________________________ |
+| | |
+| Datum: | _________________________ |
+
 BELANGRIJK:
 - Als bestanden binair zijn (PDF/Excel), werk dan met beschikbare informatie en geef aan wat nog aangeleverd moet worden
 - Gebruik tabellen voor alle cijfers
