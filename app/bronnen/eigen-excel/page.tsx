@@ -119,6 +119,24 @@ export default function EigenExcelBron() {
 
         </div>
 
+
+        {/* Mappen tip */}
+        <div style={{ background: '#fefce8', borderRadius: '12px', padding: '20px', margin: '32px 0', border: '1px solid #fde68a' }}>
+          <p style={{ fontSize: '0.88rem', color: '#78350f', margin: '0 0 10px', lineHeight: 1.6 }}>
+            <strong>📂 Tip: organiseer uw bestanden per boekjaar</strong>
+          </p>
+          <p style={{ fontSize: '0.88rem', color: '#78350f', margin: '0 0 10px', lineHeight: 1.6 }}>
+            Maak op uw computer een aparte map per boekjaar en sla alle gedownloade bestanden daarin op. Zo weet u precies welke bestanden bij welk jaar horen bij het uploaden.
+          </p>
+          <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
+            {['📁 2023', '📁 2024', '📁 2025'].map((map, i) => (
+              <div key={i} style={{ background: '#fef9c3', border: '1px solid #fde68a', borderRadius: '6px', padding: '6px 14px', fontSize: '0.83rem', fontFamily: 'monospace', color: '#78350f' }}>{map}</div>
+            ))}
+          </div>
+          <p style={{ fontSize: '0.83rem', color: '#92400e', margin: '10px 0 0', lineHeight: 1.5 }}>
+            In onze tool selecteert u per upload het bijbehorende boekjaar — zo koppelt het systeem automatisch de juiste bestanden aan het juiste jaar.
+          </p>
+        </div>
         {/* Tip */}
         <div style={{ background: '#fefce8', borderRadius: '12px', padding: '20px', margin: '32px 0', border: '1px solid #fde68a' }}>
           <p style={{ fontSize: '0.88rem', color: '#78350f', margin: 0, lineHeight: 1.6 }}>
