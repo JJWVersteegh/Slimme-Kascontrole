@@ -379,8 +379,8 @@ export default function MijnOmgeving() {
         <div style={{ background: 'white', borderRadius: '16px', padding: '28px', border: '1px solid #e2e8f0', marginBottom: '24px' }}>
           <h2 style={{ fontSize: '1rem', fontWeight: '700', color: '#0f172a', marginBottom: '8px' }}>📁 Bestanden uploaden</h2>
           <div style={{ background: '#eff6ff', borderRadius: '8px', padding: '10px 14px', marginBottom: '16px', fontSize: '0.83rem', color: '#1e3a8a', lineHeight: 1.6 }}>
-            <strong>Stap 1:</strong> Upload de bestanden van boekjaar <strong>{rapportBoekjaar}</strong> — dit is verplicht.<br/>
-            <strong>Optioneel:</strong> Upload ook bestanden van {parseInt(rapportBoekjaar) - 2}, {parseInt(rapportBoekjaar) - 1} of {parseInt(rapportBoekjaar) + 1} voor een trendanalyse. Verander dan het boekjaar in de dropdown hieronder.
+            <strong>Stap 1:</strong> Selecteer uw bestanden van boekjaar <strong>{rapportBoekjaar}</strong> en klik op <strong>Upload bestanden</strong> — dit is verplicht.<br/>
+            <strong>Optioneel:</strong> Wilt u ook een trendanalyse? Verander dan het boekjaar in de dropdown naar {parseInt(rapportBoekjaar) - 2}, {parseInt(rapportBoekjaar) - 1} of {parseInt(rapportBoekjaar) + 1}, selecteer de bestanden en klik opnieuw op <strong>Upload bestanden</strong>.
           </div>
           <form onSubmit={handleUpload}>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '14px' }}>
