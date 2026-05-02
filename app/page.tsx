@@ -226,7 +226,7 @@ footer a:hover{color:#93c5fd}
   <ul class="nav-links">
     <li><a href="#waarom">Waarom</a></li>
     <li><a href="#hoe-het-werkt">Hoe het werkt</a></li>
-    <li><a href="/bronnen">Handleidingen</a></li>
+    <li><a href="#handleidingen">Handleidingen</a></li>
     <li><a href="#over-ons">Over ons</a></li>
     <li><a href="#tarieven">Tarieven</a></li>
     <li><a href="#contact">Contact</a></li>
@@ -244,7 +244,7 @@ footer a:hover{color:#93c5fd}
 <div class="mobile-menu" id="mobile-menu">
   <a href="#waarom" onclick="closeMenu()">Waarom kascontrole?</a>
   <a href="#hoe-het-werkt" onclick="closeMenu()">Hoe het werkt</a>
-  <a href="/bronnen" onclick="closeMenu()">Handleidingen</a>
+  <a href="#handleidingen" onclick="closeMenu()">Handleidingen</a>
   <a href="#over-ons" onclick="closeMenu()">Over ons</a>
   <a href="#tarieven" onclick="closeMenu()">Tarieven</a>
   <a href="#contact" onclick="closeMenu()">Contact</a>
@@ -338,11 +338,11 @@ footer a:hover{color:#93c5fd}
 </section>
 
 <!-- SOURCES -->
-<section>
+<section id="handleidingen">
   <div style="max-width:1100px;margin:0 auto;text-align:center">
-    <p class="section-label fade-in" style="text-align:center">Waar haalt u uw gegevens vandaan?</p>
-    <h2 class="fade-in" style="text-align:center">Ondersteunde <em>bronnen</em></h2>
-    <p class="section-sub centered fade-in">Wij verwerken bestanden uit alle gangbare boekhoud- en banksystemen.</p>
+    <p class="section-label fade-in" style="text-align:center">Handleidingen</p>
+    <h2 class="fade-in" style="text-align:center">Hoe haalt u uw <em>gegevens op?</em></h2>
+    <p class="section-sub centered fade-in">Kies uw boekhoudpakket en volg de stap-voor-stap handleiding om uw bestanden klaar te zetten voor upload.</p>
     <div class="sources-grid">
 
       <a href="/bronnen/twinq" class="source-card fade-in"><div class="source-icon"><img src="/twinq-logo.jpg" alt="Twinq" style="height:38px;object-fit:contain;"/></div><div class="source-name">Twinq</div><div class="source-desc">Export via Twinq dashboard als Excel of PDF</div><div class="source-link">Hoe exporteer ik? →</div></a>
