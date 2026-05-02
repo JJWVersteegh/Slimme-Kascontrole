@@ -78,13 +78,18 @@ OPDRACHTGEVER:
 - Vereniging/VvE: ${vereniging || 'Niet opgegeven'}
 - KvK: ${kvk || 'Niet opgegeven'}
 - E-mail: ${email}
-- Primair boekjaar: ${huidigJaar}
-${vorigeJaren.length > 0 ? `- Vergelijkingsjaren: ${vorigeJaren.join(', ')}` : ''}
+- PRIMAIR BOEKJAAR (waar het rapport over gaat): ${huidigJaar}
+${vorigeJaren.length > 0 ? `- Vergelijkingsjaren (alleen voor trendanalyse): ${vorigeJaren.join(', ')}` : ''}
+
+ROL VAN ELK JAAR:
+- Boekjaar ${huidigJaar}: DIT is het hoofdonderwerp van het rapport. Volledige analyse vereist.
+${vorigeJaren.length > 0 ? `- Jaren ${vorigeJaren.join(', ')}: ALLEEN voor trendvergelijking en het signaleren van meerjarige patronen (bijv. debiteur die al 3 jaar niet betaalt). Geen volledige analyse per jaar.` : ''}
+- Eventueel volgend jaar: ALLEEN gebruiken om te controleren of openstaande posten uit ${huidigJaar} inmiddels zijn vereffend (debiteuren, crediteuren). Geen zelfstandige analyse.
 
 GEÜPLOADE FINANCIËLE GEGEVENS (${uploads.length} upload(s)):
 ${uploadsContent.join('\n\n')}
 
-Stel een volledig professioneel kascontrolerapport op in het Nederlands. Gebruik exact deze structuur:
+Stel een volledig professioneel kascontrolerapport op in het Nederlands. Het rapport gaat over boekjaar ${huidigJaar}. Gebruik exact deze structuur:
 
 # KASCOMMISSIE RAPPORT
 ## ${vereniging || 'Vereniging'} | Boekjaar ${boekjaren.join(' & ')} | Peildatum ${new Date().toLocaleDateString('nl-NL', { day: 'numeric', month: 'long', year: 'numeric' })}
@@ -95,9 +100,8 @@ Stel een volledig professioneel kascontrolerapport op in het Nederlands. Gebruik
 ## INHOUDSOPGAVE
 1. Opdracht en werkzaamheden
 2. Samenvatting bevindingen
-3. Bevindingen${boekjaren.map((j, i) => `\n   ${i + 3}. Boekjaar ${j}`).join('')}
-${boekjaren.length > 1 ? `${boekjaren.length + 3}. Meerjarenoverzicht en trendanalyse` : ''}
-${boekjaren.length + 4}. Advies aan de Algemene Ledenvergadering
+3. Bevindingen boekjaar ${huidigJaar} (hoofdanalyse)
+${boekjaren.length > 1 ? `4. Trendanalyse ${boekjaren.join(' – ')}\n5. Advies aan de Algemene Ledenvergadering` : '4. Advies aan de Algemene Ledenvergadering'}
 
 ---
 
@@ -119,10 +123,9 @@ Gebruik drie blokken:
 | --- |
 | beschrijving |
 
-${boekjaren.map((jaar, idx) => `
-## ${idx + 3}. BEVINDINGEN BOEKJAAR ${jaar}
+## 3. BEVINDINGEN BOEKJAAR ${huidigJaar} — HOOFDANALYSE
 
-### ${idx + 3}.1 Balans en aansluiting banksaldi
+### 3.1 Balans en aansluiting banksaldi
 Maak een tabel:
 | Rekening | Beginsaldo | Eindsaldo |
 | --- | --- | --- |
@@ -130,34 +133,41 @@ Maak een tabel:
 | **Totaal** | **€...** | **€...** |
 | Verschil | | **€0,00 ✓** |
 
-### ${idx + 3}.2 Inkoopfacturen
-Analyse van facturen.
+### 3.2 Inkoopfacturen en uitgaven
+Volledige analyse van alle facturen en uitgaven in ${huidigJaar}.
 
-### ${idx + 3}.3 Exploitatieresultaat
-| Post | Werkelijk ${jaar} | Begroting ${jaar} | Afwijking |
+### 3.3 Exploitatieresultaat
+| Post | Werkelijk ${huidigJaar} | Begroting ${huidigJaar} | Afwijking |
 | --- | --- | --- | --- |
 | Inkomsten | €... | €... | ... |
 | Uitgaven | €... | €... | ... |
 | **Exploitatieresultaat** | **€...** | **€...** | **...** |
 
-### ${idx + 3}.4 Bijzonderheden
-[AANDACHTSPUNT: beschrijving van elk aandachtspunt]
-`).join('')}
+### 3.4 Openstaande posten
+Controleer debiteuren en crediteuren per einde ${huidigJaar}. Gebruik gegevens uit het volgende jaar (indien aangeleverd) om te controleren of openstaande posten inmiddels zijn vereffend.
+
+| Post | Bedrag | Status (op basis van volgend jaar) |
+| --- | --- | --- |
+| [debiteur/crediteur] | €... | Vereffend ✓ / Nog open ⚠️ |
+
+### 3.5 Bijzonderheden boekjaar ${huidigJaar}
+Beschrijf alle aandachtspunten specifiek voor dit boekjaar.
 
 ${boekjaren.length > 1 ? `
-## ${boekjaren.length + 3}. MEERJARENOVERZICHT EN TRENDANALYSE
+## 4. TRENDANALYSE ${boekjaren.join(' – ')}
 
-Maak een vergelijkingstabel voor alle jaren:
-| Post | ${boekjaren.join(' | ')} |
-| --- | ${boekjaren.map(() => '---').join(' | ')} |
-| Inkomsten | ... |
-| Uitgaven | ... |
-| Exploitatieresultaat | ... |
+Vergelijk alleen de hoofdlijnen over de jaren. Focus op opvallende patronen.
 
-Analyseer trends en bijzonderheden over de jaren.
+| Post | ${boekjaren.join(' | ')} | Trend |
+| --- | ${boekjaren.map(() => '---').join(' | ')} | --- |
+| Inkomsten | ... | ... |
+| Uitgaven | ... | ... |
+| Exploitatieresultaat | ... | ... |
+
+Benoem expliciet meerjarige aandachtspunten, zoals een debiteur die meerdere jaren achtereen niet betaalt, of structureel stijgende kosten.
 ` : ''}
 
-## ${boekjaren.length + 4}. ADVIES AAN DE ALGEMENE LEDENVERGADERING
+## ${boekjaren.length > 1 ? '5' : '4'}. ADVIES AAN DE ALGEMENE LEDENVERGADERING
 
 Geef een duidelijk advies: GOEDKEURING, VOORWAARDELIJKE GOEDKEURING of AANHOUDING.
 Beschrijf eventuele voorwaarden concreet.
@@ -167,29 +177,6 @@ Beschrijf eventuele voorwaarden concreet.
 
 ---
 *Vertrouwelijk — uitsluitend bestemd voor leden · Opgesteld door slimmekascontrole.nl, een dienst van Vertras B.V.*
-
----
-
-## SAMENVATTING VOOR DE ALV
-*Deze pagina is bedoeld om voor te lezen tijdens de Algemene Ledenvergadering*
-
-Schrijf hier een korte, begrijpelijke samenvatting van maximaal 15 zinnen die de kascommissie kan voorlezen op de ALV. Gebruik gewone taal, geen vakjargon. Behandel:
-1. Wat er gecontroleerd is en over welk boekjaar
-2. De belangrijkste bevindingen in 2-3 zinnen
-3. Het eindadvies (goedkeuring / voorwaardelijk / aanhouding) met een korte toelichting
-4. Eventuele concrete actiepunten voor het bestuur
-
-Sluit af met een ondertekeningsblok:
-
-| | |
-| --- | --- |
-| Naam kascommissielid 1: | _________________________ |
-| Handtekening: | _________________________ |
-| | |
-| Naam kascommissielid 2: | _________________________ |
-| Handtekening: | _________________________ |
-| | |
-| Datum: | _________________________ |
 
 BELANGRIJK:
 - Als bestanden binair zijn (PDF/Excel), werk dan met beschikbare informatie en geef aan wat nog aangeleverd moet worden
