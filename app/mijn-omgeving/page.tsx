@@ -356,13 +356,13 @@ export default function MijnOmgeving() {
         {/* Punt 10: Rapport boekjaar kiezen */}
         <div style={{ background: 'white', borderRadius: '16px', padding: '24px 28px', border: '2px solid #bfdbfe', marginBottom: '24px' }}>
           <h2 style={{ fontWeight: '700', color: '#0f172a', fontSize: '1rem', marginBottom: '6px' }}>📅 Voor welk boekjaar wilt u het rapport?</h2>
-          <p style={{ color: '#475569', fontSize: '0.85rem', marginBottom: '14px' }}>Upload de bestanden van dit jaar en maximaal 2 jaar ervoor voor een trendanalyse. Het rapport is gebaseerd op het gekozen boekjaar.</p>
+          <p style={{ color: '#475569', fontSize: '0.85rem', marginBottom: '14px' }}>Upload minimaal de bestanden van het gekozen boekjaar. Voeg ook bestanden van voorgaande jaren toe voor een trendanalyse — dit is optioneel maar geeft een completer beeld.</p>
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
             <select value={rapportBoekjaar} onChange={e => setRapportBoekjaar(e.target.value)} style={{ ...inp, width: 'auto', minWidth: '120px' }}>
               {jaren.map(j => <option key={j} value={j}>{j}</option>)}
             </select>
             <span style={{ fontSize: '0.82rem', color: '#64748b' }}>
-              Upload bestanden van: <strong>{rapportJaarNum - 2}</strong>, <strong>{rapportJaarNum - 1}</strong>, <strong>{rapportJaarNum}</strong> (en optioneel {rapportJaarNum + 1})
+              Verplicht: <strong>{rapportJaarNum}</strong> &nbsp;·&nbsp; Optioneel voor trendanalyse: {rapportJaarNum - 2}, {rapportJaarNum - 1} (en {rapportJaarNum + 1})
             </span>
           </div>
         </div>
