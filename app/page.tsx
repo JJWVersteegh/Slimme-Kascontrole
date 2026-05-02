@@ -137,6 +137,7 @@ h2 em{font-style:italic;color:#2563EB}
 /* PRICING */
 .pricing-bg{background:#f8fafc}
 .pricing-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;max-width:760px;margin:0 auto}
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:32px;margin-top:48px}
 .price-card{background:white;border-radius:16px;padding:32px;border:2px solid #e2e8f0;transition:transform 0.2s,box-shadow 0.2s;position:relative}
 .price-card:hover{transform:translateY(-4px);box-shadow:0 16px 48px rgba(0,0,0,0.08)}
 .price-card.featured{border-color:#2563EB;background:#1e3a8a;color:white}
@@ -193,7 +194,7 @@ footer a:hover{color:#93c5fd}
   .hamburger{display:flex!important}
   section{padding:56px 20px}
   .steps,.testi-grid{grid-template-columns:1fr}
-  .features-grid,.why-grid,.about-grid,.pricing-grid{grid-template-columns:1fr}
+  .features-grid,.why-grid,.about-grid,.pricing-grid,.contact-grid{grid-template-columns:1fr}
   .sources-grid,.security-grid{grid-template-columns:1fr 1fr}
   .hero-content{padding:0 16px!important;width:100%!important}
   footer{flex-direction:column;text-align:center;padding:32px 20px}
@@ -471,7 +472,7 @@ footer a:hover{color:#93c5fd}
     <p class="section-label fade-in" style="text-align:center">Contact</p>
     <h2 class="fade-in" style="text-align:center;margin-bottom:12px">Neem contact <em>op</em></h2>
     <p class="section-sub centered fade-in">Heeft u vragen over Slimme Kascontrole, uw bestelling of uw rapport? Wij helpen u graag verder.</p>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:32px;margin-top:48px">
+    <div class="contact-grid">
       <!-- Contact info -->
       <div style="display:flex;flex-direction:column;gap:20px">
         <div style="background:white;border-radius:16px;padding:28px;border:1px solid var(--border)" class="fade-in">
