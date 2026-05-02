@@ -238,8 +238,8 @@ footer a:hover{color:#93c5fd}
   <a href="#hoe-het-werkt" onclick="closeMenu()">Hoe het werkt</a>
   <a href="#over-ons" onclick="closeMenu()">Over ons</a>
   <a href="#tarieven" onclick="closeMenu()">Tarieven</a>
-  <a href="#contact">Contact</a>
-  <a href="/mijn-omgeving">Mijn omgeving</a>
+  <a href="#contact" onclick="closeMenu()">Contact</a>
+  <a href="/mijn-omgeving" onclick="closeMenu()">Mijn omgeving</a>
   <a href="/registreer" class="mobile-btn">Account aanmaken</a>
 </div>
 
