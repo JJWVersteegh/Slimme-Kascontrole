@@ -508,7 +508,7 @@ footer a:hover{color:#93c5fd}
         <h2 style="font-weight:700;color:var(--ink);font-size:1.1rem;margin-bottom:4px" class="fade-in">Veelgestelde vragen</h2>
         <div style="background:white;border-radius:12px;padding:20px;border:1px solid var(--border)" class="fade-in">
           <h4 style="font-weight:700;color:var(--ink);font-size:0.9rem;margin-bottom:8px">❓ Hoe snel ontvang ik mijn rapport?</h4>
-          <p style="font-size:0.85rem;color:var(--ink-soft);line-height:1.6">Direct na betaling kunt u op "Genereer rapport" klikken. Onze kascontroleurs leveren het rapport binnen 24 uur.</p>
+          <p style="font-size:0.85rem;color:var(--ink-soft);line-height:1.6">Direct na betaling kunt u op "Genereer rapport" klikken. Het rapport wordt automatisch gegenereerd op basis van uw geüploade bestanden.</p>
         </div>
         <div style="background:white;border-radius:12px;padding:20px;border:1px solid var(--border)" class="fade-in">
           <h4 style="font-weight:700;color:var(--ink);font-size:0.9rem;margin-bottom:8px">❓ Welke bestanden kan ik uploaden?</h4>
