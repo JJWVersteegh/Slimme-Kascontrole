@@ -53,7 +53,7 @@ nav.scrolled{box-shadow:0 4px 24px rgba(0,0,0,0.08)}
 .btn-primary{background:#2563EB;color:white;padding:14px 30px;border-radius:8px;font-size:0.95rem;font-weight:700;text-decoration:none;box-shadow:0 4px 20px rgba(37,99,235,0.45);font-family:'Outfit',sans-serif;white-space:nowrap;display:inline-block}
 .btn-primary:hover{background:#1D4ED8}
 .btn-ghost-white{color:rgba(255,255,255,0.85);font-size:0.9rem;font-weight:500;text-decoration:none;display:flex;align-items:center;gap:6px;white-space:nowrap}
-.hero-price{display:inline-flex;align-items:center;gap:16px;padding:16px 20px;background:rgba(255,255,255,0.10);backdrop-filter:blur(12px);border-radius:12px;border:1px solid rgba(255,255,255,0.20);flex-wrap:wrap}
+.hero-price{display:inline-flex;align-items:center;gap:16px;padding:16px 20px;background:rgba(0,0,0,0.45);backdrop-filter:blur(12px);border-radius:12px;border:1px solid rgba(255,255,255,0.25);flex-wrap:wrap}
 .price-label{font-size:0.65rem;font-weight:700;color:rgba(255,255,255,0.55);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:2px}
 .price-num{display:flex;align-items:baseline;gap:1px}
 .price-num span:first-child{font-size:0.9rem;font-weight:700;color:#93c5fd}
@@ -287,7 +287,7 @@ footer a:hover{color:#93c5fd}
       <p>Traditionele kascontrole is vaak steekproefsgewijs. Met Slimme Kascontrole voert u een <strong>volledige controle</strong> uit — elke factuur, elk saldo, elk boekjaar. Zo staat u sterk op uw ALV.</p>
     </div>
     <div class="why-img fade-in">
-      <img src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=700&q=80" alt="Financiële controle"/>
+      <img src="https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=700&q=80" alt="Financiële controle"/>
     </div>
   </div>
 </section>
