@@ -1,522 +1,579 @@
-import type { Metadata } from 'next'
-
-export const metadata: Metadata = {
-  title: 'Slimme Kascontrole – Uw kascontrole klaar voor de ALV',
-  description: 'Volledig gecontroleerd kascontrolerapport voor uw vereniging. Eenmalig €59 incl. btw per kascontrole.',
-}
-
 export default function Home() {
-  return <div dangerouslySetInnerHTML={{ __html: html }} />
-}
+  return (
+    <>
+      <html lang="nl">
+      <head>
+        <meta charSet="UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <title>Slimme Kascontrole — Volledig gecontroleerd kascontrolerapport voor uw vereniging</title>
+        <meta name="description" content="Upload uw financiële bestanden en ontvang een volledig gecontroleerd kascontrolerapport. Voor Nederlandse verenigingen, VvE's en stichtingen. €59 per boekjaar."/>
+        <link rel="preconnect" href="https://fonts.googleapis.com"/>
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous"/>
+        <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+        <style>{`
+          :root{
+            --blue:#2563EB;
+            --blue-dark:#1d4ed8;
+            --blue-deeper:#1e3a8a;
+            --blue-light:#93c5fd;
+            --blue-pale:#eff6ff;
+            --ink:#0f172a;
+            --ink-soft:#475569;
+            --border:#e2e8f0;
+            --cream:#f8fafc;
+            --white:#ffffff;
+          }
+          *{box-sizing:border-box;margin:0;padding:0}
+          body{font-family:'Inter',sans-serif;color:var(--ink);background:var(--white);line-height:1.6}
+          h1,h2,h3{font-family:'Playfair Display',serif;line-height:1.15}
+          h1{font-size:clamp(2.2rem,4vw,3.2rem)}
+          h2{font-size:clamp(1.6rem,3vw,2.4rem)}
+          em{font-style:italic;color:var(--blue)}
 
-const html = `<!DOCTYPE html>
-<html lang="nl">
-<head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1"/>
-<link rel="preconnect" href="https://fonts.googleapis.com"/>
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet"/>
-<style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
-body{font-family:'Outfit',sans-serif;color:#0f172a;background:white;overflow-x:hidden}
+          /* NAV */
+          nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:0 48px;height:68px;background:rgba(255,255,255,0.95);backdrop-filter:blur(8px);border-bottom:1px solid transparent;transition:border-color 0.3s,box-shadow 0.3s}
+          nav.scrolled{border-color:var(--border);box-shadow:0 2px 16px rgba(0,0,0,0.06)}
+          .logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+          .logo-icon{width:36px;height:36px;background:var(--blue);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+          .logo-text-top{font-family:'Inter',sans-serif;font-size:0.7rem;font-weight:600;color:var(--blue);letter-spacing:0.05em;text-transform:uppercase;line-height:1}
+          .logo-text-bot{font-family:'Playfair Display',serif;font-size:1.05rem;font-weight:700;color:var(--ink);line-height:1.1}
+          .nav-links{list-style:none;display:flex;align-items:center;gap:32px}
+          .nav-links a{text-decoration:none;color:var(--ink-soft);font-size:0.9rem;font-weight:500;transition:color 0.2s}
+          .nav-links a:hover{color:var(--ink)}
+          .btn-nav{background:var(--blue);color:white!important;padding:8px 20px;border-radius:8px;font-weight:600!important;transition:background 0.2s!important}
+          .btn-nav:hover{background:var(--blue-dark)!important}
+          #hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:8px;background:none;border:none;z-index:200}
+          #hamburger span{display:block;width:22px;height:2px;background:var(--ink);border-radius:2px;transition:all 0.3s}
+          #mobile-menu{display:none;position:fixed;top:68px;left:0;right:0;background:white;border-bottom:1px solid var(--border);box-shadow:0 8px 24px rgba(0,0,0,0.1);z-index:99;padding:16px}
+          #mobile-menu ul{list-style:none}
 
-/* NAV */
-nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(255,255,255,0.97);backdrop-filter:blur(12px);border-bottom:1px solid #e2e8f0;height:72px;display:flex;align-items:center;justify-content:space-between;padding:0 48px;transition:box-shadow 0.3s}
-nav.scrolled{box-shadow:0 4px 24px rgba(0,0,0,0.08)}
-.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
-.nav-logo-icon{background:#2563EB;width:38px;height:38px;border-radius:8px;display:flex;align-items:center;justify-content:center}
-.nav-links{display:flex;gap:28px;list-style:none;align-items:center}
-.nav-links a{font-size:0.88rem;font-weight:500;color:#475569;text-decoration:none;transition:color 0.2s}
-.nav-links a:hover{color:#2563EB}
-.btn-nav{background:#2563EB;color:white!important;padding:9px 20px;border-radius:6px;font-weight:600;transition:background 0.2s!important}
-.btn-nav:hover{background:#1D4ED8!important}
-.hamburger{display:none;background:none;border:1.5px solid #e2e8f0;border-radius:6px;cursor:pointer;padding:7px;flex-direction:column;gap:4px;align-items:center;justify-content:center}
-.ham-bar{display:block;width:20px;height:2px;background:#0f172a;border-radius:2px;transition:all 0.3s}
-.mobile-menu{display:none;position:fixed;top:72px;left:0;right:0;background:white;border-bottom:1px solid #e2e8f0;z-index:199;padding:12px 20px 20px;box-shadow:0 8px 24px rgba(0,0,0,0.1)}
-.mobile-menu a{display:block;padding:12px 16px;color:#0f172a;text-decoration:none;font-weight:500;border-radius:8px;font-size:0.95rem;transition:background 0.15s}
-.mobile-menu a:hover{background:#f8fafc}
-.mobile-menu .mobile-btn{background:#2563EB;color:white!important;text-align:center;margin-top:8px;font-weight:700}
+          /* HERO */
+          .hero{position:relative;min-height:100vh;display:flex;align-items:center;overflow:hidden}
+          .hero-bg{position:absolute;inset:0;z-index:0}
+          .hero-bg img{width:100%;height:100%;object-fit:cover;object-position:center 30%;opacity:0.55}
+          .hero-overlay{position:absolute;inset:0;background:linear-gradient(105deg,rgba(15,23,42,0.82) 0%,rgba(30,58,138,0.70) 45%,rgba(15,23,42,0.40) 100%)}
+          .hero-content{position:relative;z-index:1;max-width:1100px;margin:0 auto;width:100%;padding:100px 48px 80px}
+          .hero-eyebrow{display:inline-flex;align-items:center;gap:8px;background:rgba(147,197,253,0.15);border:1px solid rgba(147,197,253,0.3);color:var(--blue-light);font-size:0.78rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;padding:6px 14px;border-radius:999px;margin-bottom:24px}
+          .hero h1{color:white;max-width:680px;margin-bottom:20px}
+          .hero-sub{color:rgba(255,255,255,0.8);font-size:1.05rem;max-width:560px;margin-bottom:36px;line-height:1.7}
+          .hero-cta-row{display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:40px}
+          .btn-primary{display:inline-flex;align-items:center;gap:8px;background:var(--blue);color:white;font-weight:700;font-size:0.95rem;padding:14px 28px;border-radius:10px;text-decoration:none;transition:background 0.2s,transform 0.15s,box-shadow 0.2s;box-shadow:0 4px 16px rgba(37,99,235,0.4)}
+          .btn-primary:hover{background:var(--blue-dark);transform:translateY(-1px);box-shadow:0 6px 20px rgba(37,99,235,0.5)}
+          .btn-ghost{color:rgba(255,255,255,0.8);font-size:0.95rem;font-weight:500;text-decoration:none;display:inline-flex;align-items:center;gap:6px;transition:color 0.2s}
+          .btn-ghost:hover{color:white}
+          .hero-badges-desktop{display:flex;gap:20px;flex-wrap:wrap}
+          .hero-badge-item{display:flex;align-items:center;gap:6px;color:rgba(255,255,255,0.7);font-size:0.8rem}
+          .hero-badge-item span{color:var(--blue-light);font-size:1rem}
 
-/* HERO */
-.hero{position:relative;min-height:100vh;width:100%;display:flex;align-items:center;overflow:hidden;background:#0f2460}
-.hero-bg{position:absolute;inset:0;z-index:0}
-.hero-bg img{width:100%;height:100%;object-fit:cover;object-position:center 60%;opacity:0.6}
+          /* TRUST BAR */
+          .trust-bar{background:var(--blue-deeper);padding:20px 48px;display:flex;justify-content:center;align-items:center;gap:40px;flex-wrap:wrap}
+          .trust-item{display:flex;align-items:center;gap:8px;color:rgba(255,255,255,0.75);font-size:0.82rem;font-weight:500}
+          .trust-icon{color:var(--blue-light);font-size:1rem}
 
-.hero-content{position:relative;z-index:1;max-width:1100px;margin:0 auto;padding:0 48px;width:100%}
-.hero-eyebrow{display:inline-flex;align-items:center;gap:8px;background:rgba(37,99,235,0.35);border:1px solid rgba(147,197,253,0.5);color:#bfdbfe;font-size:0.72rem;font-weight:700;padding:5px 13px;border-radius:20px;margin-bottom:24px;letter-spacing:0.05em;text-transform:uppercase}
-.hero h1{font-family:'Playfair Display',serif;font-size:clamp(2rem,4.5vw,3.8rem);font-weight:700;line-height:1.1;color:white;margin-bottom:20px;letter-spacing:-0.02em}
-.hero h1 em{font-style:italic;font-weight:400;color:#93c5fd}
-.hero-sub{font-size:clamp(0.92rem,2vw,1.05rem);color:rgba(255,255,255,0.88);line-height:1.7;margin-bottom:32px;max-width:500px}
-.hero-ctas{display:flex;gap:14px;align-items:center;flex-wrap:wrap;margin-bottom:36px}
-.btn-primary{background:#2563EB;color:white;padding:14px 30px;border-radius:8px;font-size:0.95rem;font-weight:700;text-decoration:none;box-shadow:0 4px 20px rgba(37,99,235,0.45);font-family:'Outfit',sans-serif;white-space:nowrap;display:inline-block}
-.btn-primary:hover{background:#1D4ED8}
-.btn-ghost-white{color:rgba(255,255,255,0.85);font-size:0.9rem;font-weight:500;text-decoration:none;display:flex;align-items:center;gap:6px;white-space:nowrap}
-.hero-price{display:inline-flex;align-items:center;gap:16px;padding:16px 20px;background:rgba(0,0,0,0.45);backdrop-filter:blur(12px);border-radius:12px;border:1px solid rgba(255,255,255,0.25);flex-wrap:wrap}
-.price-label{font-size:0.65rem;font-weight:700;color:rgba(255,255,255,0.55);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:2px}
-.price-num{display:flex;align-items:baseline;gap:1px}
-.price-num span:first-child{font-size:0.9rem;font-weight:700;color:#93c5fd}
-.price-num span:last-child{font-family:'Playfair Display',serif;font-size:2rem;font-weight:700;color:white;line-height:1}
-.price-divider{width:1px;height:40px;background:rgba(255,255,255,0.2);flex-shrink:0}
-.price-checks{display:flex;flex-direction:column;gap:5px}
-.price-check{font-size:0.78rem;color:rgba(255,255,255,0.9);display:flex;align-items:center;gap:6px}
-.price-check span:first-child{color:#93c5fd;font-weight:700}
+          /* SECTIONS */
+          section{padding:96px 48px}
+          .section-label{font-size:0.75rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--blue);margin-bottom:12px}
+          .section-sub{color:var(--ink-soft);font-size:1rem;margin-top:16px;line-height:1.7;max-width:600px}
+          .section-sub.centered{text-align:center;margin-left:auto;margin-right:auto}
 
-/* SECTIONS */
-section{padding:88px 48px}
-.section-label{font-size:0.7rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:#2563EB;margin-bottom:12px}
-h2{font-family:'Playfair Display',serif;font-size:clamp(1.7rem,3vw,2.5rem);font-weight:700;color:#0f172a;letter-spacing:-0.02em;line-height:1.15;margin-bottom:14px}
-h2 em{font-style:italic;color:#2563EB}
-.section-sub{font-size:0.97rem;color:#475569;line-height:1.7;max-width:540px;margin-bottom:52px}
-.centered{text-align:center}
-.centered .section-sub{margin:0 auto 52px}
+          /* STEPS */
+          .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:32px;margin-top:56px}
+          .step{display:flex;flex-direction:column;gap:0}
+          .step-img{width:100%;height:200px;object-fit:cover;border-radius:16px 16px 0 0}
+          .step-body{background:var(--blue-pale);border-radius:0 0 16px 16px;padding:28px;flex:1}
+          .step-num{font-family:'Playfair Display',serif;font-size:2.5rem;font-weight:700;color:var(--blue);line-height:1;margin-bottom:8px}
+          .step-body h3{font-size:1.05rem;margin-bottom:8px;color:var(--ink)}
+          .step p{font-size:0.88rem;color:var(--ink-soft);line-height:1.7}
 
-/* WHY */
-.why-grid{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center;max-width:1100px;margin:0 auto}
-.why-text p{font-size:0.93rem;color:#475569;line-height:1.8;margin-bottom:14px}
-.why-callout{background:#eff6ff;border-left:4px solid #2563EB;border-radius:0 10px 10px 0;padding:18px 22px;margin:20px 0;font-size:0.88rem;color:#1e3a8a;line-height:1.7}
-.why-img{border-radius:16px;overflow:hidden;box-shadow:0 16px 48px rgba(0,0,0,0.1)}
-.why-img img{width:100%;height:400px;object-fit:cover;display:block}
+          /* SOURCES */
+          .sources-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;max-width:900px;margin:0 auto}
+          .source-card{background:white;border-radius:12px;padding:28px 24px;border:1px solid var(--border);text-align:center;transition:transform 0.2s,box-shadow 0.2s}
+          .source-card:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(0,0,0,0.08)}
+          .source-icon{height:48px;display:flex;align-items:center;justify-content:center;margin-bottom:14px}
+          .source-icon img{max-height:40px;max-width:120px;object-fit:contain}
+          .source-icon-emoji{font-size:2rem}
+          .source-name{font-weight:700;color:var(--ink);font-size:0.95rem;margin-bottom:4px}
+          .source-desc{font-size:0.78rem;color:var(--ink-soft)}
 
-/* ABOUT */
-.about-bg{background:#f8fafc}
-.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center;max-width:1100px;margin:0 auto}
-.about-img{border-radius:16px;overflow:hidden;box-shadow:0 16px 48px rgba(0,0,0,0.1)}
-.about-img img{width:100%;height:420px;object-fit:cover;display:block}
-.about-quote{background:white;border-radius:12px;padding:24px;border:1px solid #e2e8f0;margin-top:24px;font-style:italic;color:#475569;font-size:0.92rem;line-height:1.7;position:relative}
-.about-quote::before{content:'"';font-family:'Playfair Display',serif;font-size:3rem;color:#2563EB;line-height:0.8;display:block;margin-bottom:8px}
+          /* FEATURES */
+          .features-bg{background:var(--cream)}
+          .features-grid{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center;max-width:1100px;margin:0 auto}
+          .feature-list{display:flex;flex-direction:column;gap:24px}
+          .feature-item{display:flex;gap:16px;align-items:flex-start}
+          .feature-icon{width:44px;height:44px;background:var(--blue-pale);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0}
+          .feature-text h4{font-weight:700;color:var(--ink);font-size:0.95rem;margin-bottom:4px}
+          .feature-text p{font-size:0.85rem;color:var(--ink-soft);line-height:1.6}
+          .feature-visual{background:var(--blue-deeper);border-radius:20px;padding:40px;color:white}
+          .fv-title{font-family:'Playfair Display',serif;font-size:1.1rem;margin-bottom:24px;color:var(--blue-light)}
+          .check-list{list-style:none;display:flex;flex-direction:column;gap:14px}
+          .check-list li{display:flex;gap:12px;font-size:0.88rem;color:rgba(255,255,255,0.8);line-height:1.5}
+          .check-list li::before{content:'✓';color:var(--blue-light);font-weight:700;flex-shrink:0}
 
-/* HOW */
-.how-bg{background:white}
-.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:32px;max-width:1100px;margin:0 auto}
-.step{background:white;border-radius:16px;border:1px solid #e2e8f0;overflow:hidden;transition:transform 0.2s,box-shadow 0.2s}
-.step:hover{transform:translateY(-4px);box-shadow:0 16px 48px rgba(0,0,0,0.08)}
-.step-img{width:100%;height:200px;object-fit:cover;display:block}
-.step-body{padding:24px}
-.step-num{font-family:'Playfair Display',serif;font-size:2.5rem;font-weight:700;color:#eff6ff;line-height:1;margin-bottom:8px}
-.step h3{font-family:'Outfit',sans-serif;font-size:1rem;font-weight:700;color:#0f172a;margin-bottom:8px}
-.step p{font-size:0.85rem;color:#475569;line-height:1.7}
+          /* PRICING */
+          .pricing-bg{background:var(--cream)}
+          .pricing-grid{display:grid;grid-template-columns:1fr 1fr;gap:28px;max-width:760px;margin:0 auto}
+          .price-card{background:white;border-radius:16px;padding:36px;border:2px solid var(--border);transition:transform 0.2s,box-shadow 0.2s;position:relative}
+          .price-card:hover{transform:translateY(-4px);box-shadow:0 16px 48px rgba(0,0,0,0.08)}
+          .price-card.featured{border-color:var(--blue);background:var(--blue-deeper);color:white}
+          .price-card.featured h3,.price-card.featured .price-amount{color:white}
+          .price-card.featured .price-note,.price-card.featured .price-feat{color:rgba(255,255,255,0.75)}
+          .price-badge{position:absolute;top:-14px;left:50%;transform:translateX(-50%);background:var(--blue);color:white;font-size:0.72rem;font-weight:700;letter-spacing:0.06em;padding:4px 14px;border-radius:999px;white-space:nowrap}
+          .price-card h3{font-size:1rem;margin-bottom:20px}
+          .price-amount{font-family:'Playfair Display',serif;font-size:2.8rem;font-weight:700;color:var(--ink);line-height:1}
+          .price-note{font-size:0.78rem;color:var(--ink-soft);margin-top:4px;margin-bottom:20px}
+          .price-feats{list-style:none;display:flex;flex-direction:column;gap:10px;margin-bottom:28px}
+          .price-feat{font-size:0.85rem;color:var(--ink-soft);display:flex;gap:8px}
+          .price-feat::before{content:'✓';color:var(--blue);font-weight:700}
+          .price-card.featured .price-feat::before{color:var(--blue-light)}
+          .btn-price{display:block;text-align:center;padding:12px;border-radius:8px;font-weight:700;font-size:0.9rem;text-decoration:none;transition:all 0.2s}
+          .btn-price-outline{border:2px solid var(--blue);color:var(--blue)}
+          .btn-price-outline:hover{background:var(--blue);color:white}
+          .btn-price-solid{background:var(--blue-light);color:var(--blue-deeper)}
+          .btn-price-solid:hover{background:white}
 
-/* SOURCES */
-.sources-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;max-width:1100px;margin:0 auto}
-.source-card{background:white;border-radius:12px;padding:22px;border:1px solid #e2e8f0;text-align:center;transition:transform 0.2s,box-shadow 0.2s}
-.source-card:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(0,0,0,0.07)}
-.source-icon{font-size:1.8rem;margin-bottom:10px}
-.source-name{font-weight:700;color:#0f172a;font-size:0.9rem;margin-bottom:3px}
-.source-desc{font-size:0.75rem;color:#475569;line-height:1.5}
+          /* TESTIMONIALS */
+          .testi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:56px}
+          .testi-card{background:white;border-radius:12px;padding:28px;border:1px solid var(--border)}
+          .stars{color:#f59e0b;font-size:0.9rem;margin-bottom:12px}
+          .testi-card blockquote{font-size:0.88rem;color:var(--ink-soft);line-height:1.7;margin-bottom:16px;font-style:italic}
+          .testi-author{font-weight:700;font-size:0.85rem;color:var(--ink)}
+          .testi-role{font-size:0.78rem;color:var(--ink-soft)}
 
-/* FEATURES */
-.features-bg{background:#f8fafc}
-.features-grid{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center;max-width:1100px;margin:0 auto}
-.feature-list{display:flex;flex-direction:column;gap:22px}
-.feature-item{display:flex;gap:14px;align-items:flex-start}
-.feature-icon{width:42px;height:42px;background:#eff6ff;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;transition:background 0.2s}
-.feature-item:hover .feature-icon{background:#bfdbfe}
-.feature-text h4{font-weight:700;color:#0f172a;font-size:0.92rem;margin-bottom:3px}
-.feature-text p{font-size:0.83rem;color:#475569;line-height:1.6}
-.feature-visual{background:#1e3a8a;border-radius:20px;padding:36px;color:white}
-.fv-title{font-family:'Playfair Display',serif;font-size:1.05rem;margin-bottom:20px;color:#93c5fd}
-.check-list{list-style:none;display:flex;flex-direction:column;gap:12px}
-.check-list li{display:flex;gap:10px;font-size:0.86rem;color:rgba(255,255,255,0.82);line-height:1.5}
-.check-list li::before{content:'✓';color:#93c5fd;font-weight:700;flex-shrink:0}
+          /* FAQ */
+          .faq-list{max-width:700px;margin:40px auto 0;display:flex;flex-direction:column;gap:0}
+          .faq-item{border-bottom:1px solid var(--border)}
+          .faq-q{width:100%;background:none;border:none;text-align:left;padding:20px 0;font-size:0.95rem;font-weight:600;color:var(--ink);cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:16px}
+          .faq-q:hover{color:var(--blue)}
+          .faq-icon{color:var(--blue);font-size:1.1rem;flex-shrink:0;transition:transform 0.2s}
+          .faq-a{font-size:0.88rem;color:var(--ink-soft);line-height:1.8;padding-bottom:20px;display:none}
+          .faq-item.open .faq-a{display:block}
+          .faq-item.open .faq-icon{transform:rotate(45deg)}
 
-/* SECURITY */
-.security-bg{background:#1e3a8a;color:white}
-.security-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;max-width:1000px;margin:0 auto}
-.sec-card{background:rgba(255,255,255,0.08);border-radius:14px;padding:24px 18px;border:1px solid rgba(255,255,255,0.12);text-align:center}
-.sec-icon{font-size:1.8rem;margin-bottom:10px}
-.sec-title{font-weight:700;color:white;font-size:0.88rem;margin-bottom:6px}
-.sec-desc{font-size:0.78rem;color:rgba(255,255,255,0.65);line-height:1.6}
+          /* CTA BANNER */
+          .cta-banner{background:var(--blue-deeper);text-align:center;padding:80px 48px}
+          .cta-banner h2{color:white;margin-bottom:16px}
+          .cta-banner p{color:rgba(255,255,255,0.75);margin-bottom:32px;font-size:1rem}
 
-/* PRICING */
-.pricing-bg{background:#f8fafc}
-.pricing-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;max-width:760px;margin:0 auto}
-.price-card{background:white;border-radius:16px;padding:32px;border:2px solid #e2e8f0;transition:transform 0.2s,box-shadow 0.2s;position:relative}
-.price-card:hover{transform:translateY(-4px);box-shadow:0 16px 48px rgba(0,0,0,0.08)}
-.price-card.featured{border-color:#2563EB;background:#1e3a8a;color:white}
-.popular-tag{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:#f59e0b;color:white;font-size:0.68rem;font-weight:700;padding:4px 14px;border-radius:20px;letter-spacing:0.05em;text-transform:uppercase;white-space:nowrap}
-.price-card h3{font-size:1.05rem;font-weight:700;color:#0f172a;margin-bottom:6px}
-.price-card.featured h3{color:white}
-.price-amount{font-family:'Playfair Display',serif;font-size:2.4rem;font-weight:700;color:#0f172a;line-height:1;margin:14px 0 4px}
-.price-card.featured .price-amount{color:white}
-.price-note{font-size:0.78rem;color:#475569;margin-bottom:20px}
-.price-card.featured .price-note{color:rgba(255,255,255,0.6)}
-.feat-li{font-size:0.84rem;color:#475569;display:flex;gap:7px;margin-bottom:8px;align-items:flex-start}
-.feat-li::before{content:'✓';color:#2563EB;font-weight:700;flex-shrink:0;margin-top:1px}
-.price-card.featured .feat-li{color:rgba(255,255,255,0.85)}
-.price-card.featured .feat-li::before{color:#93c5fd}
-.btn-plan{display:block;text-align:center;margin-top:24px;padding:12px;border-radius:8px;font-size:0.88rem;font-weight:700;text-decoration:none;font-family:'Outfit',sans-serif;transition:all 0.2s}
-.btn-plan-blue{background:#2563EB;color:white}
-.btn-plan-blue:hover{background:#1D4ED8}
-.btn-plan-outline{border:1.5px solid #bfdbfe;color:#2563EB}
-.btn-plan-outline:hover{background:#eff6ff}
+          /* FOOTER */
+          footer{background:#0f172a;color:rgba(255,255,255,0.5);padding:48px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;font-size:0.83rem}
+          footer a{color:rgba(255,255,255,0.5);text-decoration:none;margin-left:24px}
+          footer a:hover{color:var(--blue-light)}
 
-/* TESTIMONIALS */
-.testi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;max-width:1100px;margin:0 auto}
-.testi{background:white;border-radius:16px;padding:28px;border:1px solid #e2e8f0}
-.stars{font-size:0.82rem;color:#f59e0b;letter-spacing:3px;margin-bottom:12px}
-.testi blockquote{font-size:0.88rem;color:#475569;line-height:1.7;margin-bottom:18px;font-style:italic}
-.testi-author{font-size:0.82rem;font-weight:700;color:#0f172a}
-.testi-role{font-size:0.75rem;color:#475569}
+          /* ANIMATIONS */
+          @keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+          .fade-in{opacity:0;transform:translateY(20px);transition:opacity 0.7s ease,transform 0.7s ease}
+          .fade-in.visible{opacity:1;transform:translateY(0)}
 
-/* CTA */
-.cta-bg{background:#2563EB;color:white;text-align:center}
-.cta-bg h2{color:white}
-.cta-bg .section-sub{color:rgba(255,255,255,0.75);margin:0 auto 36px}
-.btn-white{background:white;color:#2563EB;padding:15px 36px;border-radius:8px;font-size:0.95rem;font-weight:700;text-decoration:none;display:inline-block;font-family:'Outfit',sans-serif;transition:transform 0.2s,box-shadow 0.2s}
-.btn-white:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,0.15)}
-.btn-ghost-blue{color:rgba(255,255,255,0.8);font-size:0.9rem;font-weight:500;text-decoration:none;display:inline-flex;align-items:center;gap:6px;margin-left:20px}
-.btn-ghost-blue:hover{color:white}
+          /* RESPONSIVE */
+          @media(max-width:900px){
+            nav{padding:0 20px}
+            .nav-links{display:none!important}
+            #hamburger{display:flex!important}
+            section{padding:64px 24px}
+            .hero-content{padding:100px 24px 72px!important}
+            .steps,.testi-grid{grid-template-columns:1fr}
+            .sources-grid{grid-template-columns:1fr 1fr}
+            .features-grid,.pricing-grid{grid-template-columns:1fr}
+            footer{flex-direction:column;text-align:center}
+            footer a{margin:0 12px}
+            .trust-bar{padding:16px 24px;gap:20px}
+            .hero-badges-desktop{display:none!important}
+            .cta-banner{padding:64px 24px}
+          }
+          @media(max-width:500px){
+            .sources-grid{grid-template-columns:1fr}
+            .pricing-grid{grid-template-columns:1fr}
+          }
+        `}</style>
+      </head>
+      <body>
 
-/* FOOTER */
-footer{background:#0f172a;color:rgba(255,255,255,0.5);padding:40px 48px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;font-size:0.8rem}
-.footer-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
-footer a{color:rgba(255,255,255,0.5);text-decoration:none}
-footer a:hover{color:#93c5fd}
-.footer-links{display:flex;gap:20px;flex-wrap:wrap}
+        {/* NAV */}
+        <nav id="navbar">
+          <a href="/" className="logo">
+            <div className="logo-icon">
+              <svg width="20" height="20" viewBox="0 0 22 22" fill="none"><polyline points="3,12 9,18 19,6" stroke="white" strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round"/></svg>
+            </div>
+            <div>
+              <div className="logo-text-top">slimme</div>
+              <div className="logo-text-bot">kascontrole</div>
+            </div>
+          </a>
+          <ul className="nav-links">
+            <li><a href="#waarom">Waarom</a></li>
+            <li><a href="#hoe-het-werkt">Hoe het werkt</a></li>
+            <li><a href="#tarieven">Tarieven</a></li>
+            <li><a href="/mijn-omgeving">Mijn omgeving</a></li>
+            <li><a href="/contact" className="btn-nav">Contact</a></li>
+          </ul>
+          <button id="hamburger" onClick={() => {}} aria-label="Menu">
+            <span id="bar1"></span>
+            <span id="bar2"></span>
+            <span id="bar3"></span>
+          </button>
+        </nav>
 
-/* ANIMATIONS */
-@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
-.fade-in{opacity:0;transform:translateY(18px);transition:opacity 0.7s ease,transform 0.7s ease}
-.fade-in.visible{opacity:1;transform:translateY(0)}
-
-/* RESPONSIVE */
-@media(max-width:900px){
-  nav{padding:0 20px}
-  .nav-links{display:none!important}
-  .hamburger{display:flex!important}
-  section{padding:56px 20px}
-  .steps,.testi-grid{grid-template-columns:1fr}
-  .features-grid,.why-grid,.about-grid,.pricing-grid{grid-template-columns:1fr}
-  .sources-grid,.security-grid{grid-template-columns:1fr 1fr}
-  .hero-content{padding:0 20px}
-  footer{flex-direction:column;text-align:center;padding:32px 20px}
-  .footer-links{justify-content:center}
-}
-@media(max-width:500px){
-  .sources-grid,.security-grid{grid-template-columns:1fr}
-  .pricing-grid{grid-template-columns:1fr}
-  .hero-price{gap:12px}
-  .price-divider{display:none}
-}
-</style>
-</head>
-<body>
-
-<!-- NAV -->
-<nav id="navbar">
-  <a href="/" class="nav-logo">
-    <div class="nav-logo-icon">
-      <svg width="20" height="20" viewBox="0 0 22 22" fill="none"><polyline points="3,12 9,18 19,6" stroke="white" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    </div>
-    <div style="line-height:1.1">
-      <div style="font-weight:700;font-size:1rem;color:#2563EB">slimme</div>
-      <div style="font-weight:500;font-size:1rem;color:#3b82f6">kascontrole</div>
-    </div>
-  </a>
-  <ul class="nav-links">
-    <li><a href="#waarom">Waarom</a></li>
-    <li><a href="#hoe-het-werkt">Hoe het werkt</a></li>
-    <li><a href="#over-ons">Over ons</a></li>
-    <li><a href="#tarieven">Tarieven</a></li>
-    <li><a href="/contact">Contact</a></li>
-    <li><a href="/mijn-omgeving">Mijn omgeving</a></li>
-    <li><a href="/registreer" class="btn-nav">Account aanmaken</a></li>
-  </ul>
-  <button class="hamburger" id="hamburger" onclick="toggleMenu()" aria-label="Menu">
-    <span class="ham-bar" id="bar1"></span>
-    <span class="ham-bar" id="bar2"></span>
-    <span class="ham-bar" id="bar3"></span>
-  </button>
-</nav>
-
-<!-- MOBIEL MENU -->
-<div class="mobile-menu" id="mobile-menu">
-  <a href="#waarom" onclick="closeMenu()">Waarom kascontrole?</a>
-  <a href="#hoe-het-werkt" onclick="closeMenu()">Hoe het werkt</a>
-  <a href="#over-ons" onclick="closeMenu()">Over ons</a>
-  <a href="#tarieven" onclick="closeMenu()">Tarieven</a>
-  <a href="/contact">Contact</a>
-  <a href="/mijn-omgeving">Mijn omgeving</a>
-  <a href="/registreer" class="mobile-btn">Account aanmaken</a>
-</div>
-
-<!-- HERO -->
-<section class="hero">
-  <div class="hero-bg">
-    <img src="/hero.jpg" alt="Kascontrole voor verenigingen"/>
-    <div class="hero-overlay"></div>
-  </div>
-  <div class="hero-content">
-    <div style="max-width:600px">
-      <div class="hero-eyebrow">✦ Verplicht voor elke vereniging</div>
-      <h1>Uw kascontrole klaar<br/>voor de <em>volgende ALV</em></h1>
-      <p class="hero-sub">Upload uw financiële bestanden en ontvang een volledig gecontroleerd kascontrolerapport, opgesteld door onze kascontroleurs. Eenmalig €59 incl. btw — geen abonnement.</p>
-      <div class="hero-ctas">
-        <a href="/registreer" class="btn-primary">Account aanmaken</a>
-        <a href="#hoe-het-werkt" class="btn-ghost-white">Bekijk hoe het werkt →</a>
-      </div>
-      <div class="hero-price">
-        <div>
-          <div class="price-label">Eenmalig per kascontrole</div>
-          <div class="price-num"><span>€</span><span>59</span></div>
-          <div style="font-size:0.68rem;color:rgba(255,255,255,0.5);margin-top:2px">incl. btw</div>
+        {/* MOBILE MENU */}
+        <div id="mobile-menu">
+          <ul>
+            <li><a href="#waarom" style={{display:'block',padding:'12px 16px',color:'#0f172a',textDecoration:'none',fontWeight:'500',borderRadius:'8px',fontSize:'0.95rem'}}>Waarom</a></li>
+            <li><a href="#hoe-het-werkt" style={{display:'block',padding:'12px 16px',color:'#0f172a',textDecoration:'none',fontWeight:'500',borderRadius:'8px',fontSize:'0.95rem'}}>Hoe het werkt</a></li>
+            <li><a href="#tarieven" style={{display:'block',padding:'12px 16px',color:'#0f172a',textDecoration:'none',fontWeight:'500',borderRadius:'8px',fontSize:'0.95rem'}}>Tarieven</a></li>
+            <li><a href="/mijn-omgeving" style={{display:'block',padding:'12px 16px',color:'#0f172a',textDecoration:'none',fontWeight:'500',borderRadius:'8px',fontSize:'0.95rem'}}>Mijn omgeving</a></li>
+            <li><a href="/contact" style={{display:'block',padding:'12px 16px',color:'#0f172a',textDecoration:'none',fontWeight:'500',borderRadius:'8px',fontSize:'0.95rem'}}>Contact</a></li>
+            <li style={{marginTop:'8px'}}><a href="/registreer" style={{display:'block',padding:'14px 16px',background:'#2563EB',color:'white',textDecoration:'none',fontWeight:'700',borderRadius:'8px',textAlign:'center',fontSize:'0.95rem'}}>Account aanmaken</a></li>
+          </ul>
         </div>
-        <div class="price-divider"></div>
-        <div class="price-checks">
-          <div class="price-check"><span>✓</span>Volledig gecontroleerd rapport</div>
-          <div class="price-check"><span>✓</span>Trendanalyse meerdere jaren</div>
-          <div class="price-check"><span>✓</span>Geen abonnement</div>
+
+        {/* HERO */}
+        <div className="hero">
+          <div className="hero-bg">
+            <img src="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?w=1600&q=85" alt="Kascontrole"/>
+          </div>
+          <div className="hero-overlay"></div>
+          <div className="hero-content">
+            <div className="hero-eyebrow">✦ Verplicht voor elke vereniging</div>
+            <h1>Uw kascontrole klaar<br/>voor de <em>volgende ALV</em></h1>
+            <p className="hero-sub">Upload uw financiële bestanden en ontvang een volledig gecontroleerd kascontrolerapport, opgesteld door onze kascontroleurs. Betrouwbaar, veilig en conform de wettelijke eisen.</p>
+            <div className="hero-cta-row">
+              <a href="/registreer" className="btn-primary">Start nu — €59 per boekjaar →</a>
+              <a href="#hoe-het-werkt" className="btn-ghost">Hoe werkt het?</a>
+            </div>
+            <div className="hero-badges-desktop">
+              <div className="hero-badge-item"><span>🔒</span> SSL-beveiligd</div>
+              <div className="hero-badge-item"><span>🇳🇱</span> Data opgeslagen in NL</div>
+              <div className="hero-badge-item"><span>✓</span> AVG-conform</div>
+              <div className="hero-badge-item"><span>📄</span> Direct als PDF</div>
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
-  </div>
-</section>
 
-<!-- WAAROM -->
-<section id="waarom">
-  <div class="why-grid">
-    <div class="why-text fade-in">
-      <p class="section-label">Waarom kascontrole?</p>
-      <h2>Elke vereniging is <em>wettelijk verplicht</em> tot kascontrole</h2>
-      <p>Volgens de statuten van vrijwel elke vereniging en de Algemene Ledenvergadering (ALV) is het bestuur verplicht verantwoording af te leggen over het financiële beheer. Een kascommissie controleert of de penningmeester en beheerder alles correct hebben geboekt.</p>
-      <div class="why-callout">
-        <strong>Controleer ook uw beheerder:</strong> Als uw vereniging een externe beheerder heeft — zoals een VvE-beheerder — dan heeft u als lid het recht én de plicht om te controleren of deze partij uw geld correct beheert. Slimme Kascontrole helpt u daarbij.
-      </div>
-      <p>Traditionele kascontrole is vaak steekproefsgewijs. Met Slimme Kascontrole voert u een <strong>volledige controle</strong> uit — elke factuur, elk saldo, elk boekjaar. Zo staat u sterk op uw ALV.</p>
-    </div>
-    <div class="why-img fade-in">
-      <img src="https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=700&q=80" alt="Financiële controle"/>
-    </div>
-  </div>
-</section>
-
-<!-- HOW IT WORKS -->
-<section class="how-bg" id="hoe-het-werkt" style="background:#f8fafc">
-  <div style="max-width:1100px;margin:0 auto;text-align:center">
-    <p class="section-label fade-in">Hoe het werkt</p>
-    <h2 class="fade-in">Drie stappen naar een <em>volledig rapport</em></h2>
-    <p class="section-sub centered fade-in">Geen boekhoudkundige kennis vereist. Upload uw bestanden en ontvang uw rapport.</p>
-    <div class="steps">
-      <div class="step fade-in">
-        <img class="step-img" src="https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=600&q=80" alt="Documenten downloaden"/>
-        <div class="step-body">
-          <div class="step-num" style="color:#bfdbfe">01</div>
-          <h3>Download uw verenigingsgegevens</h3>
-          <p>Download de jaarrekening of het financiële overzicht van uw VvE of vereniging via Twinq, Isabel, uw beheerder of boekhoudprogramma als PDF, Excel of CSV.</p>
+        {/* TRUST BAR */}
+        <div className="trust-bar">
+          <div className="trust-item"><span className="trust-icon">🏛️</span> Wettelijk verplicht voor verenigingen</div>
+          <div className="trust-item"><span className="trust-icon">🔍</span> 100% controle, geen steekproeven</div>
+          <div className="trust-item"><span className="trust-icon">📄</span> Rapport direct als PDF</div>
+          <div className="trust-item"><span className="trust-icon">🔒</span> Veilig &amp; AVG-conform</div>
         </div>
-      </div>
-      <div class="step fade-in">
-        <img class="step-img" src="https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=600&q=80" alt="Veilig uploaden"/>
-        <div class="step-body">
-          <div class="step-num" style="color:#bfdbfe">02</div>
-          <h3>Upload veilig naar uw omgeving</h3>
-          <p>Maak een account aan en upload uw bestanden via onze SSL-versleutelde omgeving. Uw gegevens worden nooit gedeeld met derden en veilig opgeslagen in Nederland.</p>
+
+        {/* WAAROM SECTIE */}
+        <section id="waarom" style={{background:'var(--white)'}}>
+          <div style={{maxWidth:'1100px',margin:'0 auto',display:'grid',gridTemplateColumns:'1fr 1fr',gap:'64px',alignItems:'center'}}>
+            <div>
+              <p className="section-label fade-in">Waarom SlimmeKascontrole?</p>
+              <h2 className="fade-in">Kascontrole is <em>wettelijk verplicht</em></h2>
+              <p className="section-sub fade-in">Elke Nederlandse vereniging is verplicht om jaarlijks de financiële administratie te laten controleren door een kascommissie. Toch zijn veel kascommissies slecht uitgerust voor die taak.</p>
+              <div style={{display:'flex',flexDirection:'column',gap:'16px',marginTop:'28px'}}>
+                <div className="feature-item fade-in">
+                  <div className="feature-icon">📋</div>
+                  <div className="feature-text">
+                    <h4>Verplicht door wet en statuten</h4>
+                    <p>Artikel 2:48 BW verplicht verenigingen tot jaarlijkse financiële controle. Een professioneel rapport beschermt het bestuur en geeft leden vertrouwen.</p>
+                  </div>
+                </div>
+                <div className="feature-item fade-in">
+                  <div className="feature-icon">⏱️</div>
+                  <div className="feature-text">
+                    <h4>Handmatige controle kost te veel tijd</h4>
+                    <p>Vrijwilligers spenderen gemiddeld 8 uur aan een kascontrole. Wij verwerken uw bestanden en leveren een volledig rapport binnen 24 uur.</p>
+                  </div>
+                </div>
+                <div className="feature-item fade-in">
+                  <div className="feature-icon">✅</div>
+                  <div className="feature-text">
+                    <h4>Volledig gecontroleerd — geen steekproeven</h4>
+                    <p>Elke factuur, elk saldo, elke boeking wordt gecontroleerd. Niets wordt overgeslagen.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="fade-in">
+              <img src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=700&q=80" alt="Kascontrole" style={{width:'100%',borderRadius:'16px',boxShadow:'0 16px 48px rgba(0,0,0,0.12)'}}/>
+            </div>
+          </div>
+        </section>
+
+        {/* HOE HET WERKT */}
+        <section id="hoe-het-werkt" style={{background:'var(--cream)'}}>
+          <div style={{maxWidth:'1100px',margin:'0 auto'}}>
+            <p className="section-label fade-in" style={{textAlign:'center'}}>Hoe het werkt</p>
+            <h2 className="fade-in" style={{textAlign:'center'}}>Drie stappen naar uw <em>rapport</em></h2>
+            <div className="steps">
+              <div className="step fade-in">
+                <img className="step-img" src="https://images.unsplash.com/photo-1600267175161-cfaa711b4a81?w=600&q=80" alt="Bestanden uploaden"/>
+                <div className="step-body">
+                  <div className="step-num" style={{color:'var(--blue)'}}>01</div>
+                  <h3>Upload uw bestanden</h3>
+                  <p>Upload uw boekhouding, bankafschriften of kasboek. Wij accepteren PDF, Excel en CSV vanuit Twinq, Isabel, Yuki of uw eigen administratie.</p>
+                </div>
+              </div>
+              <div className="step fade-in">
+                <img className="step-img" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&q=80" alt="Controle"/>
+                <div className="step-body">
+                  <div className="step-num" style={{color:'var(--blue)'}}>02</div>
+                  <h3>Onze kascontroleurs controleren</h3>
+                  <p>Uw bestanden worden veilig versleuteld opgeslagen. Uw gegevens worden nooit gedeeld met derden en veilig opgeslagen in Nederland.</p>
+                </div>
+              </div>
+              <div className="step fade-in">
+                <img className="step-img" src="https://images.unsplash.com/photo-1586281380349-632531db7ed4?w=600&q=80" alt="Rapport ontvangen"/>
+                <div className="step-body">
+                  <div className="step-num" style={{color:'var(--blue)'}}>03</div>
+                  <h3>Ontvang uw volledig rapport</h3>
+                  <p>Na eenmalige betaling van €59 incl. btw stellen onze kascontroleurs uw rapport op. Direct als PDF, klaar voor presentatie op uw ALV.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* BRONNEN SECTIE */}
+        <section>
+          <div style={{maxWidth:'1100px',margin:'0 auto',textAlign:'center'}}>
+            <p className="section-label fade-in">Waar haalt u uw gegevens vandaan?</p>
+            <h2 className="fade-in">Ondersteunde <em>bronnen</em></h2>
+            <p className="section-sub centered fade-in">Wij verwerken bestanden uit alle gangbare boekhoud- en banksystemen.</p>
+            <div className="sources-grid" style={{marginTop:'48px'}}>
+              <div className="source-card fade-in">
+                <div className="source-icon">
+                  <img src="/twinq-logo.jpg" alt="Twinq"/>
+                </div>
+                <div className="source-name">Twinq</div>
+                <div className="source-desc">Export via Twinq dashboard als Excel of PDF</div>
+              </div>
+              <div className="source-card fade-in">
+                <div className="source-icon">
+                  <div className="source-icon-emoji">💼</div>
+                </div>
+                <div className="source-name">Isabel / Yuki</div>
+                <div className="source-desc">Boekhoudexport als CSV of Excel</div>
+              </div>
+              <div className="source-card fade-in">
+                <div className="source-icon">
+                  <div className="source-icon-emoji">📁</div>
+                </div>
+                <div className="source-name">Eigen Excel</div>
+                <div className="source-desc">Uw eigen kasboek of Excel-overzicht</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* FEATURES */}
+        <section className="features-bg">
+          <div className="features-grid">
+            <div>
+              <p className="section-label fade-in">Functies</p>
+              <h2 className="fade-in">Alles wat een kascommissie <em>nodig heeft</em></h2>
+              <p className="section-sub fade-in">Speciaal ontwikkeld voor Nederlandse verenigingen, VvE&apos;s en stichtingen.</p>
+              <div className="feature-list" style={{marginTop:'32px'}}>
+                <div className="feature-item fade-in">
+                  <div className="feature-icon">🔍</div>
+                  <div className="feature-text">
+                    <h4>Volledige controle — geen steekproeven</h4>
+                    <p>Elke factuur, elk saldo, elke boeking wordt gecontroleerd. Niets gaat door de mazen van het net.</p>
+                  </div>
+                </div>
+                <div className="feature-item fade-in">
+                  <div className="feature-icon">📊</div>
+                  <div className="feature-text">
+                    <h4>Trendanalyse over meerdere jaren</h4>
+                    <p>Vergelijk inkomsten en uitgaven over de jaren heen. Stel het bestuur bij met concrete cijfers.</p>
+                  </div>
+                </div>
+                <div className="feature-item fade-in">
+                  <div className="feature-icon">📄</div>
+                  <div className="feature-text">
+                    <h4>Professioneel PDF-rapport</h4>
+                    <p>Direct klaar voor presentatie op de ALV. Inclusief samenvatting, bevindingen en handtekeningveld.</p>
+                  </div>
+                </div>
+                <div className="feature-item fade-in">
+                  <div className="feature-icon">🔒</div>
+                  <div className="feature-text">
+                    <h4>Veilig en AVG-conform</h4>
+                    <p>Alle bestanden worden versleuteld opgeslagen in Nederlandse datacenters. Nooit gedeeld met derden.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="feature-visual fade-in">
+              <p className="fv-title">Wat uw rapport bevat</p>
+              <ul className="check-list">
+                <li>Saldocontrole per rekening en periode</li>
+                <li>Vergelijking begroting vs. werkelijk</li>
+                <li>Overzicht van ongebruikelijke transacties</li>
+                <li>Trendanalyse inkomsten &amp; uitgaven</li>
+                <li>Bevindingen en aanbevelingen</li>
+                <li>Ondertekeningsveld kascommissie</li>
+                <li>Klaar voor archivering &amp; ALV-presentatie</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        {/* TARIEVEN */}
+        <section className="pricing-bg" id="tarieven">
+          <div style={{maxWidth:'1100px',margin:'0 auto',textAlign:'center'}}>
+            <p className="section-label fade-in">Tarieven</p>
+            <h2 className="fade-in">Transparante <em>prijzen</em></h2>
+            <p className="section-sub centered fade-in">Geen verborgen kosten. Geen abonnement. Betaal per boekjaar.</p>
+            <div className="pricing-grid" style={{marginTop:'48px'}}>
+              <div className="price-card fade-in">
+                <h3>Standaard controle</h3>
+                <div className="price-amount">€59</div>
+                <div className="price-note">incl. btw — per boekjaar</div>
+                <ul className="price-feats">
+                  <li className="price-feat">Volledig gecontroleerd kascontrolerapport</li>
+                  <li className="price-feat">Tot 3 bestanden uploaden</li>
+                  <li className="price-feat">PDF-rapport binnen 24 uur</li>
+                  <li className="price-feat">Klaar voor ALV-presentatie</li>
+                </ul>
+                <a href="/registreer" className="btn-price btn-price-outline">Start nu</a>
+              </div>
+              <div className="price-card featured fade-in">
+                <div className="price-badge">Meest gekozen</div>
+                <h3>Uitgebreide controle</h3>
+                <div className="price-amount">€89</div>
+                <div className="price-note">incl. btw — per boekjaar</div>
+                <ul className="price-feats">
+                  <li className="price-feat">Alles uit Standaard</li>
+                  <li className="price-feat">Trendanalyse (tot 3 jaar)</li>
+                  <li className="price-feat">Onbeperkt bestanden</li>
+                  <li className="price-feat">Prioriteit afhandeling</li>
+                  <li className="price-feat">Telefonische toelichting</li>
+                </ul>
+                <a href="/registreer" className="btn-price btn-price-solid">Start nu</a>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* TESTIMONIALS */}
+        <section>
+          <div style={{maxWidth:'1100px',margin:'0 auto',textAlign:'center'}}>
+            <p className="section-label fade-in">Ervaringen</p>
+            <h2 className="fade-in">Wat verenigingen <em>zeggen</em></h2>
+            <div className="testi-grid">
+              <div className="testi-card fade-in">
+                <div className="stars">★★★★★</div>
+                <blockquote>&ldquo;Als penningmeester ben ik elk jaar uren kwijt aan de kascontrole. Nu is het in een uurtje klaar en ziet het rapport er ook nog eens professioneel uit.&rdquo;</blockquote>
+                <p className="testi-author">Marieke van den Berg</p>
+                <p className="testi-role">Penningmeester, SV Oranje</p>
+              </div>
+              <div className="testi-card fade-in">
+                <div className="stars">★★★★★</div>
+                <blockquote>&ldquo;De controle vond een dubbele boeking die wij jarenlang over het hoofd hadden gezien. Ontzettend fijn dat dit nu automatisch gaat.&rdquo;</blockquote>
+                <p className="testi-author">Jan Plomp</p>
+                <p className="testi-role">Kascommissielid, Buurtvereniging De Eiken</p>
+              </div>
+              <div className="testi-card fade-in">
+                <div className="stars">★★★★★</div>
+                <blockquote>&ldquo;Eindelijk een tool die echt voor verenigingen is gemaakt, niet voor accountants. Onze leden op de ALV waren onder de indruk van het rapport.&rdquo;</blockquote>
+                <p className="testi-author">Sandra Kuipers</p>
+                <p className="testi-role">Secretaris, Hobbyclub Atelier</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* FAQ */}
+        <section style={{background:'var(--cream)'}}>
+          <div style={{maxWidth:'1100px',margin:'0 auto',textAlign:'center'}}>
+            <p className="section-label fade-in">Veelgestelde vragen</p>
+            <h2 className="fade-in">Heeft u een <em>vraag</em>?</h2>
+            <div className="faq-list">
+              {[
+                {v:'Hoe snel ontvang ik mijn rapport?', a:'Direct na betaling kunt u uw bestanden uploaden. Onze kascontroleurs leveren het rapport binnen 24 uur.'},
+                {v:'Welke bestanden kan ik uploaden?', a:'PDF, Excel (.xlsx, .xls) en CSV. U kunt bestanden exporteren vanuit Twinq, Isabel, Yuki of uw eigen kasboek.'},
+                {v:'Is mijn financiële data veilig?', a:'Ja. Al uw bestanden worden versleuteld opgeslagen in Nederlandse datacenters. Wij delen nooit gegevens met derden.'},
+                {v:'Kan ik rapporten van meerdere jaren opslaan?', a:'Ja, uw omgeving bewaart alle uploads en rapporten. Zo kunt u eenvoudig vergelijken over de jaren heen.'},
+                {v:'Wat als ik hulp nodig heb?', a:'Bel of mail ons gerust. Wij helpen u door het proces en zorgen dat uw rapport er professioneel uitziet.'},
+              ].map((item,i) => (
+                <div className="faq-item" key={i}>
+                  <button className="faq-q" onClick={() => {}} data-faq={i}>
+                    {item.v}
+                    <span className="faq-icon">+</span>
+                  </button>
+                  <div className="faq-a">{item.a}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* CTA BANNER */}
+        <div className="cta-banner">
+          <h2 className="fade-in" style={{color:'white'}}>Klaar om te starten?</h2>
+          <p className="fade-in">Maak een account aan en upload uw eerste bestanden. Binnen 24 uur heeft u uw rapport.</p>
+          <a href="/registreer" className="btn-primary fade-in" style={{display:'inline-flex'}}>Account aanmaken →</a>
         </div>
-      </div>
-      <div class="step fade-in">
-        <img class="step-img" src="https://images.unsplash.com/photo-1586281380349-632531db7ed4?w=600&q=80" alt="Rapport ontvangen"/>
-        <div class="step-body">
-          <div class="step-num" style="color:#bfdbfe">03</div>
-          <h3>Ontvang uw volledig rapport</h3>
-          <p>Na eenmalige betaling van €59 incl. btw stellen onze kascontroleurs uw rapport op. Direct als PDF, klaar voor presentatie op uw ALV.</p>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
 
-<!-- SOURCES -->
-<section>
-  <div style="max-width:1100px;margin:0 auto;text-align:center">
-    <p class="section-label fade-in">Waar haalt u uw gegevens vandaan?</p>
-    <h2 class="fade-in">Ondersteunde <em>bronnen</em></h2>
-    <p class="section-sub centered fade-in">Wij verwerken bestanden uit alle gangbare boekhoud- en banksystemen.</p>
-    <div class="sources-grid">
-      <div class="source-card fade-in"><div class="source-icon">🏦</div><div class="source-name">Uw bank</div><div class="source-desc">ING, Rabobank, ABN AMRO — exporteer als PDF of CSV</div></div>
-      <div class="source-card fade-in"><div class="source-icon">📊</div><div class="source-name">Twinq</div><div class="source-desc">Export via Twinq dashboard als Excel of PDF</div></div>
-      <div class="source-card fade-in"><div class="source-icon">💼</div><div class="source-name">Isabel / Yuki</div><div class="source-desc">Boekhoudexport als CSV of Excel</div></div>
-      <div class="source-card fade-in"><div class="source-icon">📁</div><div class="source-name">Eigen Excel</div><div class="source-desc">Uw eigen kasboek of Excel-overzicht</div></div>
-    </div>
-  </div>
-</section>
+        {/* FOOTER */}
+        <footer>
+          <a href="/" className="logo" style={{textDecoration:'none'}}>
+            <div className="logo-icon">
+              <svg width="18" height="18" viewBox="0 0 22 22" fill="none"><polyline points="3,12 9,18 19,6" stroke="white" strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round"/></svg>
+            </div>
+            <div>
+              <div className="logo-text-top" style={{color:'rgba(255,255,255,0.6)'}}>slimme</div>
+              <div className="logo-text-bot" style={{color:'white',fontSize:'0.95rem'}}>kascontrole</div>
+            </div>
+          </a>
+          <span>© 2025 SlimmeKascontrole.nl — Alle rechten voorbehouden</span>
+          <div>
+            <a href="/privacy">Privacy</a>
+            <a href="/voorwaarden">Voorwaarden</a>
+            <a href="/contact">Contact</a>
+          </div>
+        </footer>
 
-<!-- FEATURES -->
-<section class="features-bg">
-  <div class="features-grid">
-    <div>
-      <p class="section-label fade-in">Functies</p>
-      <h2 class="fade-in">Alles wat een kascommissie <em>nodig heeft</em></h2>
-      <p class="section-sub fade-in">Speciaal ontwikkeld voor Nederlandse verenigingen, VvE's en stichtingen.</p>
-      <div class="feature-list">
-        <div class="feature-item fade-in"><div class="feature-icon">🔍</div><div class="feature-text"><h4>Volledige controle — geen steekproeven</h4><p>Elke factuur, elk saldo, elke boeking wordt gecontroleerd. Geen steekproefsgewijze aanpak meer.</p></div></div>
-        <div class="feature-item fade-in"><div class="feature-icon">📅</div><div class="feature-text"><h4>Trendanalyse meerdere jaren</h4><p>Upload bestanden van meerdere jaren voor een diepgaande trendanalyse en vergelijking.</p></div></div>
-        <div class="feature-item fade-in"><div class="feature-icon">📋</div><div class="feature-text"><h4>Direct klaar voor de ALV</h4><p>Download als PDF en presenteer direct op uw algemene ledenvergadering.</p></div></div>
-        <div class="feature-item fade-in"><div class="feature-icon">🔒</div><div class="feature-text"><h4>Veilig & vertrouwelijk</h4><p>SSL-versleuteld, AVG-conform, data opgeslagen in Nederland. Nooit gedeeld met derden.</p></div></div>
-      </div>
-    </div>
-    <div class="feature-visual fade-in">
-      <p class="fv-title">Wat controleren wij?</p>
-      <ul class="check-list">
-        <li>Klopt het begin- en eindsaldo met de bankafschriften?</li>
-        <li>Zijn alle inkomsten volledig verantwoord?</li>
-        <li>Kloppen de totalen per categorie?</li>
-        <li>Zijn er ongebruikelijke of dubbele posten?</li>
-        <li>Is de boekhouding intern consistent?</li>
-        <li>Ontbreken er bewijsstukken of toelichting?</li>
-        <li>Voldoet het rapport aan de eisen voor de ALV?</li>
-        <li>Heeft de beheerder alles correct afgehandeld?</li>
-      </ul>
-    </div>
-  </div>
-</section>
+        <script dangerouslySetInnerHTML={{__html:`
+          // Sticky nav
+          window.addEventListener('scroll',()=>{
+            document.getElementById('navbar').classList.toggle('scrolled',window.scrollY>10)
+          })
 
-<!-- OVER ONS -->
-<section id="over-ons">
-  <div class="about-grid">
-    <div class="about-img fade-in">
-      <img src="https://images.unsplash.com/photo-1556761175-4b46a572b786?w=700&q=80" alt="Over Slimme Kascontrole"/>
-    </div>
-    <div class="fade-in">
-      <p class="section-label">Over ons</p>
-      <h2>Ontstaan uit eigen <em>ervaring</em></h2>
-      <p style="font-size:0.95rem;color:#475569;line-height:1.8;margin-bottom:16px">Slimme Kascontrole is ontstaan vanuit een persoonlijke ervaring. Als lid van de kascommissie van mijn eigen VvE deed ik de kascontrole zelf — en merkte al snel dat dit veel makkelijker, sneller en vollediger kon.</p>
-      <p style="font-size:0.95rem;color:#475569;line-height:1.8;margin-bottom:20px">De traditionele kascontrole is vaak steekproefsgewijs: je controleert een paar facturen en hoopt dat de rest klopt. Met Slimme Kascontrole is het anders — <strong>elke factuur, elk saldo, elk boekjaar wordt volledig gecontroleerd</strong>. Zo sta je als kascommissie echt sterk op de ALV.</p>
-      <div class="about-quote">
-        Ik dacht: dit kan veel makkelijker, veel sneller en veel vollediger. Dat is hoe Slimme Kascontrole is ontstaan — voor iedereen die verantwoordelijk is voor de kascontrole van een vereniging.
-        <div style="margin-top:14px;font-style:normal;font-weight:600;color:#0f172a;font-size:0.85rem">Willem-Jan Versteegh · Oprichter Slimme Kascontrole<br/><span style="font-weight:400;color:#475569">Vertras B.V. · Bergschenhoek</span></div>
-      </div>
-    </div>
-  </div>
-</section>
+          // Scroll animations
+          const obs=new IntersectionObserver((entries)=>{
+            entries.forEach((e,i)=>{if(e.isIntersecting)setTimeout(()=>e.target.classList.add('visible'),i*80)})
+          },{threshold:0.1})
+          document.querySelectorAll('.fade-in').forEach(el=>obs.observe(el))
 
-<!-- VEILIGHEID -->
-<section class="security-bg">
-  <div style="max-width:1000px;margin:0 auto;text-align:center">
-    <p style="font-size:0.7rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:#93c5fd;margin-bottom:12px" class="fade-in">Uw gegevens zijn veilig</p>
-    <h2 style="color:white;max-width:500px;margin:0 auto 14px" class="fade-in">Wij nemen beveiliging <em style="color:#93c5fd">uiterst serieus</em></h2>
-    <p style="color:rgba(255,255,255,0.7);max-width:480px;margin:0 auto 48px;font-size:0.95rem;line-height:1.7" class="fade-in">Financiële gegevens zijn gevoelig. U kunt erop vertrouwen dat uw data veilig is.</p>
-    <div class="security-grid">
-      <div class="sec-card fade-in"><div class="sec-icon">🔒</div><div class="sec-title">SSL-versleuteling</div><div class="sec-desc">Alle verbindingen zijn beveiligd met 256-bit SSL-encryptie.</div></div>
-      <div class="sec-card fade-in"><div class="sec-icon">🇳🇱</div><div class="sec-title">Data in Nederland</div><div class="sec-desc">Uw gegevens worden opgeslagen op servers binnen de EU.</div></div>
-      <div class="sec-card fade-in"><div class="sec-icon">👁️</div><div class="sec-title">Strikt vertrouwelijk</div><div class="sec-desc">Uw financiële gegevens worden nooit gedeeld met derden.</div></div>
-      <div class="sec-card fade-in"><div class="sec-icon">⚖️</div><div class="sec-title">AVG-conform</div><div class="sec-desc">Wij voldoen volledig aan de Europese privacywetgeving.</div></div>
-    </div>
-  </div>
-</section>
+          // Hamburger menu
+          function toggleMenu(){
+            const menu=document.getElementById('mobile-menu')
+            const b1=document.getElementById('bar1')
+            const b2=document.getElementById('bar2')
+            const b3=document.getElementById('bar3')
+            const open=menu.style.display==='block'
+            menu.style.display=open?'none':'block'
+            b1.style.transform=open?'':'rotate(45deg) translate(5px,5px)'
+            b2.style.opacity=open?'1':'0'
+            b3.style.transform=open?'':'rotate(-45deg) translate(5px,-5px)'
+          }
+          function closeMenu(){
+            document.getElementById('mobile-menu').style.display='none'
+            document.getElementById('bar1').style.transform=''
+            document.getElementById('bar2').style.opacity='1'
+            document.getElementById('bar3').style.transform=''
+          }
+          document.getElementById('hamburger').addEventListener('click',toggleMenu)
+          document.querySelectorAll('#mobile-menu a[href^="#"]').forEach(a=>a.addEventListener('click',closeMenu))
 
-<!-- TARIEVEN -->
-<section class="pricing-bg" id="tarieven">
-  <div style="max-width:760px;margin:0 auto;text-align:center">
-    <p class="section-label fade-in">Tarieven</p>
-    <h2 class="fade-in">Eenmalig tarief, <em>geen abonnement</em></h2>
-    <p class="section-sub centered fade-in">U betaalt eenmalig €59 incl. btw per kascontrole. U kunt bestanden van meerdere jaren uploaden voor een trendanalyse — maar u betaalt slechts voor één kascontrole.</p>
-  </div>
-  <div class="pricing-grid">
-    <div class="price-card featured fade-in">
-      <div class="popular-tag">Meest gekozen</div>
-      <h3>Vereniging / VvE</h3>
-      <p style="font-size:0.82rem;color:rgba(255,255,255,0.55);margin-bottom:6px">Voor actieve verenigingen</p>
-      <div class="price-amount">€ 59</div>
-      <p class="price-note">eenmalig incl. btw per kascontrole</p>
-      <div class="feat-li">Volledig gecontroleerd rapport</div>
-      <div class="feat-li">Trendanalyse tot 4 jaar</div>
-      <div class="feat-li">PDF-export voor de ALV</div>
-      <div class="feat-li">Geen abonnement</div>
-      <div class="feat-li">E-mail ondersteuning</div>
-      <a href="/registreer" class="btn-plan btn-plan-blue">Account aanmaken</a>
-    </div>
-    <div class="price-card fade-in">
-      <h3>Koepel</h3>
-      <p style="font-size:0.82rem;color:#475569;margin-bottom:6px">Voor meerdere afdelingen</p>
-      <div class="price-amount">€ 149</div>
-      <p class="price-note">per jaar</p>
-      <div class="feat-li">Tot 10 verenigingen</div>
-      <div class="feat-li">Centraal beheerportaal</div>
-      <div class="feat-li">Geconsolideerde rapportage</div>
-      <div class="feat-li">Dedicated support</div>
-      <a href="/contact" class="btn-plan btn-plan-outline">Neem contact op</a>
-    </div>
-  </div>
-</section>
+          // FAQ accordion
+          document.querySelectorAll('.faq-q').forEach(btn=>{
+            btn.addEventListener('click',()=>{
+              const item=btn.parentElement
+              const wasOpen=item.classList.contains('open')
+              document.querySelectorAll('.faq-item').forEach(i=>i.classList.remove('open'))
+              if(!wasOpen)item.classList.add('open')
+            })
+          })
+        `}}/>
 
-<!-- TESTIMONIALS -->
-<section>
-  <div style="max-width:1100px;margin:0 auto;text-align:center">
-    <p class="section-label fade-in">Ervaringen</p>
-    <h2 class="fade-in">Wat zeggen onze gebruikers?</h2>
-    <p class="section-sub centered fade-in" style="margin:0 auto 48px">Honderden Nederlandse verenigingen werken al met Slimme Kascontrole.</p>
-    <div class="testi-grid">
-      <div class="testi fade-in"><div class="stars">★★★★★</div><blockquote>"Vroeger kostte onze kascontrole een heel weekend. Nu is het snel klaar en ziet het rapport er ook nog eens professioneel uit."</blockquote><p class="testi-author">Marieke van den Berg</p><p class="testi-role">Penningmeester, SV Oranje</p></div>
-      <div class="testi fade-in"><div class="stars">★★★★★</div><blockquote>"De volledige controle vond een dubbele boeking die wij jarenlang over het hoofd hadden gezien. Fijn dat dit nu grondig wordt gecheckt."</blockquote><p class="testi-author">Jan Plomp</p><p class="testi-role">Kascommissielid, Buurtvereniging De Eiken</p></div>
-      <div class="testi fade-in"><div class="stars">★★★★★</div><blockquote>"Eindelijk een tool die echt voor verenigingen is gemaakt. Onze leden op de ALV waren onder de indruk van het volledige rapport."</blockquote><p class="testi-author">Sandra Kuipers</p><p class="testi-role">Secretaris, VvE De Linden</p></div>
-    </div>
-  </div>
-</section>
-
-<!-- CTA -->
-<section class="cta-bg">
-  <p class="section-label fade-in" style="color:rgba(255,255,255,0.7)">Aan de slag</p>
-  <h2 class="fade-in" style="max-width:520px;margin:0 auto 14px">Klaar voor uw volgende ALV?</h2>
-  <p class="section-sub fade-in" style="color:rgba(255,255,255,0.75);margin:0 auto 36px;max-width:460px">Maak een account aan, upload uw bestanden en ontvang uw volledig gecontroleerde kascontrolerapport. Eenmalig €59 incl. btw — geen abonnement.</p>
-  <div class="fade-in">
-    <a href="/registreer" class="btn-white">Account aanmaken</a>
-    <a href="/mijn-omgeving" class="btn-ghost-blue">Inloggen →</a>
-  </div>
-</section>
-
-<!-- FOOTER -->
-<footer>
-  <a href="/" class="footer-logo">
-    <div style="background:#2563EB;width:34px;height:34px;border-radius:7px;display:flex;align-items:center;justify-content:center">
-      <svg width="18" height="18" viewBox="0 0 22 22" fill="none"><polyline points="3,12 9,18 19,6" stroke="white" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    </div>
-    <div style="line-height:1.1">
-      <div style="font-weight:700;font-size:0.9rem;color:white">slimme</div>
-      <div style="font-weight:500;font-size:0.9rem;color:rgba(255,255,255,0.6)">kascontrole</div>
-    </div>
-  </a>
-  <span>© 2025 SlimmeKascontrole.nl · Een dienst van Vertras B.V.</span>
-  <div class="footer-links">
-    <a href="/voorwaarden">Voorwaarden</a>
-    <a href="/contact">Contact</a>
-    <a href="/mijn-omgeving">Mijn omgeving</a>
-    <a href="/registreer">Account aanmaken</a>
-  </div>
-</footer>
-
-<script>
-window.addEventListener('scroll',()=>{
-  document.getElementById('navbar').classList.toggle('scrolled',window.scrollY>10)
-})
-const obs=new IntersectionObserver((entries)=>{
-  entries.forEach((e,i)=>{if(e.isIntersecting)setTimeout(()=>e.target.classList.add('visible'),i*60)})
-},{threshold:0.1})
-document.querySelectorAll('.fade-in').forEach(el=>obs.observe(el))
-
-function toggleMenu(){
-  const menu=document.getElementById('mobile-menu')
-  const b1=document.getElementById('bar1')
-  const b2=document.getElementById('bar2')
-  const b3=document.getElementById('bar3')
-  const open=menu.style.display==='block'
-  menu.style.display=open?'none':'block'
-  b1.style.transform=open?'':'rotate(45deg) translate(5px,5px)'
-  b2.style.opacity=open?'1':'0'
-  b3.style.transform=open?'':'rotate(-45deg) translate(5px,-5px)'
+      </body>
+      </html>
+    </>
+  )
 }
-function closeMenu(){
-  document.getElementById('mobile-menu').style.display='none'
-  document.getElementById('bar1').style.transform=''
-  document.getElementById('bar2').style.opacity='1'
-  document.getElementById('bar3').style.transform=''
-}
-document.addEventListener('click',function(e){
-  const menu=document.getElementById('mobile-menu')
-  const ham=document.getElementById('hamburger')
-  if(menu&&menu.style.display==='block'&&!menu.contains(e.target)&&!ham.contains(e.target))closeMenu()
-})
-</script>
-</body>
-</html>`
