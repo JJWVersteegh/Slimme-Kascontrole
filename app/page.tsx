@@ -69,8 +69,9 @@ section{padding:88px 48px}
 h2{font-family:'Playfair Display',serif;font-size:clamp(1.7rem,3vw,2.5rem);font-weight:700;color:#0f172a;letter-spacing:-0.02em;line-height:1.15;margin-bottom:14px}
 h2 em{font-style:italic;color:#2563EB}
 .section-sub{font-size:0.97rem;color:#475569;line-height:1.7;max-width:540px;margin-bottom:52px}
+.section-sub.centered{text-align:center;margin-left:auto;margin-right:auto}
 .centered{text-align:center}
-.centered .section-sub{margin:0 auto 52px}
+.centered .section-sub{margin:0 auto 52px;text-align:center}
 
 /* WHY */
 .why-grid{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center;max-width:1100px;margin:0 auto}
@@ -295,8 +296,8 @@ footer a:hover{color:#93c5fd}
 <!-- HOW IT WORKS -->
 <section class="how-bg" id="hoe-het-werkt" style="background:#f8fafc">
   <div style="max-width:1100px;margin:0 auto;text-align:center">
-    <p class="section-label fade-in">Hoe het werkt</p>
-    <h2 class="fade-in">Drie stappen naar een <em>volledig rapport</em></h2>
+    <p class="section-label fade-in" style="text-align:center">Hoe het werkt</p>
+    <h2 class="fade-in" style="text-align:center">Drie stappen naar een <em>volledig rapport</em></h2>
     <p class="section-sub centered fade-in">Geen boekhoudkundige kennis vereist. Upload uw bestanden en ontvang uw rapport.</p>
     <div class="steps">
       <div class="step fade-in">
@@ -330,8 +331,8 @@ footer a:hover{color:#93c5fd}
 <!-- SOURCES -->
 <section>
   <div style="max-width:1100px;margin:0 auto;text-align:center">
-    <p class="section-label fade-in">Waar haalt u uw gegevens vandaan?</p>
-    <h2 class="fade-in">Ondersteunde <em>bronnen</em></h2>
+    <p class="section-label fade-in" style="text-align:center">Waar haalt u uw gegevens vandaan?</p>
+    <h2 class="fade-in" style="text-align:center">Ondersteunde <em>bronnen</em></h2>
     <p class="section-sub centered fade-in">Wij verwerken bestanden uit alle gangbare boekhoud- en banksystemen.</p>
     <div class="sources-grid">
 
@@ -409,8 +410,8 @@ footer a:hover{color:#93c5fd}
 <!-- TARIEVEN -->
 <section class="pricing-bg" id="tarieven">
   <div style="max-width:760px;margin:0 auto;text-align:center">
-    <p class="section-label fade-in">Tarieven</p>
-    <h2 class="fade-in">Eenmalig tarief, <em>geen abonnement</em></h2>
+    <p class="section-label fade-in" style="text-align:center">Tarieven</p>
+    <h2 class="fade-in" style="text-align:center">Eenmalig tarief, <em>geen abonnement</em></h2>
     <p class="section-sub centered fade-in">U betaalt eenmalig €59 incl. btw per kascontrole. U kunt bestanden van meerdere jaren uploaden voor een trendanalyse — maar u betaalt slechts voor één kascontrole.</p>
   </div>
   <div class="pricing-grid">
@@ -444,8 +445,8 @@ footer a:hover{color:#93c5fd}
 <!-- TESTIMONIALS -->
 <section>
   <div style="max-width:1100px;margin:0 auto;text-align:center">
-    <p class="section-label fade-in">Ervaringen</p>
-    <h2 class="fade-in">Wat zeggen onze gebruikers?</h2>
+    <p class="section-label fade-in" style="text-align:center">Ervaringen</p>
+    <h2 class="fade-in" style="text-align:center">Wat zeggen onze gebruikers?</h2>
     <p class="section-sub centered fade-in" style="margin:0 auto 48px">Honderden Nederlandse verenigingen werken al met Slimme Kascontrole.</p>
     <div class="testi-grid">
       <div class="testi fade-in"><div class="stars">★★★★★</div><blockquote>"Vroeger kostte onze kascontrole een heel weekend. Nu is het snel klaar en ziet het rapport er ook nog eens professioneel uit."</blockquote><p class="testi-author">Marieke van den Berg</p><p class="testi-role">Penningmeester, SV Oranje</p></div>
