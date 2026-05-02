@@ -122,7 +122,7 @@ export default function EigenExcelBron() {
         {/* Tip */}
         <div style={{ background: '#fefce8', borderRadius: '12px', padding: '20px', margin: '32px 0', border: '1px solid #fde68a' }}>
           <p style={{ fontSize: '0.88rem', color: '#78350f', margin: 0, lineHeight: 1.6 }}>
-            <strong>💡 Tip:</strong> Hoe meer bestanden u aanlevert, hoe completer het rapport wordt. U kunt altijd meerdere bestanden tegelijk uploaden. Upload gerust ook facturen van grote uitgaven (>€500gt;€500) als extra bewijs.
+            <strong>💡 Tip:</strong> Hoe meer bestanden u aanlevert, hoe completer het rapport wordt. U kunt altijd meerdere bestanden tegelijk uploaden. Upload gerust ook facturen van grote uitgaven (&gt;€500) als extra bewijs.
           </p>
         </div>
 
