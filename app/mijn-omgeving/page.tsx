@@ -19,6 +19,7 @@ interface Klant {
   naam?: string
   vereniging?: string
   adres?: string
+  kvk?: string
   postcode?: string
   plaats?: string
   plan: string
@@ -46,7 +47,7 @@ export default function MijnOmgeving() {
   const [deletedIds, setDeletedIds] = useState<Set<string>>(new Set())
   // Punt 9: profiel bewerken
   const [toonProfiel, setToonProfiel] = useState(false)
-  const [profielForm, setProfielForm] = useState({ naam: '', vereniging: '', adres: '', postcode: '', plaats: '' })
+  const [profielForm, setProfielForm] = useState({ naam: '', vereniging: '', kvk: '', adres: '', postcode: '', plaats: '' })
   const [profielSaving, setProfielSaving] = useState(false)
   const [profielSuccess, setProfielSuccess] = useState(false)
   const router = useRouter()
@@ -85,6 +86,7 @@ export default function MijnOmgeving() {
       naam: klantData?.naam || '',
       vereniging: klantData?.vereniging || '',
       adres: klantData?.adres || '',
+      kvk: klantData?.kvk || '',
       postcode: klantData?.postcode || '',
       plaats: klantData?.plaats || '',
     })
@@ -198,6 +200,7 @@ export default function MijnOmgeving() {
       await supabase.from('klanten').update({
         naam: profielForm.naam,
         vereniging: profielForm.vereniging,
+        kvk: profielForm.kvk,
         adres: profielForm.adres,
         postcode: profielForm.postcode,
         plaats: profielForm.plaats,
@@ -302,6 +305,10 @@ export default function MijnOmgeving() {
                 <div>
                   <label style={{ display: 'block', fontWeight: '600', color: '#0f172a', marginBottom: '5px', fontSize: '0.85rem' }}>Naam vereniging</label>
                   <input value={profielForm.vereniging} onChange={e => setProfielForm(p => ({ ...p, vereniging: e.target.value }))} placeholder="Naam van uw vereniging" style={inp} />
+                </div>
+                <div>
+                  <label style={{ display: 'block', fontWeight: '600', color: '#0f172a', marginBottom: '5px', fontSize: '0.85rem' }}>KvK-nummer <span style={{ fontWeight: '400', color: '#94a3b8', fontSize: '0.8rem' }}>(optioneel)</span></label>
+                  <input value={profielForm.kvk} onChange={e => setProfielForm(p => ({ ...p, kvk: e.target.value }))} placeholder="bijv. 12345678" style={inp} />
                 </div>
                 <div>
                   <label style={{ display: 'block', fontWeight: '600', color: '#0f172a', marginBottom: '5px', fontSize: '0.85rem' }}>Adres</label>

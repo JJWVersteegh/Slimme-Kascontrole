@@ -11,7 +11,7 @@ export async function POST(req: NextRequest) {
       process.env.SUPABASE_SERVICE_ROLE_KEY!
     )
 
-    const { user_id } = await req.json()
+    const { user_id, rapport_boekjaar } = await req.json()
 
     // Get all uploads for this user
     const { data: uploads } = await supabase
@@ -67,24 +67,31 @@ export async function POST(req: NextRequest) {
       )
     }
 
-    const boekjaren = uploads.map(u => u.boekjaar).sort()
-    const huidigJaar = boekjaren[boekjaren.length - 1]
-    const vorigeJaren = boekjaren.slice(0, -1)
+    const alleBoekjaren = uploads.map(u => u.boekjaar).sort()
+    // Gebruik het door de gebruiker gekozen rapportboekjaar
+    const huidigJaar = rapport_boekjaar || alleBoekjaren[alleBoekjaren.length - 1]
+    // Vorige jaren = alles strikt vóór het rapportboekjaar
+    const vorigeJaren = alleBoekjaren.filter(j => j < huidigJaar)
+    // Volgend jaar = alles strikt ná het rapportboekjaar (voor openstaande posten)
+    const volgendeJaren = alleBoekjaren.filter(j => j > huidigJaar)
+    // Alle boekjaren voor trendanalyse (excl. toekomstige jaren)
+    const boekjaren = alleBoekjaren.filter(j => j <= huidigJaar)
 
-    const prompt = `Je bent een professionele kascontroleur voor Nederlandse verenigingen, VvE's en coöperaties met jarenlange ervaring.
+    const prompt = `Je bent een kascontroleur voor Nederlandse verenigingen, VvE's en stichtingen. Je schrijft rapporten in begrijpelijke, gewone taal — alsof je het uitlegt aan een vrijwilliger zonder financiële achtergrond. Geen vakjargon, geen ingewikkelde zinnen. Wel volledig en professioneel.
 
 OPDRACHTGEVER:
 - Naam: ${naam}
 - Vereniging/VvE: ${vereniging || 'Niet opgegeven'}
 - KvK: ${kvk || 'Niet opgegeven'}
 - E-mail: ${email}
-- PRIMAIR BOEKJAAR (waar het rapport over gaat): ${huidigJaar}
-${vorigeJaren.length > 0 ? `- Vergelijkingsjaren (alleen voor trendanalyse): ${vorigeJaren.join(', ')}` : ''}
+- RAPPORT BOEKJAAR (waar het rapport over gaat): ${huidigJaar}
+${vorigeJaren.length > 0 ? `- Voorgaande jaren (voor trendanalyse): ${vorigeJaren.join(', ')}` : ''}
+${volgendeJaren.length > 0 ? `- Volgend jaar beschikbaar (ALLEEN voor controle openstaande posten): ${volgendeJaren.join(', ')}` : ''}
 
 ROL VAN ELK JAAR:
-- Boekjaar ${huidigJaar}: DIT is het hoofdonderwerp van het rapport. Volledige analyse vereist.
-${vorigeJaren.length > 0 ? `- Jaren ${vorigeJaren.join(', ')}: ALLEEN voor trendvergelijking en het signaleren van meerjarige patronen (bijv. debiteur die al 3 jaar niet betaalt). Geen volledige analyse per jaar.` : ''}
-- Eventueel volgend jaar: ALLEEN gebruiken om te controleren of openstaande posten uit ${huidigJaar} inmiddels zijn vereffend (debiteuren, crediteuren). Geen zelfstandige analyse.
+- Boekjaar ${huidigJaar}: DIT is het hoofdonderwerp. Schrijf hier een volledige analyse over.
+${vorigeJaren.length > 0 ? `- Jaren ${vorigeJaren.join(', ')}: Alleen gebruiken voor trendvergelijking en om patronen over meerdere jaren te signaleren (bijv. iemand die al 3 jaar niet betaalt).` : ''}
+${volgendeJaren.length > 0 ? `- Jaar ${volgendeJaren.join(', ')}: NIET analyseren. Alleen gebruiken om te kijken of openstaande bedragen uit ${huidigJaar} inmiddels zijn betaald.` : ''}
 
 GEÜPLOADE FINANCIËLE GEGEVENS (${uploads.length} upload(s)):
 ${uploadsContent.join('\n\n')}
@@ -92,7 +99,7 @@ ${uploadsContent.join('\n\n')}
 Stel een volledig professioneel kascontrolerapport op in het Nederlands. Het rapport gaat over boekjaar ${huidigJaar}. Gebruik exact deze structuur:
 
 # KASCOMMISSIE RAPPORT
-## ${vereniging || 'Vereniging'} | Boekjaar ${boekjaren.join(' & ')} | Peildatum ${new Date().toLocaleDateString('nl-NL', { day: 'numeric', month: 'long', year: 'numeric' })}
+## ${vereniging || 'Vereniging'} | Boekjaar ${huidigJaar} | Peildatum ${new Date().toLocaleDateString('nl-NL', { day: 'numeric', month: 'long', year: 'numeric' })}
 *Opgesteld ten behoeve van de Algemene Ledenvergadering*
 
 ---
@@ -179,10 +186,13 @@ Beschrijf eventuele voorwaarden concreet.
 *Vertrouwelijk — uitsluitend bestemd voor leden · Opgesteld door slimmekascontrole.nl, een dienst van Vertras B.V.*
 
 BELANGRIJK:
-- Als bestanden binair zijn (PDF/Excel), werk dan met beschikbare informatie en geef aan wat nog aangeleverd moet worden
-- Gebruik tabellen voor alle cijfers
-- Wees specifiek en professioneel
-- Bij meerdere jaren: analyseer trends expliciet`
+- Schrijf in begrijpelijke, gewone taal. Geen vakjargon. Schrijf alsof je het uitlegt aan een betrokken vrijwilliger.
+- Noem het rapportjaar ALTIJD als ${huidigJaar}, niet als een ander jaar.
+- Als bestanden binair zijn (PDF/Excel), werk dan met beschikbare informatie en geef aan wat nog aangeleverd moet worden.
+- Gebruik tabellen voor alle cijfers.
+- Bij meerdere jaren: analyseer trends in gewone taal (bijv. "De kosten zijn de afgelopen 3 jaar elk jaar gestegen met gemiddeld €500").
+- Wees concreet: noem bedragen, datums en namen waar mogelijk.
+- Houd zinnen kort en vermijd lange alinea's.`
 
     const apiKey = process.env.ANTHROPIC_API_KEY
     if (!apiKey) return NextResponse.json({ error: 'API key niet geconfigureerd' }, { status: 500 })
