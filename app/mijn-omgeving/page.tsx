@@ -385,10 +385,11 @@ export default function MijnOmgeving() {
           <form onSubmit={handleUpload}>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '14px', alignItems: 'end' }}>
               <div>
-                <label style={{ display: 'block', fontWeight: '600', color: '#0f172a', marginBottom: '6px', fontSize: '0.88rem' }}>Boekjaar van deze bestanden <span style={{ fontWeight: '400', color: '#2563EB', fontSize: '0.8rem' }}>— standaard het gekozen rapportjaar</span></label>
+                <label style={{ display: 'block', fontWeight: '600', color: '#0f172a', marginBottom: '6px', fontSize: '0.88rem' }}>Boekjaar van deze bestanden</label>
                 <select value={boekjaar} onChange={e => setBoekjaar(e.target.value)} style={inp}>
                   {jaren.map(j => <option key={j} value={j}>{j}</option>)}
                 </select>
+                <p style={{ fontSize: '0.75rem', color: '#2563EB', marginTop: '3px' }}>Standaard het gekozen rapportjaar</p>
               </div>
               <div>
                 <label style={{ display: 'block', fontWeight: '600', color: '#0f172a', marginBottom: '6px', fontSize: '0.88rem' }}>Bestanden</label>
