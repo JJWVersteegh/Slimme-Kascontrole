@@ -400,7 +400,7 @@ footer a:hover{color:#93c5fd}
     <p style="color:rgba(255,255,255,0.7);max-width:480px;margin:0 auto 48px;font-size:0.95rem;line-height:1.7" class="fade-in">Financiële gegevens zijn gevoelig. U kunt erop vertrouwen dat uw data veilig is.</p>
     <div class="security-grid">
       <div class="sec-card fade-in"><div class="sec-icon">🔒</div><div class="sec-title">SSL-versleuteling</div><div class="sec-desc">Alle verbindingen zijn beveiligd met 256-bit SSL-encryptie.</div></div>
-      <div class="sec-card fade-in"><div class="sec-icon">🇳🇱</div><div class="sec-title">Data in Nederland</div><div class="sec-desc">Uw gegevens worden opgeslagen op servers binnen de EU.</div></div>
+      <div class="sec-card fade-in"><div class="sec-icon">🇪🇺</div><div class="sec-title">Data in de EU</div><div class="sec-desc">Uw gegevens worden opgeslagen op servers binnen de EU.</div></div>
       <div class="sec-card fade-in"><div class="sec-icon">👁️</div><div class="sec-title">Strikt vertrouwelijk</div><div class="sec-desc">Uw financiële gegevens worden nooit gedeeld met derden.</div></div>
       <div class="sec-card fade-in"><div class="sec-icon">⚖️</div><div class="sec-title">AVG-conform</div><div class="sec-desc">Wij voldoen volledig aan de Europese privacywetgeving.</div></div>
     </div>
