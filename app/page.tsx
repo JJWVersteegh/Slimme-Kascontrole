@@ -40,11 +40,11 @@ nav.scrolled{box-shadow:0 4px 24px rgba(0,0,0,0.08)}
 .mobile-menu .mobile-btn{background:#2563EB;color:white!important;text-align:center;margin-top:8px;font-weight:700}
 
 /* HERO */
-.hero{position:relative;min-height:100vh;width:100%;display:flex;align-items:center;overflow:hidden}
+.hero{position:relative;min-height:100vh;width:100%;display:flex;align-items:center;overflow:hidden;background:#0f2460}
 .hero-bg{position:absolute;inset:0;z-index:0}
-.hero-bg img{width:100%;height:100%;object-fit:cover;object-position:center}
+.hero-bg img{width:100%;height:100%;object-fit:cover;object-position:center 60%}
 
-.hero-content{position:relative;z-index:1;max-width:1100px;margin:0 auto;padding:120px 48px 80px;width:100%}
+.hero-content{position:relative;z-index:1;max-width:1100px;margin:0 auto;padding:0 48px;width:100%}
 .hero-eyebrow{display:inline-flex;align-items:center;gap:8px;background:rgba(37,99,235,0.35);border:1px solid rgba(147,197,253,0.5);color:#bfdbfe;font-size:0.72rem;font-weight:700;padding:5px 13px;border-radius:20px;margin-bottom:24px;letter-spacing:0.05em;text-transform:uppercase}
 .hero h1{font-family:'Playfair Display',serif;font-size:clamp(2rem,4.5vw,3.8rem);font-weight:700;line-height:1.1;color:white;margin-bottom:20px;letter-spacing:-0.02em}
 .hero h1 em{font-style:italic;font-weight:400;color:#93c5fd}
@@ -190,7 +190,7 @@ footer a:hover{color:#93c5fd}
   .steps,.testi-grid{grid-template-columns:1fr}
   .features-grid,.why-grid,.about-grid,.pricing-grid{grid-template-columns:1fr}
   .sources-grid,.security-grid{grid-template-columns:1fr 1fr}
-  .hero-content{padding:100px 20px 60px}
+  .hero-content{padding:0 20px}
   footer{flex-direction:column;text-align:center;padding:32px 20px}
   .footer-links{justify-content:center}
 }
@@ -245,7 +245,7 @@ footer a:hover{color:#93c5fd}
 <!-- HERO -->
 <section class="hero">
   <div class="hero-bg">
-    <img src="/hero.jpg" alt="Kascontrole voor verenigingen"/>
+    <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=1800&q=85" alt="Kascontrole voor verenigingen"/>
     <div class="hero-overlay"></div>
   </div>
   <div class="hero-content">
