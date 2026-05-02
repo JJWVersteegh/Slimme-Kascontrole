@@ -9,7 +9,7 @@ export async function POST(req: NextRequest) {
 
     const { plan, email } = await req.json()
     const amount = plan === 'koepel' ? 14900 : 200
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://slimme-kascontrole.vercel.app'
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://www.slimmekascontrole.nl'
 
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['ideal', 'card'],
