@@ -1,3 +1,4 @@
+'use client'
 export default function BronnenOverzicht() {
   return (
     <main style={{ minHeight: '100vh', background: '#f8fafc', fontFamily: 'Outfit, sans-serif' }}>
@@ -25,12 +26,14 @@ export default function BronnenOverzicht() {
           Voor een goede kascontrole heeft u financiële gegevens nodig uit uw boekhoudpakket of bank. Kies hieronder uw situatie en volg de stap-voor-stap handleiding.
         </p>
 
-        {/* Kaarten */}
+        <style>{`
+        .bron-card { transition: transform 0.2s, box-shadow 0.2s; }
+        .bron-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(0,0,0,0.08); }
+      `}</style>
+      {/* Kaarten */}
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '24px', marginBottom: '48px' }}>
 
-          <a href="/bronnen/twinq" style={{ background: 'white', borderRadius: '16px', padding: '32px 24px', border: '1px solid #e2e8f0', textDecoration: 'none', color: 'inherit', display: 'block', transition: 'transform 0.2s, box-shadow 0.2s' }}
-            onMouseOver={e => { (e.currentTarget as HTMLElement).style.transform = 'translateY(-4px)'; (e.currentTarget as HTMLElement).style.boxShadow = '0 12px 32px rgba(0,0,0,0.08)' }}
-            onMouseOut={e => { (e.currentTarget as HTMLElement).style.transform = ''; (e.currentTarget as HTMLElement).style.boxShadow = '' }}>
+          <a href="/bronnen/twinq" className="bron-card" style={{ background: 'white', borderRadius: '16px', padding: '32px 24px', border: '1px solid #e2e8f0', textDecoration: 'none', color: 'inherit', display: 'block' }} } }>
             <div style={{ height: '48px', display: 'flex', alignItems: 'center', marginBottom: '16px' }}>
               <img src="/twinq-logo.jpg" alt="Twinq" style={{ maxHeight: '36px', objectFit: 'contain' }}/>
             </div>
@@ -39,18 +42,14 @@ export default function BronnenOverzicht() {
             <span style={{ color: '#2563EB', fontSize: '0.85rem', fontWeight: '600' }}>Bekijk handleiding →</span>
           </a>
 
-          <a href="/bronnen/isabel-yuki" style={{ background: 'white', borderRadius: '16px', padding: '32px 24px', border: '1px solid #e2e8f0', textDecoration: 'none', color: 'inherit', display: 'block', transition: 'transform 0.2s, box-shadow 0.2s' }}
-            onMouseOver={e => { (e.currentTarget as HTMLElement).style.transform = 'translateY(-4px)'; (e.currentTarget as HTMLElement).style.boxShadow = '0 12px 32px rgba(0,0,0,0.08)' }}
-            onMouseOut={e => { (e.currentTarget as HTMLElement).style.transform = ''; (e.currentTarget as HTMLElement).style.boxShadow = '' }}>
+          <a href="/bronnen/isabel-yuki" className="bron-card" style={{ background: 'white', borderRadius: '16px', padding: '32px 24px', border: '1px solid #e2e8f0', textDecoration: 'none', color: 'inherit', display: 'block' }} } }>
             <div style={{ height: '48px', display: 'flex', alignItems: 'center', marginBottom: '16px', fontSize: '2rem' }}>💼</div>
             <h2 style={{ fontWeight: '700', color: '#0f172a', fontSize: '1.05rem', marginBottom: '8px' }}>Isabel / Yuki</h2>
             <p style={{ color: '#475569', fontSize: '0.85rem', lineHeight: 1.6, marginBottom: '16px' }}>Exporteer uw jaarrekening, balans en bankafschriften uit Isabel of Yuki.</p>
             <span style={{ color: '#2563EB', fontSize: '0.85rem', fontWeight: '600' }}>Bekijk handleiding →</span>
           </a>
 
-          <a href="/bronnen/eigen-excel" style={{ background: 'white', borderRadius: '16px', padding: '32px 24px', border: '1px solid #e2e8f0', textDecoration: 'none', color: 'inherit', display: 'block', transition: 'transform 0.2s, box-shadow 0.2s' }}
-            onMouseOver={e => { (e.currentTarget as HTMLElement).style.transform = 'translateY(-4px)'; (e.currentTarget as HTMLElement).style.boxShadow = '0 12px 32px rgba(0,0,0,0.08)' }}
-            onMouseOut={e => { (e.currentTarget as HTMLElement).style.transform = ''; (e.currentTarget as HTMLElement).style.boxShadow = '' }}>
+          <a href="/bronnen/eigen-excel" className="bron-card" style={{ background: 'white', borderRadius: '16px', padding: '32px 24px', border: '1px solid #e2e8f0', textDecoration: 'none', color: 'inherit', display: 'block' }} } }>
             <div style={{ height: '48px', display: 'flex', alignItems: 'center', marginBottom: '16px', fontSize: '2rem' }}>📁</div>
             <h2 style={{ fontWeight: '700', color: '#0f172a', fontSize: '1.05rem', marginBottom: '8px' }}>Eigen Excel</h2>
             <p style={{ color: '#475569', fontSize: '0.85rem', lineHeight: 1.6, marginBottom: '16px' }}>Werkt u met een eigen kasboek of Excel? Hier leest u hoe u dit aanlevert.</p>
