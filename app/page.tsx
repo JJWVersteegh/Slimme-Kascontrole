@@ -19,6 +19,10 @@ const html = `<!DOCTYPE html>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet"/>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{overflow-x:hidden;width:100%}
+body{overflow-x:hidden;width:100%;max-width:100vw}
+img{max-width:100%;height:auto}
+div,section,nav,footer,ul{max-width:100%}
 html{scroll-behavior:smooth}
 body{font-family:'Outfit',sans-serif;color:#0f172a;background:white;overflow-x:hidden}
 
@@ -27,7 +31,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(255,255,255,
 nav.scrolled{box-shadow:0 4px 24px rgba(0,0,0,0.08)}
 .nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
 .nav-logo-icon{background:#2563EB;width:38px;height:38px;border-radius:8px;display:flex;align-items:center;justify-content:center}
-.nav-links{display:flex;gap:28px;list-style:none;align-items:center}
+.nav-links{display:flex;gap:28px;list-style:none;align-items:center;flex-wrap:wrap}
 .nav-links a{font-size:0.88rem;font-weight:500;color:#475569;text-decoration:none;transition:color 0.2s}
 .nav-links a:hover{color:#2563EB}
 .btn-nav{background:#2563EB;color:white!important;padding:9px 20px;border-radius:6px;font-weight:600;transition:background 0.2s!important}
@@ -44,7 +48,7 @@ nav.scrolled{box-shadow:0 4px 24px rgba(0,0,0,0.08)}
 .hero-bg{position:absolute;inset:0;z-index:0}
 .hero-bg img{width:100%;height:100%;object-fit:cover;object-position:center 60%;opacity:0.6}
 
-.hero-content{position:relative;z-index:1;max-width:1100px;margin:0 auto;padding:0 48px;width:100%}
+.hero-content{position:relative;z-index:1;width:100%;padding:0 48px}
 .hero-eyebrow{display:inline-flex;align-items:center;gap:8px;background:rgba(37,99,235,0.35);border:1px solid rgba(147,197,253,0.5);color:#bfdbfe;font-size:0.72rem;font-weight:700;padding:5px 13px;border-radius:20px;margin-bottom:24px;letter-spacing:0.05em;text-transform:uppercase}
 .hero h1{font-family:'Playfair Display',serif;font-size:clamp(2rem,4.5vw,3.8rem);font-weight:700;line-height:1.1;color:white;margin-bottom:20px;letter-spacing:-0.02em}
 .hero h1 em{font-style:italic;font-weight:400;color:#93c5fd}
@@ -53,7 +57,7 @@ nav.scrolled{box-shadow:0 4px 24px rgba(0,0,0,0.08)}
 .btn-primary{background:#2563EB;color:white;padding:14px 30px;border-radius:8px;font-size:0.95rem;font-weight:700;text-decoration:none;box-shadow:0 4px 20px rgba(37,99,235,0.45);font-family:'Outfit',sans-serif;white-space:nowrap;display:inline-block}
 .btn-primary:hover{background:#1D4ED8}
 .btn-ghost-white{color:rgba(255,255,255,0.85);font-size:0.9rem;font-weight:500;text-decoration:none;display:flex;align-items:center;gap:6px;white-space:nowrap}
-.hero-price{display:inline-flex;align-items:center;gap:16px;padding:16px 20px;background:rgba(0,0,0,0.45);backdrop-filter:blur(12px);border-radius:12px;border:1px solid rgba(255,255,255,0.25);flex-wrap:wrap}
+.hero-price{display:flex;align-items:center;gap:12px;padding:14px 16px;background:rgba(0,0,0,0.45);backdrop-filter:blur(12px);border-radius:12px;border:1px solid rgba(255,255,255,0.25);flex-wrap:wrap;max-width:100%}
 .price-label{font-size:0.65rem;font-weight:700;color:rgba(255,255,255,0.55);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:2px}
 .price-num{display:flex;align-items:baseline;gap:1px}
 .price-num span:first-child{font-size:0.9rem;font-weight:700;color:#93c5fd}
@@ -191,15 +195,18 @@ footer a:hover{color:#93c5fd}
   .steps,.testi-grid{grid-template-columns:1fr}
   .features-grid,.why-grid,.about-grid,.pricing-grid{grid-template-columns:1fr}
   .sources-grid,.security-grid{grid-template-columns:1fr 1fr}
-  .hero-content{padding:0 20px}
+  .hero-content{padding:0 16px!important;width:100%!important}
   footer{flex-direction:column;text-align:center;padding:32px 20px}
   .footer-links{justify-content:center}
 }
 @media(max-width:500px){
   .sources-grid,.security-grid{grid-template-columns:1fr}
   .pricing-grid{grid-template-columns:1fr}
-  .hero-price{gap:12px}
+  .hero-price{gap:10px;padding:12px}
   .price-divider{display:none}
+  .why-grid,.about-grid,.features-grid{grid-template-columns:1fr}
+  section{padding:48px 16px!important}
+  nav{padding:0 16px!important}
 }
 </style>
 </head>
@@ -498,7 +505,7 @@ footer a:hover{color:#93c5fd}
         <h2 style="font-weight:700;color:var(--ink);font-size:1.1rem;margin-bottom:4px" class="fade-in">Veelgestelde vragen</h2>
         <div style="background:white;border-radius:12px;padding:20px;border:1px solid var(--border)" class="fade-in">
           <h4 style="font-weight:700;color:var(--ink);font-size:0.9rem;margin-bottom:8px">❓ Hoe snel ontvang ik mijn rapport?</h4>
-          <p style="font-size:0.85rem;color:var(--ink-soft);line-height:1.6">Direct na betaling kunt u op "Genereer rapport" klikken en ontvangt u het rapport direct. U kunt dit openen in PDF of afdrukken.</p>
+          <p style="font-size:0.85rem;color:var(--ink-soft);line-height:1.6">Direct na betaling kunt u op "Genereer rapport" klikken. Onze kascontroleurs leveren het rapport binnen 24 uur.</p>
         </div>
         <div style="background:white;border-radius:12px;padding:20px;border:1px solid var(--border)" class="fade-in">
           <h4 style="font-weight:700;color:var(--ink);font-size:0.9rem;margin-bottom:8px">❓ Welke bestanden kan ik uploaden?</h4>
