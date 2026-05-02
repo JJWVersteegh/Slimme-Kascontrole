@@ -220,7 +220,7 @@ footer a:hover{color:#93c5fd}
     <li><a href="#hoe-het-werkt">Hoe het werkt</a></li>
     <li><a href="#over-ons">Over ons</a></li>
     <li><a href="#tarieven">Tarieven</a></li>
-    <li><a href="/contact">Contact</a></li>
+    <li><a href="#contact">Contact</a></li>
     <li><a href="/mijn-omgeving">Mijn omgeving</a></li>
     <li><a href="/registreer" class="btn-nav">Account aanmaken</a></li>
   </ul>
@@ -237,7 +237,7 @@ footer a:hover{color:#93c5fd}
   <a href="#hoe-het-werkt" onclick="closeMenu()">Hoe het werkt</a>
   <a href="#over-ons" onclick="closeMenu()">Over ons</a>
   <a href="#tarieven" onclick="closeMenu()">Tarieven</a>
-  <a href="/contact">Contact</a>
+  <a href="#contact">Contact</a>
   <a href="/mijn-omgeving">Mijn omgeving</a>
   <a href="/registreer" class="mobile-btn">Account aanmaken</a>
 </div>
@@ -436,7 +436,7 @@ footer a:hover{color:#93c5fd}
       <div class="feat-li">Centraal beheerportaal</div>
       <div class="feat-li">Geconsolideerde rapportage</div>
       <div class="feat-li">Dedicated support</div>
-      <a href="/contact" class="btn-plan btn-plan-outline">Neem contact op</a>
+      <a href="#contact" class="btn-plan btn-plan-outline">Neem contact op</a>
     </div>
   </div>
 </section>
@@ -451,6 +451,65 @@ footer a:hover{color:#93c5fd}
       <div class="testi fade-in"><div class="stars">★★★★★</div><blockquote>"Vroeger kostte onze kascontrole een heel weekend. Nu is het snel klaar en ziet het rapport er ook nog eens professioneel uit."</blockquote><p class="testi-author">Marieke van den Berg</p><p class="testi-role">Penningmeester, SV Oranje</p></div>
       <div class="testi fade-in"><div class="stars">★★★★★</div><blockquote>"De volledige controle vond een dubbele boeking die wij jarenlang over het hoofd hadden gezien. Fijn dat dit nu grondig wordt gecheckt."</blockquote><p class="testi-author">Jan Plomp</p><p class="testi-role">Kascommissielid, Buurtvereniging De Eiken</p></div>
       <div class="testi fade-in"><div class="stars">★★★★★</div><blockquote>"Eindelijk een tool die echt voor verenigingen is gemaakt. Onze leden op de ALV waren onder de indruk van het volledige rapport."</blockquote><p class="testi-author">Sandra Kuipers</p><p class="testi-role">Secretaris, VvE De Linden</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" style="background:var(--cream)">
+  <div style="max-width:1100px;margin:0 auto">
+    <p class="section-label fade-in" style="text-align:center">Contact</p>
+    <h2 class="fade-in" style="text-align:center;margin-bottom:12px">Neem contact <em>op</em></h2>
+    <p class="section-sub centered fade-in">Heeft u vragen over Slimme Kascontrole, uw bestelling of uw rapport? Wij helpen u graag verder.</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:32px;margin-top:48px">
+      <!-- Contact info -->
+      <div style="display:flex;flex-direction:column;gap:20px">
+        <div style="background:white;border-radius:16px;padding:28px;border:1px solid var(--border)" class="fade-in">
+          <div style="font-size:1.5rem;margin-bottom:12px">📞</div>
+          <h3 style="font-weight:700;color:var(--ink);margin-bottom:4px;font-size:1rem">Bel ons</h3>
+          <a href="tel:0624235829" style="color:var(--blue);text-decoration:none;font-weight:600;font-size:1.05rem">06-24235829</a>
+          <p style="font-size:0.82rem;color:#94a3b8;margin-top:4px">Bereikbaar op werkdagen</p>
+        </div>
+        <div style="background:white;border-radius:16px;padding:28px;border:1px solid var(--border)" class="fade-in">
+          <div style="font-size:1.5rem;margin-bottom:12px">✉️</div>
+          <h3 style="font-weight:700;color:var(--ink);margin-bottom:4px;font-size:1rem">E-mail</h3>
+          <a href="mailto:info@slimmekascontrole.nl" style="color:var(--blue);text-decoration:none;font-weight:600;font-size:1rem">info@slimmekascontrole.nl</a>
+          <p style="font-size:0.82rem;color:#94a3b8;margin-top:4px">Reactie binnen 1 werkdag</p>
+        </div>
+        <div style="background:#eff6ff;border-radius:16px;padding:28px;border:1px solid #bfdbfe" class="fade-in">
+          <div style="font-size:1.5rem;margin-bottom:12px">🏢</div>
+          <h3 style="font-weight:700;color:var(--ink);margin-bottom:8px;font-size:1rem">Over ons</h3>
+          <p style="font-size:0.88rem;color:var(--ink-soft);line-height:1.6">
+            Slimme Kascontrole is een dienst van<br/>
+            <strong style="color:var(--ink)">Vertras B.V.</strong><br/>
+            Bergschenhoek, Nederland
+          </p>
+        </div>
+      </div>
+      <!-- FAQ -->
+      <div style="display:flex;flex-direction:column;gap:16px">
+        <h2 style="font-weight:700;color:var(--ink);font-size:1.1rem;margin-bottom:4px" class="fade-in">Veelgestelde vragen</h2>
+        <div style="background:white;border-radius:12px;padding:20px;border:1px solid var(--border)" class="fade-in">
+          <h4 style="font-weight:700;color:var(--ink);font-size:0.9rem;margin-bottom:8px">❓ Hoe snel ontvang ik mijn rapport?</h4>
+          <p style="font-size:0.85rem;color:var(--ink-soft);line-height:1.6">Direct na betaling kunt u op "Genereer rapport" klikken. Onze kascontroleurs leveren het rapport binnen 24 uur.</p>
+        </div>
+        <div style="background:white;border-radius:12px;padding:20px;border:1px solid var(--border)" class="fade-in">
+          <h4 style="font-weight:700;color:var(--ink);font-size:0.9rem;margin-bottom:8px">❓ Welke bestanden kan ik uploaden?</h4>
+          <p style="font-size:0.85rem;color:var(--ink-soft);line-height:1.6">PDF, Excel (.xlsx, .xls) en CSV. Exporteer vanuit Twinq, Isabel, Yuki of uw eigen kasboek.</p>
+        </div>
+        <div style="background:white;border-radius:12px;padding:20px;border:1px solid var(--border)" class="fade-in">
+          <h4 style="font-weight:700;color:var(--ink);font-size:0.9rem;margin-bottom:8px">❓ Is mijn financiële data veilig?</h4>
+          <p style="font-size:0.85rem;color:var(--ink-soft);line-height:1.6">Ja. Al uw bestanden worden versleuteld opgeslagen in Nederlandse datacenters. Wij delen nooit gegevens met derden.</p>
+        </div>
+        <div style="background:white;border-radius:12px;padding:20px;border:1px solid var(--border)" class="fade-in">
+          <h4 style="font-weight:700;color:var(--ink);font-size:0.9rem;margin-bottom:8px">❓ Kan ik rapporten van meerdere jaren opslaan?</h4>
+          <p style="font-size:0.85rem;color:var(--ink-soft);line-height:1.6">Ja, uw omgeving bewaart alle uploads en rapporten. Zo kunt u eenvoudig vergelijken over de jaren heen.</p>
+        </div>
+        <div style="background:white;border-radius:12px;padding:20px;border:1px solid var(--border)" class="fade-in">
+          <h4 style="font-weight:700;color:var(--ink);font-size:0.9rem;margin-bottom:8px">❓ Wat als ik hulp nodig heb?</h4>
+          <p style="font-size:0.85rem;color:var(--ink-soft);line-height:1.6">Bel of mail ons gerust. Wij helpen u door het proces en zorgen dat uw rapport er professioneel uitziet.</p>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -480,7 +539,7 @@ footer a:hover{color:#93c5fd}
   <span>© 2025 SlimmeKascontrole.nl · Een dienst van Vertras B.V.</span>
   <div class="footer-links">
     <a href="/voorwaarden">Voorwaarden</a>
-    <a href="/contact">Contact</a>
+    <a href="#contact">Contact</a>
     <a href="/mijn-omgeving">Mijn omgeving</a>
     <a href="/registreer">Account aanmaken</a>
   </div>
