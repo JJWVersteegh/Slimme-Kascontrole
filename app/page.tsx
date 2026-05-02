@@ -477,7 +477,13 @@ footer a:hover{color:#93c5fd}
           <p style="font-size:0.82rem;color:#94a3b8;margin-top:4px">Reactie binnen 1 werkdag</p>
         </div>
         <div style="background:#eff6ff;border-radius:16px;padding:28px;border:1px solid #bfdbfe" class="fade-in">
-          <div style="font-size:1.5rem;margin-bottom:12px">🏢</div>
+          <div style="display:flex;align-items:center;gap:16px;margin-bottom:16px">
+            <img src="/willem-jan.jpg" alt="Willem-Jan Versteegh" style="width:72px;height:72px;border-radius:50%;object-fit:cover;object-position:center top;border:3px solid white;box-shadow:0 2px 12px rgba(0,0,0,0.12)"/>
+            <div>
+              <div style="font-weight:700;color:var(--ink);font-size:0.95rem">Willem-Jan Versteegh</div>
+              <div style="font-size:0.82rem;color:var(--ink-soft)">Oprichter</div>
+            </div>
+          </div>
           <h3 style="font-weight:700;color:var(--ink);margin-bottom:8px;font-size:1rem">Over ons</h3>
           <p style="font-size:0.88rem;color:var(--ink-soft);line-height:1.6">
             Slimme Kascontrole is een dienst van<br/>
