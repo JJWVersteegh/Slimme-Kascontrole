@@ -8,7 +8,7 @@ export async function POST(req: NextRequest) {
     const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || 'sk_placeholder', { apiVersion: '2025-01-27.acacia' as any })
 
     const { plan, email } = await req.json()
-    const amount = plan === 'koepel' ? 14900 : 5900
+    const amount = plan === 'koepel' ? 14900 : 200
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://slimme-kascontrole.vercel.app'
 
     const session = await stripe.checkout.sessions.create({
