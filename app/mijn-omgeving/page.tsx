@@ -43,6 +43,7 @@ export default function MijnOmgeving() {
   const [error, setError] = useState('')
   const [toonRapport, setToonRapport] = useState(false)
   const [bevestigDelete, setBevestigDelete] = useState<string | null>(null)
+  const [deletedIds, setDeletedIds] = useState<Set<string>>(new Set())
   // Punt 9: profiel bewerken
   const [toonProfiel, setToonProfiel] = useState(false)
   const [profielForm, setProfielForm] = useState({ naam: '', vereniging: '', adres: '', postcode: '', plaats: '' })
@@ -95,7 +96,10 @@ export default function MijnOmgeving() {
       .eq('user_id', userId)
       .order('boekjaar', { ascending: false })
 
-    setUploads(uploadsData || [])
+    setUploads(prev => {
+      const filtered = (uploadsData || []).filter((u: Upload) => !deletedIds.has(u.id))
+      return filtered
+    })
     setLoading(false)
   }
 
@@ -118,7 +122,15 @@ export default function MijnOmgeving() {
         // Reset file input
         const fileInput = document.getElementById('fileInput') as HTMLInputElement
         if (fileInput) fileInput.value = ''
-        loadData(user.id, user.email)
+        // Alleen klant herladen (voor betaalstatus), uploads zelf ophalen en toevoegen
+        const { data: newUploads } = await supabase
+          .from('uploads')
+          .select('*')
+          .eq('user_id', user.id)
+          .order('boekjaar', { ascending: false })
+        // Filter verwijderde uploads eruit
+        const filtered = (newUploads || []).filter((u: Upload) => !deletedIds.has(u.id))
+        setUploads(filtered)
         setTimeout(() => setUploadSuccess(false), 4000)
       } else { setError(data.error || 'Er ging iets mis') }
     } catch { setError('Er ging iets mis') }
@@ -169,7 +181,9 @@ export default function MijnOmgeving() {
       // Verwijder uit database — permanent, geen soft delete
       const { error: delError } = await supabase.from('uploads').delete().eq('id', uploadId)
       if (delError) throw delError
-      // Update lokale state direct — niet opnieuw laden uit DB zodat verwijderde uploads nooit terugkomen
+      // Voeg toe aan deletedIds zodat dit record nooit meer verschijnt, ook niet na herladen
+      setDeletedIds(prev => new Set([...prev, uploadId]))
+      // Update lokale state direct
       setUploads(prev => prev.filter(u => u.id !== uploadId))
       setBevestigDelete(null)
     } catch { setError('Verwijderen mislukt') }
