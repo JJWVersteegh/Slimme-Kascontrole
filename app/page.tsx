@@ -105,7 +105,7 @@ h2 em{font-style:italic;color:#2563EB}
 
 /* SOURCES */
 .sources-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;max-width:800px;margin:0 auto}
-.source-card{background:white;border-radius:12px;padding:22px;border:1px solid #e2e8f0;text-align:center;transition:transform 0.2s,box-shadow 0.2s}
+.source-card{background:white;border-radius:12px;padding:22px;border:1px solid #e2e8f0;text-align:center;transition:transform 0.2s,box-shadow 0.2s;cursor:pointer;text-decoration:none;display:block;color:inherit}
 .source-card:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(0,0,0,0.07)}
 .source-icon{font-size:1.8rem;margin-bottom:10px}
 .source-name{font-weight:700;color:#0f172a;font-size:0.9rem;margin-bottom:3px}
@@ -343,9 +343,9 @@ footer a:hover{color:#93c5fd}
     <p class="section-sub centered fade-in">Wij verwerken bestanden uit alle gangbare boekhoud- en banksystemen.</p>
     <div class="sources-grid">
 
-      <div class="source-card fade-in"><div class="source-icon"><img src="/twinq-logo.jpg" alt="Twinq" style="height:38px;object-fit:contain;"/></div><div class="source-name">Twinq</div><div class="source-desc">Export via Twinq dashboard als Excel of PDF</div></div>
-      <div class="source-card fade-in"><div class="source-icon">💼</div><div class="source-name">Isabel / Yuki</div><div class="source-desc">Boekhoudexport als CSV of Excel</div></div>
-      <div class="source-card fade-in"><div class="source-icon">📁</div><div class="source-name">Eigen Excel</div><div class="source-desc">Uw eigen kasboek of Excel-overzicht</div></div>
+      <a href="/bronnen/twinq" class="source-card fade-in"><div class="source-icon"><img src="/twinq-logo.jpg" alt="Twinq" style="height:38px;object-fit:contain;"/></div><div class="source-name">Twinq</div><div class="source-desc">Export via Twinq dashboard als Excel of PDF</div><div class="source-link">Hoe exporteer ik? →</div></a>
+      <a href="/bronnen/isabel-yuki" class="source-card fade-in"><div class="source-icon">💼</div><div class="source-name">Isabel / Yuki</div><div class="source-desc">Boekhoudexport als CSV of Excel</div><div class="source-link">Hoe exporteer ik? →</div></a>
+      <a href="/bronnen/eigen-excel" class="source-card fade-in"><div class="source-icon">📁</div><div class="source-name">Eigen Excel</div><div class="source-desc">Uw eigen kasboek of Excel-overzicht</div><div class="source-link">Hoe aanleveren? →</div></a>
     </div>
   </div>
 </section>
