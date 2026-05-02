@@ -245,7 +245,7 @@ footer a:hover{color:#93c5fd}
 <!-- HERO -->
 <section class="hero">
   <div class="hero-bg">
-    <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=1800&q=85" alt="Kascontrole voor verenigingen"/>
+    <img src="/hero.jpg" alt="Kascontrole voor verenigingen"/>
     <div class="hero-overlay"></div>
   </div>
   <div class="hero-content">
