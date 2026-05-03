@@ -13,6 +13,18 @@ export async function POST(req: NextRequest) {
 
     const { user_id, rapport_boekjaar } = await req.json()
 
+    // Controleer of betaald voor dit boekjaar
+    const { data: rapportRecord } = await supabase
+      .from('rapporten')
+      .select('betaald')
+      .eq('user_id', user_id)
+      .eq('boekjaar', rapport_boekjaar)
+      .single()
+
+    if (!rapportRecord?.betaald) {
+      return NextResponse.json({ error: 'Niet betaald voor dit boekjaar' }, { status: 403 })
+    }
+
     // Get all uploads for this user
     const { data: uploads } = await supabase
       .from('uploads')
@@ -221,11 +233,14 @@ BELANGRIJK:
 
     if (!rapportTekst) return NextResponse.json({ error: 'Geen rapport ontvangen' }, { status: 500 })
 
-    // Save to klanten table
-    await supabase.from('klanten').update({
+    // Sla rapport op per boekjaar in rapporten tabel
+    await supabase.from('rapporten').upsert({
+      user_id,
+      boekjaar: huidigJaar,
       rapport_tekst: rapportTekst,
-      rapport_gegenereerd_op: new Date().toISOString(),
-    }).eq('user_id', user_id)
+      betaald: true,
+      gegenereerd_op: new Date().toISOString(),
+    }, { onConflict: 'user_id,boekjaar' })
 
     return NextResponse.json({ success: true })
   } catch (err: any) {

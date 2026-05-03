@@ -32,6 +32,7 @@ export default function MijnOmgeving() {
   const [user, setUser] = useState<any>(null)
   const [klant, setKlant] = useState<Klant | null>(null)
   const [uploads, setUploads] = useState<Upload[]>([])
+  const [rapporten, setRapporten] = useState<{boekjaar: string, betaald: boolean, rapport_tekst?: string, gegenereerd_op?: string}[]>([])
   const [loading, setLoading] = useState(true)
   const [uploading, setUploading] = useState(false)
   const [betaalLoading, setBetaalLoading] = useState(false)
@@ -98,6 +99,14 @@ export default function MijnOmgeving() {
       .select('*')
       .eq('user_id', userId)
       .order('boekjaar', { ascending: false })
+
+    // Laad rapporten per boekjaar
+    const { data: rapportenData } = await supabase
+      .from('rapporten')
+      .select('*')
+      .eq('user_id', userId)
+      .order('boekjaar', { ascending: false })
+    setRapporten(rapportenData || [])
 
     setUploads(prev => {
       const filtered = (uploadsData || []).filter((u: Upload) => !deletedIds.has(u.id))
@@ -223,6 +232,10 @@ export default function MijnOmgeving() {
 
   // Punt 10: uploads gefilterd op rapport boekjaar en omliggende jaren
   const rapportJaarNum = parseInt(rapportBoekjaar)
+  // Haal rapport status op voor gekozen boekjaar
+  const huidigRapport = rapporten.find(r => r.boekjaar === rapportBoekjaar)
+  const huidigJaarBetaald = huidigRapport?.betaald || false
+  const huidigJaarGegenereerd = !!huidigRapport?.rapport_tekst
   const relevanteUploads = uploads.filter(u => {
     const j = parseInt(u.boekjaar)
     return j >= rapportJaarNum - 2 && j <= rapportJaarNum + 1
@@ -235,7 +248,8 @@ export default function MijnOmgeving() {
   )
 
   // Rapport weergave
-  if (toonRapport && klant?.rapport_tekst) return (
+  const rapportTekstVoorWeergave = huidigRapport?.rapport_tekst
+  if (toonRapport && rapportTekstVoorWeergave) return (
     <main style={{ minHeight: '100vh', background: '#f8fafc', fontFamily: 'Outfit, sans-serif' }}>
       <style>{`@media print { .no-print { display: none !important; } body { background: white !important; } }`}</style>
       <nav className="no-print" style={{ background: 'white', borderBottom: '1px solid #e2e8f0', padding: '0 48px', height: '72px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
@@ -265,9 +279,9 @@ export default function MijnOmgeving() {
             <div style={{ fontSize: '0.72rem', fontWeight: '700', letterSpacing: '0.15em', textTransform: 'uppercase', color: '#94a3b8', marginBottom: '8px' }}>Een dienst van Vertras B.V.</div>
             <h1 style={{ fontFamily: 'Outfit, sans-serif', fontSize: '1.6rem', fontWeight: '800', color: '#0f172a', margin: '0 0 8px' }}>KASCOMMISSIE RAPPORT</h1>
             <p style={{ color: '#475569', margin: 0, fontSize: '0.95rem' }}>Boekjaar {rapportBoekjaar} · {relevanteUploads.length} upload{relevanteUploads.length !== 1 ? 's' : ''} verwerkt</p>
-            {klant?.rapport_gegenereerd_op && <p style={{ color: '#94a3b8', margin: '4px 0 0', fontSize: '0.82rem' }}>Gegenereerd op {new Date(klant.rapport_gegenereerd_op).toLocaleDateString('nl-NL', { day: 'numeric', month: 'long', year: 'numeric' })}</p>}
+            {huidigRapport?.gegenereerd_op && <p style={{ color: '#94a3b8', margin: '4px 0 0', fontSize: '0.82rem' }}>Gegenereerd op {new Date(huidigRapport.gegenereerd_op).toLocaleDateString('nl-NL', { day: 'numeric', month: 'long', year: 'numeric' })}</p>}
           </div>
-          <RapportRenderer tekst={klant.rapport_tekst} />
+          <RapportRenderer tekst={rapportTekstVoorWeergave!} />
         </div>
       </div>
     </main>
@@ -456,8 +470,30 @@ export default function MijnOmgeving() {
           )}
         </div>
 
-        {/* Punt 12: Betaalknop ONDER de uploads */}
-        {!klant?.rapport_beschikbaar ? (
+
+        {/* Overzicht eerdere rapporten */}
+        {rapporten.filter(r => r.rapport_tekst && r.boekjaar !== rapportBoekjaar).length > 0 && (
+          <div style={{ background: 'white', borderRadius: '16px', border: '1px solid #e2e8f0', overflow: 'hidden', marginBottom: '24px' }}>
+            <div style={{ padding: '18px 24px', borderBottom: '1px solid #e2e8f0' }}>
+              <h2 style={{ fontSize: '1rem', fontWeight: '700', color: '#0f172a', margin: 0 }}>📋 Eerdere rapporten</h2>
+            </div>
+            {rapporten.filter(r => r.rapport_tekst && r.boekjaar !== rapportBoekjaar).map(r => (
+              <div key={r.boekjaar} style={{ padding: '16px 24px', borderBottom: '1px solid #f1f5f9', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <div>
+                  <span style={{ fontWeight: '700', color: '#0f172a' }}>Boekjaar {r.boekjaar}</span>
+                  {r.gegenereerd_op && <span style={{ fontSize: '0.8rem', color: '#94a3b8', marginLeft: '12px' }}>Gegenereerd op {new Date(r.gegenereerd_op).toLocaleDateString('nl-NL')}</span>}
+                </div>
+                <button onClick={() => { setRapportBoekjaar(r.boekjaar); setToonRapport(true) }}
+                  style={{ background: 'white', color: '#2563EB', padding: '8px 16px', borderRadius: '8px', border: '1.5px solid #2563EB', fontSize: '0.85rem', fontWeight: '600', cursor: 'pointer', fontFamily: 'Outfit, sans-serif' }}>
+                  📄 Bekijk
+                </button>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {/* Betaalknop ONDER de uploads */}
+        {!huidigJaarBetaald ? (
           <div style={{ background: 'white', borderRadius: '16px', padding: '24px 28px', border: '2px solid #bfdbfe', marginBottom: '24px' }}>
             <h2 style={{ fontWeight: '700', color: '#0f172a', fontSize: '1rem', marginBottom: '6px' }}>💳 Stap 2: Betalen en rapport ontvangen</h2>
             <p style={{ color: '#475569', fontSize: '0.85rem', marginBottom: '16px' }}>
@@ -474,16 +510,16 @@ export default function MijnOmgeving() {
           <div style={{ background: '#eff6ff', borderRadius: '16px', padding: '24px 28px', border: '2px solid #2563EB', marginBottom: '24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '16px' }}>
             <div>
               <h2 style={{ fontWeight: '700', color: '#1D4ED8', fontSize: '1rem', marginBottom: '4px' }}>✅ Betaald — rapport beschikbaar</h2>
-              <p style={{ color: '#475569', fontSize: '0.88rem', margin: 0 }}>U kunt nu uw rapport genereren voor boekjaar <strong>{rapportBoekjaar}</strong>.</p>
+              <p style={{ color: '#475569', fontSize: '0.88rem', margin: 0 }}>{huidigJaarGegenereerd ? `Rapport gegenereerd op ${new Date(huidigRapport!.gegenereerd_op!).toLocaleDateString('nl-NL')}` : `U kunt nu uw rapport genereren voor boekjaar ${rapportBoekjaar}.`}</p>
             </div>
             <div style={{ display: 'flex', gap: '12px' }}>
-              {klant?.rapport_tekst && (
+              {huidigJaarGegenereerd && (
                 <button onClick={() => setToonRapport(true)} style={{ background: 'white', color: '#1D4ED8', padding: '12px 20px', borderRadius: '8px', border: '1.5px solid #2563EB', fontSize: '0.9rem', fontWeight: '600', cursor: 'pointer', fontFamily: 'Outfit, sans-serif' }}>
                   📄 Bekijk rapport
                 </button>
               )}
               <button onClick={handleGenereerRapport} disabled={rapportLoading} style={{ background: '#2563EB', color: 'white', padding: '12px 24px', borderRadius: '8px', border: 'none', fontSize: '0.9rem', fontWeight: '700', cursor: rapportLoading ? 'not-allowed' : 'pointer', fontFamily: 'Outfit, sans-serif' }}>
-                {rapportLoading ? '⏳ Genereren...' : klant?.rapport_tekst ? '🔄 Rapport vernieuwen' : '📊 Genereer rapport'}
+                {rapportLoading ? '⏳ Genereren...' : huidigJaarGegenereerd ? '🔄 Rapport vernieuwen' : '📊 Genereer rapport'}
               </button>
             </div>
           </div>

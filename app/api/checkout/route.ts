@@ -7,7 +7,7 @@ export async function POST(req: NextRequest) {
     const Stripe = (await import('stripe')).default
     const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || 'sk_placeholder', { apiVersion: '2025-01-27.acacia' as any })
 
-    const { plan, email } = await req.json()
+    const { plan, email, user_id, boekjaar } = await req.json()
     const amount = plan === 'koepel' ? 14900 : 200
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://www.slimmekascontrole.nl'
 
@@ -19,15 +19,15 @@ export async function POST(req: NextRequest) {
         price_data: {
           currency: 'eur',
           product_data: {
-            name: plan === 'koepel' ? 'Slimme Kascontrole – Koepel' : 'Slimme Kascontrole – Vereniging',
+            name: `Slimme Kascontrole – Kascontrole boekjaar ${boekjaar}`,
           },
           unit_amount: amount,
         },
         quantity: 1,
       }],
       success_url: `${baseUrl}/betaald?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${baseUrl}/tarieven`,
-      metadata: { plan, email },
+      cancel_url: `${baseUrl}/mijn-omgeving`,
+      metadata: { plan, email, user_id, boekjaar },
     })
 
     return NextResponse.json({ url: session.url })
