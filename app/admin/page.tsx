@@ -336,7 +336,18 @@ export default function AdminPortal() {
                             <span style={{ fontSize: '0.82rem', fontWeight: '600', color: '#0f172a' }}>Boekjaar {u.boekjaar}</span>
                             <span style={{ fontSize: '0.72rem', color: '#94a3b8' }}>{new Date(u.upload_datum).toLocaleDateString('nl-NL')}</span>
                           </div>
-                          <div style={{ fontSize: '0.78rem', color: '#475569' }}>{u.bestanden?.length || 0} bestand(en)</div>
+                          <div style={{ fontSize: '0.78rem', color: '#475569' }}>
+                            {u.bestanden?.length || 0} bestand(en)
+                            {u.bestanden && u.bestanden.length > 0 && (
+                              <ul style={{ margin: '4px 0 0 0', padding: '0 0 0 16px' }}>
+                                {u.bestanden.map((b: string, idx: number) => (
+                                  <li key={idx} style={{ fontSize: '0.75rem', color: '#64748b', marginBottom: '2px' }}>
+                                    📎 {b.split('/').pop()}
+                                  </li>
+                                ))}
+                              </ul>
+                            )}
+                          </div>
                           {u.toelichting && <div style={{ fontSize: '0.75rem', color: '#64748b', marginTop: '4px', fontStyle: 'italic' }}>"{u.toelichting}"</div>}
                         </div>
                       ))
