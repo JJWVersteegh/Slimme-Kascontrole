@@ -49,6 +49,7 @@ export default function MijnOmgeving() {
   const [bevestigDeleteRapport, setBevestigDeleteRapport] = useState<string | null>(null)
   const [deleteRapportLoading, setDeleteRapportLoading] = useState(false)
   const [deletedIds, setDeletedIds] = useState<Set<string>>(new Set())
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   // Punt 9: profiel bewerken
   const [toonProfiel, setToonProfiel] = useState(false)
   const [profielForm, setProfielForm] = useState({ naam: '', vereniging: '', kvk: '', adres: '', postcode: '', plaats: '' })
@@ -422,7 +423,16 @@ export default function MijnOmgeving() {
         </div>
       )}
 
-      <nav style={{ background: 'rgba(255,255,255,0.97)', backdropFilter: 'blur(12px)', borderBottom: '1px solid #e2e8f0', padding: '0 48px', height: '72px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', position: 'sticky', top: 0, zIndex: 200, width: '100%', boxSizing: 'border-box' }}>
+      <style>{`
+        @media (max-width: 768px) {
+          .nav-links-desktop { display: none !important; }
+          .nav-hamburger { display: flex !important; }
+          .nav-padding { padding: 0 20px !important; }
+        }
+        .nav-mobile-menu a { display: block; padding: 12px 16px; color: #0f172a; text-decoration: none; font-weight: 500; border-radius: 8px; font-size: 0.95rem; }
+        .nav-mobile-menu a:hover { background: #f8fafc; }
+      `}</style>
+      <nav className="nav-padding" style={{ background: 'rgba(255,255,255,0.97)', backdropFilter: 'blur(12px)', borderBottom: '1px solid #e2e8f0', padding: '0 48px', height: '72px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', position: 'sticky', top: 0, zIndex: 200, width: '100%', boxSizing: 'border-box' }}>
         <a href="/" style={{ display: 'flex', alignItems: 'center', gap: '10px', textDecoration: 'none' }}>
           <div style={{ background: '#2563EB', width: '38px', height: '38px', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <svg width="20" height="20" viewBox="0 0 22 22" fill="none"><polyline points="3,12 9,18 19,6" stroke="white" strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round" /></svg>
@@ -432,9 +442,12 @@ export default function MijnOmgeving() {
             <div style={{ fontWeight: '500', fontSize: '1.05rem', color: '#3b82f6' }}>kascontrole</div>
           </div>
         </a>
-        <ul style={{ display: 'flex', gap: '28px', listStyle: 'none', alignItems: 'center', margin: 0, padding: 0 }}>
+        {/* Desktop links */}
+        <ul className="nav-links-desktop" style={{ display: 'flex', gap: '28px', listStyle: 'none', alignItems: 'center', margin: 0, padding: 0 }}>
           <li><a href="/#waarom" style={{ fontSize: '0.88rem', fontWeight: '500', color: '#475569', textDecoration: 'none' }}>Waarom</a></li>
           <li><a href="/#hoe-het-werkt" style={{ fontSize: '0.88rem', fontWeight: '500', color: '#475569', textDecoration: 'none' }}>Hoe het werkt</a></li>
+          <li><a href="/#handleidingen" style={{ fontSize: '0.88rem', fontWeight: '500', color: '#475569', textDecoration: 'none' }}>Handleidingen</a></li>
+          <li><a href="/#over-ons" style={{ fontSize: '0.88rem', fontWeight: '500', color: '#475569', textDecoration: 'none' }}>Over ons</a></li>
           <li><a href="/#tarieven" style={{ fontSize: '0.88rem', fontWeight: '500', color: '#475569', textDecoration: 'none' }}>Tarieven</a></li>
           <li><a href="/#contact" style={{ fontSize: '0.88rem', fontWeight: '500', color: '#475569', textDecoration: 'none' }}>Contact</a></li>
           <li><a href="/mijn-omgeving" style={{ fontSize: '0.88rem', fontWeight: '500', color: '#2563EB', textDecoration: 'none' }}>Mijn omgeving</a></li>
@@ -444,7 +457,30 @@ export default function MijnOmgeving() {
             <button onClick={handleLogout} style={{ background: '#2563EB', color: 'white', border: 'none', padding: '9px 20px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.88rem', fontFamily: 'Outfit, sans-serif', fontWeight: '600' }}>Uitloggen</button>
           </li>
         </ul>
+        {/* Hamburger */}
+        <button className="nav-hamburger" onClick={() => setMobileMenuOpen(o => !o)} style={{ display: 'none', background: 'none', border: '1.5px solid #e2e8f0', borderRadius: '6px', cursor: 'pointer', padding: '7px', flexDirection: 'column', gap: '4px', alignItems: 'center', justifyContent: 'center' }}>
+          <span style={{ display: 'block', width: '20px', height: '2px', background: '#0f172a', borderRadius: '2px' }} />
+          <span style={{ display: 'block', width: '20px', height: '2px', background: '#0f172a', borderRadius: '2px' }} />
+          <span style={{ display: 'block', width: '20px', height: '2px', background: '#0f172a', borderRadius: '2px' }} />
+        </button>
       </nav>
+      {/* Mobiel menu */}
+      {mobileMenuOpen && (
+        <div className="nav-mobile-menu" style={{ position: 'fixed', top: '72px', left: 0, right: 0, background: 'white', borderBottom: '1px solid #e2e8f0', zIndex: 199, padding: '12px 20px 20px', boxShadow: '0 8px 24px rgba(0,0,0,0.1)' }}>
+          <a href="/#waarom" onClick={() => setMobileMenuOpen(false)}>Waarom</a>
+          <a href="/#hoe-het-werkt" onClick={() => setMobileMenuOpen(false)}>Hoe het werkt</a>
+          <a href="/#handleidingen" onClick={() => setMobileMenuOpen(false)}>Handleidingen</a>
+          <a href="/#over-ons" onClick={() => setMobileMenuOpen(false)}>Over ons</a>
+          <a href="/#tarieven" onClick={() => setMobileMenuOpen(false)}>Tarieven</a>
+          <a href="/#contact" onClick={() => setMobileMenuOpen(false)}>Contact</a>
+          <a href="/mijn-omgeving" onClick={() => setMobileMenuOpen(false)} style={{ color: '#2563EB' }}>Mijn omgeving</a>
+          <div style={{ borderTop: '1px solid #e2e8f0', marginTop: '8px', paddingTop: '12px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+            <span style={{ fontSize: '0.82rem', color: '#475569', padding: '0 16px' }}>{klant?.naam || user?.email}</span>
+            <button onClick={() => { setMobileMenuOpen(false); setToonProfiel(true) }} style={{ background: 'none', border: '1.5px solid #bfdbfe', color: '#1e3a8a', padding: '12px 16px', borderRadius: '8px', cursor: 'pointer', fontSize: '0.9rem', fontWeight: '600', textAlign: 'left', fontFamily: 'Outfit, sans-serif' }}>✏️ Gegevens bewerken</button>
+            <button onClick={handleLogout} style={{ background: '#2563EB', color: 'white', border: 'none', padding: '12px 16px', borderRadius: '8px', cursor: 'pointer', fontSize: '0.9rem', fontWeight: '700', textAlign: 'center', fontFamily: 'Outfit, sans-serif' }}>Uitloggen</button>
+          </div>
+        </div>
+      )}
 
       <div style={{ maxWidth: '900px', margin: '0 auto', padding: '48px 24px' }}>
         <div style={{ marginBottom: '32px' }}>

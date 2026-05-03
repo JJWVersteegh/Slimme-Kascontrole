@@ -19,6 +19,7 @@ export default function Registreer() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [succes, setSucces] = useState('')
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const router = useRouter()
 
   async function zoekAdres(pc: string, hn: string) {
@@ -106,8 +107,16 @@ export default function Registreer() {
   return (
     <main style={{ minHeight: '100vh', background: '#f8fafc', fontFamily: 'Inter, sans-serif' }}>
 
-      {/* Volledige nav */}
-      <nav style={{ background: 'rgba(255,255,255,0.97)', backdropFilter: 'blur(12px)', borderBottom: '1px solid #e2e8f0', padding: '0 48px', height: '72px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', position: 'sticky', top: 0, zIndex: 200, width: '100%', boxSizing: 'border-box' }}>
+      <style>{`
+        @media (max-width: 768px) {
+          .nav-links-desktop { display: none !important; }
+          .nav-hamburger { display: flex !important; }
+          .nav-padding { padding: 0 20px !important; }
+        }
+        .nav-mobile-menu a { display: block; padding: 12px 16px; color: #0f172a; text-decoration: none; font-weight: 500; border-radius: 8px; font-size: 0.95rem; }
+        .nav-mobile-menu a:hover { background: #f8fafc; }
+      `}</style>
+      <nav className="nav-padding" style={{ background: 'rgba(255,255,255,0.97)', backdropFilter: 'blur(12px)', borderBottom: '1px solid #e2e8f0', padding: '0 48px', height: '72px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', position: 'sticky', top: 0, zIndex: 200, width: '100%', boxSizing: 'border-box' }}>
         <a href="/" style={{ display: 'flex', alignItems: 'center', gap: '10px', textDecoration: 'none' }}>
           <div style={{ background: '#2563EB', width: '38px', height: '38px', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <svg width="20" height="20" viewBox="0 0 22 22" fill="none"><polyline points="3,12 9,18 19,6" stroke="white" strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round" /></svg>
@@ -117,15 +126,34 @@ export default function Registreer() {
             <div style={{ fontWeight: '500', fontSize: '1.05rem', color: '#3b82f6', fontFamily: 'Outfit, sans-serif' }}>kascontrole</div>
           </div>
         </a>
-        <ul style={{ display: 'flex', gap: '28px', listStyle: 'none', alignItems: 'center', margin: 0, padding: 0 }}>
+        <ul className="nav-links-desktop" style={{ display: 'flex', gap: '28px', listStyle: 'none', alignItems: 'center', margin: 0, padding: 0 }}>
           <li><a href="/#waarom" style={{ fontSize: '0.88rem', fontWeight: '500', color: '#475569', textDecoration: 'none' }}>Waarom</a></li>
           <li><a href="/#hoe-het-werkt" style={{ fontSize: '0.88rem', fontWeight: '500', color: '#475569', textDecoration: 'none' }}>Hoe het werkt</a></li>
+          <li><a href="/#handleidingen" style={{ fontSize: '0.88rem', fontWeight: '500', color: '#475569', textDecoration: 'none' }}>Handleidingen</a></li>
+          <li><a href="/#over-ons" style={{ fontSize: '0.88rem', fontWeight: '500', color: '#475569', textDecoration: 'none' }}>Over ons</a></li>
           <li><a href="/#tarieven" style={{ fontSize: '0.88rem', fontWeight: '500', color: '#475569', textDecoration: 'none' }}>Tarieven</a></li>
           <li><a href="/#contact" style={{ fontSize: '0.88rem', fontWeight: '500', color: '#475569', textDecoration: 'none' }}>Contact</a></li>
           <li><a href="/mijn-omgeving" style={{ fontSize: '0.88rem', fontWeight: '500', color: '#475569', textDecoration: 'none' }}>Mijn omgeving</a></li>
           <li><a href="/registreer" style={{ background: '#2563EB', color: 'white', padding: '9px 20px', borderRadius: '6px', fontSize: '0.88rem', fontWeight: '600', textDecoration: 'none', fontFamily: 'Outfit, sans-serif' }}>Account aanmaken</a></li>
         </ul>
+        <button className="nav-hamburger" onClick={() => setMobileMenuOpen(o => !o)} style={{ display: 'none', background: 'none', border: '1.5px solid #e2e8f0', borderRadius: '6px', cursor: 'pointer', padding: '7px', flexDirection: 'column', gap: '4px', alignItems: 'center', justifyContent: 'center' }}>
+          <span style={{ display: 'block', width: '20px', height: '2px', background: '#0f172a', borderRadius: '2px' }} />
+          <span style={{ display: 'block', width: '20px', height: '2px', background: '#0f172a', borderRadius: '2px' }} />
+          <span style={{ display: 'block', width: '20px', height: '2px', background: '#0f172a', borderRadius: '2px' }} />
+        </button>
       </nav>
+      {mobileMenuOpen && (
+        <div className="nav-mobile-menu" style={{ position: 'fixed', top: '72px', left: 0, right: 0, background: 'white', borderBottom: '1px solid #e2e8f0', zIndex: 199, padding: '12px 20px 20px', boxShadow: '0 8px 24px rgba(0,0,0,0.1)' }}>
+          <a href="/#waarom" onClick={() => setMobileMenuOpen(false)}>Waarom</a>
+          <a href="/#hoe-het-werkt" onClick={() => setMobileMenuOpen(false)}>Hoe het werkt</a>
+          <a href="/#handleidingen" onClick={() => setMobileMenuOpen(false)}>Handleidingen</a>
+          <a href="/#over-ons" onClick={() => setMobileMenuOpen(false)}>Over ons</a>
+          <a href="/#tarieven" onClick={() => setMobileMenuOpen(false)}>Tarieven</a>
+          <a href="/#contact" onClick={() => setMobileMenuOpen(false)}>Contact</a>
+          <a href="/mijn-omgeving" onClick={() => setMobileMenuOpen(false)}>Mijn omgeving</a>
+          <a href="/registreer" onClick={() => setMobileMenuOpen(false)} style={{ background: '#2563EB', color: 'white !important', marginTop: '8px', borderRadius: '8px', fontWeight: '700', textAlign: 'center' }}>Account aanmaken</a>
+        </div>
+      )}
 
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '80px 20px' }}>
       <div style={{ width: '100%', maxWidth: '420px' }}>
