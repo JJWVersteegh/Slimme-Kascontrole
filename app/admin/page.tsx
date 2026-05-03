@@ -340,11 +340,14 @@ export default function AdminPortal() {
                             {u.bestanden?.length || 0} bestand(en)
                             {u.bestanden && u.bestanden.length > 0 && (
                               <ul style={{ margin: '4px 0 0 0', padding: '0 0 0 16px' }}>
-                                {u.bestanden.map((b: string, idx: number) => (
-                                  <li key={idx} style={{ fontSize: '0.75rem', color: '#64748b', marginBottom: '2px' }}>
-                                    📎 {b.split('/').pop()}
-                                  </li>
-                                ))}
+                                {u.bestanden.map((b: string, idx: number) => {
+                                  const bestandsnaam = b.split('/').pop()?.replace(/^\d+-/, '') || b
+                                  return (
+                                    <li key={idx} style={{ fontSize: '0.75rem', color: '#64748b', marginBottom: '2px' }}>
+                                      · {bestandsnaam}
+                                    </li>
+                                  )
+                                })}
                               </ul>
                             )}
                           </div>
