@@ -46,6 +46,8 @@ export default function MijnOmgeving() {
   const [error, setError] = useState('')
   const [toonRapport, setToonRapport] = useState(false)
   const [bevestigDelete, setBevestigDelete] = useState<string | null>(null)
+  const [bevestigDeleteRapport, setBevestigDeleteRapport] = useState<string | null>(null)
+  const [deleteRapportLoading, setDeleteRapportLoading] = useState(false)
   const [deletedIds, setDeletedIds] = useState<Set<string>>(new Set())
   // Punt 9: profiel bewerken
   const [toonProfiel, setToonProfiel] = useState(false)
@@ -254,6 +256,18 @@ export default function MijnOmgeving() {
     setProfielSaving(false)
   }
 
+  async function handleDeleteRapport(boekjaar: string) {
+    setDeleteRapportLoading(true)
+    try {
+      const { createClient } = await import('@supabase/supabase-js')
+      const sb = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!)
+      await sb.from('uploads').update({ rapport_tekst: null, rapport_gegenereerd_op: null }).eq('user_id', user.id).eq('boekjaar', boekjaar)
+      setRapporten(prev => prev.map(r => r.boekjaar === boekjaar ? { ...r, rapport_tekst: undefined } : r))
+      setBevestigDeleteRapport(null)
+    } catch { setError('Verwijderen mislukt') }
+    setDeleteRapportLoading(false)
+  }
+
   async function handleLogout() {
     await supabase.auth.signOut()
     router.push('/registreer')
@@ -322,6 +336,22 @@ export default function MijnOmgeving() {
   return (
     <main style={{ minHeight: '100vh', background: '#f8fafc', fontFamily: 'Outfit, sans-serif' }}>
       {/* Delete modal */}
+      {bevestigDeleteRapport && (
+        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)', zIndex: 200, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px' }}>
+          <div style={{ background: 'white', borderRadius: '16px', padding: '32px', maxWidth: '400px', width: '100%' }}>
+            <div style={{ fontSize: '2rem', marginBottom: '12px' }}>🗑️</div>
+            <h3 style={{ fontWeight: '700', color: '#0f172a', marginBottom: '8px' }}>Rapport verwijderen?</h3>
+            <p style={{ color: '#475569', fontSize: '0.9rem', marginBottom: '24px', lineHeight: 1.6 }}>Het rapport voor boekjaar {bevestigDeleteRapport} wordt permanent verwijderd. U kunt daarna een nieuw rapport genereren.</p>
+            <div style={{ display: 'flex', gap: '12px' }}>
+              <button onClick={() => setBevestigDeleteRapport(null)} style={{ flex: 1, padding: '12px', background: 'white', border: '1.5px solid #e2e8f0', borderRadius: '8px', cursor: 'pointer', fontWeight: '600', fontFamily: 'Outfit, sans-serif' }}>Annuleren</button>
+              <button onClick={() => handleDeleteRapport(bevestigDeleteRapport)} disabled={deleteRapportLoading} style={{ flex: 1, padding: '12px', background: '#ef4444', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer', fontWeight: '600', fontFamily: 'Outfit, sans-serif' }}>
+                {deleteRapportLoading ? 'Bezig...' : 'Ja, verwijder'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {bevestigDelete && (
         <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)', zIndex: 200, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px' }}>
           <div style={{ background: 'white', borderRadius: '16px', padding: '32px', maxWidth: '400px', width: '100%' }}>
@@ -554,9 +584,12 @@ export default function MijnOmgeving() {
             </div>
             <div style={{ display: 'flex', gap: '12px' }}>
               {huidigJaarGegenereerd && (
-                <button onClick={() => setToonRapport(true)} style={{ background: 'white', color: '#1D4ED8', padding: '12px 20px', borderRadius: '8px', border: '1.5px solid #2563EB', fontSize: '0.9rem', fontWeight: '600', cursor: 'pointer', fontFamily: 'Outfit, sans-serif' }}>
-                  📄 Bekijk rapport
-                </button>
+                <>
+                  <button onClick={() => setToonRapport(true)} style={{ background: 'white', color: '#1D4ED8', padding: '12px 20px', borderRadius: '8px', border: '1.5px solid #2563EB', fontSize: '0.9rem', fontWeight: '600', cursor: 'pointer', fontFamily: 'Outfit, sans-serif' }}>
+                    📄 Bekijk rapport
+                  </button>
+                  <button onClick={() => setBevestigDeleteRapport(rapportBoekjaar)} title="Rapport verwijderen" style={{ background: 'none', border: '1.5px solid #fecaca', color: '#ef4444', padding: '12px', borderRadius: '8px', cursor: 'pointer', fontSize: '0.85rem' }}>🗑️</button>
+                </>
               )}
               <button onClick={handleGenereerRapport} disabled={rapportLoading} style={{ background: '#2563EB', color: 'white', padding: '12px 24px', borderRadius: '8px', border: 'none', fontSize: '0.9rem', fontWeight: '700', cursor: rapportLoading ? 'not-allowed' : 'pointer', fontFamily: 'Outfit, sans-serif' }}>
                 {rapportLoading ? '⏳ Genereren...' : huidigJaarGegenereerd ? '🔄 Rapport vernieuwen' : '📊 Genereer rapport'}
