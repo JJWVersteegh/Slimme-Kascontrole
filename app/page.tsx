@@ -262,7 +262,7 @@ footer a:hover{color:#93c5fd}
   <div class="hero-content">
     <div style="max-width:600px">
       <div class="hero-eyebrow">✦ Verplicht voor elke vereniging</div>
-      <h1>Uw kascontrolerapport in<br/><em>minuten klaar</em> voor de ALV</h1>
+      <h1>Uw kascontrolerapport <em>in minuten klaar</em> voor de ALV</h1>
       <p class="hero-sub">Upload uw financiële bestanden en ontvang een volledig gecontroleerd kascontrolerapport, opgesteld door onze kascontroleurs. Eenmalig €59 incl. btw — geen abonnement.</p>
       <div class="hero-ctas">
         <a href="/registreer" class="btn-primary">Account aanmaken</a>
