@@ -28,7 +28,7 @@ function BetaaldContent() {
 
         <h1 style={{ fontSize: '2rem', fontWeight: '700', color: '#0f172a', marginBottom: '16px' }}>Betaling ontvangen!</h1>
         <p style={{ fontSize: '1rem', color: '#475569', marginBottom: '12px', lineHeight: 1.7 }}>
-          Bedankt voor uw betaling. U kunt nu direct uw bestanden uploaden en uw kascontrolerapport genereren.
+          Bedankt voor uw betaling. Ga naar uw omgeving en klik op <strong>Genereer rapport</strong> om uw kascontrolerapport aan te maken.
         </p>
         <p style={{ fontSize: '0.88rem', color: '#94a3b8', marginBottom: '32px' }}>
           U ontvangt ook een bevestiging per e-mail. Controleer uw spammap als u deze niet ziet.
@@ -37,7 +37,7 @@ function BetaaldContent() {
         {/* Info blokje */}
         <div style={{ background: '#eff6ff', borderRadius: '12px', padding: '20px', marginBottom: '32px', border: '1px solid #bfdbfe' }}>
           <p style={{ fontSize: '0.9rem', color: '#1e3a8a', margin: 0, lineHeight: 1.6 }}>
-            ✅ Uw betaling is verwerkt. Ga naar uw omgeving, upload uw bestanden en klik op <strong>Genereer rapport</strong>.
+            ✅ Uw betaling is verwerkt. Uw geüploade bestanden staan klaar — klik op <strong>Genereer rapport</strong> om direct uw rapport te maken.
           </p>
         </div>
 
