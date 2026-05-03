@@ -51,6 +51,7 @@ export default function MijnOmgeving() {
   const [toonProfiel, setToonProfiel] = useState(false)
   const [profielForm, setProfielForm] = useState({ naam: '', vereniging: '', kvk: '', adres: '', postcode: '', plaats: '' })
   const [profielSaving, setProfielSaving] = useState(false)
+  const [adresLaden, setAdresLaden] = useState(false)
   const [profielSuccess, setProfielSuccess] = useState(false)
   const router = useRouter()
 
@@ -203,6 +204,22 @@ export default function MijnOmgeving() {
   }
 
   // Punt 9: profiel opslaan
+  async function zoekAdresProfiel(pc: string, hn: string) {
+    if (pc.replace(' ','').length < 6 || !hn) return
+    setAdresLaden(true)
+    try {
+      const res = await fetch(`https://api.pdok.nl/bzk/locatieserver/search/v3_1/free?q=${pc.replace(' ','')}+${hn}&fq=type:adres&rows=1`)
+      const data = await res.json()
+      if (data.response?.docs?.[0]) {
+        const doc = data.response.docs[0]
+        const straat = doc.straatnaam || ''
+        const woonplaats = doc.woonplaatsnaam || ''
+        setProfielForm(p => ({ ...p, adres: `${straat} ${hn}`, plaats: woonplaats }))
+      }
+    } catch {}
+    setAdresLaden(false)
+  }
+
   async function handleProfielSave(e: React.FormEvent) {
     e.preventDefault()
     setProfielSaving(true)
@@ -314,7 +331,7 @@ export default function MijnOmgeving() {
             <form onSubmit={handleProfielSave}>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
                 <div>
-                  <label style={{ display: 'block', fontWeight: '600', color: '#0f172a', marginBottom: '5px', fontSize: '0.85rem' }}>Naam</label>
+                  <label style={{ display: 'block', fontWeight: '600', color: '#0f172a', marginBottom: '5px', fontSize: '0.85rem' }}>Naam <span style={{ fontWeight: '400', color: '#94a3b8', fontSize: '0.78rem' }}>(kascommissielid)</span></label>
                   <input value={profielForm.naam} onChange={e => setProfielForm(p => ({ ...p, naam: e.target.value }))} placeholder="Uw naam" style={inp} />
                 </div>
                 <div>
@@ -326,17 +343,25 @@ export default function MijnOmgeving() {
                   <input value={profielForm.kvk} onChange={e => setProfielForm(p => ({ ...p, kvk: e.target.value }))} placeholder="bijv. 12345678" style={inp} />
                 </div>
                 <div>
-                  <label style={{ display: 'block', fontWeight: '600', color: '#0f172a', marginBottom: '5px', fontSize: '0.85rem' }}>Adres</label>
-                  <input value={profielForm.adres} onChange={e => setProfielForm(p => ({ ...p, adres: e.target.value }))} placeholder="Straat en huisnummer" style={inp} />
-                </div>
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 2fr', gap: '12px' }}>
-                  <div>
-                    <label style={{ display: 'block', fontWeight: '600', color: '#0f172a', marginBottom: '5px', fontSize: '0.85rem' }}>Postcode</label>
-                    <input value={profielForm.postcode} onChange={e => setProfielForm(p => ({ ...p, postcode: e.target.value }))} placeholder="1234 AB" style={inp} />
+                  <label style={{ display: 'block', fontWeight: '600', color: '#0f172a', marginBottom: '5px', fontSize: '0.85rem' }}>Postcode + huisnummer <span style={{ fontWeight: '400', color: '#94a3b8', fontSize: '0.78rem' }}>(adres wordt automatisch ingevuld)</span></label>
+                  <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '8px', marginBottom: '6px' }}>
+                    <input value={profielForm.postcode}
+                      onChange={e => { setProfielForm(p => ({ ...p, postcode: e.target.value })); zoekAdresProfiel(e.target.value, profielForm.adres.split(' ').pop() || '') }}
+                      placeholder="1234 AB" style={inp} />
+                    <input
+                      placeholder="Nr"
+                      onBlur={e => zoekAdresProfiel(profielForm.postcode, e.target.value)}
+                      style={inp} />
                   </div>
-                  <div>
-                    <label style={{ display: 'block', fontWeight: '600', color: '#0f172a', marginBottom: '5px', fontSize: '0.85rem' }}>Plaats</label>
-                    <input value={profielForm.plaats} onChange={e => setProfielForm(p => ({ ...p, plaats: e.target.value }))} placeholder="Uw woonplaats" style={inp} />
+                  {adresLaden && <p style={{ fontSize: '0.78rem', color: '#2563EB', margin: '0 0 6px' }}>🔍 Adres opzoeken...</p>}
+                  {profielForm.adres && profielForm.plaats && (
+                    <div style={{ background: '#f0fdf4', border: '1px solid #bbf7d0', borderRadius: '6px', padding: '8px 12px', fontSize: '0.83rem', color: '#166534', marginBottom: '6px' }}>
+                      ✓ {profielForm.adres}, {profielForm.postcode} {profielForm.plaats}
+                    </div>
+                  )}
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
+                    <input value={profielForm.adres} onChange={e => setProfielForm(p => ({ ...p, adres: e.target.value }))} placeholder="Straat + huisnummer" style={{ ...inp, fontSize: '0.85rem' }} />
+                    <input value={profielForm.plaats} onChange={e => setProfielForm(p => ({ ...p, plaats: e.target.value }))} placeholder="Plaats" style={{ ...inp, fontSize: '0.85rem' }} />
                   </div>
                 </div>
               </div>

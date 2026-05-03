@@ -36,12 +36,22 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Geen uploads gevonden' }, { status: 404 })
     }
 
-    // Get user info
+    // Get user info — eerst klanten tabel (meest actueel), dan user_metadata als fallback
     const { data: userData } = await supabase.auth.admin.getUserById(user_id)
     const email = userData?.user?.email || ''
-    const naam = userData?.user?.user_metadata?.naam || ''
-    const vereniging = userData?.user?.user_metadata?.vereniging || ''
-    const kvk = userData?.user?.user_metadata?.kvk || ''
+
+    const { data: klantData } = await supabase
+      .from('klanten')
+      .select('naam, vereniging, kvk, adres, postcode, plaats')
+      .eq('user_id', user_id)
+      .single()
+
+    const naam = klantData?.naam || userData?.user?.user_metadata?.naam || ''
+    const vereniging = klantData?.vereniging || userData?.user?.user_metadata?.vereniging || ''
+    const kvk = klantData?.kvk || userData?.user?.user_metadata?.kvk || ''
+    const adres = klantData?.adres || ''
+    const postcode = klantData?.postcode || ''
+    const plaats = klantData?.plaats || ''
 
     // Read all files from all uploads
     const uploadsContent: string[] = []
@@ -92,9 +102,10 @@ export async function POST(req: NextRequest) {
     const prompt = `Je bent een kascontroleur voor Nederlandse verenigingen, VvE's en stichtingen. Je schrijft rapporten in begrijpelijke, gewone taal — alsof je het uitlegt aan een vrijwilliger zonder financiële achtergrond. Geen vakjargon, geen ingewikkelde zinnen. Wel volledig en professioneel.
 
 OPDRACHTGEVER:
-- Naam: ${naam}
-- Vereniging/VvE: ${vereniging || 'Niet opgegeven'}
-- KvK: ${kvk || 'Niet opgegeven'}
+- Kascommissielid: ${naam || 'Niet opgegeven'}
+- Adres kascommissielid: ${adres ? `${adres}, ${postcode} ${plaats}` : 'Niet opgegeven'}
+- Vereniging / VvE: ${vereniging || 'Niet opgegeven'}
+- KvK vereniging: ${kvk || 'Niet opgegeven'}
 - E-mail: ${email}
 - RAPPORT BOEKJAAR (waar het rapport over gaat): ${huidigJaar}
 ${vorigeJaren.length > 0 ? `- Voorgaande jaren (voor trendanalyse): ${vorigeJaren.join(', ')}` : ''}
@@ -112,6 +123,7 @@ Stel een volledig professioneel kascontrolerapport op in het Nederlands. Het rap
 
 # KASCOMMISSIE RAPPORT
 ## ${vereniging || 'Vereniging'} | Boekjaar ${huidigJaar} | Peildatum ${new Date().toLocaleDateString('nl-NL', { day: 'numeric', month: 'long', year: 'numeric' })}
+*Kascommissielid: ${naam || 'Onbekend'}${adres ? ` · ${adres}, ${postcode} ${plaats}` : ''}*
 *Opgesteld ten behoeve van de Algemene Ledenvergadering*
 
 ---
