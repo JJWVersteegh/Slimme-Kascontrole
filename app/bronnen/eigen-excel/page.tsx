@@ -154,7 +154,7 @@ export default function EigenExcelBron() {
       </div>
 
       <footer style={{ background: '#0f172a', color: 'rgba(255,255,255,0.5)', padding: '32px 48px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px', fontSize: '0.83rem', marginTop: '64px' }}>
-        <span>© 2025 SlimmeKascontrole.nl — Een dienst van Vertras B.V.</span>
+        <span>© 2026 Slimme Kascontrole — Een dienst van Vertras B.V.</span>
         <div style={{ display: 'flex', gap: '24px' }}>
           <a href="/#handleidingen" style={{ color: 'rgba(255,255,255,0.5)', textDecoration: 'none' }}>Home</a>
           <a href="/bronnen/twinq" style={{ color: 'rgba(255,255,255,0.5)', textDecoration: 'none' }}>Twinq</a>

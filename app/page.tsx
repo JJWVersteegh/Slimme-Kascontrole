@@ -553,7 +553,7 @@ footer a:hover{color:#93c5fd}
       <div style="font-weight:500;font-size:0.9rem;color:rgba(255,255,255,0.6)">kascontrole</div>
     </div>
   </a>
-  <span>© 2025 SlimmeKascontrole.nl · Een dienst van Vertras B.V.</span>
+  <span>© 2026 Slimme Kascontrole · Een dienst van Vertras B.V.</span>
   <div class="footer-links">
     <a href="/voorwaarden">Voorwaarden</a>
     <a href="#contact">Contact</a>
