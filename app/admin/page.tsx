@@ -360,7 +360,7 @@ export default function AdminPortal() {
               <button onClick={() => setToonRapport(null)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#94a3b8', fontSize: '1.5rem', lineHeight: 1 }}>×</button>
             </div>
             <div style={{ padding: '24px' }}>
-              {toonRapport.rapport_tekst && <RapportRenderer rapport={toonRapport.rapport_tekst} />}
+              {toonRapport.rapport_tekst && <RapportRenderer tekst={toonRapport.rapport_tekst} />}
             </div>
           </div>
         </div>
