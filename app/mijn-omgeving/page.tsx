@@ -107,7 +107,22 @@ export default function MijnOmgeving() {
       .select('*')
       .eq('user_id', userId)
       .order('boekjaar', { ascending: false })
-    setRapporten(rapportenData || [])
+    const rapportenLijst = rapportenData || []
+    setRapporten(rapportenLijst)
+    // Spring automatisch naar het meest recente betaalde boekjaar zonder rapport
+    const betaaldeZonderRapport = rapportenLijst
+      .filter(r => r.betaald && !r.rapport_tekst)
+      .sort((a, b) => b.boekjaar.localeCompare(a.boekjaar))
+    const betaaldeMetRapport = rapportenLijst
+      .filter(r => r.betaald && r.rapport_tekst)
+      .sort((a, b) => b.boekjaar.localeCompare(a.boekjaar))
+    if (betaaldeZonderRapport.length > 0) {
+      setRapportBoekjaar(betaaldeZonderRapport[0].boekjaar)
+      setBoekjaar(betaaldeZonderRapport[0].boekjaar)
+    } else if (betaaldeMetRapport.length > 0) {
+      setRapportBoekjaar(betaaldeMetRapport[0].boekjaar)
+      setBoekjaar(betaaldeMetRapport[0].boekjaar)
+    }
 
     setUploads(prev => {
       const filtered = (uploadsData || []).filter((u: Upload) => !deletedIds.has(u.id))
