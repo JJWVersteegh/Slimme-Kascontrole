@@ -104,21 +104,31 @@ export default function Registreer() {
   }
 
   return (
-    <main style={{ minHeight: '100vh', background: '#f8fafc', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'Inter, sans-serif', padding: '40px 20px' }}>
-      <div style={{ width: '100%', maxWidth: '420px' }}>
+    <main style={{ minHeight: '100vh', background: '#f8fafc', fontFamily: 'Inter, sans-serif' }}>
 
-        {/* Logo */}
-        <div style={{ textAlign: 'center', marginBottom: '32px' }}>
-          <a href="/" style={{ display: 'inline-flex', alignItems: 'center', gap: '10px', textDecoration: 'none' }}>
-            <div style={{ background: '#2563EB', width: '38px', height: '38px', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <svg width="20" height="20" viewBox="0 0 22 22" fill="none"><polyline points="3,12 9,18 19,6" stroke="white" strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round" /></svg>
-            </div>
-            <div style={{ lineHeight: 1.1 }}>
-              <div style={{ fontWeight: '700', fontSize: '1.05rem', color: '#1D4ED8', fontFamily: 'Outfit, sans-serif' }}>slimme</div>
-              <div style={{ fontWeight: '500', fontSize: '1.05rem', color: '#3b82f6', fontFamily: 'Outfit, sans-serif' }}>kascontrole</div>
-            </div>
-          </a>
-        </div>
+      {/* Volledige nav */}
+      <nav style={{ background: 'rgba(255,255,255,0.97)', backdropFilter: 'blur(12px)', borderBottom: '1px solid #e2e8f0', padding: '0 48px', height: '72px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', position: 'sticky', top: 0, zIndex: 200 }}>
+        <a href="/" style={{ display: 'flex', alignItems: 'center', gap: '10px', textDecoration: 'none' }}>
+          <div style={{ background: '#2563EB', width: '38px', height: '38px', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <svg width="20" height="20" viewBox="0 0 22 22" fill="none"><polyline points="3,12 9,18 19,6" stroke="white" strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round" /></svg>
+          </div>
+          <div style={{ lineHeight: 1.1 }}>
+            <div style={{ fontWeight: '700', fontSize: '1.05rem', color: '#1D4ED8', fontFamily: 'Outfit, sans-serif' }}>slimme</div>
+            <div style={{ fontWeight: '500', fontSize: '1.05rem', color: '#3b82f6', fontFamily: 'Outfit, sans-serif' }}>kascontrole</div>
+          </div>
+        </a>
+        <ul style={{ display: 'flex', gap: '28px', listStyle: 'none', alignItems: 'center', margin: 0, padding: 0 }}>
+          <li><a href="/#waarom" style={{ fontSize: '0.88rem', fontWeight: '500', color: '#475569', textDecoration: 'none' }}>Waarom</a></li>
+          <li><a href="/#hoe-het-werkt" style={{ fontSize: '0.88rem', fontWeight: '500', color: '#475569', textDecoration: 'none' }}>Hoe het werkt</a></li>
+          <li><a href="/#tarieven" style={{ fontSize: '0.88rem', fontWeight: '500', color: '#475569', textDecoration: 'none' }}>Tarieven</a></li>
+          <li><a href="/#contact" style={{ fontSize: '0.88rem', fontWeight: '500', color: '#475569', textDecoration: 'none' }}>Contact</a></li>
+          <li><a href="/mijn-omgeving" style={{ fontSize: '0.88rem', fontWeight: '500', color: '#475569', textDecoration: 'none' }}>Mijn omgeving</a></li>
+          <li><a href="/registreer" style={{ background: '#2563EB', color: 'white', padding: '9px 20px', borderRadius: '6px', fontSize: '0.88rem', fontWeight: '600', textDecoration: 'none', fontFamily: 'Outfit, sans-serif' }}>Account aanmaken</a></li>
+        </ul>
+      </nav>
+
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '48px 20px' }}>
+      <div style={{ width: '100%', maxWidth: '420px' }}>
 
         {/* KEUZE SCHERM */}
         {mode === 'keuze' && (
@@ -281,6 +291,7 @@ export default function Registreer() {
             )}
           </div>
         )}
+      </div>
       </div>
     </main>
   )
