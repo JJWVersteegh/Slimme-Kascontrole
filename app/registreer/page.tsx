@@ -97,7 +97,7 @@ export default function Registreer() {
   const inp = {
     width: '100%', padding: '13px 14px', borderRadius: '8px',
     border: '1.5px solid #c8e0d4', fontSize: '1rem', outline: 'none',
-    fontFamily: 'Inter, sans-serif', background: 'white'
+    fontFamily: 'Outfit, sans-serif', background: 'white'
   }
   const lbl = {
     display: 'block' as const, fontWeight: '600' as const,
@@ -105,7 +105,7 @@ export default function Registreer() {
   }
 
   return (
-    <main style={{ minHeight: '100vh', background: '#f8fafc', fontFamily: 'Inter, sans-serif' }}>
+    <main style={{ minHeight: '100vh', background: '#f8fafc', fontFamily: 'Outfit, sans-serif' }}>
 
       <style>{`
         @media (max-width: 768px) {
@@ -166,14 +166,14 @@ export default function Registreer() {
               Upload uw financiële bestanden en ontvang een volledig gecontroleerd kascontrolerapport. Veilig, betrouwbaar en AVG-conform.
             </p>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '14px', marginBottom: '32px' }}>
-              <button onClick={() => setMode('registreer')} style={{ width: '100%', padding: '16px', background: '#1e3a8a', color: 'white', border: 'none', borderRadius: '10px', fontSize: '1rem', fontWeight: '700', cursor: 'pointer', fontFamily: 'Inter, sans-serif', textAlign: 'left', display: 'flex', alignItems: 'center', gap: '14px' }}>
+              <button onClick={() => setMode('registreer')} style={{ width: '100%', padding: '16px', background: '#1e3a8a', color: 'white', border: 'none', borderRadius: '10px', fontSize: '1rem', fontWeight: '700', cursor: 'pointer', fontFamily: 'Outfit, sans-serif', textAlign: 'left', display: 'flex', alignItems: 'center', gap: '14px' }}>
                 <span style={{ fontSize: '1.4rem' }}>✨</span>
                 <div>
                   <div>Nieuw account aanmaken</div>
                   <div style={{ fontWeight: '400', fontSize: '0.82rem', color: 'rgba(255,255,255,0.75)', marginTop: '2px' }}>Eerste keer hier? Start hier</div>
                 </div>
               </button>
-              <button onClick={() => setMode('login')} style={{ width: '100%', padding: '16px', background: 'white', color: '#1e3a8a', border: '2px solid #bfdbfe', borderRadius: '10px', fontSize: '1rem', fontWeight: '700', cursor: 'pointer', fontFamily: 'Inter, sans-serif', textAlign: 'left', display: 'flex', alignItems: 'center', gap: '14px' }}>
+              <button onClick={() => setMode('login')} style={{ width: '100%', padding: '16px', background: 'white', color: '#1e3a8a', border: '2px solid #bfdbfe', borderRadius: '10px', fontSize: '1rem', fontWeight: '700', cursor: 'pointer', fontFamily: 'Outfit, sans-serif', textAlign: 'left', display: 'flex', alignItems: 'center', gap: '14px' }}>
                 <span style={{ fontSize: '1.4rem' }}>🔑</span>
                 <div>
                   <div>Inloggen</div>
@@ -203,7 +203,7 @@ export default function Registreer() {
             <div style={{ display: 'flex', background: '#eff6ff', borderRadius: '10px', padding: '4px', marginBottom: '24px' }}>
               {(['registreer', 'login'] as const).map(m => (
                 <button key={m} onClick={() => { setMode(m); setError('') }}
-                  style={{ flex: 1, padding: '10px', borderRadius: '8px', border: 'none', fontFamily: 'Inter, sans-serif', fontSize: '0.9rem', fontWeight: '600', cursor: 'pointer', background: mode === m ? 'white' : 'transparent', color: mode === m ? '#1e3a8a' : '#475569', boxShadow: mode === m ? '0 2px 8px rgba(0,0,0,0.08)' : 'none', transition: 'all 0.2s' }}>
+                  style={{ flex: 1, padding: '10px', borderRadius: '8px', border: 'none', fontFamily: 'Outfit, sans-serif', fontSize: '0.9rem', fontWeight: '600', cursor: 'pointer', background: mode === m ? 'white' : 'transparent', color: mode === m ? '#1e3a8a' : '#475569', boxShadow: mode === m ? '0 2px 8px rgba(0,0,0,0.08)' : 'none', transition: 'all 0.2s' }}>
                   {m === 'registreer' ? 'Nieuw account' : 'Inloggen'}
                 </button>
               ))}
