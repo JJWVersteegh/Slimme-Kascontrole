@@ -8,7 +8,7 @@ export async function POST(req: NextRequest) {
     const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || 'sk_placeholder', { apiVersion: '2025-01-27.acacia' as any })
 
     const { plan, email, user_id, boekjaar } = await req.json()
-    const amount = plan === 'koepel' ? 14900 : 200
+    const amount = plan === 'koepel' ? 14900 : 5900
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://www.slimmekascontrole.nl'
 
     const session = await stripe.checkout.sessions.create({
