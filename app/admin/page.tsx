@@ -297,63 +297,54 @@ export default function AdminPortal() {
 
                   {/* Rapporten */}
                   <div style={{ marginBottom: '20px' }}>
-                    <div style={{ fontSize: '0.72rem', fontWeight: '700', color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '10px' }}>Rapporten</div>
+                    <div style={{ fontSize: '0.72rem', fontWeight: '700', color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '10px' }}>Rapporten & bestanden</div>
                     {getRapportenVoorKlant(geselecteerdeKlant.user_id).length === 0 ? (
                       <p style={{ fontSize: '0.85rem', color: '#94a3b8' }}>Geen rapporten</p>
                     ) : (
-                      getRapportenVoorKlant(geselecteerdeKlant.user_id).map(r => (
-                        <div key={r.id} style={{ background: '#f8fafc', borderRadius: '8px', padding: '12px', marginBottom: '8px', border: '1px solid #e2e8f0' }}>
-                          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
-                            <span style={{ fontWeight: '700', fontSize: '0.9rem', color: '#0f172a' }}>Boekjaar {r.boekjaar}</span>
-                            <span className={`badge ${r.betaald ? 'badge-groen' : 'badge-oranje'}`}>{r.betaald ? '✓ Betaald' : '⏳ Onbetaald'}</span>
-                          </div>
-                          {r.rapport_tekst ? (
-                            <button onClick={() => setToonRapport(r)} style={{ width: '100%', background: '#2563EB', color: 'white', border: 'none', padding: '8px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.82rem', fontWeight: '600', fontFamily: 'Outfit, sans-serif' }}>
-                              📄 Rapport openen
-                            </button>
-                          ) : (
-                            <span style={{ fontSize: '0.78rem', color: '#94a3b8' }}>Nog geen rapport gegenereerd</span>
-                          )}
-                          {r.gegenereerd_op && (
-                            <div style={{ fontSize: '0.72rem', color: '#94a3b8', marginTop: '4px' }}>
-                              Gegenereerd op {new Date(r.gegenereerd_op).toLocaleDateString('nl-NL')}
+                      getRapportenVoorKlant(geselecteerdeKlant.user_id).map(r => {
+                        const uploadsVoorBoekjaar = getUploadsVoorKlant(geselecteerdeKlant.user_id).filter(u => u.boekjaar === r.boekjaar)
+                        return (
+                          <div key={r.id} style={{ background: '#f8fafc', borderRadius: '8px', padding: '12px', marginBottom: '8px', border: '1px solid #e2e8f0' }}>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+                              <span style={{ fontWeight: '700', fontSize: '0.9rem', color: '#0f172a' }}>Boekjaar {r.boekjaar}</span>
+                              <span className={`badge ${r.betaald ? 'badge-groen' : 'badge-oranje'}`}>{r.betaald ? '✓ Betaald' : '⏳ Onbetaald'}</span>
                             </div>
-                          )}
-                        </div>
-                      ))
-                    )}
-                  </div>
-
-                  {/* Uploads */}
-                  <div>
-                    <div style={{ fontSize: '0.72rem', fontWeight: '700', color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '10px' }}>Geüploade bestanden</div>
-                    {getUploadsVoorKlant(geselecteerdeKlant.user_id).length === 0 ? (
-                      <p style={{ fontSize: '0.85rem', color: '#94a3b8' }}>Geen bestanden</p>
-                    ) : (
-                      getUploadsVoorKlant(geselecteerdeKlant.user_id).map(u => (
-                        <div key={u.id} style={{ background: '#f8fafc', borderRadius: '8px', padding: '10px 12px', marginBottom: '6px', border: '1px solid #e2e8f0' }}>
-                          <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '4px' }}>
-                            <span style={{ fontSize: '0.82rem', fontWeight: '600', color: '#0f172a' }}>Boekjaar {u.boekjaar}</span>
-                            <span style={{ fontSize: '0.72rem', color: '#94a3b8' }}>{new Date(u.upload_datum).toLocaleDateString('nl-NL')}</span>
-                          </div>
-                          <div style={{ fontSize: '0.78rem', color: '#475569' }}>
-                            {u.bestanden?.length || 0} bestand(en)
-                            {u.bestanden && u.bestanden.length > 0 && (
-                              <ul style={{ margin: '4px 0 0 0', padding: '0 0 0 16px' }}>
-                                {u.bestanden.map((b: string, idx: number) => {
-                                  const bestandsnaam = b.split('/').pop()?.replace(/^\d+-/, '') || b
-                                  return (
-                                    <li key={idx} style={{ fontSize: '0.75rem', color: '#64748b', marginBottom: '2px' }}>
-                                      · {bestandsnaam}
-                                    </li>
-                                  )
-                                })}
-                              </ul>
+                            {r.rapport_tekst ? (
+                              <button onClick={() => setToonRapport(r)} style={{ width: '100%', background: '#2563EB', color: 'white', border: 'none', padding: '8px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.82rem', fontWeight: '600', fontFamily: 'Outfit, sans-serif' }}>
+                                📄 Rapport openen
+                              </button>
+                            ) : (
+                              <span style={{ fontSize: '0.78rem', color: '#94a3b8' }}>Nog geen rapport gegenereerd</span>
+                            )}
+                            {r.gegenereerd_op && (
+                              <div style={{ fontSize: '0.72rem', color: '#94a3b8', marginTop: '4px' }}>
+                                Gegenereerd op {new Date(r.gegenereerd_op).toLocaleDateString('nl-NL')}
+                              </div>
+                            )}
+                            {/* Uploads voor dit boekjaar */}
+                            {uploadsVoorBoekjaar.length > 0 && (
+                              <div style={{ marginTop: '10px', borderTop: '1px solid #e2e8f0', paddingTop: '8px' }}>
+                                <div style={{ fontSize: '0.72rem', fontWeight: '600', color: '#94a3b8', marginBottom: '4px' }}>
+                                  {uploadsVoorBoekjaar.reduce((acc, u) => acc + (u.bestanden?.length || 0), 0)} geüploade bestanden
+                                </div>
+                                <ul style={{ margin: 0, padding: '0 0 0 12px' }}>
+                                  {uploadsVoorBoekjaar.flatMap(u => u.bestanden || []).map((b: string, idx: number) => {
+                                    const naam = b.split('/').pop()?.replace(/^\d+-/, '') || b
+                                    return (
+                                      <li key={idx} style={{ fontSize: '0.73rem', color: '#64748b', marginBottom: '2px' }}>· {naam}</li>
+                                    )
+                                  })}
+                                </ul>
+                              </div>
+                            )}
+                            {uploadsVoorBoekjaar.length === 0 && (
+                              <div style={{ marginTop: '8px', fontSize: '0.73rem', color: '#94a3b8', borderTop: '1px solid #e2e8f0', paddingTop: '6px' }}>
+                                Geen bestanden geüpload voor dit boekjaar
+                              </div>
                             )}
                           </div>
-                          {u.toelichting && <div style={{ fontSize: '0.75rem', color: '#64748b', marginTop: '4px', fontStyle: 'italic' }}>"{u.toelichting}"</div>}
-                        </div>
-                      ))
+                        )
+                      })
                     )}
                   </div>
                 </div>
