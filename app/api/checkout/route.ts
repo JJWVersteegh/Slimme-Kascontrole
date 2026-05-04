@@ -15,6 +15,7 @@ export async function POST(req: NextRequest) {
       payment_method_types: ['ideal', 'card'],
       mode: 'payment',
       customer_email: email,
+      allow_promotion_codes: true,
       line_items: [{
         price_data: {
           currency: 'eur',
