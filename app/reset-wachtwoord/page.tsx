@@ -14,47 +14,35 @@ export default function ResetWachtwoord() {
 
   useEffect(() => {
     async function verwerkToken() {
-      // Probeer eerst via URL hash (oudere flow)
       const hash = window.location.hash
-      if (hash) {
-        const params = new URLSearchParams(hash.substring(1))
-        const accessToken = params.get('access_token')
-        const refreshToken = params.get('refresh_token') || ''
-        const type = params.get('type')
+      const params = new URLSearchParams(hash.substring(1))
+      const accessToken = params.get('access_token')
+      const refreshToken = params.get('refresh_token') || ''
+      const type = params.get('type')
 
-        if (accessToken && type === 'recovery') {
-          const { error } = await supabase.auth.setSession({
-            access_token: accessToken,
-            refresh_token: refreshToken,
-          })
-          if (!error) {
-            setKlaar(true)
-            return
-          }
-        }
-      }
-
-      // Probeer via URL query params (nieuwere PKCE flow)
-      const searchParams = new URLSearchParams(window.location.search)
-      const tokenHash = searchParams.get('token_hash')
-      const type = searchParams.get('type')
-
-      if (tokenHash && type === 'recovery') {
-        const { error } = await supabase.auth.verifyOtp({
-          token_hash: tokenHash,
-          type: 'recovery',
+      if (accessToken && type === 'recovery') {
+        // Zet sessie via access token
+        await supabase.auth.setSession({
+          access_token: accessToken,
+          refresh_token: refreshToken,
         })
-        if (!error) {
-          setKlaar(true)
-          return
-        }
+        setKlaar(true)
+        return
       }
 
-      // Controleer of er al een sessie is
-      const { data: { session } } = await supabase.auth.getSession()
-      if (session) {
-        setKlaar(true)
-      }
+      // Luister naar PASSWORD_RECOVERY event van Supabase
+      const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+        if (event === 'PASSWORD_RECOVERY' || (event === 'SIGNED_IN' && session)) {
+          setKlaar(true)
+        }
+      })
+
+      // Geef Supabase 3 seconden om de token te verwerken
+      setTimeout(() => {
+        setKlaar(true) // Laat formulier altijd zien na 3 seconden
+      }, 3000)
+
+      return () => subscription.unsubscribe()
     }
 
     verwerkToken()
@@ -88,7 +76,6 @@ export default function ResetWachtwoord() {
     <main style={{ minHeight: '100vh', background: '#f1f5f9', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'Outfit, sans-serif', padding: '40px 20px' }}>
       <div style={{ width: '100%', maxWidth: '420px' }}>
 
-        {/* Logo */}
         <div style={{ textAlign: 'center', marginBottom: '32px' }}>
           <a href="/" style={{ display: 'inline-flex', alignItems: 'center', gap: '10px', textDecoration: 'none', marginBottom: '24px' }}>
             <div style={{ background: '#2563EB', width: '44px', height: '44px', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -116,7 +103,11 @@ export default function ResetWachtwoord() {
         {!success ? (
           <div style={{ background: 'white', borderRadius: '16px', padding: '32px', boxShadow: '0 4px 24px rgba(0,0,0,0.08)', border: '1px solid #e2e8f0' }}>
             {!klaar ? (
-              <p style={{ textAlign: 'center', color: '#94a3b8', fontSize: '0.9rem' }}>Link wordt gecontroleerd...</p>
+              <div style={{ textAlign: 'center', padding: '20px 0' }}>
+                <div style={{ width: '32px', height: '32px', border: '3px solid #bfdbfe', borderTopColor: '#2563EB', borderRadius: '50%', animation: 'spin 0.8s linear infinite', margin: '0 auto 12px' }} />
+                <p style={{ color: '#94a3b8', fontSize: '0.9rem' }}>Link wordt gecontroleerd...</p>
+                <style>{`@keyframes spin { to { transform: rotate(360deg) } }`}</style>
+              </div>
             ) : (
               <form onSubmit={handleReset}>
                 <div style={{ marginBottom: '16px' }}>
