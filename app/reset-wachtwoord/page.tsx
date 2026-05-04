@@ -13,23 +13,51 @@ export default function ResetWachtwoord() {
   const router = useRouter()
 
   useEffect(() => {
-    // Lees de token uit de URL hash en zet een sessie op
-    const hash = window.location.hash
-    if (hash) {
-      const params = new URLSearchParams(hash.substring(1))
-      const accessToken = params.get('access_token')
-      const refreshToken = params.get('refresh_token')
-      const type = params.get('type')
+    async function verwerkToken() {
+      // Probeer eerst via URL hash (oudere flow)
+      const hash = window.location.hash
+      if (hash) {
+        const params = new URLSearchParams(hash.substring(1))
+        const accessToken = params.get('access_token')
+        const refreshToken = params.get('refresh_token') || ''
+        const type = params.get('type')
 
-      if (accessToken && type === 'recovery') {
-        supabase.auth.setSession({
-          access_token: accessToken,
-          refresh_token: refreshToken || '',
-        }).then(() => {
-          setKlaar(true)
+        if (accessToken && type === 'recovery') {
+          const { error } = await supabase.auth.setSession({
+            access_token: accessToken,
+            refresh_token: refreshToken,
+          })
+          if (!error) {
+            setKlaar(true)
+            return
+          }
+        }
+      }
+
+      // Probeer via URL query params (nieuwere PKCE flow)
+      const searchParams = new URLSearchParams(window.location.search)
+      const tokenHash = searchParams.get('token_hash')
+      const type = searchParams.get('type')
+
+      if (tokenHash && type === 'recovery') {
+        const { error } = await supabase.auth.verifyOtp({
+          token_hash: tokenHash,
+          type: 'recovery',
         })
+        if (!error) {
+          setKlaar(true)
+          return
+        }
+      }
+
+      // Controleer of er al een sessie is
+      const { data: { session } } = await supabase.auth.getSession()
+      if (session) {
+        setKlaar(true)
       }
     }
+
+    verwerkToken()
   }, [])
 
   async function handleReset(e: React.FormEvent) {
@@ -48,7 +76,7 @@ export default function ResetWachtwoord() {
     const { error } = await supabase.auth.updateUser({ password: wachtwoord })
 
     if (error) {
-      setError('Er ging iets mis. Probeer het opnieuw.')
+      setError('Er ging iets mis: ' + error.message)
     } else {
       setSuccess(true)
       setTimeout(() => router.push('/mijn-omgeving'), 2500)
