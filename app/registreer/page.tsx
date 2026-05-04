@@ -84,7 +84,7 @@ export default function Registreer() {
     e.preventDefault()
     setLoading(true); setError(''); setSucces('')
     const { error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: `${window.location.origin}/mijn-omgeving`,
+      redirectTo: `${window.location.origin}/reset-wachtwoord`,
     })
     if (error) {
       setError('Er ging iets mis. Controleer uw e-mailadres.')
