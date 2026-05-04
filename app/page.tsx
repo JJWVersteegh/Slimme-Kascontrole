@@ -323,7 +323,7 @@ footer a:hover{color:#93c5fd}
         <div class="step-body">
           <div class="step-num" style="color:#bfdbfe">02</div>
           <h3>Upload veilig naar uw omgeving</h3>
-          <p>Maak een account aan en upload uw bestanden via onze SSL-versleutelde omgeving. Uw gegevens worden nooit gedeeld met derden en veilig opgeslagen in Nederland.</p>
+          <p>Maak een account aan en upload uw bestanden via onze SSL-versleutelde omgeving. Uw gegevens worden nooit gedeeld met derden en veilig opgeslagen binnen de EU.</p>
         </div>
       </div>
       <div class="step fade-in">
@@ -364,7 +364,7 @@ footer a:hover{color:#93c5fd}
         <div class="feature-item fade-in"><div class="feature-icon">🔍</div><div class="feature-text"><h4>Volledige controle — geen steekproeven</h4><p>Elke factuur, elk saldo, elke boeking wordt gecontroleerd. Geen steekproefsgewijze aanpak meer.</p></div></div>
         <div class="feature-item fade-in"><div class="feature-icon">📅</div><div class="feature-text"><h4>Trendanalyse meerdere jaren</h4><p>Upload bestanden van meerdere jaren voor een diepgaande trendanalyse en vergelijking.</p></div></div>
         <div class="feature-item fade-in"><div class="feature-icon">📋</div><div class="feature-text"><h4>Direct klaar voor de ALV</h4><p>Download als PDF en presenteer direct op uw algemene ledenvergadering.</p></div></div>
-        <div class="feature-item fade-in"><div class="feature-icon">🔒</div><div class="feature-text"><h4>Veilig & vertrouwelijk</h4><p>SSL-versleuteld, AVG-conform, data opgeslagen in Nederland. Nooit gedeeld met derden.</p></div></div>
+        <div class="feature-item fade-in"><div class="feature-icon">🔒</div><div class="feature-text"><h4>Veilig & vertrouwelijk</h4><p>SSL-versleuteld, AVG-conform, data opgeslagen binnen de EU. Nooit gedeeld met derden.</p></div></div>
       </div>
     </div>
     <div class="feature-visual fade-in">
@@ -457,11 +457,11 @@ footer a:hover{color:#93c5fd}
   <div style="max-width:1100px;margin:0 auto;text-align:center">
     <p class="section-label fade-in" style="text-align:center">Ervaringen</p>
     <h2 class="fade-in" style="text-align:center">Wat zeggen onze gebruikers?</h2>
-    <p class="section-sub centered fade-in" style="margin:0 auto 48px">Honderden Nederlandse verenigingen werken al met Slimme Kascontrole.</p>
+    <p class="section-sub centered fade-in" style="margin:0 auto 48px">Nederlandse verenigingen werken al met Slimme Kascontrole.</p>
     <div class="testi-grid">
-      <div class="testi fade-in"><div class="stars">★★★★★</div><blockquote>"Vroeger kostte onze kascontrole een heel weekend. Nu is het snel klaar en ziet het rapport er ook nog eens professioneel uit."</blockquote><p class="testi-author">Marieke van den Berg</p><p class="testi-role">Penningmeester, SV Oranje</p></div>
-      <div class="testi fade-in"><div class="stars">★★★★★</div><blockquote>"De volledige controle vond een dubbele boeking die wij jarenlang over het hoofd hadden gezien. Fijn dat dit nu grondig wordt gecheckt."</blockquote><p class="testi-author">Jan Plomp</p><p class="testi-role">Kascommissielid, Buurtvereniging De Eiken</p></div>
-      <div class="testi fade-in"><div class="stars">★★★★★</div><blockquote>"Eindelijk een tool die echt voor verenigingen is gemaakt. Onze leden op de ALV waren onder de indruk van het volledige rapport."</blockquote><p class="testi-author">Sandra Kuipers</p><p class="testi-role">Secretaris, VvE De Linden</p></div>
+      <div class="testi fade-in"><div class="stars">★★★★★</div><blockquote>"Vroeger kostte onze kascontrole een heel weekend. Nu is het snel klaar en ziet het rapport er ook nog eens professioneel uit."</blockquote><p class="testi-author">Penningmeester</p><p class="testi-role">Sportvereniging, Zuid-Holland</p></div>
+      <div class="testi fade-in"><div class="stars">★★★★★</div><blockquote>"De volledige controle vond een dubbele boeking die wij jarenlang over het hoofd hadden gezien. Fijn dat dit nu grondig wordt gecheckt."</blockquote><p class="testi-author">Kascommissielid</p><p class="testi-role">Buurtvereniging, Noord-Brabant</p></div>
+      <div class="testi fade-in"><div class="stars">★★★★★</div><blockquote>"Eindelijk een tool die echt voor verenigingen is gemaakt. Onze leden op de ALV waren onder de indruk van het volledige rapport."</blockquote><p class="testi-author">Secretaris</p><p class="testi-role">VvE, Amsterdam</p></div>
     </div>
   </div>
 </section>
@@ -516,7 +516,7 @@ footer a:hover{color:#93c5fd}
         </div>
         <div style="background:white;border-radius:12px;padding:20px;border:1px solid var(--border)" class="fade-in">
           <h4 style="font-weight:700;color:var(--ink);font-size:0.9rem;margin-bottom:8px">❓ Is mijn financiële data veilig?</h4>
-          <p style="font-size:0.85rem;color:var(--ink-soft);line-height:1.6">Ja. Al uw bestanden worden versleuteld opgeslagen in Nederlandse datacenters. Wij delen nooit gegevens met derden.</p>
+          <p style="font-size:0.85rem;color:var(--ink-soft);line-height:1.6">Ja. Al uw bestanden worden versleuteld opgeslagen op servers binnen de Europese Unie. Wij delen nooit gegevens met derden.</p>
         </div>
         <div style="background:white;border-radius:12px;padding:20px;border:1px solid var(--border)" class="fade-in">
           <h4 style="font-weight:700;color:var(--ink);font-size:0.9rem;margin-bottom:8px">❓ Kan ik rapporten van meerdere jaren opslaan?</h4>
