@@ -1,8 +1,8 @@
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Slimme Kascontrole – Uw kascontrole klaar voor de ALV',
-  description: 'Volledig gecontroleerd kascontrolerapport voor uw vereniging. Eenmalig €59 incl. btw per kascontrole.',
+  title: 'Slimme Kascontrole – Kascontrole rapport voor VvE, sportvereniging & stichting',
+  description: 'Volledig gecontroleerd kascontrole rapport voor uw VvE, sportvereniging of stichting. Kascommissie klaar in minuten. Eenmalig €59 incl. btw — geen abonnement.',
 }
 
 export default function Home() {
@@ -525,6 +525,14 @@ footer a:hover{color:#93c5fd}
         <div style="background:white;border-radius:12px;padding:20px;border:1px solid var(--border)" class="fade-in">
           <h4 style="font-weight:700;color:var(--ink);font-size:0.9rem;margin-bottom:8px">❓ Wat als ik hulp nodig heb?</h4>
           <p style="font-size:0.85rem;color:var(--ink-soft);line-height:1.6">Bel of mail ons gerust. Wij helpen u door het proces en zorgen dat uw rapport er professioneel uitziet.</p>
+        </div>
+        <div style="background:white;border-radius:12px;padding:20px;border:1px solid var(--border)" class="fade-in">
+          <h4 style="font-weight:700;color:var(--ink);font-size:0.9rem;margin-bottom:8px">❓ Werkt Slimme Kascontrole ook voor sportverenigingen?</h4>
+          <p style="font-size:0.85rem;color:var(--ink-soft);line-height:1.6">Ja! Slimme Kascontrole is geschikt voor alle Nederlandse verenigingen — VvE's, sportverenigingen, buurtverenigingen en stichtingen. Elke organisatie met een kascommissie kan ons rapport gebruiken voor de ALV.</p>
+        </div>
+        <div style="background:white;border-radius:12px;padding:20px;border:1px solid var(--border)" class="fade-in">
+          <h4 style="font-weight:700;color:var(--ink);font-size:0.9rem;margin-bottom:8px">❓ Is kascontrole verplicht voor mijn vereniging?</h4>
+          <p style="font-size:0.85rem;color:var(--ink-soft);line-height:1.6">Voor VvE's is kascontrole wettelijk verplicht (artikel 2:48 BW). Voor sportverenigingen en stichtingen is het vaak vastgelegd in de statuten. In alle gevallen helpt een professioneel kascontrolerapport uw kascommissie sterk op de ALV te staan.</p>
         </div>
       </div>
     </div>
