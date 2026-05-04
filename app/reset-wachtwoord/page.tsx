@@ -9,15 +9,27 @@ export default function ResetWachtwoord() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [success, setSuccess] = useState(false)
+  const [klaar, setKlaar] = useState(false)
   const router = useRouter()
 
   useEffect(() => {
-    // Supabase handelt de session automatisch af via de URL hash
-    supabase.auth.onAuthStateChange((event) => {
-      if (event === 'PASSWORD_RECOVERY') {
-        // Gebruiker is klaar om wachtwoord in te stellen
+    // Lees de token uit de URL hash en zet een sessie op
+    const hash = window.location.hash
+    if (hash) {
+      const params = new URLSearchParams(hash.substring(1))
+      const accessToken = params.get('access_token')
+      const refreshToken = params.get('refresh_token')
+      const type = params.get('type')
+
+      if (accessToken && type === 'recovery') {
+        supabase.auth.setSession({
+          access_token: accessToken,
+          refresh_token: refreshToken || '',
+        }).then(() => {
+          setKlaar(true)
+        })
       }
-    })
+    }
   }, [])
 
   async function handleReset(e: React.FormEvent) {
@@ -75,38 +87,42 @@ export default function ResetWachtwoord() {
 
         {!success ? (
           <div style={{ background: 'white', borderRadius: '16px', padding: '32px', boxShadow: '0 4px 24px rgba(0,0,0,0.08)', border: '1px solid #e2e8f0' }}>
-            <form onSubmit={handleReset}>
-              <div style={{ marginBottom: '16px' }}>
-                <label style={{ display: 'block', fontWeight: '600', color: '#0f172a', marginBottom: '6px', fontSize: '0.9rem' }}>Nieuw wachtwoord</label>
-                <input
-                  type="password"
-                  value={wachtwoord}
-                  onChange={e => setWachtwoord(e.target.value)}
-                  required
-                  style={{ width: '100%', padding: '13px 14px', borderRadius: '8px', border: '1.5px solid #e2e8f0', fontSize: '1rem', outline: 'none', fontFamily: 'Outfit, sans-serif', boxSizing: 'border-box' }}
-                  placeholder="Minimaal 8 tekens"
-                />
-              </div>
-              <div style={{ marginBottom: '20px' }}>
-                <label style={{ display: 'block', fontWeight: '600', color: '#0f172a', marginBottom: '6px', fontSize: '0.9rem' }}>Bevestig wachtwoord</label>
-                <input
-                  type="password"
-                  value={bevestig}
-                  onChange={e => setBevestig(e.target.value)}
-                  required
-                  style={{ width: '100%', padding: '13px 14px', borderRadius: '8px', border: '1.5px solid #e2e8f0', fontSize: '1rem', outline: 'none', fontFamily: 'Outfit, sans-serif', boxSizing: 'border-box' }}
-                  placeholder="Herhaal wachtwoord"
-                />
-              </div>
-              {error && <p style={{ color: '#dc2626', fontSize: '0.85rem', marginBottom: '12px', background: '#fee2e2', padding: '10px 12px', borderRadius: '6px' }}>{error}</p>}
-              <button
-                type="submit"
-                disabled={loading}
-                style={{ width: '100%', padding: '14px', background: '#2563EB', color: 'white', border: 'none', borderRadius: '8px', fontSize: '1rem', fontWeight: '700', cursor: loading ? 'not-allowed' : 'pointer', fontFamily: 'Outfit, sans-serif', opacity: loading ? 0.7 : 1 }}
-              >
-                {loading ? 'Bezig...' : 'Wachtwoord opslaan'}
-              </button>
-            </form>
+            {!klaar ? (
+              <p style={{ textAlign: 'center', color: '#94a3b8', fontSize: '0.9rem' }}>Link wordt gecontroleerd...</p>
+            ) : (
+              <form onSubmit={handleReset}>
+                <div style={{ marginBottom: '16px' }}>
+                  <label style={{ display: 'block', fontWeight: '600', color: '#0f172a', marginBottom: '6px', fontSize: '0.9rem' }}>Nieuw wachtwoord</label>
+                  <input
+                    type="password"
+                    value={wachtwoord}
+                    onChange={e => setWachtwoord(e.target.value)}
+                    required
+                    style={{ width: '100%', padding: '13px 14px', borderRadius: '8px', border: '1.5px solid #e2e8f0', fontSize: '1rem', outline: 'none', fontFamily: 'Outfit, sans-serif', boxSizing: 'border-box' }}
+                    placeholder="Minimaal 8 tekens"
+                  />
+                </div>
+                <div style={{ marginBottom: '20px' }}>
+                  <label style={{ display: 'block', fontWeight: '600', color: '#0f172a', marginBottom: '6px', fontSize: '0.9rem' }}>Bevestig wachtwoord</label>
+                  <input
+                    type="password"
+                    value={bevestig}
+                    onChange={e => setBevestig(e.target.value)}
+                    required
+                    style={{ width: '100%', padding: '13px 14px', borderRadius: '8px', border: '1.5px solid #e2e8f0', fontSize: '1rem', outline: 'none', fontFamily: 'Outfit, sans-serif', boxSizing: 'border-box' }}
+                    placeholder="Herhaal wachtwoord"
+                  />
+                </div>
+                {error && <p style={{ color: '#dc2626', fontSize: '0.85rem', marginBottom: '12px', background: '#fee2e2', padding: '10px 12px', borderRadius: '6px' }}>{error}</p>}
+                <button
+                  type="submit"
+                  disabled={loading}
+                  style={{ width: '100%', padding: '14px', background: '#2563EB', color: 'white', border: 'none', borderRadius: '8px', fontSize: '1rem', fontWeight: '700', cursor: loading ? 'not-allowed' : 'pointer', fontFamily: 'Outfit, sans-serif', opacity: loading ? 0.7 : 1 }}
+                >
+                  {loading ? 'Bezig...' : 'Wachtwoord opslaan'}
+                </button>
+              </form>
+            )}
           </div>
         ) : (
           <div style={{ background: 'white', borderRadius: '16px', padding: '32px', boxShadow: '0 4px 24px rgba(0,0,0,0.08)', border: '1px solid #e2e8f0', textAlign: 'center' }}>
