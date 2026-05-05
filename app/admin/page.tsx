@@ -87,6 +87,7 @@ export default function AdminPortal() {
   const [bewerkKlant, setBewerkKlant] = useState<Klant | null>(null)
   const [bewerkData, setBewerkData] = useState<Partial<Klant>>({})
 
+  const [lastLogins, setLastLogins] = useState<Record<string, string>>({})
   const router = useRouter()
 
   useEffect(() => {
@@ -102,13 +103,21 @@ export default function AdminPortal() {
 
   async function loadData() {
     const [{ data: klantenData }, { data: rapportenData }, { data: uploadsData }] = await Promise.all([
-      supabase.from('klanten').select('*').order('naam', { ascending: true }),
+      supabase.from('klanten').select('*').order('email', { ascending: true }),
       supabase.from('rapporten').select('*').order('boekjaar', { ascending: false }),
       supabase.from('uploads').select('*').order('upload_datum', { ascending: false }),
     ])
     setKlanten(klantenData || [])
     setRapporten(rapportenData || [])
     setUploads(uploadsData || [])
+    // Load last login times
+    try {
+      const res = await fetch('/api/admin-users')
+      const users = await res.json()
+      const logins: Record<string, string> = {}
+      users.forEach((u: any) => { logins[u.id] = u.last_sign_in_at })
+      setLastLogins(logins)
+    } catch {}
     setLoading(false)
   }
 
@@ -380,8 +389,11 @@ export default function AdminPortal() {
                       {gefilterd.map((k) => (
                         <tr key={k.id} className="klant-rij" onClick={() => setGeselecteerdeKlant(geselecteerdeKlant?.id === k.id ? null : k)} style={{ borderTop: '1px solid #f1f5f9', background: geselecteerdeKlant?.id === k.id ? '#eff6ff' : 'white', transition: 'background 0.15s' }}>
                           <td style={{ padding: '12px 16px' }}>
-                            <div style={{ fontWeight: '600', fontSize: '0.88rem', color: '#0f172a' }}>{k.naam || '—'}</div>
-                            <div style={{ fontSize: '0.78rem', color: '#64748b' }}>{k.vereniging || '—'}</div>
+                            <div style={{ fontWeight: '600', fontSize: '0.88rem', color: '#0f172a' }}>{k.naam || <span style={{ color: '#94a3b8' }}>Geen naam</span>}</div>
+                            <div style={{ fontSize: '0.78rem', color: '#64748b' }}>{k.vereniging || <span style={{ color: '#94a3b8' }}>Geen vereniging</span>}</div>
+                            <div style={{ fontSize: '0.72rem', color: '#94a3b8', marginTop: '2px' }}>
+                              {lastLogins[k.user_id] ? `Ingelogd: ${new Date(lastLogins[k.user_id]).toLocaleDateString('nl-NL', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' })}` : 'Nog niet ingelogd'}
+                            </div>
                           </td>
                           <td style={{ padding: '12px 16px', fontSize: '0.85rem', color: '#475569' }}>{k.email}</td>
                           <td style={{ padding: '12px 16px' }}>
