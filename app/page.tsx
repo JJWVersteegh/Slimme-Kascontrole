@@ -68,7 +68,7 @@ nav.scrolled{box-shadow:0 4px 24px rgba(0,0,0,0.08)}
 .price-check span:first-child{color:#93c5fd;font-weight:700}
 
 /* SECTIONS */
-section{padding:88px 48px}
+section{padding:88px 48px;scroll-margin-top:72px}
 .section-label{font-size:0.7rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:#2563EB;margin-bottom:12px}
 h2{font-family:'Playfair Display',serif;font-size:clamp(1.7rem,3vw,2.5rem);font-weight:700;color:#0f172a;letter-spacing:-0.02em;line-height:1.15;margin-bottom:14px}
 h2 em{font-style:italic;color:#2563EB}
