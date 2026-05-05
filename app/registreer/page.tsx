@@ -15,6 +15,7 @@ export default function Registreer() {
   const [huisnummer, setHuisnummer] = useState('')
   const [adres, setAdres] = useState('')
   const [plaats, setPlaats] = useState('')
+  const [telefoon, setTelefoon] = useState('')
   const [adresLaden, setAdresLaden] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
@@ -62,6 +63,7 @@ export default function Registreer() {
         adres,
         postcode: postcode.toUpperCase().replace(' ', ''),
         plaats,
+        telefoon,
       })
     }
     router.push('/mijn-omgeving')
@@ -255,6 +257,10 @@ export default function Registreer() {
                 <div style={{ marginBottom: '16px' }}>
                   <label style={lbl}>KvK-nummer vereniging <span style={{ fontWeight: '400', color: '#94a3b8' }}>(optioneel)</span></label>
                   <input type="text" value={kvk} onChange={e => setKvk(e.target.value)} style={inp} placeholder="bijv. 12345678" />
+                </div>
+                <div style={{ marginBottom: '16px' }}>
+                  <label style={lbl}>Telefoonnummer <span style={{ fontWeight: '400', color: '#94a3b8' }}>(optioneel)</span></label>
+                  <input type="tel" value={telefoon} onChange={e => setTelefoon(e.target.value)} style={inp} placeholder="bijv. 06-12345678" />
                 </div>
                 <div style={{ marginBottom: '16px' }}>
                   <label style={lbl}>E-mailadres</label>
