@@ -449,7 +449,7 @@ export default function AdminPortal() {
                               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
                                 <span style={{ fontWeight: '700', fontSize: '0.9rem', color: '#0f172a' }}>Boekjaar {r.boekjaar}</span>
                                 <div style={{ display: 'flex', gap: '6px', alignItems: 'center' }}>
-                                  <button onClick={() => handleSetBetaald(r.user_id, r.boekjaar, !r.betaald)} style={{ background: r.betaald ? '#dcfce7' : '#fef3c7', color: r.betaald ? '#166534' : '#92400e', border: 'none', padding: '2px 8px', borderRadius: '12px', cursor: 'pointer', fontSize: '0.72rem', fontWeight: '600', fontFamily: 'Outfit, sans-serif' }}>{r.betaald ? '✓ Betaald' : '⏳ Onbetaald'}</button>
+                                  <span style={{ background: r.betaald ? '#dcfce7' : '#fef3c7', color: r.betaald ? '#166534' : '#92400e', padding: '2px 8px', borderRadius: '12px', fontSize: '0.72rem', fontWeight: '600' }}>{r.betaald ? '✓ Betaald' : '⏳ Onbetaald'}</span>
                                   <button onClick={() => handleDeleteRapport(r.user_id, r.boekjaar)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#ef4444', fontSize: '0.8rem', padding: '2px' }} title="Rapport verwijderen">🗑️</button>
                                 </div>
                               </div>
