@@ -298,7 +298,7 @@ export default function MijnOmgeving() {
   const rapportTekstVoorWeergave = huidigRapport?.rapport_tekst
   if (toonRapport && rapportTekstVoorWeergave) return (
     <main style={{ minHeight: '100vh', background: '#f8fafc', fontFamily: 'Outfit, sans-serif' }}>
-      <style>{`@media print { .no-print { display: none !important; } body { background: white !important; } }`}</style>
+      <style>{`@media print { .no-print { display: none !important; } body { background: white !important; margin: 0 !important; } main { background: white !important; } div { overflow: visible !important; box-shadow: none !important; } table { width: 100% !important; font-size: 9pt !important; } th, td { white-space: normal !important; padding: 5px 8px !important; font-size: 9pt !important; } h2 { page-break-after: avoid; } tr { page-break-inside: avoid; } @page { size: A4 portrait; margin: 15mm; } }`}</style>
       <nav className="no-print" style={{ background: 'white', borderBottom: '1px solid #e2e8f0', padding: '0 48px', height: '72px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <a href="/" style={{ display: 'flex', alignItems: 'center', gap: '10px', textDecoration: 'none' }}>
           <div style={{ background: '#2563EB', width: '38px', height: '38px', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
