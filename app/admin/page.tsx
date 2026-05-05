@@ -4,7 +4,7 @@ import { supabase } from '@/lib/supabase'
 import { useRouter } from 'next/navigation'
 import { RapportRenderer } from '@/components/RapportRenderer'
 
-const ADMIN_EMAIL = 'info@vertras.nl'
+const ADMIN_EMAIL = 'info@slimmekascontrole.nl'
 
 interface Klant {
   id: string
