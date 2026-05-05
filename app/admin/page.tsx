@@ -198,6 +198,7 @@ export default function AdminPortal() {
   }
 
   const gefilterd = klanten.filter(k => {
+    if (k.email === ADMIN_EMAIL) return false
     const zoek = zoekterm.toLowerCase()
     const matchZoek = !zoekterm ||
       k.naam?.toLowerCase().includes(zoek) ||
