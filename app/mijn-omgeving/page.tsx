@@ -45,11 +45,12 @@ export default function MijnOmgeving() {
   const [toelichting, setToelichting] = useState('')
   const [uploadSuccess, setUploadSuccess] = useState(false)
   const [error, setError] = useState('')
+  const [uploadError, setUploadError] = useState('')
+  const [rapportError, setRapportError] = useState('')
   const [toonRapport, setToonRapport] = useState(false)
   const [bevestigDelete, setBevestigDelete] = useState<string | null>(null)
   const [bevestigDeleteRapport, setBevestigDeleteRapport] = useState<string | null>(null)
   const [deleteRapportLoading, setDeleteRapportLoading] = useState(false)
-  const [deletedIds, setDeletedIds] = useState<Set<string>>(new Set())
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   // Punt 9: profiel bewerken
   const [toonProfiel, setToonProfiel] = useState(false)
@@ -83,11 +84,12 @@ export default function MijnOmgeving() {
       .single()
 
     if (!klantData) {
-      const { data: newKlant } = await supabase
+      const { data: newKlant, error: insertError } = await supabase
         .from('klanten')
         .insert({ user_id: userId, email, rapport_beschikbaar: false })
         .select()
         .single()
+      if (insertError) { setError('Fout bij laden account'); setLoading(false); return }
       klantData = newKlant
     }
 
@@ -132,17 +134,14 @@ export default function MijnOmgeving() {
       setBoekjaar(betaaldeMetRapport[0].boekjaar)
     }
 
-    setUploads(prev => {
-      const filtered = (uploadsData || []).filter((u: Upload) => !deletedIds.has(u.id))
-      return filtered
-    })
+    setUploads(uploadsData || [])
     setLoading(false)
   }
 
   async function handleUpload(e: React.FormEvent) {
     e.preventDefault()
-    if (!files || files.length === 0) { setError('Selecteer minimaal één bestand'); return }
-    setUploading(true); setError('')
+    if (!files || files.length === 0) { setUploadError('Selecteer minimaal één bestand'); return }
+    setUploading(true); setUploadError('')
     const formData = new FormData()
     formData.append('user_id', user.id)
     formData.append('boekjaar', boekjaar)
@@ -165,11 +164,11 @@ export default function MijnOmgeving() {
           .eq('user_id', user.id)
           .order('boekjaar', { ascending: false })
         // Filter verwijderde uploads eruit
-        const filtered = (newUploads || []).filter((u: Upload) => !deletedIds.has(u.id))
+        const filtered = newUploads || []
         setUploads(filtered)
         setTimeout(() => setUploadSuccess(false), 4000)
-      } else { setError(data.error || 'Er ging iets mis') }
-    } catch { setError('Er ging iets mis') }
+      } else { setUploadError(data.error || 'Er ging iets mis') }
+    } catch { setUploadError('Er ging iets mis') }
     setUploading(false)
   }
 
@@ -189,7 +188,7 @@ export default function MijnOmgeving() {
 
   async function handleGenereerRapport() {
     setRapportLoading(true)
-    setError('')
+    setRapportError('')
     try {
       const res = await fetch('/api/genereer-rapport-totaal', {
         method: 'POST',
@@ -200,8 +199,8 @@ export default function MijnOmgeving() {
       if (data.success) {
         loadData(user.id, user.email)
         setToonRapport(true)
-      } else { setError('Rapport genereren mislukt: ' + data.error) }
-    } catch { setError('Er ging iets mis') }
+      } else { setRapportError('Rapport genereren mislukt: ' + data.error) }
+    } catch { setRapportError('Er ging iets mis') }
     setRapportLoading(false)
   }
 
@@ -217,8 +216,6 @@ export default function MijnOmgeving() {
       // Verwijder uit database — permanent, geen soft delete
       const { error: delError } = await supabase.from('uploads').delete().eq('id', uploadId)
       if (delError) throw delError
-      // Voeg toe aan deletedIds zodat dit record nooit meer verschijnt, ook niet na herladen
-      setDeletedIds(prev => new Set([...prev, uploadId]))
       // Update lokale state direct
       setUploads(prev => prev.filter(u => u.id !== uploadId))
       setBevestigDelete(null)
@@ -258,7 +255,7 @@ export default function MijnOmgeving() {
       }).eq('user_id', user.id)
       setKlant(prev => prev ? { ...prev, ...profielForm } : prev)
       setProfielSuccess(true)
-      setTimeout(() => { setProfielSuccess(false); setToonProfiel(false) }, 2000)
+      setTimeout(() => { setProfielSuccess(false); setToonProfiel(false) }, 1500)
     } catch { setError('Opslaan mislukt') }
     setProfielSaving(false)
   }
@@ -266,10 +263,9 @@ export default function MijnOmgeving() {
   async function handleDeleteRapport(boekjaar: string) {
     setDeleteRapportLoading(true)
     try {
-      const { createClient } = await import('@supabase/supabase-js')
-      const sb = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!)
-      await sb.from('uploads').update({ rapport_tekst: null, rapport_gegenereerd_op: null }).eq('user_id', user.id).eq('boekjaar', boekjaar)
-      setRapporten(prev => prev.map(r => r.boekjaar === boekjaar ? { ...r, rapport_tekst: undefined } : r))
+      const { error } = await supabase.from('rapporten').update({ rapport_tekst: null, gegenereerd_op: null }).eq('user_id', user.id).eq('boekjaar', boekjaar)
+      if (error) throw error
+      setRapporten(prev => prev.map(r => r.boekjaar === boekjaar ? { ...r, rapport_tekst: undefined, gegenereerd_op: undefined } : r))
       setBevestigDeleteRapport(null)
     } catch { setError('Verwijderen mislukt') }
     setDeleteRapportLoading(false)
@@ -565,6 +561,7 @@ export default function MijnOmgeving() {
               <textarea value={toelichting} onChange={e => setToelichting(e.target.value)} placeholder="Bijzonderheden voor dit boekjaar..." rows={2} style={{ ...inp, resize: 'vertical' }} />
             </div>
             {uploadSuccess && <p style={{ color: '#16a34a', fontSize: '0.85rem', marginBottom: '10px' }}>✓ Bestanden geüpload!</p>}
+            {uploadError && <p style={{ color: '#ef4444', fontSize: '0.85rem', marginBottom: '10px' }}>{uploadError}</p>}
             <button type="submit" disabled={uploading} style={{ background: '#0f172a', color: 'white', padding: '11px 24px', borderRadius: '8px', border: 'none', fontSize: '0.9rem', fontWeight: '600', cursor: uploading ? 'not-allowed' : 'pointer', fontFamily: 'Outfit, sans-serif' }}>
               {uploading ? 'Uploaden...' : '📤 Upload bestanden'}
             </button>
@@ -674,6 +671,7 @@ export default function MijnOmgeving() {
           </div>
         )}
 
+        {rapportError && <p style={{ color: '#ef4444', marginBottom: '16px', fontSize: '0.9rem' }}>{rapportError}</p>}
         {error && <p style={{ color: '#ef4444', marginBottom: '16px', fontSize: '0.9rem' }}>{error}</p>}
         {rapportLoading && (
           <div style={{ background: '#eff6ff', borderRadius: '8px', padding: '16px', marginBottom: '16px' }}>
