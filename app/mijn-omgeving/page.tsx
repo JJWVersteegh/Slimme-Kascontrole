@@ -559,11 +559,11 @@ export default function MijnOmgeving() {
                       <span style={{ background: '#eff6ff', color: '#2563EB', padding: '2px 8px', borderRadius: '20px', fontSize: '0.72rem', fontWeight: '600' }}>
                         {upload.bestanden?.length || 0} bestand(en)
                       </span>
-                      {parseInt(upload.boekjaar) >= rapportJaarNum - 2 && parseInt(upload.boekjaar) <= rapportJaarNum + 1 && (
-                        <span style={{ background: '#dcfce7', color: '#16a34a', padding: '2px 8px', borderRadius: '20px', fontSize: '0.72rem', fontWeight: '600' }}>
-                          ✓ gebruikt voor rapport {rapportBoekjaar}
+                      {rapporten.filter(r => r.rapport_tekst).map(r => parseInt(r.boekjaar)).filter(rJaar => { const uJaar = parseInt(upload.boekjaar); return uJaar >= rJaar - 2 && uJaar <= rJaar + 1 }).map(rJaar => (
+                        <span key={rJaar} style={{ background: '#dcfce7', color: '#16a34a', padding: '2px 8px', borderRadius: '20px', fontSize: '0.72rem', fontWeight: '600', marginRight: '4px' }}>
+                          ✓ gebruikt voor rapport {rJaar}
                         </span>
-                      )}
+                      ))}
                     </div>
                     <p style={{ fontSize: '0.8rem', color: '#94a3b8', margin: 0 }}>
                       {new Date(upload.upload_datum).toLocaleDateString('nl-NL')}
