@@ -22,6 +22,7 @@ interface Klant {
   kvk?: string
   postcode?: string
   plaats?: string
+  telefoon?: string
   plan: string
   rapport_beschikbaar: boolean
   rapport_tekst?: string
