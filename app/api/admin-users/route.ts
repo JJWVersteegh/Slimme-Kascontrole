@@ -10,18 +10,33 @@ export async function GET() {
       process.env.SUPABASE_SERVICE_ROLE_KEY!
     )
 
-    const { data, error } = await supabase.auth.admin.listUsers()
+    // Haal alle klanten op (service role bypassed RLS)
+    const { data: klanten, error: klantenError } = await supabase
+      .from('klanten')
+      .select('*')
 
-    if (error) {
-      return NextResponse.json({ error: error.message }, { status: 500 })
+    if (klantenError) {
+      return NextResponse.json({ error: klantenError.message }, { status: 500 })
     }
 
-    return NextResponse.json(data.users.map(u => ({
-      id: u.id,
-      email: u.email,
-      last_sign_in_at: u.last_sign_in_at,
-      created_at: u.created_at,
-    })))
+    // Haal auth users op voor last_sign_in
+    const { data: authData, error: authError } = await supabase.auth.admin.listUsers()
+
+    if (authError) {
+      return NextResponse.json({ error: authError.message }, { status: 500 })
+    }
+
+    // Combineer klanten met auth info
+    const result = (klanten ?? []).map(klant => {
+      const authUser = authData.users.find(u => u.id === klant.user_id)
+      return {
+        ...klant,
+        last_sign_in_at: authUser?.last_sign_in_at ?? null,
+        created_at: authUser?.created_at ?? null,
+      }
+    })
+
+    return NextResponse.json(result)
   } catch (err: any) {
     return NextResponse.json({ error: err.message }, { status: 500 })
   }
