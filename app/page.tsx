@@ -48,7 +48,7 @@ nav.scrolled{box-shadow:0 4px 24px rgba(0,0,0,0.08)}
 .hero-bg{position:absolute;inset:0;z-index:0}
 .hero-bg img{width:100%;height:100%;object-fit:cover;object-position:center 60%;opacity:0.6}
 
-.hero-content{position:relative;z-index:1;width:100%;padding:0 48px}
+.hero-content{position:relative;z-index:1;width:100%;padding:80px 48px 0}
 .hero-eyebrow{display:inline-flex;align-items:center;gap:8px;background:rgba(37,99,235,0.35);border:1px solid rgba(147,197,253,0.5);color:#bfdbfe;font-size:0.72rem;font-weight:700;padding:5px 13px;border-radius:20px;margin-bottom:24px;letter-spacing:0.05em;text-transform:uppercase}
 .hero h1{font-family:'Playfair Display',serif;font-size:clamp(2rem,4.5vw,3.8rem);font-weight:700;line-height:1.1;color:white;margin-bottom:20px;letter-spacing:-0.02em}
 .hero h1 em{font-style:italic;font-weight:400;color:#93c5fd}
@@ -196,7 +196,7 @@ footer a:hover{color:#93c5fd}
   .steps,.testi-grid{grid-template-columns:1fr}
   .features-grid,.why-grid,.about-grid,.pricing-grid,.contact-grid{grid-template-columns:1fr}
   .sources-grid,.security-grid{grid-template-columns:1fr 1fr}
-  .hero-content{padding:0 16px!important;width:100%!important}
+  .hero-content{padding:100px 16px 0!important;width:100%!important}
   .hero-eyebrow{display:inline-flex!important}
   footer{flex-direction:column;text-align:center;padding:32px 20px}
   .footer-links{justify-content:center}
