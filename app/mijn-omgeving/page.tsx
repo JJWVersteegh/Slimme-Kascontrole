@@ -52,7 +52,7 @@ export default function MijnOmgeving() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   // Punt 9: profiel bewerken
   const [toonProfiel, setToonProfiel] = useState(false)
-  const [profielForm, setProfielForm] = useState({ naam: '', vereniging: '', kvk: '', adres: '', postcode: '', plaats: '' })
+  const [profielForm, setProfielForm] = useState({ naam: '', vereniging: '', kvk: '', adres: '', postcode: '', plaats: '', telefoon: '' })
   const [profielSaving, setProfielSaving] = useState(false)
   const [adresLaden, setAdresLaden] = useState(false)
   const [profielSuccess, setProfielSuccess] = useState(false)
@@ -98,6 +98,7 @@ export default function MijnOmgeving() {
       kvk: klantData?.kvk || '',
       postcode: klantData?.postcode || '',
       plaats: klantData?.plaats || '',
+      telefoon: klantData?.telefoon || '',
     })
 
     // Punt 11: alleen uploads ophalen die NIET verwijderd zijn (permanent delete via handleDelete)
@@ -252,6 +253,7 @@ export default function MijnOmgeving() {
         adres: profielForm.adres,
         postcode: profielForm.postcode,
         plaats: profielForm.plaats,
+        telefoon: profielForm.telefoon,
       }).eq('user_id', user.id)
       setKlant(prev => prev ? { ...prev, ...profielForm } : prev)
       setProfielSuccess(true)
@@ -407,6 +409,10 @@ export default function MijnOmgeving() {
                 <div>
                   <label style={{ display: 'block', fontWeight: '600', color: '#0f172a', marginBottom: '5px', fontSize: '0.85rem' }}>KvK-nummer <span style={{ fontWeight: '400', color: '#94a3b8', fontSize: '0.8rem' }}>(optioneel)</span></label>
                   <input value={profielForm.kvk} onChange={e => setProfielForm(p => ({ ...p, kvk: e.target.value }))} placeholder="bijv. 12345678" style={inp} />
+                </div>
+                <div style={{ marginBottom: '14px' }}>
+                  <label style={{ display: 'block', fontWeight: '600', color: '#0f172a', marginBottom: '5px', fontSize: '0.88rem' }}>Telefoonnummer <span style={{ fontWeight: '400', color: '#94a3b8' }}>(optioneel)</span></label>
+                  <input value={profielForm.telefoon} onChange={e => setProfielForm(p => ({ ...p, telefoon: e.target.value }))} placeholder="bijv. 06-12345678" style={inp} />
                 </div>
                 <div>
                   <label style={{ display: 'block', fontWeight: '600', color: '#0f172a', marginBottom: '5px', fontSize: '0.85rem' }}>Postcode + huisnummer <span style={{ fontWeight: '400', color: '#94a3b8', fontSize: '0.78rem' }}>(adres wordt automatisch ingevuld)</span></label>
