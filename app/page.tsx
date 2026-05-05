@@ -197,6 +197,7 @@ footer a:hover{color:#93c5fd}
   .features-grid,.why-grid,.about-grid,.pricing-grid,.contact-grid{grid-template-columns:1fr}
   .sources-grid,.security-grid{grid-template-columns:1fr 1fr}
   .hero-content{padding:0 16px!important;width:100%!important}
+  .hero-eyebrow{display:inline-flex!important}
   footer{flex-direction:column;text-align:center;padding:32px 20px}
   .footer-links{justify-content:center}
 }
