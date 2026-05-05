@@ -25,6 +25,7 @@ function isSeparatorRow(line: string): boolean {
 }
 
 export function RapportRenderer({ tekst }: { tekst: string }) {
+  const printStyles = `@media print { @page { size: A4; margin: 20mm 15mm; } .rapport-table-wrapper { overflow: visible !important; } .rapport-table { font-size: 9pt !important; width: 100% !important; } .rapport-table th, .rapport-table td { padding: 5px 8px !important; white-space: normal !important; } h1 { page-break-before: always; } h2 { page-break-after: avoid; } }`
   const lines = tekst.split('\n')
   const elements: React.ReactNode[] = []
   let tableRows: string[][] = []
@@ -37,12 +38,12 @@ export function RapportRenderer({ tekst }: { tekst: string }) {
     const headers = tableRows[0]
     const dataRows = tableRows.slice(1)
     elements.push(
-      <div key={k()} style={{ overflowX: 'auto', margin: '16px 0' }}>
-        <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.85rem', borderRadius: '8px', overflow: 'hidden' }}>
+      <div key={k()} style={{ overflowX: 'auto', className: 'rapport-table-wrapper', margin: '16px 0' }}>
+        <table className="rapport-table" style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.85rem', borderRadius: '8px', overflow: 'hidden' }}>
           <thead>
             <tr style={{ background: '#1e3a8a' }}>
               {headers.map((h, j) => (
-                <th key={j} style={{ padding: '10px 14px', textAlign: 'left', fontWeight: '600', color: 'white', whiteSpace: 'nowrap', fontFamily: 'Outfit, sans-serif' }}
+                <th key={j} style={{ padding: '10px 14px', textAlign: 'left', fontWeight: '600', color: 'white', whiteSpace: 'normal', fontFamily: 'Outfit, sans-serif' }}
                   dangerouslySetInnerHTML={{ __html: formatInline(h.trim()) }} />
               ))}
             </tr>
@@ -189,5 +190,5 @@ export function RapportRenderer({ tekst }: { tekst: string }) {
 
   if (inTable) flushTable()
 
-  return <>{elements}</>
+  return <><style>{printStyles}</style>{elements}</>
 }
