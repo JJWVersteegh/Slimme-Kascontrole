@@ -25,7 +25,20 @@ function isSeparatorRow(line: string): boolean {
 }
 
 export function RapportRenderer({ tekst }: { tekst: string }) {
-  const printStyles = `@media print { @page { size: A4; margin: 20mm 15mm; } .rapport-table-wrapper { overflow: visible !important; } .rapport-table { font-size: 9pt !important; width: 100% !important; } .rapport-table th, .rapport-table td { padding: 5px 8px !important; white-space: normal !important; } h1 { page-break-before: always; } h2 { page-break-after: avoid; } }`
+  const printStyles = `@media print {
+    @page { size: A4 portrait; margin: 12mm 14mm; }
+    body { font-size: 10pt; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .rapport-table-wrapper { overflow: visible !important; width: 100% !important; }
+    .rapport-table { font-size: 8pt !important; width: 100% !important; table-layout: fixed; }
+    .rapport-table th { padding: 4px 6px !important; white-space: normal !important; font-size: 8pt !important; }
+    .rapport-table td { padding: 4px 6px !important; white-space: normal !important; font-size: 8pt !important; word-break: break-word; }
+    h1 { font-size: 11pt !important; margin-top: 16px !important; margin-bottom: 8px !important; page-break-after: avoid !important; }
+    h2 { font-size: 10pt !important; margin-top: 12px !important; page-break-after: avoid !important; page-break-before: auto !important; }
+    h3 { font-size: 9pt !important; page-break-after: avoid !important; }
+    p, div { font-size: 9.5pt !important; }
+    tr { page-break-inside: avoid; }
+    .rapport-box { page-break-inside: avoid; }
+  }`
   const lines = tekst.split('\n')
   const elements: React.ReactNode[] = []
   let tableRows: string[][] = []
@@ -38,7 +51,7 @@ export function RapportRenderer({ tekst }: { tekst: string }) {
     const headers = tableRows[0]
     const dataRows = tableRows.slice(1)
     elements.push(
-      <div key={k()} style={{ overflowX: 'auto', className: 'rapport-table-wrapper', margin: '16px 0' }}>
+      <div key={k()} className='rapport-table-wrapper' style={{ overflowX: 'auto', margin: '16px 0' }}>
         <table className="rapport-table" style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.85rem', borderRadius: '8px', overflow: 'hidden' }}>
           <thead>
             <tr style={{ background: '#1e3a8a' }}>
@@ -83,7 +96,7 @@ export function RapportRenderer({ tekst }: { tekst: string }) {
     // Kritisch box
     if (trimmed.includes('[KRITISCH]') || (trimmed.toUpperCase().startsWith('KRITISCH') && trimmed.includes('—'))) {
       elements.push(
-        <div key={k()} style={{ background: '#fef2f2', border: '1px solid #fca5a5', borderLeft: '4px solid #dc2626', borderRadius: '0 8px 8px 0', padding: '16px 20px', margin: '16px 0' }}>
+        <div key={k()} className='rapport-box' style={{ background: '#fef2f2', border: '1px solid #fca5a5', borderLeft: '4px solid #dc2626', borderRadius: '0 8px 8px 0', padding: '16px 20px', margin: '16px 0' }}>
           <div style={{ fontWeight: '700', color: '#dc2626', marginBottom: '6px', fontSize: '0.9rem' }}>🚨 Kritisch — vereist actie vóór goedkeuring</div>
           <div style={{ fontSize: '0.88rem', color: '#0f172a' }} dangerouslySetInnerHTML={{ __html: formatInline(trimmed.replace(/\[KRITISCH\]/gi, '').trim()) }} />
         </div>
@@ -95,7 +108,7 @@ export function RapportRenderer({ tekst }: { tekst: string }) {
     if (trimmed.startsWith('[AANDACHTSPUNT:') || trimmed.includes('[AANDACHT]')) {
       const text = trimmed.replace(/\[AANDACHTSPUNT:/gi, '').replace(/\[AANDACHT\]/gi, '').replace(/\]/, '').trim()
       elements.push(
-        <div key={k()} style={{ background: '#fffbeb', border: '1px solid #fcd34d', borderLeft: '4px solid #f59e0b', borderRadius: '0 8px 8px 0', padding: '16px 20px', margin: '12px 0' }}>
+        <div key={k()} className='rapport-box' style={{ background: '#fffbeb', border: '1px solid #fcd34d', borderLeft: '4px solid #f59e0b', borderRadius: '0 8px 8px 0', padding: '16px 20px', margin: '12px 0' }}>
           <div style={{ fontWeight: '700', color: '#92400e', marginBottom: '6px', fontSize: '0.9rem' }}>⚠️ Aandachtspunt</div>
           <div style={{ fontSize: '0.88rem', color: '#0f172a' }} dangerouslySetInnerHTML={{ __html: formatInline(text) }} />
         </div>
@@ -106,7 +119,7 @@ export function RapportRenderer({ tekst }: { tekst: string }) {
     // Akkoord box
     if (trimmed.includes('[AKKOORD]')) {
       elements.push(
-        <div key={k()} style={{ background: '#f0fdf4', border: '1px solid #86efac', borderLeft: '4px solid #16a34a', borderRadius: '0 8px 8px 0', padding: '14px 18px', margin: '10px 0' }}>
+        <div key={k()} className='rapport-box' style={{ background: '#f0fdf4', border: '1px solid #86efac', borderLeft: '4px solid #16a34a', borderRadius: '0 8px 8px 0', padding: '14px 18px', margin: '10px 0' }}>
           <div style={{ fontWeight: '700', color: '#166534', fontSize: '0.9rem' }}>✓ Akkoord</div>
           <div style={{ fontSize: '0.88rem', color: '#0f172a', marginTop: '4px' }} dangerouslySetInnerHTML={{ __html: formatInline(trimmed.replace(/\[AKKOORD\]/gi, '').trim()) }} />
         </div>
@@ -117,7 +130,7 @@ export function RapportRenderer({ tekst }: { tekst: string }) {
     // Advies/voorwaardelijk box - alleen als de regel begint met het advies keyword
     if (trimmed.startsWith('📋') || trimmed.startsWith('[ADVIES]') || (trimmed.toUpperCase().startsWith('ADVIES') && trimmed.includes('KASCOMMISSIE'))) {
       elements.push(
-        <div key={k()} style={{ background: '#eff6ff', border: '2px solid #2563EB', borderRadius: '8px', padding: '18px 22px', margin: '20px 0' }}>
+        <div key={k()} className='rapport-box' style={{ background: '#eff6ff', border: '2px solid #2563EB', borderRadius: '8px', padding: '18px 22px', margin: '20px 0' }}>
           <div style={{ fontWeight: '700', color: '#1D4ED8', fontSize: '0.95rem', marginBottom: '8px' }}>📋 Advies kascommissie</div>
           <div style={{ fontSize: '0.9rem', color: '#0f172a', lineHeight: 1.7 }} dangerouslySetInnerHTML={{ __html: formatInline(trimmed.replace(/^📋\s*/, '').replace(/^\[ADVIES\]\s*/i, '')) }} />
         </div>

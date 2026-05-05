@@ -298,7 +298,24 @@ export default function MijnOmgeving() {
   const rapportTekstVoorWeergave = huidigRapport?.rapport_tekst
   if (toonRapport && rapportTekstVoorWeergave) return (
     <main style={{ minHeight: '100vh', background: '#f8fafc', fontFamily: 'Outfit, sans-serif' }}>
-      <style>{`@media print { .no-print { display: none !important; } body { background: white !important; margin: 0 !important; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; } main { background: white !important; padding: 0 !important; } .rapport-wrapper { box-shadow: none !important; border: none !important; border-radius: 0 !important; padding: 20px !important; max-width: 100% !important; margin: 0 !important; } .rapport-table-wrap { overflow: visible !important; } table { width: 100% !important; font-size: 9pt !important; } th, td { white-space: normal !important; padding: 5px 8px !important; font-size: 9pt !important; } h2 { page-break-after: avoid !important; page-break-before: always !important; } h2:first-of-type { page-break-before: avoid !important; } h1 { page-break-before: avoid !important; } tr { page-break-inside: avoid; } @page { size: A4 portrait; margin: 10mm 15mm; } }`}</style>
+      <style>{`
+  @media print {
+    .no-print { display: none !important; }
+    @page { size: A4 portrait; margin: 12mm 14mm; }
+    body { background: white !important; margin: 0 !important; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+    main { background: white !important; padding: 0 !important; }
+    .rapport-wrapper { box-shadow: none !important; border: none !important; border-radius: 0 !important; padding: 8mm !important; margin: 0 !important; max-width: 100% !important; }
+    .rapport-table-wrapper { overflow: visible !important; width: 100% !important; }
+    .rapport-table { font-size: 8pt !important; width: 100% !important; table-layout: fixed !important; }
+    .rapport-table th, .rapport-table td { padding: 4px 6px !important; white-space: normal !important; font-size: 8pt !important; word-break: break-word; }
+    .rapport-box { page-break-inside: avoid !important; }
+    h1 { font-size: 12pt !important; page-break-after: avoid !important; }
+    h2 { font-size: 10pt !important; page-break-after: avoid !important; }
+    h3 { font-size: 9.5pt !important; page-break-after: avoid !important; }
+    p, div, span { font-size: 9.5pt !important; line-height: 1.4 !important; }
+    tr { page-break-inside: avoid; }
+  }
+`}</style>
       <nav className="no-print" style={{ background: 'white', borderBottom: '1px solid #e2e8f0', padding: '0 48px', height: '72px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <a href="/" style={{ display: 'flex', alignItems: 'center', gap: '10px', textDecoration: 'none' }}>
           <div style={{ background: '#2563EB', width: '38px', height: '38px', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -316,7 +333,7 @@ export default function MijnOmgeving() {
       </nav>
       <div style={{ maxWidth: '860px', margin: '0 auto', padding: '48px 24px' }}>
         <div className="rapport-wrapper" style={{ background: 'white', borderRadius: '16px', padding: '56px', border: '1px solid #e2e8f0', boxShadow: '0 4px 24px rgba(0,0,0,0.06)' }}>
-          <div style={{ textAlign: 'center', borderBottom: '3px solid #2563EB', paddingBottom: '28px', marginBottom: '36px' }}>
+          <div className='rapport-header' style={{ textAlign: 'center', borderBottom: '3px solid #2563EB', paddingBottom: '28px', marginBottom: '36px' }}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '12px', marginBottom: '16px' }}>
               <div style={{ background: '#2563EB', width: '44px', height: '44px', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <svg width="24" height="24" viewBox="0 0 22 22" fill="none"><polyline points="3,12 9,18 19,6" stroke="white" strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round" /></svg>
