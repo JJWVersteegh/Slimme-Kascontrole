@@ -472,7 +472,10 @@ export default function MijnOmgeving() {
           <li><a href="/#contact" style={{ fontSize: '0.88rem', fontWeight: '500', color: '#475569', textDecoration: 'none' }}>Contact</a></li>
           <li><a href="/mijn-omgeving" style={{ fontSize: '0.88rem', fontWeight: '500', color: '#2563EB', textDecoration: 'none' }}>Mijn omgeving</a></li>
           <li style={{ display: 'flex', alignItems: 'center', gap: '8px', marginLeft: '8px' }}>
-            <span style={{ fontSize: '0.82rem', color: '#475569' }}>{klant?.naam || user?.email}</span>
+            <span style={{ fontSize: '0.82rem', color: '#475569', display: 'flex', flexDirection: 'column', alignItems: 'flex-end', lineHeight: 1.3 }}>
+                <span style={{ fontWeight: '600', color: '#0f172a' }}>{klant?.naam || ''}</span>
+                <span style={{ fontSize: '0.75rem', color: '#94a3b8' }}>{user?.email}</span>
+              </span>
             <button onClick={() => setToonProfiel(true)} style={{ background: 'none', border: '1.5px solid #bfdbfe', color: '#1e3a8a', padding: '7px 12px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.8rem', fontFamily: 'Outfit, sans-serif', fontWeight: '500' }}>✏️ Gegevens</button>
             <button onClick={handleLogout} style={{ background: '#2563EB', color: 'white', border: 'none', padding: '9px 20px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.88rem', fontFamily: 'Outfit, sans-serif', fontWeight: '600' }}>Uitloggen</button>
           </li>
@@ -495,7 +498,10 @@ export default function MijnOmgeving() {
           <a href="/#contact" onClick={() => setMobileMenuOpen(false)}>Contact</a>
           <a href="/mijn-omgeving" onClick={() => setMobileMenuOpen(false)} style={{ color: '#2563EB' }}>Mijn omgeving</a>
           <div style={{ borderTop: '1px solid #e2e8f0', marginTop: '8px', paddingTop: '12px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
-            <span style={{ fontSize: '0.82rem', color: '#475569', padding: '0 16px' }}>{klant?.naam || user?.email}</span>
+            <span style={{ fontSize: '0.82rem', color: '#475569', padding: '0 16px', display: 'flex', flexDirection: 'column', gap: '2px' }}>
+              <span style={{ fontWeight: '600', color: '#0f172a' }}>{klant?.naam || ''}</span>
+              <span style={{ fontSize: '0.75rem', color: '#94a3b8' }}>{user?.email}</span>
+            </span>
             <button onClick={() => { setMobileMenuOpen(false); setToonProfiel(true) }} style={{ background: 'none', border: '1.5px solid #bfdbfe', color: '#1e3a8a', padding: '12px 16px', borderRadius: '8px', cursor: 'pointer', fontSize: '0.9rem', fontWeight: '600', textAlign: 'left', fontFamily: 'Outfit, sans-serif' }}>✏️ Gegevens bewerken</button>
             <button onClick={handleLogout} style={{ background: '#2563EB', color: 'white', border: 'none', padding: '12px 16px', borderRadius: '8px', cursor: 'pointer', fontSize: '0.9rem', fontWeight: '700', textAlign: 'center', fontFamily: 'Outfit, sans-serif' }}>Uitloggen</button>
           </div>
