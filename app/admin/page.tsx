@@ -407,7 +407,7 @@ export default function AdminPortal() {
 
             {geselecteerdeKlant && (
               <div style={{ width: '380px', minWidth: '340px', flexShrink: 0 }}>
-                <div style={{ background: 'white', borderRadius: '16px', border: '1px solid #e2e8f0', overflow: 'hidden', position: 'sticky', top: '88px' }}>
+                <div style={{ background: 'white', borderRadius: '16px', border: '1px solid #e2e8f0', position: 'sticky', top: '88px', maxHeight: 'calc(100vh - 120px)', overflowY: 'auto' }}>
                   <div style={{ padding: '16px 20px', borderBottom: '1px solid #e2e8f0' }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
                       <h3 style={{ fontSize: '1rem', fontWeight: '700', color: '#0f172a', margin: 0 }}>Klantdetails</h3>
@@ -606,7 +606,7 @@ export default function AdminPortal() {
         </div>
       )}
 
-      {/* Rapport modal */}}
+      {/* Rapport modal */}
       {toonRapport && (
         <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)', zIndex: 999, display: 'flex', alignItems: 'flex-start', justifyContent: 'center', padding: '20px', overflowY: 'auto' }}>
           <div style={{ background: 'white', borderRadius: '16px', width: '100%', maxWidth: '900px', maxHeight: '90vh', overflow: 'auto' }}>
