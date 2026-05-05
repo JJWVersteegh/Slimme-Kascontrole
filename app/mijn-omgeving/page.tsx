@@ -610,7 +610,7 @@ export default function MijnOmgeving() {
           <div style={{ background: 'white', borderRadius: '16px', padding: '24px 28px', border: '2px solid #bfdbfe', marginBottom: '24px' }}>
             <h2 style={{ fontWeight: '700', color: '#0f172a', fontSize: '1rem', marginBottom: '6px' }}>💳 Stap 2: Betalen en rapport ontvangen</h2>
             <p style={{ color: '#475569', fontSize: '0.85rem', marginBottom: '16px' }}>
-              Upload eerst uw bestanden (stap 1), betaal daarna éénmalig €59 via iDEAL. Onze kascontroleurs stellen dan uw rapport op voor boekjaar <strong>{rapportBoekjaar}</strong>.
+              Upload eerst uw bestanden (stap 1), betaal daarna éénmalig €59 via iDEAL. Ons systeem stelt uw rapport op voor boekjaar <strong>{rapportBoekjaar}</strong>.
             </p>
             <div style={{ display: 'flex', alignItems: 'center', gap: '16px', flexWrap: 'wrap' }}>
               <button onClick={handleBetaal} disabled={betaalLoading || uploads.length === 0} style={{ background: uploads.length === 0 ? '#94a3b8' : '#2563EB', color: 'white', padding: '14px 32px', borderRadius: '8px', border: 'none', fontSize: '1rem', fontWeight: '700', cursor: uploads.length === 0 ? 'not-allowed' : 'pointer', fontFamily: 'Outfit, sans-serif', display: 'flex', alignItems: 'center', gap: '8px' }}>
@@ -644,7 +644,7 @@ export default function MijnOmgeving() {
         {error && <p style={{ color: '#ef4444', marginBottom: '16px', fontSize: '0.9rem' }}>{error}</p>}
         {rapportLoading && (
           <div style={{ background: '#eff6ff', borderRadius: '8px', padding: '16px', marginBottom: '16px' }}>
-            <p style={{ color: '#1D4ED8', margin: 0, fontSize: '0.9rem' }}>⏳ Onze kascontroleurs analyseren uw uploads voor boekjaar {rapportBoekjaar} en schrijven uw rapport... Dit duurt 20-40 seconden.</p>
+            <p style={{ color: '#1D4ED8', margin: 0, fontSize: '0.9rem' }}>⏳ Uw uploads worden geanalyseerd en uw rapport wordt opgesteld voor boekjaar {rapportBoekjaar}... Dit duurt circa 2 minuten.</p>
           </div>
         )}
       </div>
