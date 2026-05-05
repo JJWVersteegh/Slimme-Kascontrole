@@ -84,6 +84,8 @@ export default function AdminPortal() {
   const [nieuwVerloopt, setNieuwVerloopt] = useState('')
   const [aanmakenLoading, setAanmakenLoading] = useState(false)
   const [aanmakenFout, setAanmakenFout] = useState('')
+  const [bewerkKlant, setBewerkKlant] = useState<Klant | null>(null)
+  const [bewerkData, setBewerkData] = useState<Partial<Klant>>({})
 
   const router = useRouter()
 
@@ -197,6 +199,47 @@ export default function AdminPortal() {
   async function handleLogout() {
     await supabase.auth.signOut()
     router.push('/registreer')
+  }
+
+  async function handleDeleteKlant(klant: Klant) {
+    if (!confirm(`Klant "${klant.naam || klant.email}" en alle bijbehorende data verwijderen? Dit kan niet ongedaan worden gemaakt.`)) return
+    try {
+      await supabase.from("rapporten").delete().eq("user_id", klant.user_id)
+      await supabase.from("uploads").delete().eq("user_id", klant.user_id)
+      await supabase.from("klanten").delete().eq("user_id", klant.user_id)
+      const { createClient } = await import("@supabase/supabase-js")
+      const adminSupabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!)
+      await fetch("/api/delete-user", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ user_id: klant.user_id }) })
+      setGeselecteerdeKlant(null)
+      loadData()
+      alert("Klant verwijderd.")
+    } catch (e: any) { alert("Fout: " + e.message) }
+  }
+
+  async function handleSaveBewerkKlant() {
+    if (!bewerkKlant) return
+    const { error } = await supabase.from("klanten").update(bewerkData).eq("user_id", bewerkKlant.user_id)
+    if (error) { alert("Fout bij opslaan: " + error.message); return }
+    setBewerkKlant(null)
+    setBewerkData({})
+    loadData()
+  }
+
+  async function handleSetBetaald(userId: string, boekjaar: string, betaald: boolean) {
+    await supabase.from("rapporten").upsert({ user_id: userId, boekjaar, betaald }, { onConflict: "user_id,boekjaar" })
+    loadData()
+  }
+
+  async function handleDeleteRapport(userId: string, boekjaar: string) {
+    if (!confirm(`Rapport voor boekjaar ${boekjaar} verwijderen?`)) return
+    await supabase.from("rapporten").delete().eq("user_id", userId).eq("boekjaar", boekjaar)
+    loadData()
+  }
+
+  async function handleDeleteUpload(uploadId: string) {
+    if (!confirm("Upload verwijderen?")) return
+    await supabase.from("uploads").delete().eq("id", uploadId)
+    loadData()
   }
 
   if (loading) return (
@@ -365,9 +408,15 @@ export default function AdminPortal() {
             {geselecteerdeKlant && (
               <div style={{ width: '380px', minWidth: '340px', flexShrink: 0 }}>
                 <div style={{ background: 'white', borderRadius: '16px', border: '1px solid #e2e8f0', overflow: 'hidden', position: 'sticky', top: '88px' }}>
-                  <div style={{ padding: '20px 24px', borderBottom: '1px solid #e2e8f0', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <h3 style={{ fontSize: '1rem', fontWeight: '700', color: '#0f172a', margin: 0 }}>Klantdetails</h3>
-                    <button onClick={() => setGeselecteerdeKlant(null)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#94a3b8', fontSize: '1.2rem', lineHeight: 1 }}>×</button>
+                  <div style={{ padding: '16px 20px', borderBottom: '1px solid #e2e8f0' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
+                      <h3 style={{ fontSize: '1rem', fontWeight: '700', color: '#0f172a', margin: 0 }}>Klantdetails</h3>
+                      <button onClick={() => setGeselecteerdeKlant(null)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#94a3b8', fontSize: '1.2rem', lineHeight: 1 }}>×</button>
+                    </div>
+                    <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+                      <button onClick={() => { setBewerkKlant(geselecteerdeKlant); setBewerkData({ naam: geselecteerdeKlant!.naam, vereniging: geselecteerdeKlant!.vereniging, kvk: geselecteerdeKlant!.kvk, adres: geselecteerdeKlant!.adres, postcode: geselecteerdeKlant!.postcode, plaats: geselecteerdeKlant!.plaats, telefoon: geselecteerdeKlant!.telefoon }) }} style={{ background: '#eff6ff', color: '#2563EB', border: '1px solid #bfdbfe', padding: '5px 10px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.78rem', fontWeight: '600', fontFamily: 'Outfit, sans-serif' }}>✏️ Bewerken</button>
+                      <button onClick={() => handleDeleteKlant(geselecteerdeKlant!)} style={{ background: '#fee2e2', color: '#dc2626', border: '1px solid #fca5a5', padding: '5px 10px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.78rem', fontWeight: '600', fontFamily: 'Outfit, sans-serif' }}>🗑️ Verwijderen</button>
+                    </div>
                   </div>
                   <div style={{ padding: '20px 24px' }}>
                     <div style={{ marginBottom: '20px' }}>
@@ -399,7 +448,10 @@ export default function AdminPortal() {
                             <div key={r.id} style={{ background: '#f8fafc', borderRadius: '8px', padding: '12px', marginBottom: '8px', border: '1px solid #e2e8f0' }}>
                               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
                                 <span style={{ fontWeight: '700', fontSize: '0.9rem', color: '#0f172a' }}>Boekjaar {r.boekjaar}</span>
-                                <span className={`badge ${r.betaald ? 'badge-groen' : 'badge-oranje'}`}>{r.betaald ? '✓ Betaald' : '⏳ Onbetaald'}</span>
+                                <div style={{ display: 'flex', gap: '6px', alignItems: 'center' }}>
+                                  <button onClick={() => handleSetBetaald(r.user_id, r.boekjaar, !r.betaald)} style={{ background: r.betaald ? '#dcfce7' : '#fef3c7', color: r.betaald ? '#166534' : '#92400e', border: 'none', padding: '2px 8px', borderRadius: '12px', cursor: 'pointer', fontSize: '0.72rem', fontWeight: '600', fontFamily: 'Outfit, sans-serif' }}>{r.betaald ? '✓ Betaald' : '⏳ Onbetaald'}</button>
+                                  <button onClick={() => handleDeleteRapport(r.user_id, r.boekjaar)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#ef4444', fontSize: '0.8rem', padding: '2px' }} title="Rapport verwijderen">🗑️</button>
+                                </div>
                               </div>
                               {r.rapport_tekst ? (
                                 <button onClick={() => setToonRapport(r)} style={{ width: '100%', background: '#2563EB', color: 'white', border: 'none', padding: '8px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.82rem', fontWeight: '600', fontFamily: 'Outfit, sans-serif' }}>
@@ -530,7 +582,31 @@ export default function AdminPortal() {
         )}
       </div>
 
-      {/* Rapport modal */}
+      {/* Bewerk klant modal */}
+      {bewerkKlant && (
+        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)', zIndex: 1000, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px' }}>
+          <div style={{ background: 'white', borderRadius: '16px', width: '100%', maxWidth: '480px', padding: '28px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+              <h3 style={{ margin: 0, fontSize: '1rem', fontWeight: '700', color: '#0f172a' }}>✏️ Klant bewerken</h3>
+              <button onClick={() => setBewerkKlant(null)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#94a3b8', fontSize: '1.2rem' }}>×</button>
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+              {[['naam', 'Naam'], ['vereniging', 'Vereniging'], ['kvk', 'KVK'], ['adres', 'Adres'], ['postcode', 'Postcode'], ['plaats', 'Plaats'], ['telefoon', 'Telefoon']].map(([field, label]) => (
+                <div key={field}>
+                  <label style={{ fontSize: '0.78rem', fontWeight: '600', color: '#64748b', display: 'block', marginBottom: '4px' }}>{label}</label>
+                  <input value={(bewerkData as any)[field] || ''} onChange={e => setBewerkData(d => ({ ...d, [field]: e.target.value }))} style={{ width: '100%', padding: '9px 14px', border: '1.5px solid #e2e8f0', borderRadius: '8px', fontSize: '0.88rem', fontFamily: 'Outfit, sans-serif', outline: 'none', boxSizing: 'border-box' }} />
+                </div>
+              ))}
+            </div>
+            <div style={{ display: 'flex', gap: '10px', marginTop: '20px' }}>
+              <button onClick={handleSaveBewerkKlant} style={{ flex: 1, background: '#2563EB', color: 'white', border: 'none', padding: '11px', borderRadius: '8px', cursor: 'pointer', fontSize: '0.9rem', fontWeight: '700', fontFamily: 'Outfit, sans-serif' }}>Opslaan</button>
+              <button onClick={() => setBewerkKlant(null)} style={{ flex: 1, background: '#f1f5f9', color: '#475569', border: 'none', padding: '11px', borderRadius: '8px', cursor: 'pointer', fontSize: '0.9rem', fontFamily: 'Outfit, sans-serif' }}>Annuleren</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Rapport modal */}}
       {toonRapport && (
         <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)', zIndex: 999, display: 'flex', alignItems: 'flex-start', justifyContent: 'center', padding: '20px', overflowY: 'auto' }}>
           <div style={{ background: 'white', borderRadius: '16px', width: '100%', maxWidth: '900px', maxHeight: '90vh', overflow: 'auto' }}>
