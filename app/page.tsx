@@ -362,8 +362,9 @@ footer a:hover{color:#93c5fd}
       <p class="section-sub fade-in">Speciaal ontwikkeld voor Nederlandse verenigingen, VvE's en stichtingen.</p>
       <div class="feature-list">
         <div class="feature-item fade-in"><div class="feature-icon">🔍</div><div class="feature-text"><h4>Volledige controle — geen steekproeven</h4><p>Elke factuur, elk saldo, elke boeking wordt gecontroleerd. Geen steekproefsgewijze aanpak meer.</p></div></div>
+        <div class="feature-item fade-in"><div class="feature-icon">📋</div><div class="feature-text"><h4>Contracten & abonnementen check</h4><p>Alle lopende contracten en abonnementen worden gecontroleerd op actualiteit. Verlopen contracten, ongebruikte abonnementen en verzekeringen worden automatisch gesignaleerd.</p></div></div>
         <div class="feature-item fade-in"><div class="feature-icon">📅</div><div class="feature-text"><h4>Trendanalyse meerdere jaren</h4><p>Upload bestanden van meerdere jaren voor een diepgaande trendanalyse en vergelijking.</p></div></div>
-        <div class="feature-item fade-in"><div class="feature-icon">📋</div><div class="feature-text"><h4>Direct klaar voor de ALV</h4><p>Download als PDF en presenteer direct op uw algemene ledenvergadering.</p></div></div>
+        <div class="feature-item fade-in"><div class="feature-icon">📄</div><div class="feature-text"><h4>Direct klaar voor de ALV</h4><p>Download als PDF en presenteer direct op uw algemene ledenvergadering.</p></div></div>
         <div class="feature-item fade-in"><div class="feature-icon">🔒</div><div class="feature-text"><h4>Veilig & vertrouwelijk</h4><p>SSL-versleuteld, AVG-conform, data opgeslagen binnen de EU. Nooit gedeeld met derden.</p></div></div>
       </div>
     </div>
@@ -378,6 +379,11 @@ footer a:hover{color:#93c5fd}
         <li>Ontbreken er bewijsstukken of toelichting?</li>
         <li>Voldoet het rapport aan de eisen voor de ALV?</li>
         <li>Heeft de beheerder alles correct afgehandeld?</li>
+        <li>Zijn alle lopende contracten nog actueel?</li>
+        <li>Verlopen er contracten of abonnementen binnenkort?</li>
+        <li>Worden alle abonnementen nog actief gebruikt?</li>
+        <li>Zijn de verzekeringen nog voldoende gedekt?</li>
+        <li>Zijn onderhoudscontracten conform vergaderbesluiten?</li>
       </ul>
     </div>
   </div>
