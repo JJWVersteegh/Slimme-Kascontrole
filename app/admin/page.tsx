@@ -102,22 +102,25 @@ export default function AdminPortal() {
   }, [])
 
   async function loadData() {
-    const [{ data: klantenData }, { data: rapportenData }, { data: uploadsData }] = await Promise.all([
-      supabase.from('klanten').select('*').order('email', { ascending: true }),
+    const [{ data: rapportenData }, { data: uploadsData }] = await Promise.all([
       supabase.from('rapporten').select('*').order('boekjaar', { ascending: false }),
       supabase.from('uploads').select('*').order('upload_datum', { ascending: false }),
     ])
-    setKlanten(klantenData || [])
     setRapporten(rapportenData || [])
     setUploads(uploadsData || [])
-    // Load last login times
+
+    // Klanten + last login via service role API (bypassed RLS)
     try {
       const res = await fetch('/api/admin-users')
-      const users = await res.json()
+      const data = await res.json()
       const logins: Record<string, string> = {}
-      users.forEach((u: any) => { logins[u.id] = u.last_sign_in_at })
+      data.forEach((k: any) => { logins[k.user_id] = k.last_sign_in_at })
       setLastLogins(logins)
-    } catch {}
+      setKlanten(data.sort((a: any, b: any) => (a.email || '').localeCompare(b.email || '')))
+    } catch (e) {
+      console.error('Fout bij laden klanten:', e)
+    }
+
     setLoading(false)
   }
 
