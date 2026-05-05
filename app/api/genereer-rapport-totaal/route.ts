@@ -132,6 +132,12 @@ Stel een volledig professioneel kascontrolerapport op in het Nederlands. Het rap
 1. Opdracht en werkzaamheden
 2. Samenvatting bevindingen
 3. Bevindingen boekjaar ${huidigJaar} (hoofdanalyse)
+   - 3.1 Balans en aansluiting banksaldi
+   - 3.2 Inkoopfacturen en uitgaven
+   - 3.3 Exploitatieresultaat
+   - 3.4 Openstaande posten
+   - 3.5 Contracten en abonnementen
+   - 3.6 Bijzonderheden
 ${boekjaren.length > 1 ? `4. Trendanalyse ${boekjaren.join(' – ')}\n5. Advies aan de Algemene Ledenvergadering` : '4. Advies aan de Algemene Ledenvergadering'}
 
 ---
@@ -181,8 +187,22 @@ Controleer debiteuren en crediteuren per einde ${huidigJaar}. Gebruik gegevens u
 | --- | --- | --- |
 | [debiteur/crediteur] | €... | Vereffend ✓ / Nog open ⚠️ |
 
-### 3.5 Bijzonderheden boekjaar ${huidigJaar}
-Beschrijf alle aandachtspunten specifiek voor dit boekjaar.
+### 3.5 Contracten en abonnementen
+Controleer alle lopende contracten en abonnementen die voorkomen in de financiële stukken.
+
+| Contract / Abonnement | Leverancier | Jaarlijkse kosten | Looptijd / Vervaldatum | Beoordeling |
+| --- | --- | --- | --- | --- |
+| [naam] | [leverancier] | €... | [datum] | Actueel ✓ / Verloopt binnenkort ⚠️ / Onbekend ❓ |
+
+Benoem expliciet:
+- Contracten die binnenkort verlopen of al verlopen zijn
+- Abonnementen waarvan het onduidelijk is of ze nog worden gebruikt
+- Contracten die niet terug te vinden zijn in de stukken maar wel kosten veroorzaken
+- Verzekeringen: is de dekking nog voldoende en actueel?
+- Onderhoudscontracten: zijn ze conform vergaderbesluiten afgesloten?
+
+### 3.6 Bijzonderheden boekjaar ${huidigJaar}
+Beschrijf alle overige aandachtspunten specifiek voor dit boekjaar.
 
 ${boekjaren.length > 1 ? `
 ## 4. TRENDANALYSE ${boekjaren.join(' – ')}
@@ -216,7 +236,8 @@ BELANGRIJK:
 - Gebruik tabellen voor alle cijfers.
 - Bij meerdere jaren: analyseer trends in gewone taal (bijv. "De kosten zijn de afgelopen 3 jaar elk jaar gestegen met gemiddeld €500").
 - Wees concreet: noem bedragen, datums en namen waar mogelijk.
-- Houd zinnen kort en vermijd lange alinea's.`
+- Houd zinnen kort en vermijd lange alinea's.
+- Voor contracten en abonnementen: signaleer actief contracten die verlopen zijn of binnenkort verlopen, verzekeringen die mogelijk niet meer actueel zijn, en abonnementen waarvan onduidelijk is of ze nog nuttig zijn. Dit is een belangrijk onderdeel van de kascontrole.`
 
     const apiKey = process.env.ANTHROPIC_API_KEY
     if (!apiKey) return NextResponse.json({ error: 'API key niet geconfigureerd' }, { status: 500 })
