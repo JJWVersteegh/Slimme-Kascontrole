@@ -63,9 +63,12 @@ export default function MijnOmgeving() {
   const [rapportBoekjaar, setRapportBoekjaar] = useState(currentYear.toString())
   const jaren = [currentYear + 1, currentYear, currentYear - 1, currentYear - 2, currentYear - 3]
 
+  const ADMIN_EMAIL = 'info@slimmekascontrole.nl'
+
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (!session) { router.push('/registreer'); return }
+      if (session.user.email === ADMIN_EMAIL) { router.push('/admin'); return }
       setUser(session.user)
       loadData(session.user.id, session.user.email!)
     })
