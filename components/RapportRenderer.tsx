@@ -114,12 +114,12 @@ export function RapportRenderer({ tekst }: { tekst: string }) {
       continue
     }
 
-    // Advies/voorwaardelijk box
-    if (trimmed.toUpperCase().includes('VOORWAARDELIJK') || trimmed.toUpperCase().includes('GOEDKEURING')) {
+    // Advies/voorwaardelijk box - alleen als de regel begint met het advies keyword
+    if (trimmed.startsWith('📋') || trimmed.startsWith('[ADVIES]') || (trimmed.toUpperCase().startsWith('ADVIES') && trimmed.includes('KASCOMMISSIE'))) {
       elements.push(
         <div key={k()} style={{ background: '#eff6ff', border: '2px solid #2563EB', borderRadius: '8px', padding: '18px 22px', margin: '20px 0' }}>
           <div style={{ fontWeight: '700', color: '#1D4ED8', fontSize: '0.95rem', marginBottom: '8px' }}>📋 Advies kascommissie</div>
-          <div style={{ fontSize: '0.9rem', color: '#0f172a', lineHeight: 1.7 }} dangerouslySetInnerHTML={{ __html: formatInline(trimmed) }} />
+          <div style={{ fontSize: '0.9rem', color: '#0f172a', lineHeight: 1.7 }} dangerouslySetInnerHTML={{ __html: formatInline(trimmed.replace(/^📋\s*/, '').replace(/^\[ADVIES\]\s*/i, '')) }} />
         </div>
       )
       continue
