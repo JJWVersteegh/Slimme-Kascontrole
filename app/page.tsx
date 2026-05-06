@@ -431,11 +431,10 @@ footer a:hover{color:#93c5fd}
     <h2 class="fade-in" style="text-align:center">Eenmalig tarief, <em>geen abonnement</em></h2>
     <p class="section-sub centered fade-in">U betaalt eenmalig €59 incl. btw per kascontrole. U kunt bestanden van meerdere jaren uploaden voor een trendanalyse — maar u betaalt slechts voor één kascontrole.</p>
   </div>
-  <div class="pricing-grid">
+  <div style="max-width:420px;margin:0 auto">
     <div class="price-card featured fade-in">
-      <div class="popular-tag">Meest gekozen</div>
-      <h3>Vereniging / VvE</h3>
-      <p style="font-size:0.82rem;color:rgba(255,255,255,0.55);margin-bottom:6px">Voor actieve verenigingen</p>
+      <h3>Vereniging / VvE / Stichting</h3>
+      <p style="font-size:0.82rem;color:rgba(255,255,255,0.55);margin-bottom:6px">Voor alle Nederlandse verenigingen</p>
       <div class="price-amount">€ 59</div>
       <p class="price-note">eenmalig incl. btw per kascontrole</p>
       <div class="feat-li">Volledig gecontroleerd rapport</div>
@@ -444,17 +443,6 @@ footer a:hover{color:#93c5fd}
       <div class="feat-li">Geen abonnement</div>
       <div class="feat-li">E-mail ondersteuning</div>
       <a href="/registreer" class="btn-plan btn-plan-blue">Account aanmaken</a>
-    </div>
-    <div class="price-card fade-in">
-      <h3>Koepel</h3>
-      <p style="font-size:0.82rem;color:#475569;margin-bottom:6px">Voor meerdere afdelingen</p>
-      <div class="price-amount">€ 149</div>
-      <p class="price-note">per jaar</p>
-      <div class="feat-li">Tot 10 verenigingen</div>
-      <div class="feat-li">Centraal beheerportaal</div>
-      <div class="feat-li">Geconsolideerde rapportage</div>
-      <div class="feat-li">Dedicated support</div>
-      <a href="#contact" class="btn-plan btn-plan-outline">Neem contact op</a>
     </div>
   </div>
 </section>
