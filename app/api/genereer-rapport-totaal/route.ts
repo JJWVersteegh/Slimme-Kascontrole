@@ -11,7 +11,20 @@ export async function POST(req: NextRequest) {
       process.env.SUPABASE_SERVICE_ROLE_KEY!
     )
 
-    const { user_id, rapport_boekjaar } = await req.json()
+    const { rapport_boekjaar } = await req.json()
+
+    // Haal user_id uit de Authorization header (sessie token)
+    const authHeader = req.headers.get("Authorization") || ""
+    const anonClient = createClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+      { global: { headers: { Authorization: authHeader } } }
+    )
+    const { data: { user: sessionUser } } = await anonClient.auth.getUser()
+    if (!sessionUser) {
+      return NextResponse.json({ error: "Niet ingelogd" }, { status: 401 })
+    }
+    const user_id = sessionUser.id
 
     // Controleer of betaald voor dit boekjaar
     const { data: rapportRecord } = await supabase

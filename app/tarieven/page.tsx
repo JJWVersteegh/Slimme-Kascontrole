@@ -3,21 +3,21 @@ import { useState } from 'react'
 
 export default function Tarieven() {
   const [email, setEmail] = useState('')
-  const [loading, setLoading] = useState<string | null>(null)
+  const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
 
-  async function handleBestellen(plan: string) {
+  async function handleBestellen() {
     if (!email || !email.includes('@') || !email.includes('.')) {
       setError('Vul een geldig e-mailadres in')
       return
     }
     setError('')
-    setLoading(plan)
+    setLoading(true)
     try {
       const res = await fetch('/api/checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ plan, email }),
+        body: JSON.stringify({ email }),
       })
       const data = await res.json()
       if (data.url) {
@@ -28,7 +28,7 @@ export default function Tarieven() {
     } catch {
       setError('Er ging iets mis. Probeer het opnieuw.')
     }
-    setLoading(null)
+    setLoading(false)
   }
 
   return (
@@ -47,71 +47,48 @@ export default function Tarieven() {
         <a href="/mijn-omgeving" style={{ color: '#1e3a8a', textDecoration: 'none', fontWeight: '500', fontSize: '0.9rem' }}>Mijn omgeving →</a>
       </nav>
 
-      <div style={{ maxWidth: '900px', margin: '0 auto', padding: '80px 24px' }}>
+      <div style={{ maxWidth: '560px', margin: '0 auto', padding: '80px 24px' }}>
         <div style={{ textAlign: 'center', marginBottom: '48px' }}>
           <p style={{ fontSize: '0.75rem', fontWeight: '600', letterSpacing: '0.12em', textTransform: 'uppercase', color: '#2563EB', marginBottom: '12px' }}>Tarieven</p>
-          <h1 style={{ fontSize: '2.4rem', fontWeight: '700', color: '#1e3a8a', marginBottom: '16px' }}>Kies uw plan</h1>
-          <p style={{ color: '#475569', fontSize: '1.05rem', marginBottom: '32px' }}>Eerlijke prijzen, geen verrassingen. Vul uw e-mailadres in en kies een plan.</p>
+          <h1 style={{ fontSize: '2.4rem', fontWeight: '700', color: '#1e3a8a', marginBottom: '16px' }}>Eenmalig tarief</h1>
+          <p style={{ color: '#475569', fontSize: '1.05rem', marginBottom: '32px' }}>Eerlijke prijs, geen verrassingen. Vul uw e-mailadres in en betaal direct via iDEAL.</p>
+        </div>
 
-          {/* Email input */}
-          <div style={{ maxWidth: '400px', margin: '0 auto' }}>
+        {/* Pricing card */}
+        <div style={{ background: '#1e3a8a', borderRadius: '16px', padding: '40px 36px', color: 'white', position: 'relative', marginBottom: '24px' }}>
+          <div style={{ position: 'absolute', top: '-12px', left: '50%', transform: 'translateX(-50%)', background: '#f59e0b', color: 'white', fontSize: '0.7rem', fontWeight: '700', padding: '4px 14px', borderRadius: '20px', letterSpacing: '0.05em', textTransform: 'uppercase', whiteSpace: 'nowrap' }}>Eenmalig — geen abonnement</div>
+          <div style={{ textAlign: 'center', marginBottom: '28px' }}>
+            <div style={{ fontSize: '3.5rem', fontWeight: '700', lineHeight: 1, marginBottom: '4px' }}>€ 59</div>
+            <p style={{ fontSize: '0.85rem', color: 'rgba(255,255,255,0.6)' }}>incl. btw · per kascontrole</p>
+          </div>
+          {['Volledig gecontroleerd kascontrolerapport', 'AI-analyse & afwijkingsdetectie', 'Meerdere boekjaren uploaden', 'Trendanalyse over meerdere jaren', 'PDF-export', 'E-mail ondersteuning'].map(f => (
+            <div key={f} style={{ display: 'flex', gap: '10px', marginBottom: '12px', fontSize: '0.9rem', color: 'rgba(255,255,255,0.9)' }}>
+              <span style={{ color: '#93c5fd', fontWeight: '700', flexShrink: 0 }}>✓</span> {f}
+            </div>
+          ))}
+
+          <div style={{ marginTop: '28px' }}>
             <input
               type="email"
               placeholder="Uw e-mailadres"
               value={email}
               onChange={e => setEmail(e.target.value)}
-              style={{ width: '100%', padding: '14px 18px', borderRadius: '8px', border: '1.5px solid #c8e0d4', fontSize: '1rem', background: 'white', outline: 'none', marginBottom: '8px' }}
+              onKeyDown={e => e.key === 'Enter' && handleBestellen()}
+              style={{ width: '100%', padding: '13px 16px', borderRadius: '8px', border: '1.5px solid rgba(255,255,255,0.3)', fontSize: '1rem', background: 'rgba(255,255,255,0.1)', outline: 'none', color: 'white', marginBottom: '8px', boxSizing: 'border-box' }}
             />
-            {error && <p style={{ color: '#d44', fontSize: '0.85rem', marginBottom: '8px' }}>{error}</p>}
-          </div>
-        </div>
-
-        {/* Pricing cards */}
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '28px', maxWidth: '700px', margin: '0 auto' }}>
-          {/* Vereniging */}
-          <div style={{ background: '#1e3a8a', borderRadius: '16px', padding: '36px 28px', color: 'white', position: 'relative' }}>
-            <div style={{ position: 'absolute', top: '-12px', left: '50%', transform: 'translateX(-50%)', background: '#f59e0b', color: 'white', fontSize: '0.7rem', fontWeight: '700', padding: '4px 14px', borderRadius: '20px', letterSpacing: '0.05em', textTransform: 'uppercase', whiteSpace: 'nowrap' }}>Meest gekozen</div>
-            <h2 style={{ fontSize: '1.2rem', fontWeight: '700', marginBottom: '8px' }}>Vereniging</h2>
-            <p style={{ fontSize: '0.85rem', color: 'rgba(255,255,255,0.55)', marginBottom: '16px' }}>Voor actieve verenigingen</p>
-            <div style={{ fontSize: '2.8rem', fontWeight: '700', lineHeight: 1, marginBottom: '4px' }}>€ 59</div>
-            <p style={{ fontSize: '0.82rem', color: 'rgba(255,255,255,0.6)', marginBottom: '24px' }}>per jaar</p>
-            {['Onbeperkt rapporten', 'AI-analyse & afwijkingsdetectie', 'Meerdere boekjaren', 'Eigen logo op rapport', 'PDF-export', 'E-mail ondersteuning'].map(f => (
-              <div key={f} style={{ display: 'flex', gap: '8px', marginBottom: '10px', fontSize: '0.88rem', color: 'rgba(255,255,255,0.85)' }}>
-                <span style={{ color: '#93c5fd', fontWeight: '700' }}>✓</span> {f}
-              </div>
-            ))}
+            {error && <p style={{ color: '#fca5a5', fontSize: '0.85rem', marginBottom: '8px' }}>{error}</p>}
             <button
-              onClick={() => handleBestellen('vereniging')}
-              disabled={loading !== null}
-              style={{ display: 'block', width: '100%', marginTop: '28px', padding: '14px', borderRadius: '8px', background: '#f59e0b', color: 'white', border: 'none', fontSize: '0.95rem', fontWeight: '600', cursor: 'pointer' }}
+              onClick={handleBestellen}
+              disabled={loading}
+              style={{ display: 'block', width: '100%', padding: '15px', borderRadius: '8px', background: '#f59e0b', color: 'white', border: 'none', fontSize: '1rem', fontWeight: '700', cursor: loading ? 'not-allowed' : 'pointer', opacity: loading ? 0.7 : 1, fontFamily: 'Inter, sans-serif' }}
             >
-              {loading === 'vereniging' ? 'Laden...' : 'Nu bestellen – iDEAL'}
-            </button>
-          </div>
-
-          {/* Koepel */}
-          <div style={{ background: 'white', borderRadius: '16px', padding: '36px 28px', border: '2px solid #e0ede6' }}>
-            <h2 style={{ fontSize: '1.2rem', fontWeight: '700', color: '#1e3a8a', marginBottom: '8px' }}>Koepel</h2>
-            <p style={{ fontSize: '0.85rem', color: '#475569', marginBottom: '16px' }}>Voor meerdere afdelingen</p>
-            <div style={{ fontSize: '2.8rem', fontWeight: '700', color: '#1e3a8a', lineHeight: 1, marginBottom: '4px' }}>€ 149</div>
-            <p style={{ fontSize: '0.82rem', color: '#475569', marginBottom: '24px' }}>per jaar</p>
-            {['Tot 10 verenigingen', 'Centraal beheerportaal', 'Geconsolideerde rapportage', 'API-integratie mogelijk', 'Dedicated support'].map(f => (
-              <div key={f} style={{ display: 'flex', gap: '8px', marginBottom: '10px', fontSize: '0.88rem', color: '#475569' }}>
-                <span style={{ color: '#2563EB', fontWeight: '700' }}>✓</span> {f}
-              </div>
-            ))}
-            <button
-              onClick={() => handleBestellen('koepel')}
-              disabled={loading !== null}
-              style={{ display: 'block', width: '100%', marginTop: '28px', padding: '14px', borderRadius: '8px', background: 'white', color: '#1e3a8a', border: '1.5px solid #a8d5bc', fontSize: '0.95rem', fontWeight: '600', cursor: 'pointer' }}
-            >
-              {loading === 'koepel' ? 'Laden...' : 'Nu bestellen – iDEAL'}
+              {loading ? 'Laden...' : '🔒 Nu bestellen – iDEAL of creditcard'}
             </button>
           </div>
         </div>
 
-        <p style={{ textAlign: 'center', marginTop: '32px', fontSize: '0.85rem', color: '#475569' }}>
-          🔒 Veilige betaling via Stripe · iDEAL & creditcard · Factuur per e-mail
+        <p style={{ textAlign: 'center', fontSize: '0.85rem', color: '#475569' }}>
+          Veilige betaling via Stripe · Factuur per e-mail · Na betaling direct aan de slag
         </p>
       </div>
     </main>

@@ -223,8 +223,6 @@ export default function AdminPortal() {
       await supabase.from("rapporten").delete().eq("user_id", klant.user_id)
       await supabase.from("uploads").delete().eq("user_id", klant.user_id)
       await supabase.from("klanten").delete().eq("user_id", klant.user_id)
-      const { createClient } = await import("@supabase/supabase-js")
-      const adminSupabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!)
       await fetch("/api/delete-user", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ user_id: klant.user_id }) })
       setGeselecteerdeKlant(null)
       loadData()

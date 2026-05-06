@@ -2,6 +2,11 @@ import { NextRequest, NextResponse } from 'next/server'
 
 export const dynamic = 'force-dynamic'
 
+const ALLOWED_TYPES = ['application/pdf', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/vnd.ms-excel', 'text/csv', 'text/plain']
+const ALLOWED_EXT = ['pdf', 'xlsx', 'xls', 'csv', 'txt']
+const MAX_FILE_SIZE = 10 * 1024 * 1024 // 10MB per bestand
+const MAX_TOTAL_SIZE = 30 * 1024 * 1024 // 30MB totaal
+
 export async function POST(req: NextRequest) {
   try {
     const { createClient } = await import('@supabase/supabase-js')
@@ -18,14 +23,33 @@ export async function POST(req: NextRequest) {
 
     if (!userId) return NextResponse.json({ error: 'Niet ingelogd' }, { status: 401 })
 
+    // Valideer bestanden
+    let totalSize = 0
+    for (const file of files) {
+      const ext = file.name.split('.').pop()?.toLowerCase() || ''
+      if (!ALLOWED_EXT.includes(ext)) {
+        return NextResponse.json({ error: `Bestandstype .${ext} is niet toegestaan. Gebruik PDF, Excel of CSV.` }, { status: 400 })
+      }
+      if (file.size > MAX_FILE_SIZE) {
+        return NextResponse.json({ error: `Bestand ${file.name} is te groot (max 10MB per bestand).` }, { status: 400 })
+      }
+      totalSize += file.size
+    }
+    if (totalSize > MAX_TOTAL_SIZE) {
+      return NextResponse.json({ error: 'Totale bestandsgrootte te groot (max 30MB).' }, { status: 400 })
+    }
+
     const uploadedFiles: string[] = []
     for (const file of files) {
       const bytes = await file.arrayBuffer()
       const buffer = Buffer.from(bytes)
-      const fileName = `${userId}/${boekjaar}/${Date.now()}-${file.name}`
+      const safeFileName = file.name.replace(/[^a-zA-Z0-9._-]/g, '_')
+      const fileName = `${userId}/${boekjaar}/${Date.now()}-${safeFileName}`
+      const ext = file.name.split('.').pop()?.toLowerCase() || ''
+      const contentType = ALLOWED_TYPES.find(t => t.includes(ext)) || 'application/octet-stream'
       const { error } = await supabase.storage
         .from('kascontrole-bestanden')
-        .upload(fileName, buffer, { contentType: file.type })
+        .upload(fileName, buffer, { contentType })
       if (!error) uploadedFiles.push(fileName)
     }
 

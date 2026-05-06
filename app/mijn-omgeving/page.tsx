@@ -178,7 +178,7 @@ export default function MijnOmgeving() {
       const res = await fetch('/api/checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ plan: 'vereniging', email: user.email, user_id: user.id, boekjaar: rapportBoekjaar }),
+        body: JSON.stringify({ email: user.email, user_id: user.id, boekjaar: rapportBoekjaar }),
       })
       const data = await res.json()
       if (data.url) window.location.href = data.url
