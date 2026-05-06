@@ -190,10 +190,12 @@ export default function MijnOmgeving() {
     setRapportLoading(true)
     setRapportError('')
     try {
+      const { data: { session } } = await supabase.auth.getSession()
+      const token = session?.access_token || ''
       const res = await fetch('/api/genereer-rapport-totaal', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ user_id: user.id, rapport_boekjaar: rapportBoekjaar }),
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+        body: JSON.stringify({ rapport_boekjaar: rapportBoekjaar }),
       })
       const data = await res.json()
       if (data.success) {
