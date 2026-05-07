@@ -11,9 +11,9 @@ export async function POST(req: NextRequest) {
       process.env.SUPABASE_SERVICE_ROLE_KEY!
     )
 
-    const { rapport_boekjaar } = await req.json()
+    const { rapport_boekjaar, vereniging_id } = await req.json()
 
-    // Haal user_id uit de Authorization header (sessie token)
+    // Haal user_id uit de Authorization header
     const authHeader = req.headers.get("Authorization") || ""
     const anonClient = createClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -26,62 +26,95 @@ export async function POST(req: NextRequest) {
     }
     const user_id = sessionUser.id
 
-    // Controleer of betaald voor dit boekjaar
-    const { data: rapportRecord } = await supabase
+    // Controleer of betaald voor dit boekjaar + vereniging
+    const rapportQuery = supabase
       .from('rapporten')
       .select('betaald')
       .eq('user_id', user_id)
       .eq('boekjaar', rapport_boekjaar)
-      .single()
+
+    if (vereniging_id) rapportQuery.eq('vereniging_id', vereniging_id)
+
+    const { data: rapportRecord } = await rapportQuery.single()
 
     if (!rapportRecord?.betaald) {
       return NextResponse.json({ error: 'Niet betaald voor dit boekjaar' }, { status: 403 })
     }
 
-    // Get all uploads for this user
-    const { data: uploads } = await supabase
+    // Haal uploads op gefilterd op vereniging
+    const uploadsQuery = supabase
       .from('uploads')
       .select('*')
       .eq('user_id', user_id)
       .order('boekjaar', { ascending: true })
 
+    if (vereniging_id) uploadsQuery.eq('vereniging_id', vereniging_id)
+
+    const { data: uploads } = await uploadsQuery
+
     if (!uploads || uploads.length === 0) {
       return NextResponse.json({ error: 'Geen uploads gevonden' }, { status: 404 })
     }
 
-    // Get user info — eerst klanten tabel (meest actueel), dan user_metadata als fallback
+    // Klantgegevens
     const { data: userData } = await supabase.auth.admin.getUserById(user_id)
     const email = userData?.user?.email || ''
 
     const { data: klantData } = await supabase
       .from('klanten')
-      .select('naam, vereniging, kvk, adres, postcode, plaats')
+      .select('naam')
       .eq('user_id', user_id)
       .single()
 
-    const naam = klantData?.naam || userData?.user?.user_metadata?.naam || ''
-    const vereniging = klantData?.vereniging || userData?.user?.user_metadata?.vereniging || ''
-    const kvk = klantData?.kvk || userData?.user?.user_metadata?.kvk || ''
-    const adres = klantData?.adres || ''
-    const postcode = klantData?.postcode || ''
-    const plaats = klantData?.plaats || ''
+    const naam = klantData?.naam || ''
 
-    // Read all files from all uploads
+    // Verenigingsgegevens ophalen
+    let verenigingNaam = ''
+    let kvk = ''
+    let adres = ''
+    let postcode = ''
+    let plaats = ''
+
+    if (vereniging_id) {
+      const { data: vData } = await supabase
+        .from('verenigingen')
+        .select('*')
+        .eq('id', vereniging_id)
+        .single()
+      if (vData) {
+        verenigingNaam = vData.naam || ''
+        kvk = vData.kvk || ''
+        adres = vData.adres || ''
+        postcode = vData.postcode || ''
+        plaats = vData.plaats || ''
+      }
+    } else {
+      // Fallback naar klanten tabel voor bestaande gebruikers
+      const { data: klantAdres } = await supabase
+        .from('klanten')
+        .select('vereniging, kvk, adres, postcode, plaats')
+        .eq('user_id', user_id)
+        .single()
+      if (klantAdres) {
+        verenigingNaam = klantAdres.vereniging || ''
+        kvk = klantAdres.kvk || ''
+        adres = klantAdres.adres || ''
+        postcode = klantAdres.postcode || ''
+        plaats = klantAdres.plaats || ''
+      }
+    }
+
+    // Bestanden inlezen
     const uploadsContent: string[] = []
-
     for (const upload of uploads) {
       const bestandenVanUpload: string[] = []
-      
       for (const bestandspad of (upload.bestanden || [])) {
         const { data, error } = await supabase.storage
           .from('kascontrole-bestanden')
           .download(bestandspad)
-
         if (error || !data) continue
-
         const bestandsnaam = bestandspad.split('/').pop() || ''
         const extensie = bestandsnaam.split('.').pop()?.toLowerCase() || ''
-
         try {
           if (['csv', 'txt'].includes(extensie)) {
             const tekst = await data.text()
@@ -94,7 +127,6 @@ export async function POST(req: NextRequest) {
           bestandenVanUpload.push(`  [${bestandsnaam} — kon niet worden uitgelezen]`)
         }
       }
-
       uploadsContent.push(
         `=== BOEKJAAR ${upload.boekjaar} ===\n` +
         `Toelichting: ${upload.toelichting || 'Geen'}\n` +
@@ -103,13 +135,9 @@ export async function POST(req: NextRequest) {
     }
 
     const alleBoekjaren = uploads.map(u => u.boekjaar).sort()
-    // Gebruik het door de gebruiker gekozen rapportboekjaar
     const huidigJaar = rapport_boekjaar || alleBoekjaren[alleBoekjaren.length - 1]
-    // Vorige jaren = alles strikt vóór het rapportboekjaar
     const vorigeJaren = alleBoekjaren.filter(j => j < huidigJaar)
-    // Volgend jaar = alles strikt ná het rapportboekjaar (voor openstaande posten)
     const volgendeJaren = alleBoekjaren.filter(j => j > huidigJaar)
-    // Alle boekjaren voor trendanalyse (excl. toekomstige jaren)
     const boekjaren = alleBoekjaren.filter(j => j <= huidigJaar)
 
     const prompt = `Je bent een kascontroleur voor Nederlandse verenigingen, VvE's en stichtingen. Je schrijft rapporten in begrijpelijke, gewone taal — alsof je het uitlegt aan een vrijwilliger zonder financiële achtergrond. Geen vakjargon, geen ingewikkelde zinnen. Wel volledig en professioneel.
@@ -117,7 +145,7 @@ export async function POST(req: NextRequest) {
 OPDRACHTGEVER:
 - Kascommissielid: ${naam || 'Niet opgegeven'}
 - Adres kascommissielid: ${adres ? `${adres}, ${postcode} ${plaats}` : 'Niet opgegeven'}
-- Vereniging / VvE: ${vereniging || 'Niet opgegeven'}
+- Vereniging / VvE: ${verenigingNaam || 'Niet opgegeven'}
 - KvK vereniging: ${kvk || 'Niet opgegeven'}
 - E-mail: ${email}
 - RAPPORT BOEKJAAR (waar het rapport over gaat): ${huidigJaar}
@@ -126,8 +154,8 @@ ${volgendeJaren.length > 0 ? `- Volgend jaar beschikbaar (ALLEEN voor controle o
 
 ROL VAN ELK JAAR:
 - Boekjaar ${huidigJaar}: DIT is het hoofdonderwerp. Schrijf hier een volledige analyse over.
-${vorigeJaren.length > 0 ? `- Jaren ${vorigeJaren.join(', ')}: Alleen gebruiken voor trendvergelijking en om patronen over meerdere jaren te signaleren (bijv. iemand die al 3 jaar niet betaalt).` : ''}
-${volgendeJaren.length > 0 ? `- Jaar ${volgendeJaren.join(', ')}: NIET analyseren. Alleen gebruiken om te kijken of openstaande bedragen uit ${huidigJaar} inmiddels zijn betaald.` : ''}
+${vorigeJaren.length > 0 ? `- Jaren ${vorigeJaren.join(', ')}: Alleen gebruiken voor trendvergelijking.` : ''}
+${volgendeJaren.length > 0 ? `- Jaar ${volgendeJaren.join(', ')}: NIET analyseren. Alleen voor controle openstaande posten.` : ''}
 
 GEÜPLOADE FINANCIËLE GEGEVENS (${uploads.length} upload(s)):
 ${uploadsContent.join('\n\n')}
@@ -135,7 +163,7 @@ ${uploadsContent.join('\n\n')}
 Stel een volledig professioneel kascontrolerapport op in het Nederlands. Het rapport gaat over boekjaar ${huidigJaar}. Gebruik exact deze structuur:
 
 # KASCOMMISSIE RAPPORT
-## ${vereniging || 'Vereniging'} | Boekjaar ${huidigJaar} | Peildatum ${new Date().toLocaleDateString('nl-NL', { day: 'numeric', month: 'long', year: 'numeric' })}
+## ${verenigingNaam || 'Vereniging'} | Boekjaar ${huidigJaar} | Peildatum ${new Date().toLocaleDateString('nl-NL', { day: 'numeric', month: 'long', year: 'numeric' })}
 *Kascommissielid: ${naam || 'Onbekend'}${adres ? ` · ${adres}, ${postcode} ${plaats}` : ''}*
 *Opgesteld ten behoeve van de Algemene Ledenvergadering*
 
@@ -160,7 +188,6 @@ Beschrijf welke documenten zijn beoordeeld en welke werkzaamheden zijn verricht.
 
 ## 2. SAMENVATTING BEVINDINGEN
 
-Gebruik drie blokken:
 | KRITISCH — vereist actie vóór goedkeuring |
 | --- |
 | beschrijving |
@@ -176,12 +203,10 @@ Gebruik drie blokken:
 ## 3. BEVINDINGEN BOEKJAAR ${huidigJaar} — HOOFDANALYSE
 
 ### 3.1 Balans en aansluiting banksaldi
-Maak een tabel:
 | Rekening | Beginsaldo | Eindsaldo |
 | --- | --- | --- |
 | [rekening] | €... | €... |
 | **Totaal** | **€...** | **€...** |
-| Verschil | | **€0,00 ✓** |
 
 ### 3.2 Inkoopfacturen en uitgaven
 Volledige analyse van alle facturen en uitgaven in ${huidigJaar}.
@@ -194,63 +219,33 @@ Volledige analyse van alle facturen en uitgaven in ${huidigJaar}.
 | **Exploitatieresultaat** | **€...** | **€...** | **...** |
 
 ### 3.4 Openstaande posten
-Controleer debiteuren en crediteuren per einde ${huidigJaar}. Gebruik gegevens uit het volgende jaar (indien aangeleverd) om te controleren of openstaande posten inmiddels zijn vereffend.
-
-| Post | Bedrag | Status (op basis van volgend jaar) |
+| Post | Bedrag | Status |
 | --- | --- | --- |
 | [debiteur/crediteur] | €... | Vereffend ✓ / Nog open ⚠️ |
 
 ### 3.5 Contracten en abonnementen
-Controleer alle lopende contracten en abonnementen die voorkomen in de financiële stukken.
-
-| Contract / Abonnement | Leverancier | Jaarlijkse kosten | Looptijd / Vervaldatum | Beoordeling |
+| Contract | Leverancier | Jaarlijkse kosten | Vervaldatum | Beoordeling |
 | --- | --- | --- | --- | --- |
-| [naam] | [leverancier] | €... | [datum] | Actueel ✓ / Verloopt binnenkort ⚠️ / Onbekend ❓ |
-
-Benoem expliciet:
-- Contracten die binnenkort verlopen of al verlopen zijn
-- Abonnementen waarvan het onduidelijk is of ze nog worden gebruikt
-- Contracten die niet terug te vinden zijn in de stukken maar wel kosten veroorzaken
-- Verzekeringen: is de dekking nog voldoende en actueel?
-- Onderhoudscontracten: zijn ze conform vergaderbesluiten afgesloten?
+| [naam] | [leverancier] | €... | [datum] | Actueel ✓ / Verloopt binnenkort ⚠️ |
 
 ### 3.6 Bijzonderheden boekjaar ${huidigJaar}
-Beschrijf alle overige aandachtspunten specifiek voor dit boekjaar.
 
-${boekjaren.length > 1 ? `
-## 4. TRENDANALYSE ${boekjaren.join(' – ')}
-
-Vergelijk alleen de hoofdlijnen over de jaren. Focus op opvallende patronen.
-
+${boekjaren.length > 1 ? `## 4. TRENDANALYSE ${boekjaren.join(' – ')}
 | Post | ${boekjaren.join(' | ')} | Trend |
 | --- | ${boekjaren.map(() => '---').join(' | ')} | --- |
-| Inkomsten | ... | ... |
-| Uitgaven | ... | ... |
-| Exploitatieresultaat | ... | ... |
-
-Benoem expliciet meerjarige aandachtspunten, zoals een debiteur die meerdere jaren achtereen niet betaalt, of structureel stijgende kosten.
-` : ''}
+| Inkomsten | ... | |
+| Uitgaven | ... | |
+| Exploitatieresultaat | ... | |` : ''}
 
 ## ${boekjaren.length > 1 ? '5' : '4'}. ADVIES AAN DE ALGEMENE LEDENVERGADERING
 
-Geef een duidelijk advies: GOEDKEURING, VOORWAARDELIJKE GOEDKEURING of AANHOUDING.
-Beschrijf eventuele voorwaarden concreet.
-
 *De kascommissie*
-*${vereniging || 'Uw vereniging'}, ${new Date().toLocaleDateString('nl-NL', { month: 'long', year: 'numeric' })}*
+*${verenigingNaam || 'Uw vereniging'}, ${new Date().toLocaleDateString('nl-NL', { month: 'long', year: 'numeric' })}*
 
 ---
-*Vertrouwelijk — uitsluitend bestemd voor leden · Opgesteld door slimmekascontrole.nl, een dienst van Vertras B.V.*
+*Vertrouwelijk · Opgesteld door slimmekascontrole.nl, een dienst van Vertras B.V.*
 
-BELANGRIJK:
-- Schrijf in begrijpelijke, gewone taal. Geen vakjargon. Schrijf alsof je het uitlegt aan een betrokken vrijwilliger.
-- Noem het rapportjaar ALTIJD als ${huidigJaar}, niet als een ander jaar.
-- Als bestanden binair zijn (PDF/Excel), werk dan met beschikbare informatie en geef aan wat nog aangeleverd moet worden.
-- Gebruik tabellen voor alle cijfers.
-- Bij meerdere jaren: analyseer trends in gewone taal (bijv. "De kosten zijn de afgelopen 3 jaar elk jaar gestegen met gemiddeld €500").
-- Wees concreet: noem bedragen, datums en namen waar mogelijk.
-- Houd zinnen kort en vermijd lange alinea's.
-- Voor contracten en abonnementen: signaleer actief contracten die verlopen zijn of binnenkort verlopen, verzekeringen die mogelijk niet meer actueel zijn, en abonnementen waarvan onduidelijk is of ze nog nuttig zijn. Dit is een belangrijk onderdeel van de kascontrole.`
+BELANGRIJK: Schrijf in begrijpelijke taal. Gebruik tabellen voor cijfers. Wees concreet met bedragen en datums.`
 
     const apiKey = process.env.ANTHROPIC_API_KEY
     if (!apiKey) return NextResponse.json({ error: 'API key niet geconfigureerd' }, { status: 500 })
@@ -270,22 +265,21 @@ BELANGRIJK:
     })
 
     if (!response.ok) {
-      const errText = await response.text()
       return NextResponse.json({ error: `API fout: ${response.status}` }, { status: 500 })
     }
 
     const aiData = await response.json()
     const rapportTekst = aiData.content?.[0]?.text || ''
-
     if (!rapportTekst) return NextResponse.json({ error: 'Geen rapport ontvangen' }, { status: 500 })
 
-    // Sla rapport op per boekjaar in rapporten tabel
+    // Sla rapport op met vereniging_id
     await supabase.from('rapporten').upsert({
       user_id,
       boekjaar: huidigJaar,
       rapport_tekst: rapportTekst,
       betaald: true,
       gegenereerd_op: new Date().toISOString(),
+      ...(vereniging_id ? { vereniging_id } : {}),
     }, { onConflict: 'user_id,boekjaar' })
 
     return NextResponse.json({ success: true })

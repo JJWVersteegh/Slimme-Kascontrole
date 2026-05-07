@@ -17,8 +17,8 @@ const EXT_TO_MIME: Record<string, string> = {
   jpeg: 'image/jpeg',
   heic: 'image/heic',
 }
-const MAX_FILE_SIZE = 10 * 1024 * 1024 // 10MB per bestand
-const MAX_TOTAL_SIZE = 30 * 1024 * 1024 // 30MB totaal
+const MAX_FILE_SIZE = 10 * 1024 * 1024
+const MAX_TOTAL_SIZE = 30 * 1024 * 1024
 
 export async function POST(req: NextRequest) {
   try {
@@ -32,11 +32,11 @@ export async function POST(req: NextRequest) {
     const userId = formData.get('user_id') as string
     const boekjaar = formData.get('boekjaar') as string
     const toelichting = formData.get('toelichting') as string
+    const verenigingId = formData.get('vereniging_id') as string | null
     const files = formData.getAll('files') as File[]
 
     if (!userId) return NextResponse.json({ error: 'Niet ingelogd' }, { status: 401 })
 
-    // Valideer bestanden
     let totalSize = 0
     for (const file of files) {
       const ext = file.name.split('.').pop()?.toLowerCase() || ''
@@ -74,6 +74,7 @@ export async function POST(req: NextRequest) {
       status: 'ontvangen',
       rapport_beschikbaar: false,
       upload_datum: new Date().toISOString(),
+      ...(verenigingId ? { vereniging_id: verenigingId } : {}),
     })
 
     return NextResponse.json({ success: true, count: uploadedFiles.length })
