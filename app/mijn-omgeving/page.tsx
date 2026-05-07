@@ -538,7 +538,8 @@ export default function MijnOmgeving() {
           <h2 style={{ fontSize: '1rem', fontWeight: '700', color: '#0f172a', marginBottom: '8px' }}>📁 Bestanden uploaden</h2>
           <div style={{ background: '#eff6ff', borderRadius: '8px', padding: '10px 14px', marginBottom: '16px', fontSize: '0.83rem', color: '#1e3a8a', lineHeight: 1.6 }}>
             <strong>Stap 1:</strong> Selecteer uw bestanden van boekjaar <strong>{rapportBoekjaar}</strong> en klik op <strong>Upload bestanden</strong> — dit is verplicht.<br/>
-            <strong>Optioneel:</strong> Wilt u ook een trendanalyse? Verander dan het boekjaar in de dropdown naar {parseInt(rapportBoekjaar) - 2}, {parseInt(rapportBoekjaar) - 1} of {parseInt(rapportBoekjaar) + 1}, selecteer de bestanden en klik opnieuw op <strong>Upload bestanden</strong>.
+            <strong>Optioneel:</strong> Wilt u ook een trendanalyse? Verander dan het boekjaar in de dropdown naar {parseInt(rapportBoekjaar) - 2}, {parseInt(rapportBoekjaar) - 1} of {parseInt(rapportBoekjaar) + 1}, selecteer de bestanden en klik opnieuw op <strong>Upload bestanden</strong>.<br/>
+            <span style={{ color: '#64748b', fontSize: '0.85em' }}>Ondersteunde bestandstypen: PDF, Excel (.xlsx, .xls), CSV, Word (.docx), afbeeldingen (PNG, JPG, HEIC) · Max 10MB per bestand</span>
           </div>
           <form onSubmit={handleUpload}>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '14px', alignItems: 'end' }}>
@@ -554,8 +555,8 @@ export default function MijnOmgeving() {
                 <div onClick={() => document.getElementById('fileInput')?.click()} style={{ border: '2px dashed #93c5fd', borderRadius: '8px', padding: '12px 16px', textAlign: 'center', cursor: 'pointer', background: '#f8fafc', fontSize: '0.88rem', color: '#475569' }}>
                   {files ? `${files.length} bestand(en) ✓` : '📎 Klik om te selecteren'}
                 </div>
-                <input id="fileInput" type="file" multiple accept=".pdf,.xlsx,.xls,.csv,.png,.jpg,.jpeg" style={{ display: 'none' }} onChange={e => setFiles(e.target.files)} />
-                <p style={{ fontSize: '0.72rem', color: '#94a3b8', marginTop: '3px' }}>PDF, Excel, CSV, afbeeldingen</p>
+                <input id="fileInput" type="file" multiple accept=".pdf,.xlsx,.xls,.csv,.txt,.ods,.docx,.doc,.png,.jpg,.jpeg,.heic" style={{ display: 'none' }} onChange={e => setFiles(e.target.files)} />
+                <p style={{ fontSize: '0.72rem', color: '#94a3b8', marginTop: '3px' }}>PDF, Excel, CSV, Word, afbeeldingen (PNG, JPG, HEIC)</p>
               </div>
             </div>
             <div style={{ marginBottom: '14px' }}>
