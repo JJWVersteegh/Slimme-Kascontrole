@@ -91,6 +91,8 @@ export default function AdminPortal() {
   const [aanmakenFout, setAanmakenFout] = useState('')
   const [bewerkKlant, setBewerkKlant] = useState<Klant | null>(null)
   const [bewerkData, setBewerkData] = useState<Partial<Klant>>({})
+  const [bewerkVerenigingData, setBewerkVerenigingData] = useState<Partial<Vereniging>>({})
+  const [bewerkVerenigingId, setBewerkVerenigingId] = useState<string | null>(null)
 
   const [lastLogins, setLastLogins] = useState<Record<string, string>>({})
   const router = useRouter()
@@ -249,8 +251,19 @@ export default function AdminPortal() {
     if (!bewerkKlant) return
     const { error } = await supabase.from("klanten").update(bewerkData).eq("user_id", bewerkKlant.user_id)
     if (error) { alert("Fout bij opslaan: " + error.message); return }
+    // Update ook de vereniging via service role
+    if (bewerkVerenigingId && Object.keys(bewerkVerenigingData).length > 0) {
+      const { data: { session } } = await supabase.auth.getSession()
+      await fetch('/api/admin-update-vereniging', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${session?.access_token}` },
+        body: JSON.stringify({ vereniging_id: bewerkVerenigingId, data: bewerkVerenigingData })
+      })
+    }
     setBewerkKlant(null)
     setBewerkData({})
+    setBewerkVerenigingData({})
+    setBewerkVerenigingId(null)
     loadData()
   }
 
@@ -455,7 +468,12 @@ export default function AdminPortal() {
                       <button onClick={() => setGeselecteerdeKlant(null)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#94a3b8', fontSize: '1.2rem', lineHeight: 1 }}>×</button>
                     </div>
                     <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-                      <button onClick={() => { setBewerkKlant(geselecteerdeKlant); setBewerkData({ naam: geselecteerdeKlant!.naam, telefoon: geselecteerdeKlant!.telefoon }) }} style={{ background: '#eff6ff', color: '#2563EB', border: '1px solid #bfdbfe', padding: '5px 10px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.78rem', fontWeight: '600', fontFamily: 'Outfit, sans-serif' }}>✏️ Bewerken</button>
+                      <button onClick={() => { setBewerkKlant(geselecteerdeKlant); setBewerkData({ naam: geselecteerdeKlant!.naam, telefoon: geselecteerdeKlant!.telefoon })
+                      const eersteVereniging = verenigingen.find(v => v.user_id === geselecteerdeKlant!.user_id)
+                      if (eersteVereniging) {
+                        setBewerkVerenigingId(eersteVereniging.id)
+                        setBewerkVerenigingData({ naam: eersteVereniging.naam, kvk: eersteVereniging.kvk, adres: eersteVereniging.adres, postcode: eersteVereniging.postcode, plaats: eersteVereniging.plaats, telefoon: eersteVereniging.telefoon })
+                      } }} style={{ background: '#eff6ff', color: '#2563EB', border: '1px solid #bfdbfe', padding: '5px 10px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.78rem', fontWeight: '600', fontFamily: 'Outfit, sans-serif' }}>✏️ Bewerken</button>
                       <button onClick={() => handleDeleteKlant(geselecteerdeKlant!)} style={{ background: '#fee2e2', color: '#dc2626', border: '1px solid #fca5a5', padding: '5px 10px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.78rem', fontWeight: '600', fontFamily: 'Outfit, sans-serif' }}>🗑️ Verwijderen</button>
                     </div>
                   </div>
@@ -663,12 +681,24 @@ export default function AdminPortal() {
               <button onClick={() => setBewerkKlant(null)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#94a3b8', fontSize: '1.2rem' }}>×</button>
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+              <div style={{ fontSize: '0.8rem', fontWeight: '700', color: '#94a3b8', marginBottom: '8px', textTransform: 'uppercase' }}>Persoonsgegevens</div>
               {[['naam', 'Naam'], ['telefoon', 'Telefoon']].map(([field, label]) => (
                 <div key={field}>
                   <label style={{ fontSize: '0.78rem', fontWeight: '600', color: '#64748b', display: 'block', marginBottom: '4px' }}>{label}</label>
                   <input value={(bewerkData as any)[field] || ''} onChange={e => setBewerkData(d => ({ ...d, [field]: e.target.value }))} style={{ width: '100%', padding: '9px 14px', border: '1.5px solid #e2e8f0', borderRadius: '8px', fontSize: '0.88rem', fontFamily: 'Outfit, sans-serif', outline: 'none', boxSizing: 'border-box' }} />
                 </div>
               ))}
+              {bewerkVerenigingId && (
+                <>
+                  <div style={{ fontSize: '0.8rem', fontWeight: '700', color: '#94a3b8', marginTop: '16px', marginBottom: '8px', textTransform: 'uppercase' }}>Vereniging</div>
+                  {[['naam', 'Naam vereniging'], ['kvk', 'KvK'], ['adres', 'Adres'], ['postcode', 'Postcode'], ['plaats', 'Plaats'], ['telefoon', 'Telefoon vereniging']].map(([field, label]) => (
+                    <div key={field}>
+                      <label style={{ fontSize: '0.78rem', fontWeight: '600', color: '#64748b', display: 'block', marginBottom: '4px' }}>{label}</label>
+                      <input value={(bewerkVerenigingData as any)[field] || ''} onChange={e => setBewerkVerenigingData(d => ({ ...d, [field]: e.target.value }))} style={{ width: '100%', padding: '9px 14px', border: '1.5px solid #e2e8f0', borderRadius: '8px', fontSize: '0.88rem', fontFamily: 'Outfit, sans-serif', outline: 'none', boxSizing: 'border-box' }} />
+                    </div>
+                  ))}
+                </>
+              )}
             </div>
             <div style={{ display: 'flex', gap: '10px', marginTop: '20px' }}>
               <button onClick={handleSaveBewerkKlant} style={{ flex: 1, background: '#2563EB', color: 'white', border: 'none', padding: '11px', borderRadius: '8px', cursor: 'pointer', fontSize: '0.9rem', fontWeight: '700', fontFamily: 'Outfit, sans-serif' }}>Opslaan</button>

@@ -12,6 +12,8 @@ async function maakMoneybirdFactuur(klant: {
   postcode: string
   plaats: string
   boekjaar: string
+  amountTotal: number  // werkelijk betaald bedrag in centen incl. BTW
+  kortingscode?: string
 }) {
   const apiKey = process.env.MONEYBIRD_API_KEY
   if (!apiKey) return
@@ -57,8 +59,15 @@ async function maakMoneybirdFactuur(klant: {
 
   if (!contactId) return
 
-  const exclBTW = (5900 / 121).toFixed(2)
+  // Bereken excl. BTW op basis van werkelijk betaald bedrag
+  const exclBTW = (klant.amountTotal / 121).toFixed(2)
+  const inclBTW = (klant.amountTotal / 100).toFixed(2)
   const vandaag = new Date().toISOString().split('T')[0]
+
+  // Bouw omschrijving met kortingscode indien van toepassing
+  const omschrijving = klant.kortingscode
+    ? `Kascontrole boekjaar ${klant.boekjaar} — Slimme Kascontrole (kortingscode: ${klant.kortingscode})`
+    : `Kascontrole boekjaar ${klant.boekjaar} — Slimme Kascontrole`
 
   const factuurRes = await fetch(
     `https://moneybird.com/api/v2/${MONEYBIRD_ADMIN_ID}/sales_invoices`,
@@ -73,7 +82,7 @@ async function maakMoneybirdFactuur(klant: {
           currency: 'EUR',
           prices_are_incl_tax: false,
           details_attributes: [{
-            description: `Kascontrole boekjaar ${klant.boekjaar} — Slimme Kascontrole`,
+            description: omschrijving,
             price: exclBTW,
             amount: '1',
             tax_rate_id: null,
@@ -112,8 +121,8 @@ async function maakMoneybirdFactuur(klant: {
         body: JSON.stringify({
           payment: {
             payment_date: vandaag,
-            price: '59.00',
-            price_base: '59.00',
+            price: inclBTW,
+            price_base: inclBTW,
             financial_account_id: null,
             financial_mutation_id: null,
           }
@@ -248,11 +257,23 @@ export async function POST(req: NextRequest) {
         }
       }
 
+      // Haal kortingscode op uit Stripe sessie
+      let kortingscode: string | undefined
+      try {
+        if (session.total_details?.breakdown?.discounts?.length > 0) {
+          kortingscode = session.total_details.breakdown.discounts[0]?.discount?.promotion_code?.code
+        }
+      } catch {}
+
       // Moneybird factuur
       try {
-        await maakMoneybirdFactuur(klantInfo)
-      } catch (e) {
-        console.error('Moneybird factuur mislukt:', e)
+        await maakMoneybirdFactuur({
+          ...klantInfo,
+          amountTotal: session.amount_total || 5900,
+          kortingscode,
+        })
+      } catch (e: any) {
+        console.error('Moneybird factuur mislukt:', e?.message || e)
       }
 
       // Bevestigingsmail
