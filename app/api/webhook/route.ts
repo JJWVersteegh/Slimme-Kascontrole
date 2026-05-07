@@ -59,15 +59,37 @@ async function maakMoneybirdFactuur(klant: {
 
   if (!contactId) return
 
-  // Bereken excl. BTW op basis van werkelijk betaald bedrag
-  const exclBTW = (klant.amountTotal / 121).toFixed(2)
-  const inclBTW = (klant.amountTotal / 100).toFixed(2)
+  // Vaste prijs is €59 incl. BTW = €48.76 excl. BTW
+  const volPrijsExclBTW = (5900 / 121).toFixed(2)  // €48.76
+  const betaaldInclBTW = (klant.amountTotal / 100).toFixed(2)
+  const betaaldExclBTW = (klant.amountTotal / 121).toFixed(2)
+  const kortingExclBTW = (parseFloat(volPrijsExclBTW) - parseFloat(betaaldExclBTW)).toFixed(2)
   const vandaag = new Date().toISOString().split('T')[0]
+  const heeftKorting = klant.amountTotal < 5900
 
-  // Bouw omschrijving met kortingscode indien van toepassing
-  const omschrijving = klant.kortingscode
-    ? `Kascontrole boekjaar ${klant.boekjaar} — Slimme Kascontrole (kortingscode: ${klant.kortingscode})`
-    : `Kascontrole boekjaar ${klant.boekjaar} — Slimme Kascontrole`
+  const omschrijving = `Kascontrole boekjaar ${klant.boekjaar} — Slimme Kascontrole`
+  const kortingOmschrijving = klant.kortingscode
+    ? `Korting (${klant.kortingscode})`
+    : `Korting`
+
+  // Bouw details: altijd volle prijs, en indien korting een negatieve kortingsregel
+  const details: any[] = [{
+    description: omschrijving,
+    price: volPrijsExclBTW,
+    amount: '1',
+    tax_rate_id: null,
+    ledger_account_id: null,
+  }]
+
+  if (heeftKorting) {
+    details.push({
+      description: kortingOmschrijving,
+      price: `-${kortingExclBTW}`,
+      amount: '1',
+      tax_rate_id: null,
+      ledger_account_id: null,
+    })
+  }
 
   const factuurRes = await fetch(
     `https://moneybird.com/api/v2/${MONEYBIRD_ADMIN_ID}/sales_invoices`,
@@ -81,13 +103,7 @@ async function maakMoneybirdFactuur(klant: {
           due_date: vandaag,
           currency: 'EUR',
           prices_are_incl_tax: false,
-          details_attributes: [{
-            description: omschrijving,
-            price: exclBTW,
-            amount: '1',
-            tax_rate_id: null,
-            ledger_account_id: null,
-          }],
+          details_attributes: details,
           send_invoice: true,
         }
       })
