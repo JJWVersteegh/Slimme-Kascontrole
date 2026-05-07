@@ -45,14 +45,14 @@ nav.scrolled{box-shadow:0 4px 24px rgba(0,0,0,0.08)}
 
 /* HERO */
 .hero-wrapper{background:#f8fafc;padding:24px 48px 48px;margin-top:72px}
-.hero{position:relative;height:520px;width:100%;max-width:1200px;margin:0 auto;display:flex;align-items:center;overflow:hidden;background:#f0f4ff;border-radius:16px}
+.hero{position:relative;height:620px;width:100%;max-width:1200px;margin:0 auto;display:flex;align-items:center;overflow:hidden;background:#f0f4ff;border-radius:16px}
 .hero-bg{position:absolute;inset:0;z-index:0;border-radius:16px;overflow:hidden}
 .hero-bg img{width:100%;height:100%;object-fit:cover;object-position:center top;opacity:1}
 
 .hero-content{position:relative;z-index:1;width:100%;padding:0 40px;max-width:640px}
-.hero-inner{background:rgba(255,255,255,0.82);backdrop-filter:blur(8px);border-radius:16px;padding:36px 40px;display:inline-block;max-width:600px}
+.hero-inner{background:rgba(255,255,255,0.88);backdrop-filter:blur(8px);border-radius:16px;padding:32px 36px;display:inline-block;max-width:560px}
 
-.hero h1{font-family:'Playfair Display',serif;font-size:clamp(2rem,4.5vw,3.8rem);font-weight:700;line-height:1.1;color:#0f2460;margin-bottom:20px;letter-spacing:-0.02em}
+.hero h1{font-family:'Playfair Display',serif;font-size:clamp(1.8rem,3.5vw,3rem);font-weight:700;line-height:1.1;color:#0f2460;margin-bottom:20px;letter-spacing:-0.02em}
 .hero h1 em{font-style:italic;font-weight:400;color:#2563EB}
 .hero-sub{font-size:clamp(0.92rem,2vw,1.05rem);color:#334155;line-height:1.7;margin-bottom:32px;max-width:500px}
 .hero-ctas{display:flex;gap:14px;align-items:center;flex-wrap:wrap;margin-bottom:36px}
