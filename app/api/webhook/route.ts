@@ -2,6 +2,99 @@ import { NextRequest, NextResponse } from 'next/server'
 
 export const dynamic = 'force-dynamic'
 
+const MONEYBIRD_ADMIN_ID = '222382394444874819'
+
+async function maakMoneybirdFactuur(klant: {
+  naam: string
+  vereniging: string
+  email: string
+  adres: string
+  postcode: string
+  plaats: string
+  boekjaar: string
+}) {
+  const apiKey = process.env.MONEYBIRD_API_KEY
+  if (!apiKey) return
+
+  const headers = {
+    'Authorization': `Bearer ${apiKey}`,
+    'Content-Type': 'application/json',
+  }
+
+  // Stap 1: Zoek of maak contactpersoon aan
+  let contactId: string | null = null
+
+  const zoekRes = await fetch(
+    `https://moneybird.com/api/v2/${MONEYBIRD_ADMIN_ID}/contacts?query=${encodeURIComponent(klant.email)}`,
+    { headers }
+  )
+  const contacten = await zoekRes.json()
+
+  if (contacten.length > 0) {
+    contactId = contacten[0].id
+  } else {
+    // Nieuw contact aanmaken
+    const nieuwContact = await fetch(
+      `https://moneybird.com/api/v2/${MONEYBIRD_ADMIN_ID}/contacts`,
+      {
+        method: 'POST',
+        headers,
+        body: JSON.stringify({
+          contact: {
+            company_name: klant.vereniging || klant.naam,
+            firstname: klant.naam.split(' ')[0] || '',
+            lastname: klant.naam.split(' ').slice(1).join(' ') || '',
+            email: klant.email,
+            address1: klant.adres,
+            zipcode: klant.postcode,
+            city: klant.plaats,
+            country: 'NL',
+            send_invoices_to_email: true,
+          }
+        })
+      }
+    )
+    const contactData = await nieuwContact.json()
+    contactId = contactData.id
+  }
+
+  if (!contactId) return
+
+  // Stap 2: Maak factuur aan
+  // €59 incl. 21% BTW = €48,76 excl. BTW
+  const exclBTW = (5900 / 121).toFixed(2) // in centen → euro string
+
+  const factuurRes = await fetch(
+    `https://moneybird.com/api/v2/${MONEYBIRD_ADMIN_ID}/sales_invoices`,
+    {
+      method: 'POST',
+      headers,
+      body: JSON.stringify({
+        sales_invoice: {
+          contact_id: contactId,
+          invoice_date: new Date().toISOString().split('T')[0],
+          due_date: new Date().toISOString().split('T')[0],
+          currency: 'EUR',
+          prices_are_incl_tax: false,
+          details_attributes: [
+            {
+              description: `Kascontrole boekjaar ${klant.boekjaar} — Slimme Kascontrole`,
+              price: exclBTW,
+              amount: '1',
+              tax_rate_id: null, // Moneybird gebruikt standaard BTW tarief
+              ledger_account_id: null,
+            }
+          ],
+          send_invoice: true, // Stuur automatisch naar klant
+        }
+      })
+    }
+  )
+
+  const factuurData = await factuurRes.json()
+  return factuurData
+}
+
 export async function POST(req: NextRequest) {
   try {
     const Stripe = (await import('stripe')).default
@@ -26,19 +119,47 @@ export async function POST(req: NextRequest) {
     if (event.type === 'checkout.session.completed') {
       const session = event.data.object
       const email = session.customer_email
-      const plan = session.metadata?.plan || 'vereniging'
       const boekjaar = session.metadata?.boekjaar
       const user_id = session.metadata?.user_id
       const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://www.slimmekascontrole.nl'
 
+      let klantInfo = {
+        naam: '',
+        vereniging: '',
+        email: email || '',
+        adres: '',
+        postcode: '',
+        plaats: '',
+        boekjaar: boekjaar || '',
+      }
+
       if (user_id && boekjaar) {
-        // Bestaande gebruiker — sla betaling op per boekjaar in rapporten tabel
+        // Bestaande gebruiker — sla betaling op
         await supabase.from('rapporten').upsert({
           user_id,
           boekjaar,
           betaald: true,
           stripe_session_id: session.id,
         }, { onConflict: 'user_id,boekjaar' })
+
+        // Haal klantgegevens op voor factuur
+        const { data: klantData } = await supabase
+          .from('klanten')
+          .select('naam, vereniging, adres, postcode, plaats')
+          .eq('user_id', user_id)
+          .single()
+
+        if (klantData) {
+          klantInfo = {
+            naam: klantData.naam || '',
+            vereniging: klantData.vereniging || '',
+            email: email || '',
+            adres: klantData.adres || '',
+            postcode: klantData.postcode || '',
+            plaats: klantData.plaats || '',
+            boekjaar: boekjaar,
+          }
+        }
       } else if (email) {
         // Nieuwe gebruiker — maak account aan
         const crypto = await import('crypto')
@@ -48,7 +169,7 @@ export async function POST(req: NextRequest) {
         })
         if (authData.user) {
           await supabase.from('klanten').upsert({
-            user_id: authData.user.id, email, plan,
+            user_id: authData.user.id, email,
             stripe_session_id: session.id,
           })
           if (boekjaar) {
@@ -59,7 +180,17 @@ export async function POST(req: NextRequest) {
               stripe_session_id: session.id,
             }, { onConflict: 'user_id,boekjaar' })
           }
+          klantInfo.email = email
+          klantInfo.boekjaar = boekjaar || ''
         }
+      }
+
+      // Moneybird factuur aanmaken en versturen
+      try {
+        await maakMoneybirdFactuur(klantInfo)
+      } catch (e) {
+        console.error('Moneybird factuur mislukt:', e)
+        // Niet fataal — betaling is wel verwerkt
       }
 
       // Bevestigingsmail
@@ -73,6 +204,7 @@ export async function POST(req: NextRequest) {
           </div>
           <div style="padding:40px 32px">
             <p>Bedankt voor uw betaling voor <strong>kascontrole boekjaar ${boekjaar}</strong>.</p>
+            <p>Uw factuur ontvangt u apart per e-mail van Moneybird.</p>
             <p>Uw geüploade bestanden staan klaar. Klik hieronder om uw rapport te genereren.</p>
             <div style="text-align:center;margin:32px 0">
               <a href="${baseUrl}/mijn-omgeving" style="background:#2563EB;color:white;padding:16px 32px;border-radius:8px;text-decoration:none;font-weight:bold">Genereer mijn rapport →</a>
