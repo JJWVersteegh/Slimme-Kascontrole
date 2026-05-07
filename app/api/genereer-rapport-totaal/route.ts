@@ -280,7 +280,7 @@ BELANGRIJK: Schrijf in begrijpelijke taal. Gebruik tabellen voor cijfers. Wees c
       betaald: true,
       gegenereerd_op: new Date().toISOString(),
       ...(vereniging_id ? { vereniging_id } : {}),
-    }, { onConflict: 'user_id,boekjaar' })
+    }, { onConflict: 'user_id,boekjaar,vereniging_id' })
 
     return NextResponse.json({ success: true })
   } catch (err: any) {
