@@ -46,7 +46,7 @@ nav.scrolled{box-shadow:0 4px 24px rgba(0,0,0,0.08)}
 /* HERO */
 .hero{position:relative;min-height:100vh;width:100%;display:flex;align-items:center;overflow:hidden;background:#0f2460}
 .hero-bg{position:absolute;inset:0;z-index:0}
-.hero-bg img{width:100%;height:100%;object-fit:cover;object-position:center 60%;opacity:0.6}
+.hero-bg img{width:100%;height:100%;object-fit:cover;object-position:center 60%;opacity:0.45}
 
 .hero-content{position:relative;z-index:1;width:100%;padding:80px 48px 0}
 .hero-eyebrow{display:inline-flex;align-items:center;gap:8px;background:rgba(37,99,235,0.35);border:1px solid rgba(147,197,253,0.5);color:#bfdbfe;font-size:0.72rem;font-weight:700;padding:5px 13px;border-radius:20px;margin-bottom:24px;letter-spacing:0.05em;text-transform:uppercase}
@@ -257,14 +257,14 @@ footer a:hover{color:#93c5fd}
 <!-- HERO -->
 <section class="hero">
   <div class="hero-bg">
-    <img src="/hero.jpg" alt="Kascontrole voor verenigingen"/>
+    <img src="/achtergrond.jpg" alt="Kascontrole voor verenigingen"/>
     <div class="hero-overlay"></div>
   </div>
   <div class="hero-content">
     <div style="max-width:600px">
       <div class="hero-eyebrow">✦ Verplicht voor elke vereniging</div>
-      <h1>Kascontrole die vroeger een weekend kostte — <em>nu in minuten klaar</em></h1>
-      <p class="hero-sub">Upload uw financiële bestanden en ontvang een volledig gecontroleerd kascontrolerapport, opgesteld door onze kascontroleurs. Eenmalig €59 incl. btw — geen abonnement.</p>
+      <h1>Kascontrole voor uw VvE of vereniging. <em>€59. Klaar in minuten.</em></h1>
+      <p class="hero-sub">Upload uw financiële bestanden en ontvang binnen minuten een volledig gecontroleerd kascontrolerapport. Eenmalig €59 incl. btw — geen abonnement.</p>
       <div class="hero-ctas">
         <a href="/registreer" class="btn-primary">Account aanmaken</a>
         <a href="#hoe-het-werkt" class="btn-ghost-white">Bekijk hoe het werkt →</a>
