@@ -109,23 +109,7 @@ export default function MijnOmgeving() {
     const vList = verenigingenData || []
     setVerenigingen(vList)
 
-    // Als er nog geen vereniging is maar wel data in klanten tabel, maak er eentje aan
-    if (vList.length === 0 && (klantData?.vereniging || klantData?.kvk)) {
-      const { data: newV } = await supabase.from('verenigingen').insert({
-        user_id: userId,
-        naam: klantData.vereniging || 'Mijn vereniging',
-        kvk: klantData.kvk || null,
-        adres: klantData.adres || null,
-        postcode: klantData.postcode || null,
-        plaats: klantData.plaats || null,
-        telefoon: klantData.telefoon || null,
-      }).select().single()
-      if (newV) {
-        setVerenigingen([newV])
-        setGeselecteerdeVereniging(newV)
-        await loadUploadsEnRapporten(userId, newV.id)
-      }
-    } else if (vList.length > 0) {
+    if (vList.length > 0) {
       setGeselecteerdeVereniging(vList[0])
       await loadUploadsEnRapporten(userId, vList[0].id)
     }
