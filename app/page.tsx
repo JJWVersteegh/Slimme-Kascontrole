@@ -44,8 +44,9 @@ nav.scrolled{box-shadow:0 4px 24px rgba(0,0,0,0.08)}
 .mobile-menu .mobile-btn{background:#2563EB;color:white!important;text-align:center;margin-top:8px;font-weight:700}
 
 /* HERO */
-.hero{position:relative;min-height:100vh;width:100%;display:flex;align-items:flex-start;overflow:hidden;background:#f0f4ff}
-.hero-bg{position:absolute;inset:0;z-index:0}
+.hero-wrapper{background:#f8fafc;padding:40px 48px}
+.hero{position:relative;height:520px;width:100%;max-width:1200px;margin:0 auto;display:flex;align-items:center;overflow:hidden;background:#f0f4ff;border-radius:16px}
+.hero-bg{position:absolute;inset:0;z-index:0;border-radius:16px;overflow:hidden}
 .hero-bg img{width:100%;height:100%;object-fit:cover;object-position:center top;opacity:1}
 
 .hero-content{position:relative;z-index:1;width:100%;padding:140px 48px 80px;max-width:680px}
@@ -197,7 +198,9 @@ footer a:hover{color:#93c5fd}
   .steps,.testi-grid{grid-template-columns:1fr}
   .features-grid,.why-grid,.about-grid,.pricing-grid,.contact-grid{grid-template-columns:1fr}
   .sources-grid,.security-grid{grid-template-columns:1fr 1fr}
-  .hero-content{padding:100px 20px 60px!important;width:100%!important;max-width:100%!important}
+  .hero-wrapper{padding:16px!important}
+  .hero{border-radius:12px!important;height:auto!important;min-height:380px!important}
+  .hero-content{padding:40px 20px!important;width:100%!important;max-width:100%!important}
   .hero-inner{padding:24px 20px!important;border-radius:12px!important;width:100%;box-sizing:border-box}
   
   footer{flex-direction:column;text-align:center;padding:32px 20px}
@@ -257,6 +260,7 @@ footer a:hover{color:#93c5fd}
 </div>
 
 <!-- HERO -->
+<div class="hero-wrapper">
 <section class="hero">
   <div class="hero-bg">
     <img src="/achtergrond.jpg" alt="Kascontrole voor verenigingen"/>
@@ -285,6 +289,7 @@ footer a:hover{color:#93c5fd}
     </div>
   </div>
 </section>
+</div>
 
 <!-- WAAROM -->
 <section id="waarom">
