@@ -67,7 +67,7 @@ export default function MijnOmgeving() {
 
   // Profiel bewerken (persoonlijk)
   const [toonProfiel, setToonProfiel] = useState(false)
-  const [profielForm, setProfielForm] = useState({ naam: '', telefoon: '' })
+  const [profielForm, setProfielForm] = useState({ naam: '', telefoon: '', adres: '', postcode: '', plaats: '' })
   const [profielSaving, setProfielSaving] = useState(false)
   const [profielSuccess, setProfielSuccess] = useState(false)
   const [profielAdresLaden, setProfielAdresLaden] = useState(false)
@@ -104,7 +104,7 @@ export default function MijnOmgeving() {
       klantData = newKlant
     }
     setKlant(klantData)
-    setProfielForm({ naam: klantData?.naam || '', telefoon: klantData?.telefoon || '' })
+    setProfielForm({ naam: klantData?.naam || '', telefoon: klantData?.telefoon || '', adres: klantData?.adres || '', postcode: klantData?.postcode || '', plaats: klantData?.plaats || '' })
 
     // Verenigingen ophalen
     const { data: verenigingenData } = await supabase.from('verenigingen').select('*').eq('user_id', userId).order('naam')
