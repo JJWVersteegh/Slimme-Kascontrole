@@ -64,8 +64,8 @@ nav.scrolled{box-shadow:0 4px 24px rgba(0,0,0,0.08)}
 .price-num span:last-child{font-family:'Playfair Display',serif;font-size:2rem;font-weight:700;color:#0f2460;line-height:1}
 .price-divider{width:1px;height:40px;background:rgba(0,0,0,0.15);flex-shrink:0}
 .price-checks{display:flex;flex-direction:column;gap:5px}
-.price-check{font-size:0.78rem;color:rgba(255,255,255,0.9);display:flex;align-items:center;gap:6px}
-.price-check span:first-child{color:#93c5fd;font-weight:700}
+.price-check{font-size:0.78rem;color:#1e3a8a;font-weight:600;display:flex;align-items:center;gap:6px}
+.price-check span:first-child{color:#2563EB;font-weight:700}
 
 /* SECTIONS */
 section{padding:88px 48px;scroll-margin-top:72px}
