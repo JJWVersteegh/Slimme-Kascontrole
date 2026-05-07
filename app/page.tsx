@@ -49,7 +49,7 @@ nav.scrolled{box-shadow:0 4px 24px rgba(0,0,0,0.08)}
 .hero-bg img{width:100%;height:100%;object-fit:cover;object-position:center top;opacity:1}
 
 .hero-content{position:relative;z-index:1;width:100%;padding:140px 48px 80px;max-width:680px}
-.hero-eyebrow{display:inline-flex;align-items:center;gap:8px;background:rgba(37,99,235,0.12);border:1px solid rgba(37,99,235,0.3);color:#1e40af;font-size:0.72rem;font-weight:700;padding:5px 13px;border-radius:20px;margin-bottom:24px;letter-spacing:0.05em;text-transform:uppercase}
+
 .hero h1{font-family:'Playfair Display',serif;font-size:clamp(2rem,4.5vw,3.8rem);font-weight:700;line-height:1.1;color:#0f2460;margin-bottom:20px;letter-spacing:-0.02em}
 .hero h1 em{font-style:italic;font-weight:400;color:#2563EB}
 .hero-sub{font-size:clamp(0.92rem,2vw,1.05rem);color:#334155;line-height:1.7;margin-bottom:32px;max-width:500px}
@@ -197,7 +197,7 @@ footer a:hover{color:#93c5fd}
   .features-grid,.why-grid,.about-grid,.pricing-grid,.contact-grid{grid-template-columns:1fr}
   .sources-grid,.security-grid{grid-template-columns:1fr 1fr}
   .hero-content{padding:100px 20px 60px!important;width:100%!important;max-width:100%!important}
-  .hero-eyebrow{display:inline-flex!important}
+  
   footer{flex-direction:column;text-align:center;padding:32px 20px}
   .footer-links{justify-content:center}
 }
@@ -261,7 +261,6 @@ footer a:hover{color:#93c5fd}
   </div>
   <div class="hero-content">
     <div style="max-width:600px">
-      <div class="hero-eyebrow">✦ Verplicht voor elke vereniging</div>
       <h1>Kascontrole voor uw VvE of vereniging. <em>€59. Klaar in minuten.</em></h1>
       <p class="hero-sub">Upload uw financiële bestanden en ontvang binnen minuten een volledig gecontroleerd kascontrolerapport. Eenmalig €59 incl. btw — geen abonnement.</p>
       <div class="hero-ctas">
