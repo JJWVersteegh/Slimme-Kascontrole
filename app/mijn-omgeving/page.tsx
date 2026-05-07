@@ -19,6 +19,9 @@ interface Klant {
   email: string
   naam?: string
   telefoon?: string
+  adres?: string
+  postcode?: string
+  plaats?: string
 }
 
 interface Vereniging {
@@ -67,7 +70,7 @@ export default function MijnOmgeving() {
 
   // Profiel bewerken (persoonlijk)
   const [toonProfiel, setToonProfiel] = useState(false)
-  const [profielForm, setProfielForm] = useState({ naam: '', telefoon: '' })
+  const [profielForm, setProfielForm] = useState({ naam: '', telefoon: '', adres: '', postcode: '', plaats: '' })
   const [profielSaving, setProfielSaving] = useState(false)
   const [profielSuccess, setProfielSuccess] = useState(false)
 
@@ -102,7 +105,7 @@ export default function MijnOmgeving() {
       klantData = newKlant
     }
     setKlant(klantData)
-    setProfielForm({ naam: klantData?.naam || '', telefoon: klantData?.telefoon || '' })
+    setProfielForm({ naam: klantData?.naam || '', telefoon: klantData?.telefoon || '', adres: klantData?.adres || '', postcode: klantData?.postcode || '', plaats: klantData?.plaats || '' })
 
     // Verenigingen ophalen
     const { data: verenigingenData } = await supabase.from('verenigingen').select('*').eq('user_id', userId).order('naam')
@@ -245,7 +248,7 @@ export default function MijnOmgeving() {
     e.preventDefault()
     setProfielSaving(true)
     try {
-      await supabase.from('klanten').update({ naam: profielForm.naam, telefoon: profielForm.telefoon }).eq('user_id', user.id)
+      await supabase.from('klanten').update({ naam: profielForm.naam, telefoon: profielForm.telefoon, adres: profielForm.adres, postcode: profielForm.postcode, plaats: profielForm.plaats }).eq('user_id', user.id)
       setKlant(prev => prev ? { ...prev, ...profielForm } : prev)
       setProfielSuccess(true)
       setTimeout(() => { setProfielSuccess(false); setToonProfiel(false) }, 1500)
@@ -409,6 +412,20 @@ export default function MijnOmgeving() {
               <div style={{ marginBottom: '14px' }}>
                 <label style={{ display: 'block', fontWeight: '600', color: '#0f172a', marginBottom: '5px', fontSize: '0.88rem' }}>Telefoonnummer <span style={{ fontWeight: '400', color: '#94a3b8' }}>(optioneel)</span></label>
                 <input value={profielForm.telefoon} onChange={e => setProfielForm(p => ({ ...p, telefoon: e.target.value }))} placeholder="06-12345678" style={inp} />
+              </div>
+              <div style={{ marginBottom: '14px' }}>
+                <label style={{ display: 'block', fontWeight: '600', color: '#0f172a', marginBottom: '5px', fontSize: '0.88rem' }}>Adres <span style={{ fontWeight: '400', color: '#94a3b8' }}>(optioneel)</span></label>
+                <input value={profielForm.adres} onChange={e => setProfielForm(p => ({ ...p, adres: e.target.value }))} placeholder="Straat + huisnummer" style={inp} />
+              </div>
+              <div style={{ marginBottom: '14px', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
+                <div>
+                  <label style={{ display: 'block', fontWeight: '600', color: '#0f172a', marginBottom: '5px', fontSize: '0.88rem' }}>Postcode <span style={{ fontWeight: '400', color: '#94a3b8' }}>(optioneel)</span></label>
+                  <input value={profielForm.postcode} onChange={e => setProfielForm(p => ({ ...p, postcode: e.target.value }))} placeholder="1234 AB" style={inp} />
+                </div>
+                <div>
+                  <label style={{ display: 'block', fontWeight: '600', color: '#0f172a', marginBottom: '5px', fontSize: '0.88rem' }}>Plaats <span style={{ fontWeight: '400', color: '#94a3b8' }}>(optioneel)</span></label>
+                  <input value={profielForm.plaats} onChange={e => setProfielForm(p => ({ ...p, plaats: e.target.value }))} placeholder="Amsterdam" style={inp} />
+                </div>
               </div>
               {profielSuccess && <p style={{ color: '#16a34a', fontSize: '0.85rem', marginBottom: '12px' }}>✓ Opgeslagen!</p>}
               <div style={{ display: 'flex', gap: '12px', marginTop: '20px' }}>
