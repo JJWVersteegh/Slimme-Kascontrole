@@ -69,7 +69,7 @@ async function maakMoneybirdFactuur(klant: {
 
   const omschrijving = `Kascontrole boekjaar ${klant.boekjaar} — Slimme Kascontrole`
   const kortingOmschrijving = klant.kortingscode
-    ? `Korting (${klant.kortingscode})`
+    ? `Korting — kortingscode: ${klant.kortingscode}`
     : `Korting`
 
   // Bouw details: altijd volle prijs, en indien korting een negatieve kortingsregel
@@ -137,8 +137,8 @@ async function maakMoneybirdFactuur(klant: {
         body: JSON.stringify({
           payment: {
             payment_date: vandaag,
-            price: inclBTW,
-            price_base: inclBTW,
+            price: betaaldInclBTW,
+            price_base: betaaldInclBTW,
             financial_account_id: null,
             financial_mutation_id: null,
           }
