@@ -129,13 +129,12 @@ export default function AdminPortal() {
       setUploads(allUploads.sort((a, b) => new Date(b.upload_datum).getTime() - new Date(a.upload_datum).getTime()))
 
       // Haal alle verenigingen op via service role
-      const { createClient } = await import('@supabase/supabase-js')
-      const adminSupabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!)
-      // Gebruik admin-users API om verenigingen op te halen
       const vRes = await fetch('/api/admin-verenigingen')
       if (vRes.ok) {
         const vData = await vRes.json()
         setVerenigingen(vData)
+      } else {
+        console.error('Fout bij laden verenigingen:', await vRes.text())
       }
     } catch (e) {
       console.error('Fout bij laden:', e)
@@ -217,10 +216,11 @@ export default function AdminPortal() {
   const gefilterd = klanten.filter(k => {
     if (k.email === ADMIN_EMAIL) return false
     const zoek = zoekterm.toLowerCase()
+    const klantVerenigingen = verenigingen.filter(v => v.user_id === k.user_id)
     const matchZoek = !zoekterm ||
       k.naam?.toLowerCase().includes(zoek) ||
       k.email?.toLowerCase().includes(zoek) ||
-      k.vereniging?.toLowerCase().includes(zoek)
+      klantVerenigingen.some(v => v.naam?.toLowerCase().includes(zoek))
     const matchFilter =
       filter === 'alle' ? true :
       filter === 'betaald' ? heeftBetaald(k.user_id) :
@@ -439,7 +439,9 @@ export default function AdminPortal() {
                         <tr key={k.id} className="klant-rij" onClick={() => setGeselecteerdeKlant(geselecteerdeKlant?.id === k.id ? null : k)} style={{ borderTop: '1px solid #f1f5f9', background: geselecteerdeKlant?.id === k.id ? '#eff6ff' : 'white', transition: 'background 0.15s' }}>
                           <td style={{ padding: '12px 16px' }}>
                             <div style={{ fontWeight: '600', fontSize: '0.88rem', color: '#0f172a' }}>{k.naam || <span style={{ color: '#94a3b8' }}>Geen naam</span>}</div>
-                            <div style={{ fontSize: '0.78rem', color: '#64748b' }}>{k.vereniging || <span style={{ color: '#94a3b8' }}>Geen vereniging</span>}</div>
+                            <div style={{ fontSize: '0.78rem', color: '#64748b' }}>
+                              {verenigingen.filter(v => v.user_id === k.user_id).map(v => v.naam).join(', ') || <span style={{ color: '#94a3b8' }}>Geen vereniging</span>}
+                            </div>
                             <div style={{ fontSize: '0.72rem', color: '#94a3b8', marginTop: '2px' }}>
                               {lastLogins[k.user_id] ? `Ingelogd: ${new Date(lastLogins[k.user_id]).toLocaleDateString('nl-NL', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' })}` : 'Nog niet ingelogd'}
                             </div>
