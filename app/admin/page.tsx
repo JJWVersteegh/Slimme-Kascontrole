@@ -92,6 +92,10 @@ export default function AdminPortal() {
   const [bewerkData, setBewerkData] = useState<Partial<Klant>>({})
   const [bewerkVerenigingData, setBewerkVerenigingData] = useState<Partial<Vereniging>>({})
   const [bewerkVerenigingId, setBewerkVerenigingId] = useState<string | null>(null)
+  const [adminAdresLaden, setAdminAdresLaden] = useState(false)
+  const [adminHuisnummer, setAdminHuisnummer] = useState('')
+  const [adminProfielAdresLaden, setAdminProfielAdresLaden] = useState(false)
+  const [adminProfielHuisnummer, setAdminProfielHuisnummer] = useState('')
 
   const [lastLogins, setLastLogins] = useState<Record<string, string>>({})
   const router = useRouter()
@@ -476,7 +480,7 @@ export default function AdminPortal() {
                       <button onClick={() => setGeselecteerdeKlant(null)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#94a3b8', fontSize: '1.2rem', lineHeight: 1 }}>×</button>
                     </div>
                     <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-                      <button onClick={() => { setBewerkKlant(geselecteerdeKlant); setBewerkData({ naam: geselecteerdeKlant!.naam, telefoon: geselecteerdeKlant!.telefoon })
+                      <button onClick={() => { setBewerkKlant(geselecteerdeKlant); setBewerkData({ naam: geselecteerdeKlant!.naam, telefoon: geselecteerdeKlant!.telefoon, adres: (geselecteerdeKlant as any).adres || '', postcode: (geselecteerdeKlant as any).postcode || '', plaats: (geselecteerdeKlant as any).plaats || '' })
                       const eersteVereniging = verenigingen.find(v => v.user_id === geselecteerdeKlant!.user_id)
                       if (eersteVereniging) {
                         setBewerkVerenigingId(eersteVereniging.id)
@@ -682,33 +686,108 @@ export default function AdminPortal() {
 
       {/* Bewerk klant modal */}
       {bewerkKlant && (
-        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)', zIndex: 1000, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px' }}>
-          <div style={{ background: 'white', borderRadius: '16px', width: '100%', maxWidth: '480px', padding: '28px' }}>
+        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)', zIndex: 1000, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px', overflowY: 'auto' }}>
+          <div style={{ background: 'white', borderRadius: '16px', width: '100%', maxWidth: '500px', padding: '28px', margin: 'auto' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
               <h3 style={{ margin: 0, fontSize: '1rem', fontWeight: '700', color: '#0f172a' }}>✏️ Klant bewerken</h3>
               <button onClick={() => setBewerkKlant(null)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#94a3b8', fontSize: '1.2rem' }}>×</button>
             </div>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-              <div style={{ fontSize: '0.8rem', fontWeight: '700', color: '#94a3b8', marginBottom: '8px', textTransform: 'uppercase' }}>Persoonsgegevens</div>
-              {[['naam', 'Naam'], ['telefoon', 'Telefoon']].map(([field, label]) => (
-                <div key={field}>
-                  <label style={{ fontSize: '0.78rem', fontWeight: '600', color: '#64748b', display: 'block', marginBottom: '4px' }}>{label}</label>
-                  <input value={(bewerkData as any)[field] || ''} onChange={e => setBewerkData(d => ({ ...d, [field]: e.target.value }))} style={{ width: '100%', padding: '9px 14px', border: '1.5px solid #e2e8f0', borderRadius: '8px', fontSize: '0.88rem', fontFamily: 'Outfit, sans-serif', outline: 'none', boxSizing: 'border-box' }} />
+
+            {/* Persoonsgegevens sectie */}
+            <div style={{ background: '#f8fafc', borderRadius: '10px', padding: '16px', marginBottom: '16px' }}>
+              <div style={{ fontSize: '0.72rem', fontWeight: '700', color: '#2563EB', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '12px' }}>👤 Persoonsgegevens (kascommissielid)</div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                <div>
+                  <label style={{ fontSize: '0.78rem', fontWeight: '600', color: '#64748b', display: 'block', marginBottom: '4px' }}>Naam</label>
+                  <input value={(bewerkData as any)['naam'] || ''} onChange={e => setBewerkData(d => ({ ...d, naam: e.target.value }))} style={{ width: '100%', padding: '9px 14px', border: '1.5px solid #e2e8f0', borderRadius: '8px', fontSize: '0.88rem', fontFamily: 'Outfit, sans-serif', outline: 'none', boxSizing: 'border-box' }} />
                 </div>
-              ))}
-              {bewerkVerenigingId && (
-                <>
-                  <div style={{ fontSize: '0.8rem', fontWeight: '700', color: '#94a3b8', marginTop: '16px', marginBottom: '8px', textTransform: 'uppercase' }}>Vereniging</div>
-                  {[['naam', 'Naam vereniging'], ['kvk', 'KvK'], ['adres', 'Adres'], ['postcode', 'Postcode'], ['plaats', 'Plaats']].map(([field, label]) => (
-                    <div key={field}>
-                      <label style={{ fontSize: '0.78rem', fontWeight: '600', color: '#64748b', display: 'block', marginBottom: '4px' }}>{label}</label>
-                      <input value={(bewerkVerenigingData as any)[field] || ''} onChange={e => setBewerkVerenigingData(d => ({ ...d, [field]: e.target.value }))} style={{ width: '100%', padding: '9px 14px', border: '1.5px solid #e2e8f0', borderRadius: '8px', fontSize: '0.88rem', fontFamily: 'Outfit, sans-serif', outline: 'none', boxSizing: 'border-box' }} />
+                <div>
+                  <label style={{ fontSize: '0.78rem', fontWeight: '600', color: '#64748b', display: 'block', marginBottom: '4px' }}>Postcode + huisnummer <span style={{ fontWeight: '400', color: '#94a3b8' }}>(adres automatisch)</span></label>
+                  <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '8px', marginBottom: '6px' }}>
+                    <input value={(bewerkData as any)['postcode'] || ''} onChange={e => setBewerkData(d => ({ ...d, postcode: e.target.value }))} onKeyDown={e => e.key === 'Enter' && e.preventDefault()} placeholder="1234 AB" style={{ padding: '9px 14px', border: '1.5px solid #e2e8f0', borderRadius: '8px', fontSize: '0.88rem', fontFamily: 'Outfit, sans-serif', outline: 'none', boxSizing: 'border-box' }} />
+                    <input value={adminProfielHuisnummer} onChange={e => setAdminProfielHuisnummer(e.target.value)} onKeyDown={e => e.key === 'Enter' && e.preventDefault()} onBlur={async e => {
+                      const pc = (bewerkData as any)['postcode'] || ''
+                      const hn = e.target.value
+                      if (pc.replace(' ','').length < 6 || !hn) return
+                      setAdminProfielAdresLaden(true)
+                      try {
+                        const res = await fetch(`https://api.pdok.nl/bzk/locatieserver/search/v3_1/free?q=${pc.replace(' ','')}+${hn}&fq=type:adres&rows=1`)
+                        const data = await res.json()
+                        if (data.response?.docs?.[0]) {
+                          const doc = data.response.docs[0]
+                          setBewerkData(d => ({ ...d, adres: `${doc.straatnaam || ''} ${hn}`, plaats: doc.woonplaatsnaam || '' }))
+                        }
+                      } catch {}
+                      setAdminProfielAdresLaden(false)
+                    }} placeholder="Nr" style={{ padding: '9px 14px', border: '1.5px solid #e2e8f0', borderRadius: '8px', fontSize: '0.88rem', fontFamily: 'Outfit, sans-serif', outline: 'none', boxSizing: 'border-box' }} />
+                  </div>
+                  {adminProfielAdresLaden && <p style={{ fontSize: '0.78rem', color: '#2563EB', margin: '0 0 6px' }}>🔍 Adres opzoeken...</p>}
+                  {(bewerkData as any)['adres'] && (bewerkData as any)['plaats'] && (
+                    <div style={{ background: '#f0fdf4', border: '1px solid #bbf7d0', borderRadius: '6px', padding: '6px 10px', fontSize: '0.8rem', color: '#166534', marginBottom: '6px' }}>
+                      ✓ {(bewerkData as any)['adres']}, {(bewerkData as any)['postcode']} {(bewerkData as any)['plaats']}
                     </div>
-                  ))}
-                </>
-              )}
+                  )}
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
+                    <input value={(bewerkData as any)['adres'] || ''} onChange={e => setBewerkData(d => ({ ...d, adres: e.target.value }))} placeholder="Straat + huisnummer" style={{ padding: '9px 14px', border: '1.5px solid #e2e8f0', borderRadius: '8px', fontSize: '0.85rem', fontFamily: 'Outfit, sans-serif', outline: 'none', boxSizing: 'border-box' }} />
+                    <input value={(bewerkData as any)['plaats'] || ''} onChange={e => setBewerkData(d => ({ ...d, plaats: e.target.value }))} placeholder="Plaats" style={{ padding: '9px 14px', border: '1.5px solid #e2e8f0', borderRadius: '8px', fontSize: '0.85rem', fontFamily: 'Outfit, sans-serif', outline: 'none', boxSizing: 'border-box' }} />
+                  </div>
+                </div>
+                <div>
+                  <label style={{ fontSize: '0.78rem', fontWeight: '600', color: '#64748b', display: 'block', marginBottom: '4px' }}>Telefoonnummer</label>
+                  <input value={(bewerkData as any)['telefoon'] || ''} onChange={e => setBewerkData(d => ({ ...d, telefoon: e.target.value }))} placeholder="06-12345678" style={{ width: '100%', padding: '9px 14px', border: '1.5px solid #e2e8f0', borderRadius: '8px', fontSize: '0.88rem', fontFamily: 'Outfit, sans-serif', outline: 'none', boxSizing: 'border-box' }} />
+                </div>
+              </div>
             </div>
-            <div style={{ display: 'flex', gap: '10px', marginTop: '20px' }}>
+
+            {/* Vereniging sectie */}
+            {bewerkVerenigingId && (
+              <div style={{ background: '#f8fafc', borderRadius: '10px', padding: '16px', marginBottom: '16px' }}>
+                <div style={{ fontSize: '0.72rem', fontWeight: '700', color: '#0f172a', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '12px' }}>🏢 Vereniging / VvE</div>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                  <div>
+                    <label style={{ fontSize: '0.78rem', fontWeight: '600', color: '#64748b', display: 'block', marginBottom: '4px' }}>Naam vereniging</label>
+                    <input value={(bewerkVerenigingData as any)['naam'] || ''} onChange={e => setBewerkVerenigingData(d => ({ ...d, naam: e.target.value }))} style={{ width: '100%', padding: '9px 14px', border: '1.5px solid #e2e8f0', borderRadius: '8px', fontSize: '0.88rem', fontFamily: 'Outfit, sans-serif', outline: 'none', boxSizing: 'border-box' }} />
+                  </div>
+                  <div>
+                    <label style={{ fontSize: '0.78rem', fontWeight: '600', color: '#64748b', display: 'block', marginBottom: '4px' }}>KvK-nummer</label>
+                    <input value={(bewerkVerenigingData as any)['kvk'] || ''} onChange={e => setBewerkVerenigingData(d => ({ ...d, kvk: e.target.value }))} style={{ width: '100%', padding: '9px 14px', border: '1.5px solid #e2e8f0', borderRadius: '8px', fontSize: '0.88rem', fontFamily: 'Outfit, sans-serif', outline: 'none', boxSizing: 'border-box' }} />
+                  </div>
+                  <div>
+                    <label style={{ fontSize: '0.78rem', fontWeight: '600', color: '#64748b', display: 'block', marginBottom: '4px' }}>Postcode + huisnummer <span style={{ fontWeight: '400', color: '#94a3b8' }}>(adres automatisch)</span></label>
+                    <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '8px', marginBottom: '6px' }}>
+                      <input value={(bewerkVerenigingData as any)['postcode'] || ''} onChange={e => setBewerkVerenigingData(d => ({ ...d, postcode: e.target.value }))} onKeyDown={e => e.key === 'Enter' && e.preventDefault()} placeholder="1234 AB" style={{ padding: '9px 14px', border: '1.5px solid #e2e8f0', borderRadius: '8px', fontSize: '0.88rem', fontFamily: 'Outfit, sans-serif', outline: 'none', boxSizing: 'border-box' }} />
+                      <input value={adminHuisnummer} onChange={e => setAdminHuisnummer(e.target.value)} onKeyDown={e => e.key === 'Enter' && e.preventDefault()} onBlur={async e => {
+                        const pc = (bewerkVerenigingData as any)['postcode'] || ''
+                        const hn = e.target.value
+                        if (pc.replace(' ','').length < 6 || !hn) return
+                        setAdminAdresLaden(true)
+                        try {
+                          const res = await fetch(`https://api.pdok.nl/bzk/locatieserver/search/v3_1/free?q=${pc.replace(' ','')}+${hn}&fq=type:adres&rows=1`)
+                          const data = await res.json()
+                          if (data.response?.docs?.[0]) {
+                            const doc = data.response.docs[0]
+                            setBewerkVerenigingData(d => ({ ...d, adres: `${doc.straatnaam || ''} ${hn}`, plaats: doc.woonplaatsnaam || '' }))
+                          }
+                        } catch {}
+                        setAdminAdresLaden(false)
+                      }} placeholder="Nr" style={{ padding: '9px 14px', border: '1.5px solid #e2e8f0', borderRadius: '8px', fontSize: '0.88rem', fontFamily: 'Outfit, sans-serif', outline: 'none', boxSizing: 'border-box' }} />
+                    </div>
+                    {adminAdresLaden && <p style={{ fontSize: '0.78rem', color: '#2563EB', margin: '0 0 6px' }}>🔍 Adres opzoeken...</p>}
+                    {(bewerkVerenigingData as any)['adres'] && (bewerkVerenigingData as any)['plaats'] && (
+                      <div style={{ background: '#f0fdf4', border: '1px solid #bbf7d0', borderRadius: '6px', padding: '6px 10px', fontSize: '0.8rem', color: '#166534', marginBottom: '6px' }}>
+                        ✓ {(bewerkVerenigingData as any)['adres']}, {(bewerkVerenigingData as any)['postcode']} {(bewerkVerenigingData as any)['plaats']}
+                      </div>
+                    )}
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
+                      <input value={(bewerkVerenigingData as any)['adres'] || ''} onChange={e => setBewerkVerenigingData(d => ({ ...d, adres: e.target.value }))} placeholder="Straat + huisnummer" style={{ padding: '9px 14px', border: '1.5px solid #e2e8f0', borderRadius: '8px', fontSize: '0.85rem', fontFamily: 'Outfit, sans-serif', outline: 'none', boxSizing: 'border-box' }} />
+                      <input value={(bewerkVerenigingData as any)['plaats'] || ''} onChange={e => setBewerkVerenigingData(d => ({ ...d, plaats: e.target.value }))} placeholder="Plaats" style={{ padding: '9px 14px', border: '1.5px solid #e2e8f0', borderRadius: '8px', fontSize: '0.85rem', fontFamily: 'Outfit, sans-serif', outline: 'none', boxSizing: 'border-box' }} />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            <div style={{ display: 'flex', gap: '10px', marginTop: '4px' }}>
               <button onClick={handleSaveBewerkKlant} style={{ flex: 1, background: '#2563EB', color: 'white', border: 'none', padding: '11px', borderRadius: '8px', cursor: 'pointer', fontSize: '0.9rem', fontWeight: '700', fontFamily: 'Outfit, sans-serif' }}>Opslaan</button>
               <button onClick={() => setBewerkKlant(null)} style={{ flex: 1, background: '#f1f5f9', color: '#475569', border: 'none', padding: '11px', borderRadius: '8px', cursor: 'pointer', fontSize: '0.9rem', fontFamily: 'Outfit, sans-serif' }}>Annuleren</button>
             </div>
