@@ -575,7 +575,12 @@ export default function MijnOmgeving() {
                     {v.naam}
                   </button>
                   {geselecteerdeVereniging?.id === v.id && (
-                    <button onClick={() => openVerenigingForm(v)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#94a3b8', fontSize: '0.8rem', padding: '4px' }} title="Bewerken">✏️</button>
+                    <>
+                      <button onClick={() => openVerenigingForm(v)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#94a3b8', fontSize: '0.8rem', padding: '4px' }} title="Bewerken">✏️</button>
+                      {verenigingen.length > 1 && (
+                        <button onClick={() => handleDeleteVereniging(v)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#fca5a5', fontSize: '0.8rem', padding: '4px' }} title="Verwijderen">🗑️</button>
+                      )}
+                    </>
                   )}
                 </div>
               ))}

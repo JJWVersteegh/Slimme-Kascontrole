@@ -21,9 +21,7 @@ async function maakMoneybirdFactuur(klant: {
     'Content-Type': 'application/json',
   }
 
-  // Stap 1: Zoek of maak contactpersoon aan
   let contactId: string | null = null
-
   const zoekRes = await fetch(
     `https://moneybird.com/api/v2/${MONEYBIRD_ADMIN_ID}/contacts?query=${encodeURIComponent(klant.email)}`,
     { headers }
@@ -33,7 +31,6 @@ async function maakMoneybirdFactuur(klant: {
   if (contacten.length > 0) {
     contactId = contacten[0].id
   } else {
-    // Nieuw contact aanmaken
     const nieuwContact = await fetch(
       `https://moneybird.com/api/v2/${MONEYBIRD_ADMIN_ID}/contacts`,
       {
@@ -60,8 +57,6 @@ async function maakMoneybirdFactuur(klant: {
 
   if (!contactId) return
 
-  // Stap 2: Maak factuur aan
-  // €59 incl. 21% BTW = €48,76 excl. BTW
   const exclBTW = (5900 / 121).toFixed(2)
   const vandaag = new Date().toISOString().split('T')[0]
 
@@ -74,18 +69,16 @@ async function maakMoneybirdFactuur(klant: {
         sales_invoice: {
           contact_id: contactId,
           invoice_date: vandaag,
-          due_date: vandaag, // Al betaald via iDEAL
+          due_date: vandaag,
           currency: 'EUR',
           prices_are_incl_tax: false,
-          details_attributes: [
-            {
-              description: `Kascontrole boekjaar ${klant.boekjaar} — Slimme Kascontrole`,
-              price: exclBTW,
-              amount: '1',
-              tax_rate_id: null,
-              ledger_account_id: null,
-            }
-          ],
+          details_attributes: [{
+            description: `Kascontrole boekjaar ${klant.boekjaar} — Slimme Kascontrole`,
+            price: exclBTW,
+            amount: '1',
+            tax_rate_id: null,
+            ledger_account_id: null,
+          }],
           send_invoice: true,
         }
       })
@@ -95,7 +88,6 @@ async function maakMoneybirdFactuur(klant: {
   const factuurData = await factuurRes.json()
   const factuurId = factuurData.id
 
-  // Stap 3: Verstuur de factuur
   if (factuurId) {
     await fetch(
       `https://moneybird.com/api/v2/${MONEYBIRD_ADMIN_ID}/sales_invoices/${factuurId}/send_invoice`,
@@ -112,7 +104,6 @@ async function maakMoneybirdFactuur(klant: {
       }
     )
 
-    // Stap 4: Markeer als betaald (iDEAL betaling al ontvangen)
     await fetch(
       `https://moneybird.com/api/v2/${MONEYBIRD_ADMIN_ID}/sales_invoices/${factuurId}/payments`,
       {
@@ -160,6 +151,7 @@ export async function POST(req: NextRequest) {
       const email = session.customer_email
       const boekjaar = session.metadata?.boekjaar
       const user_id = session.metadata?.user_id
+      const vereniging_id = session.metadata?.vereniging_id || null
       const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://www.slimmekascontrole.nl'
 
       let klantInfo = {
@@ -173,34 +165,65 @@ export async function POST(req: NextRequest) {
       }
 
       if (user_id && boekjaar) {
-        // Bestaande gebruiker — sla betaling op
+        // Sla betaling op met vereniging_id
         await supabase.from('rapporten').upsert({
           user_id,
           boekjaar,
           betaald: true,
           stripe_session_id: session.id,
-        }, { onConflict: 'user_id,boekjaar' })
+          ...(vereniging_id ? { vereniging_id } : {}),
+        }, { onConflict: 'user_id,boekjaar,vereniging_id' })
 
-        // Haal klantgegevens op voor factuur
+        // Haal klantgegevens op
         const { data: klantData } = await supabase
           .from('klanten')
-          .select('naam, vereniging, adres, postcode, plaats')
+          .select('naam, telefoon')
           .eq('user_id', user_id)
           .single()
 
-        if (klantData) {
-          klantInfo = {
-            naam: klantData.naam || '',
-            vereniging: klantData.vereniging || '',
-            email: email || '',
-            adres: klantData.adres || '',
-            postcode: klantData.postcode || '',
-            plaats: klantData.plaats || '',
-            boekjaar: boekjaar,
+        // Haal verenigingsgegevens op
+        let verenigingNaam = ''
+        let adres = ''
+        let postcode = ''
+        let plaats = ''
+
+        if (vereniging_id) {
+          const { data: vData } = await supabase
+            .from('verenigingen')
+            .select('naam, adres, postcode, plaats')
+            .eq('id', vereniging_id)
+            .single()
+          if (vData) {
+            verenigingNaam = vData.naam || ''
+            adres = vData.adres || ''
+            postcode = vData.postcode || ''
+            plaats = vData.plaats || ''
+          }
+        } else {
+          // Fallback naar klanten tabel
+          const { data: klantAdres } = await supabase
+            .from('klanten')
+            .select('vereniging, adres, postcode, plaats')
+            .eq('user_id', user_id)
+            .single()
+          if (klantAdres) {
+            verenigingNaam = klantAdres.vereniging || ''
+            adres = klantAdres.adres || ''
+            postcode = klantAdres.postcode || ''
+            plaats = klantAdres.plaats || ''
           }
         }
+
+        klantInfo = {
+          naam: klantData?.naam || '',
+          vereniging: verenigingNaam,
+          email: email || '',
+          adres,
+          postcode,
+          plaats,
+          boekjaar,
+        }
       } else if (email) {
-        // Nieuwe gebruiker — maak account aan
         const crypto = await import('crypto')
         const tempPassword = crypto.randomBytes(16).toString('hex')
         const { data: authData } = await supabase.auth.admin.createUser({
@@ -217,19 +240,19 @@ export async function POST(req: NextRequest) {
               boekjaar,
               betaald: true,
               stripe_session_id: session.id,
-            }, { onConflict: 'user_id,boekjaar' })
+              ...(vereniging_id ? { vereniging_id } : {}),
+            }, { onConflict: 'user_id,boekjaar,vereniging_id' })
           }
           klantInfo.email = email
           klantInfo.boekjaar = boekjaar || ''
         }
       }
 
-      // Moneybird factuur aanmaken en versturen
+      // Moneybird factuur
       try {
         await maakMoneybirdFactuur(klantInfo)
       } catch (e) {
         console.error('Moneybird factuur mislukt:', e)
-        // Niet fataal — betaling is wel verwerkt
       }
 
       // Bevestigingsmail
@@ -242,7 +265,7 @@ export async function POST(req: NextRequest) {
             <h1 style="color:white;margin:0">✓ Betaling ontvangen!</h1>
           </div>
           <div style="padding:40px 32px">
-            <p>Bedankt voor uw betaling voor <strong>kascontrole boekjaar ${boekjaar}</strong>.</p>
+            <p>Bedankt voor uw betaling voor <strong>${klantInfo.vereniging ? klantInfo.vereniging + ' — ' : ''}kascontrole boekjaar ${boekjaar}</strong>.</p>
             <p>Uw factuur ontvangt u apart per e-mail van Moneybird.</p>
             <p>Uw geüploade bestanden staan klaar. Klik hieronder om uw rapport te genereren.</p>
             <div style="text-align:center;margin:32px 0">

@@ -11,16 +11,20 @@ interface Klant {
   user_id: string
   email: string
   naam?: string
-  vereniging?: string
-  adres?: string
-  kvk?: string
-  postcode?: string
-  plaats?: string
   telefoon?: string
   plan: string
   rapport_beschikbaar: boolean
-  rapport_tekst?: string
-  rapport_gegenereerd_op?: string
+}
+
+interface Vereniging {
+  id: string
+  user_id: string
+  naam: string
+  kvk?: string
+  adres?: string
+  postcode?: string
+  plaats?: string
+  telefoon?: string
 }
 
 interface Rapport {
@@ -66,6 +70,7 @@ export default function AdminPortal() {
   const [user, setUser] = useState<any>(null)
   const [loading, setLoading] = useState(true)
   const [klanten, setKlanten] = useState<Klant[]>([])
+  const [verenigingen, setVerenigingen] = useState<Vereniging[]>([])
   const [rapporten, setRapporten] = useState<Rapport[]>([])
   const [uploads, setUploads] = useState<Upload[]>([])
   const [geselecteerdeKlant, setGeselecteerdeKlant] = useState<Klant | null>(null)
@@ -120,6 +125,16 @@ export default function AdminPortal() {
       setKlanten(data.sort((a: any, b: any) => (a.email || '').localeCompare(b.email || '')))
       setRapporten(allRapporten.sort((a, b) => b.boekjaar.localeCompare(a.boekjaar)))
       setUploads(allUploads.sort((a, b) => new Date(b.upload_datum).getTime() - new Date(a.upload_datum).getTime()))
+
+      // Haal alle verenigingen op via service role
+      const { createClient } = await import('@supabase/supabase-js')
+      const adminSupabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!)
+      // Gebruik admin-users API om verenigingen op te halen
+      const vRes = await fetch('/api/admin-verenigingen')
+      if (vRes.ok) {
+        const vData = await vRes.json()
+        setVerenigingen(vData)
+      }
     } catch (e) {
       console.error('Fout bij laden:', e)
     }
@@ -431,7 +446,7 @@ export default function AdminPortal() {
                       <button onClick={() => setGeselecteerdeKlant(null)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#94a3b8', fontSize: '1.2rem', lineHeight: 1 }}>×</button>
                     </div>
                     <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-                      <button onClick={() => { setBewerkKlant(geselecteerdeKlant); setBewerkData({ naam: geselecteerdeKlant!.naam, vereniging: geselecteerdeKlant!.vereniging, kvk: geselecteerdeKlant!.kvk, adres: geselecteerdeKlant!.adres, postcode: geselecteerdeKlant!.postcode, plaats: geselecteerdeKlant!.plaats, telefoon: geselecteerdeKlant!.telefoon }) }} style={{ background: '#eff6ff', color: '#2563EB', border: '1px solid #bfdbfe', padding: '5px 10px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.78rem', fontWeight: '600', fontFamily: 'Outfit, sans-serif' }}>✏️ Bewerken</button>
+                      <button onClick={() => { setBewerkKlant(geselecteerdeKlant); setBewerkData({ naam: geselecteerdeKlant!.naam, telefoon: geselecteerdeKlant!.telefoon }) }} style={{ background: '#eff6ff', color: '#2563EB', border: '1px solid #bfdbfe', padding: '5px 10px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.78rem', fontWeight: '600', fontFamily: 'Outfit, sans-serif' }}>✏️ Bewerken</button>
                       <button onClick={() => handleDeleteKlant(geselecteerdeKlant!)} style={{ background: '#fee2e2', color: '#dc2626', border: '1px solid #fca5a5', padding: '5px 10px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.78rem', fontWeight: '600', fontFamily: 'Outfit, sans-serif' }}>🗑️ Verwijderen</button>
                     </div>
                   </div>
@@ -442,11 +457,6 @@ export default function AdminPortal() {
                         ['Naam', geselecteerdeKlant.naam],
                         ['E-mail', geselecteerdeKlant.email],
                         ['Telefoon', geselecteerdeKlant.telefoon],
-                        ['Vereniging', geselecteerdeKlant.vereniging],
-                        ['KVK', geselecteerdeKlant.kvk],
-                        ['Adres', geselecteerdeKlant.adres],
-                        ['Postcode', geselecteerdeKlant.postcode],
-                        ['Plaats', geselecteerdeKlant.plaats],
                       ].map(([label, waarde]) => waarde ? (
                         <div key={label} style={{ display: 'flex', gap: '8px', marginBottom: '6px', fontSize: '0.85rem' }}>
                           <span style={{ color: '#64748b', minWidth: '80px', flexShrink: 0 }}>{label}</span>
@@ -454,6 +464,33 @@ export default function AdminPortal() {
                         </div>
                       ) : null)}
                     </div>
+
+                    {/* Verenigingen */}
+                    <div style={{ marginBottom: '20px' }}>
+                      <div style={{ fontSize: '0.72rem', fontWeight: '700', color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '10px' }}>Verenigingen</div>
+                      {verenigingen.filter(v => v.user_id === geselecteerdeKlant.user_id).length === 0 ? (
+                        <p style={{ fontSize: '0.85rem', color: '#94a3b8' }}>Geen verenigingen</p>
+                      ) : (
+                        verenigingen.filter(v => v.user_id === geselecteerdeKlant.user_id).map(v => (
+                          <div key={v.id} style={{ background: '#f8fafc', borderRadius: '8px', padding: '10px 12px', marginBottom: '8px', border: '1px solid #e2e8f0' }}>
+                            <div style={{ fontWeight: '700', fontSize: '0.88rem', color: '#0f172a', marginBottom: '4px' }}>{v.naam}</div>
+                            {v.kvk && <div style={{ fontSize: '0.78rem', color: '#64748b' }}>KvK: {v.kvk}</div>}
+                            {v.adres && <div style={{ fontSize: '0.78rem', color: '#64748b' }}>{v.adres}, {v.postcode} {v.plaats}</div>}
+                            <button
+                              onClick={async () => {
+                                if (!confirm(`Vereniging "${v.naam}" verwijderen?`)) return
+                                await supabase.from('verenigingen').delete().eq('id', v.id)
+                                setVerenigingen(prev => prev.filter(x => x.id !== v.id))
+                              }}
+                              style={{ marginTop: '6px', background: 'none', border: '1px solid #fecaca', color: '#ef4444', padding: '3px 8px', borderRadius: '4px', cursor: 'pointer', fontSize: '0.72rem', fontFamily: 'Outfit, sans-serif' }}
+                            >
+                              🗑️ Verwijderen
+                            </button>
+                          </div>
+                        ))
+                      )}
+                    </div>
+
                     <div style={{ marginBottom: '20px' }}>
                       <div style={{ fontSize: '0.72rem', fontWeight: '700', color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '10px' }}>Rapporten & bestanden</div>
                       {getRapportenVoorKlant(geselecteerdeKlant.user_id).length === 0 ? (
@@ -608,7 +645,7 @@ export default function AdminPortal() {
               <button onClick={() => setBewerkKlant(null)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#94a3b8', fontSize: '1.2rem' }}>×</button>
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-              {[['naam', 'Naam'], ['vereniging', 'Vereniging'], ['kvk', 'KVK'], ['adres', 'Adres'], ['postcode', 'Postcode'], ['plaats', 'Plaats'], ['telefoon', 'Telefoon']].map(([field, label]) => (
+              {[['naam', 'Naam'], ['telefoon', 'Telefoon']].map(([field, label]) => (
                 <div key={field}>
                   <label style={{ fontSize: '0.78rem', fontWeight: '600', color: '#64748b', display: 'block', marginBottom: '4px' }}>{label}</label>
                   <input value={(bewerkData as any)[field] || ''} onChange={e => setBewerkData(d => ({ ...d, [field]: e.target.value }))} style={{ width: '100%', padding: '9px 14px', border: '1.5px solid #e2e8f0', borderRadius: '8px', fontSize: '0.88rem', fontFamily: 'Outfit, sans-serif', outline: 'none', boxSizing: 'border-box' }} />

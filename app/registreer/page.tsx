@@ -65,6 +65,19 @@ export default function Registreer() {
         plaats,
         telefoon,
       })
+
+      // Sla ook op in verenigingen tabel
+      if (vereniging) {
+        await supabase.from('verenigingen').insert({
+          user_id: authData.user.id,
+          naam: vereniging,
+          kvk: kvk || null,
+          adres: adres || null,
+          postcode: postcode.toUpperCase().replace(' ', '') || null,
+          plaats: plaats || null,
+          telefoon: telefoon || null,
+        })
+      }
     }
     router.push('/mijn-omgeving')
     setLoading(false)
