@@ -19,9 +19,6 @@ interface Klant {
   email: string
   naam?: string
   telefoon?: string
-  adres?: string
-  postcode?: string
-  plaats?: string
 }
 
 interface Vereniging {
@@ -70,9 +67,11 @@ export default function MijnOmgeving() {
 
   // Profiel bewerken (persoonlijk)
   const [toonProfiel, setToonProfiel] = useState(false)
-  const [profielForm, setProfielForm] = useState({ naam: '', telefoon: '', adres: '', postcode: '', plaats: '' })
+  const [profielForm, setProfielForm] = useState({ naam: '', telefoon: '' })
   const [profielSaving, setProfielSaving] = useState(false)
   const [profielSuccess, setProfielSuccess] = useState(false)
+  const [profielAdresLaden, setProfielAdresLaden] = useState(false)
+  const [profielHuisnummer, setProfielHuisnummer] = useState('')
 
   // Vereniging bewerken/toevoegen
   const [toonVerenigingForm, setToonVerenigingForm] = useState(false)
@@ -105,7 +104,7 @@ export default function MijnOmgeving() {
       klantData = newKlant
     }
     setKlant(klantData)
-    setProfielForm({ naam: klantData?.naam || '', telefoon: klantData?.telefoon || '', adres: klantData?.adres || '', postcode: klantData?.postcode || '', plaats: klantData?.plaats || '' })
+    setProfielForm({ naam: klantData?.naam || '', telefoon: klantData?.telefoon || '' })
 
     // Verenigingen ophalen
     const { data: verenigingenData } = await supabase.from('verenigingen').select('*').eq('user_id', userId).order('naam')
@@ -244,11 +243,25 @@ export default function MijnOmgeving() {
     setAdresLaden(false)
   }
 
+  async function zoekAdresProfiel(pc: string, hn: string) {
+    if (pc.replace(' ', '').length < 6 || !hn) return
+    setProfielAdresLaden(true)
+    try {
+      const res = await fetch(`https://api.pdok.nl/bzk/locatieserver/search/v3_1/free?q=${pc.replace(' ', '')}+${hn}&fq=type:adres&rows=1`)
+      const data = await res.json()
+      if (data.response?.docs?.[0]) {
+        const doc = data.response.docs[0]
+        setProfielForm(p => ({ ...p, adres: `${doc.straatnaam || ''} ${hn}`, plaats: doc.woonplaatsnaam || '' }))
+      }
+    } catch {}
+    setProfielAdresLaden(false)
+  }
+
   async function handleProfielSave(e: React.FormEvent) {
     e.preventDefault()
     setProfielSaving(true)
     try {
-      await supabase.from('klanten').update({ naam: profielForm.naam, telefoon: profielForm.telefoon, adres: profielForm.adres, postcode: profielForm.postcode, plaats: profielForm.plaats }).eq('user_id', user.id)
+      await supabase.from('klanten').update({ naam: profielForm.naam, telefoon: profielForm.telefoon }).eq('user_id', user.id)
       setKlant(prev => prev ? { ...prev, ...profielForm } : prev)
       setProfielSuccess(true)
       setTimeout(() => { setProfielSuccess(false); setToonProfiel(false) }, 1500)
@@ -401,12 +414,12 @@ export default function MijnOmgeving() {
 
       {/* Profiel modal */}
       {toonProfiel && (
-        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)', zIndex: 200, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px' }}>
-          <div style={{ background: 'white', borderRadius: '16px', padding: '32px', maxWidth: '440px', width: '100%' }}>
+        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)', zIndex: 200, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px', overflowY: 'auto' }}>
+          <div style={{ background: 'white', borderRadius: '16px', padding: '32px', maxWidth: '480px', width: '100%', margin: 'auto' }}>
             <h3 style={{ fontWeight: '700', color: '#0f172a', marginBottom: '20px' }}>✏️ Persoonlijke gegevens</h3>
             <form onSubmit={handleProfielSave}>
               <div style={{ marginBottom: '14px' }}>
-                <label style={{ display: 'block', fontWeight: '600', color: '#0f172a', marginBottom: '5px', fontSize: '0.88rem' }}>Uw naam</label>
+                <label style={{ display: 'block', fontWeight: '600', color: '#0f172a', marginBottom: '5px', fontSize: '0.88rem' }}>Uw naam <span style={{ fontWeight: '400', color: '#94a3b8', fontSize: '0.78rem' }}>(kascommissielid)</span></label>
                 <input value={profielForm.naam} onChange={e => setProfielForm(p => ({ ...p, naam: e.target.value }))} placeholder="Volledige naam" style={inp} />
               </div>
               <div style={{ marginBottom: '14px' }}>
@@ -414,17 +427,20 @@ export default function MijnOmgeving() {
                 <input value={profielForm.telefoon} onChange={e => setProfielForm(p => ({ ...p, telefoon: e.target.value }))} placeholder="06-12345678" style={inp} />
               </div>
               <div style={{ marginBottom: '14px' }}>
-                <label style={{ display: 'block', fontWeight: '600', color: '#0f172a', marginBottom: '5px', fontSize: '0.88rem' }}>Adres <span style={{ fontWeight: '400', color: '#94a3b8' }}>(optioneel)</span></label>
-                <input value={profielForm.adres} onChange={e => setProfielForm(p => ({ ...p, adres: e.target.value }))} placeholder="Straat + huisnummer" style={inp} />
-              </div>
-              <div style={{ marginBottom: '14px', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
-                <div>
-                  <label style={{ display: 'block', fontWeight: '600', color: '#0f172a', marginBottom: '5px', fontSize: '0.88rem' }}>Postcode <span style={{ fontWeight: '400', color: '#94a3b8' }}>(optioneel)</span></label>
+                <label style={{ display: 'block', fontWeight: '600', color: '#0f172a', marginBottom: '5px', fontSize: '0.88rem' }}>Postcode + huisnummer <span style={{ fontWeight: '400', color: '#94a3b8', fontSize: '0.78rem' }}>(adres wordt automatisch ingevuld)</span></label>
+                <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '8px', marginBottom: '6px' }}>
                   <input value={profielForm.postcode} onChange={e => setProfielForm(p => ({ ...p, postcode: e.target.value }))} placeholder="1234 AB" style={inp} />
+                  <input value={profielHuisnummer} onChange={e => setProfielHuisnummer(e.target.value)} onBlur={e => zoekAdresProfiel(profielForm.postcode, e.target.value)} placeholder="Nr" style={inp} />
                 </div>
-                <div>
-                  <label style={{ display: 'block', fontWeight: '600', color: '#0f172a', marginBottom: '5px', fontSize: '0.88rem' }}>Plaats <span style={{ fontWeight: '400', color: '#94a3b8' }}>(optioneel)</span></label>
-                  <input value={profielForm.plaats} onChange={e => setProfielForm(p => ({ ...p, plaats: e.target.value }))} placeholder="Amsterdam" style={inp} />
+                {profielAdresLaden && <p style={{ fontSize: '0.78rem', color: '#2563EB', margin: '0 0 6px' }}>🔍 Adres opzoeken...</p>}
+                {profielForm.adres && profielForm.plaats && (
+                  <div style={{ background: '#f0fdf4', border: '1px solid #bbf7d0', borderRadius: '6px', padding: '8px 12px', fontSize: '0.83rem', color: '#166534', marginBottom: '6px' }}>
+                    ✓ {profielForm.adres}, {profielForm.postcode} {profielForm.plaats}
+                  </div>
+                )}
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
+                  <input value={profielForm.adres} onChange={e => setProfielForm(p => ({ ...p, adres: e.target.value }))} placeholder="Straat + huisnummer" style={{ ...inp, fontSize: '0.85rem' }} />
+                  <input value={profielForm.plaats} onChange={e => setProfielForm(p => ({ ...p, plaats: e.target.value }))} placeholder="Plaats" style={{ ...inp, fontSize: '0.85rem' }} />
                 </div>
               </div>
               {profielSuccess && <p style={{ color: '#16a34a', fontSize: '0.85rem', marginBottom: '12px' }}>✓ Opgeslagen!</p>}
