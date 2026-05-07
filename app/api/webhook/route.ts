@@ -62,7 +62,8 @@ async function maakMoneybirdFactuur(klant: {
 
   // Stap 2: Maak factuur aan
   // €59 incl. 21% BTW = €48,76 excl. BTW
-  const exclBTW = (5900 / 121).toFixed(2) // in centen → euro string
+  const exclBTW = (5900 / 121).toFixed(2)
+  const vandaag = new Date().toISOString().split('T')[0]
 
   const factuurRes = await fetch(
     `https://moneybird.com/api/v2/${MONEYBIRD_ADMIN_ID}/sales_invoices`,
@@ -72,8 +73,8 @@ async function maakMoneybirdFactuur(klant: {
       body: JSON.stringify({
         sales_invoice: {
           contact_id: contactId,
-          invoice_date: new Date().toISOString().split('T')[0],
-          due_date: new Date().toISOString().split('T')[0],
+          invoice_date: vandaag,
+          due_date: vandaag, // Al betaald via iDEAL
           currency: 'EUR',
           prices_are_incl_tax: false,
           details_attributes: [
@@ -81,17 +82,55 @@ async function maakMoneybirdFactuur(klant: {
               description: `Kascontrole boekjaar ${klant.boekjaar} — Slimme Kascontrole`,
               price: exclBTW,
               amount: '1',
-              tax_rate_id: null, // Moneybird gebruikt standaard BTW tarief
+              tax_rate_id: null,
               ledger_account_id: null,
             }
           ],
-          send_invoice: true, // Stuur automatisch naar klant
+          send_invoice: true,
         }
       })
     }
   )
 
   const factuurData = await factuurRes.json()
+  const factuurId = factuurData.id
+
+  // Stap 3: Verstuur de factuur
+  if (factuurId) {
+    await fetch(
+      `https://moneybird.com/api/v2/${MONEYBIRD_ADMIN_ID}/sales_invoices/${factuurId}/send_invoice`,
+      {
+        method: 'PATCH',
+        headers,
+        body: JSON.stringify({
+          sales_invoice_sending: {
+            delivery_method: 'Email',
+            email_address: klant.email,
+            email_message: `Beste ${klant.naam || 'klant'},\n\nBedankt voor uw betaling. Bijgaand de factuur voor de kascontrole boekjaar ${klant.boekjaar}.\n\nMet vriendelijke groet,\nSlimme Kascontrole`,
+          }
+        })
+      }
+    )
+
+    // Stap 4: Markeer als betaald (iDEAL betaling al ontvangen)
+    await fetch(
+      `https://moneybird.com/api/v2/${MONEYBIRD_ADMIN_ID}/sales_invoices/${factuurId}/payments`,
+      {
+        method: 'POST',
+        headers,
+        body: JSON.stringify({
+          payment: {
+            payment_date: vandaag,
+            price: '59.00',
+            price_base: '59.00',
+            financial_account_id: null,
+            financial_mutation_id: null,
+          }
+        })
+      }
+    )
+  }
+
   return factuurData
 }
 
