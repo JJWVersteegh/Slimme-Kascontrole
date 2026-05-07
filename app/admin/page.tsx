@@ -261,8 +261,17 @@ export default function AdminPortal() {
 
   async function handleDeleteRapport(userId: string, boekjaar: string) {
     if (!confirm(`Rapport voor boekjaar ${boekjaar} verwijderen?`)) return
-    await supabase.from("rapporten").delete().eq("user_id", userId).eq("boekjaar", boekjaar)
-    loadData()
+    const { data: { session } } = await supabase.auth.getSession()
+    const res = await fetch('/api/admin-delete-vereniging', {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${session?.access_token}` },
+      body: JSON.stringify({ rapport_boekjaar: boekjaar, user_id: userId })
+    })
+    if (res.ok) {
+      loadData()
+    } else {
+      alert('Verwijderen mislukt')
+    }
   }
 
   async function handleDeleteUpload(uploadId: string) {
