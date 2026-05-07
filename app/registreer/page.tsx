@@ -75,7 +75,6 @@ export default function Registreer() {
           adres: adres || null,
           postcode: postcode.toUpperCase().replace(' ', '') || null,
           plaats: plaats || null,
-          telefoon: telefoon || null,
         })
       }
     }

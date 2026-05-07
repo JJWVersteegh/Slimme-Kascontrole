@@ -24,7 +24,6 @@ interface Vereniging {
   adres?: string
   postcode?: string
   plaats?: string
-  telefoon?: string
 }
 
 interface Rapport {
@@ -481,7 +480,7 @@ export default function AdminPortal() {
                       const eersteVereniging = verenigingen.find(v => v.user_id === geselecteerdeKlant!.user_id)
                       if (eersteVereniging) {
                         setBewerkVerenigingId(eersteVereniging.id)
-                        setBewerkVerenigingData({ naam: eersteVereniging.naam, kvk: eersteVereniging.kvk, adres: eersteVereniging.adres, postcode: eersteVereniging.postcode, plaats: eersteVereniging.plaats, telefoon: eersteVereniging.telefoon })
+                        setBewerkVerenigingData({ naam: eersteVereniging.naam, kvk: eersteVereniging.kvk, adres: eersteVereniging.adres, postcode: eersteVereniging.postcode, plaats: eersteVereniging.plaats })
                       } }} style={{ background: '#eff6ff', color: '#2563EB', border: '1px solid #bfdbfe', padding: '5px 10px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.78rem', fontWeight: '600', fontFamily: 'Outfit, sans-serif' }}>✏️ Bewerken</button>
                       <button onClick={() => handleDeleteKlant(geselecteerdeKlant!)} style={{ background: '#fee2e2', color: '#dc2626', border: '1px solid #fca5a5', padding: '5px 10px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.78rem', fontWeight: '600', fontFamily: 'Outfit, sans-serif' }}>🗑️ Verwijderen</button>
                     </div>
@@ -700,7 +699,7 @@ export default function AdminPortal() {
               {bewerkVerenigingId && (
                 <>
                   <div style={{ fontSize: '0.8rem', fontWeight: '700', color: '#94a3b8', marginTop: '16px', marginBottom: '8px', textTransform: 'uppercase' }}>Vereniging</div>
-                  {[['naam', 'Naam vereniging'], ['kvk', 'KvK'], ['adres', 'Adres'], ['postcode', 'Postcode'], ['plaats', 'Plaats'], ['telefoon', 'Telefoon vereniging']].map(([field, label]) => (
+                  {[['naam', 'Naam vereniging'], ['kvk', 'KvK'], ['adres', 'Adres'], ['postcode', 'Postcode'], ['plaats', 'Plaats']].map(([field, label]) => (
                     <div key={field}>
                       <label style={{ fontSize: '0.78rem', fontWeight: '600', color: '#64748b', display: 'block', marginBottom: '4px' }}>{label}</label>
                       <input value={(bewerkVerenigingData as any)[field] || ''} onChange={e => setBewerkVerenigingData(d => ({ ...d, [field]: e.target.value }))} style={{ width: '100%', padding: '9px 14px', border: '1.5px solid #e2e8f0', borderRadius: '8px', fontSize: '0.88rem', fontFamily: 'Outfit, sans-serif', outline: 'none', boxSizing: 'border-box' }} />
