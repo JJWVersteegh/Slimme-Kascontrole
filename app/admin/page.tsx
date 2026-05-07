@@ -237,10 +237,17 @@ export default function AdminPortal() {
   async function handleDeleteKlant(klant: Klant) {
     if (!confirm(`Klant "${klant.naam || klant.email}" en alle bijbehorende data verwijderen? Dit kan niet ongedaan worden gemaakt.`)) return
     try {
-      await supabase.from("rapporten").delete().eq("user_id", klant.user_id)
-      await supabase.from("uploads").delete().eq("user_id", klant.user_id)
-      await supabase.from("klanten").delete().eq("user_id", klant.user_id)
-      await fetch("/api/delete-user", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ user_id: klant.user_id }) })
+      const { data: { session } } = await supabase.auth.getSession()
+      const res = await fetch("/api/delete-user", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "Authorization": `Bearer ${session?.access_token}` },
+        body: JSON.stringify({ user_id: klant.user_id })
+      })
+      if (!res.ok) {
+        const data = await res.json()
+        alert("Fout: " + (data.error || "Onbekende fout"))
+        return
+      }
       setGeselecteerdeKlant(null)
       loadData()
       alert("Klant verwijderd.")
