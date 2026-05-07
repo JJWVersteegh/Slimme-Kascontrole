@@ -18,7 +18,6 @@ interface Klant {
   id: string
   email: string
   naam?: string
-  telefoon?: string
 }
 
 interface Vereniging {
@@ -29,7 +28,6 @@ interface Vereniging {
   adres?: string
   postcode?: string
   plaats?: string
-  telefoon?: string
 }
 
 interface Rapport {
@@ -76,7 +74,7 @@ export default function MijnOmgeving() {
   // Vereniging bewerken/toevoegen
   const [toonVerenigingForm, setToonVerenigingForm] = useState(false)
   const [bewerkVereniging, setBewerkVereniging] = useState<Vereniging | null>(null)
-  const [verenigingForm, setVerenigingForm] = useState({ naam: '', kvk: '', adres: '', postcode: '', plaats: '', telefoon: '' })
+  const [verenigingForm, setVerenigingForm] = useState({ naam: '', kvk: '', adres: '', postcode: '', plaats: '' })
   const [verenigingSaving, setVerenigingSaving] = useState(false)
   const [adresLaden, setAdresLaden] = useState(false)
 
@@ -261,7 +259,7 @@ export default function MijnOmgeving() {
     e.preventDefault()
     setProfielSaving(true)
     try {
-      await supabase.from('klanten').update({ naam: profielForm.naam, telefoon: profielForm.telefoon }).eq('user_id', user.id)
+      await supabase.from('klanten').update({ naam: profielForm.naam, telefoon: profielForm.telefoon, adres: profielForm.adres, postcode: profielForm.postcode, plaats: profielForm.plaats }).eq('user_id', user.id)
       setKlant(prev => prev ? { ...prev, ...profielForm } : prev)
       setProfielSuccess(true)
       setTimeout(() => { setProfielSuccess(false); setToonProfiel(false) }, 1500)
@@ -272,10 +270,10 @@ export default function MijnOmgeving() {
   function openVerenigingForm(v?: Vereniging) {
     if (v) {
       setBewerkVereniging(v)
-      setVerenigingForm({ naam: v.naam, kvk: v.kvk || '', adres: v.adres || '', postcode: v.postcode || '', plaats: v.plaats || '', telefoon: v.telefoon || '' })
+      setVerenigingForm({ naam: v.naam, kvk: v.kvk || '', adres: v.adres || '', postcode: v.postcode || '', plaats: v.plaats || '' })
     } else {
       setBewerkVereniging(null)
-      setVerenigingForm({ naam: '', kvk: '', adres: '', postcode: '', plaats: '', telefoon: '' })
+      setVerenigingForm({ naam: '', kvk: '', adres: '', postcode: '', plaats: '' })
     }
     setToonVerenigingForm(true)
   }
@@ -425,8 +423,8 @@ export default function MijnOmgeving() {
               <div style={{ marginBottom: '14px' }}>
                 <label style={{ display: 'block', fontWeight: '600', color: '#0f172a', marginBottom: '5px', fontSize: '0.88rem' }}>Postcode + huisnummer <span style={{ fontWeight: '400', color: '#94a3b8', fontSize: '0.78rem' }}>(adres wordt automatisch ingevuld)</span></label>
                 <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '8px', marginBottom: '6px' }}>
-                  <input value={profielForm.postcode} onChange={e => setProfielForm(p => ({ ...p, postcode: e.target.value }))} placeholder="1234 AB" style={inp} />
-                  <input value={profielHuisnummer} onChange={e => setProfielHuisnummer(e.target.value)} onBlur={e => zoekAdresProfiel(profielForm.postcode, e.target.value)} placeholder="Nr" style={inp} />
+                  <input value={profielForm.postcode} onChange={e => setProfielForm(p => ({ ...p, postcode: e.target.value }))} onKeyDown={e => e.key === 'Enter' && e.preventDefault()} placeholder="1234 AB" style={inp} />
+                  <input value={profielHuisnummer} onChange={e => setProfielHuisnummer(e.target.value)} onBlur={e => zoekAdresProfiel(profielForm.postcode, e.target.value)} onKeyDown={e => e.key === 'Enter' && e.preventDefault()} placeholder="Nr" style={inp} />
                 </div>
                 {profielAdresLaden && <p style={{ fontSize: '0.78rem', color: '#2563EB', margin: '0 0 6px' }}>🔍 Adres opzoeken...</p>}
                 {profielForm.adres && profielForm.plaats && (
@@ -474,7 +472,7 @@ export default function MijnOmgeving() {
               <div style={{ marginBottom: '14px' }}>
                 <label style={{ display: 'block', fontWeight: '600', color: '#0f172a', marginBottom: '5px', fontSize: '0.88rem' }}>Postcode + huisnummer <span style={{ fontWeight: '400', color: '#94a3b8', fontSize: '0.78rem' }}>(adres wordt automatisch ingevuld)</span></label>
                 <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '8px', marginBottom: '6px' }}>
-                  <input value={verenigingForm.postcode} onChange={e => setVerenigingForm(p => ({ ...p, postcode: e.target.value }))} placeholder="1234 AB" style={inp} />
+                  <input value={verenigingForm.postcode} onChange={e => setVerenigingForm(p => ({ ...p, postcode: e.target.value }))} onKeyDown={e => e.key === 'Enter' && e.preventDefault()} placeholder="1234 AB" style={inp} />
                   <input placeholder="Nr" onBlur={e => zoekAdres(verenigingForm.postcode, e.target.value)} style={inp} />
                 </div>
                 {adresLaden && <p style={{ fontSize: '0.78rem', color: '#2563EB', margin: '0 0 6px' }}>🔍 Adres opzoeken...</p>}
