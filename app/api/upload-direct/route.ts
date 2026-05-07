@@ -2,8 +2,21 @@ import { NextRequest, NextResponse } from 'next/server'
 
 export const dynamic = 'force-dynamic'
 
-const ALLOWED_TYPES = ['application/pdf', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/vnd.ms-excel', 'text/csv', 'text/plain']
-const ALLOWED_EXT = ['pdf', 'xlsx', 'xls', 'csv', 'txt']
+const ALLOWED_EXT = ['pdf', 'xlsx', 'xls', 'csv', 'txt', 'ods', 'docx', 'doc', 'png', 'jpg', 'jpeg', 'heic']
+const EXT_TO_MIME: Record<string, string> = {
+  pdf: 'application/pdf',
+  xlsx: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+  xls: 'application/vnd.ms-excel',
+  csv: 'text/csv',
+  txt: 'text/plain',
+  ods: 'application/vnd.oasis.opendocument.spreadsheet',
+  docx: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+  doc: 'application/msword',
+  png: 'image/png',
+  jpg: 'image/jpeg',
+  jpeg: 'image/jpeg',
+  heic: 'image/heic',
+}
 const MAX_FILE_SIZE = 10 * 1024 * 1024 // 10MB per bestand
 const MAX_TOTAL_SIZE = 30 * 1024 * 1024 // 30MB totaal
 
@@ -28,7 +41,7 @@ export async function POST(req: NextRequest) {
     for (const file of files) {
       const ext = file.name.split('.').pop()?.toLowerCase() || ''
       if (!ALLOWED_EXT.includes(ext)) {
-        return NextResponse.json({ error: `Bestandstype .${ext} is niet toegestaan. Gebruik PDF, Excel of CSV.` }, { status: 400 })
+        return NextResponse.json({ error: `Bestandstype .${ext} is niet toegestaan. Gebruik PDF, Excel, CSV, Word, PNG, JPG of HEIC.` }, { status: 400 })
       }
       if (file.size > MAX_FILE_SIZE) {
         return NextResponse.json({ error: `Bestand ${file.name} is te groot (max 10MB per bestand).` }, { status: 400 })
@@ -46,7 +59,7 @@ export async function POST(req: NextRequest) {
       const safeFileName = file.name.replace(/[^a-zA-Z0-9._-]/g, '_')
       const fileName = `${userId}/${boekjaar}/${Date.now()}-${safeFileName}`
       const ext = file.name.split('.').pop()?.toLowerCase() || ''
-      const contentType = ALLOWED_TYPES.find(t => t.includes(ext)) || 'application/octet-stream'
+      const contentType = EXT_TO_MIME[ext] || 'application/octet-stream'
       const { error } = await supabase.storage
         .from('kascontrole-bestanden')
         .upload(fileName, buffer, { contentType })
