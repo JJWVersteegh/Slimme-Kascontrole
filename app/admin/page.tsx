@@ -479,8 +479,17 @@ export default function AdminPortal() {
                             <button
                               onClick={async () => {
                                 if (!confirm(`Vereniging "${v.naam}" verwijderen?`)) return
-                                await supabase.from('verenigingen').delete().eq('id', v.id)
-                                setVerenigingen(prev => prev.filter(x => x.id !== v.id))
+                                const { data: { session } } = await supabase.auth.getSession()
+                                const res = await fetch('/api/admin-delete-vereniging', {
+                                  method: 'DELETE',
+                                  headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${session?.access_token}` },
+                                  body: JSON.stringify({ vereniging_id: v.id })
+                                })
+                                if (res.ok) {
+                                  setVerenigingen(prev => prev.filter(x => x.id !== v.id))
+                                } else {
+                                  alert('Verwijderen mislukt')
+                                }
                               }}
                               style={{ marginTop: '6px', background: 'none', border: '1px solid #fecaca', color: '#ef4444', padding: '3px 8px', borderRadius: '4px', cursor: 'pointer', fontSize: '0.72rem', fontFamily: 'Outfit, sans-serif' }}
                             >
