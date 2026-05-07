@@ -488,10 +488,7 @@ export default function MijnOmgeving() {
                   <input value={verenigingForm.plaats} onChange={e => setVerenigingForm(p => ({ ...p, plaats: e.target.value }))} placeholder="Plaats" style={{ ...inp, fontSize: '0.85rem' }} />
                 </div>
               </div>
-              <div style={{ marginBottom: '14px' }}>
-                <label style={{ display: 'block', fontWeight: '600', color: '#0f172a', marginBottom: '5px', fontSize: '0.88rem' }}>Telefoon vereniging <span style={{ fontWeight: '400', color: '#94a3b8' }}>(optioneel)</span></label>
-                <input value={verenigingForm.telefoon} onChange={e => setVerenigingForm(p => ({ ...p, telefoon: e.target.value }))} placeholder="06-12345678" style={inp} />
-              </div>
+
               <div style={{ display: 'flex', gap: '12px', marginTop: '20px' }}>
                 <button type="button" onClick={() => setToonVerenigingForm(false)} style={{ flex: 1, padding: '12px', background: 'white', border: '1.5px solid #e2e8f0', borderRadius: '8px', cursor: 'pointer', fontWeight: '600', fontFamily: 'Outfit, sans-serif' }}>Annuleren</button>
                 <button type="submit" disabled={verenigingSaving} style={{ flex: 1, padding: '12px', background: '#2563EB', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer', fontWeight: '700', fontFamily: 'Outfit, sans-serif' }}>
