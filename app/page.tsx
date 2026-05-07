@@ -49,6 +49,7 @@ nav.scrolled{box-shadow:0 4px 24px rgba(0,0,0,0.08)}
 .hero-bg img{width:100%;height:100%;object-fit:cover;object-position:center top;opacity:1}
 
 .hero-content{position:relative;z-index:1;width:100%;padding:140px 48px 80px;max-width:680px}
+.hero-inner{background:rgba(255,255,255,0.82);backdrop-filter:blur(8px);border-radius:16px;padding:36px 40px;display:inline-block;max-width:600px}
 
 .hero h1{font-family:'Playfair Display',serif;font-size:clamp(2rem,4.5vw,3.8rem);font-weight:700;line-height:1.1;color:#0f2460;margin-bottom:20px;letter-spacing:-0.02em}
 .hero h1 em{font-style:italic;font-weight:400;color:#2563EB}
@@ -197,6 +198,7 @@ footer a:hover{color:#93c5fd}
   .features-grid,.why-grid,.about-grid,.pricing-grid,.contact-grid{grid-template-columns:1fr}
   .sources-grid,.security-grid{grid-template-columns:1fr 1fr}
   .hero-content{padding:100px 20px 60px!important;width:100%!important;max-width:100%!important}
+  .hero-inner{padding:24px 20px!important;border-radius:12px!important;width:100%;box-sizing:border-box}
   
   footer{flex-direction:column;text-align:center;padding:32px 20px}
   .footer-links{justify-content:center}
@@ -260,7 +262,7 @@ footer a:hover{color:#93c5fd}
     <img src="/achtergrond.jpg" alt="Kascontrole voor verenigingen"/>
   </div>
   <div class="hero-content">
-    <div style="max-width:600px">
+    <div class="hero-inner">
       <h1>Kascontrole voor uw VvE of vereniging. <em>€59. Klaar in minuten.</em></h1>
       <p class="hero-sub">Upload uw financiële bestanden en ontvang binnen minuten een volledig gecontroleerd kascontrolerapport. Eenmalig €59 incl. btw — geen abonnement.</p>
       <div class="hero-ctas">
@@ -271,7 +273,7 @@ footer a:hover{color:#93c5fd}
         <div>
           <div class="price-label">Eenmalig per kascontrole</div>
           <div class="price-num"><span>€</span><span>59</span></div>
-          <div style="font-size:0.68rem;color:rgba(255,255,255,0.5);margin-top:2px">incl. btw</div>
+          <div style="font-size:0.68rem;color:#64748b;margin-top:2px">incl. btw</div>
         </div>
         <div class="price-divider"></div>
         <div class="price-checks">
