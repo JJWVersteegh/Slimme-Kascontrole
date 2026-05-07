@@ -44,12 +44,12 @@ nav.scrolled{box-shadow:0 4px 24px rgba(0,0,0,0.08)}
 .mobile-menu .mobile-btn{background:#2563EB;color:white!important;text-align:center;margin-top:8px;font-weight:700}
 
 /* HERO */
-.hero-wrapper{background:#f8fafc;padding:40px 48px}
+.hero-wrapper{background:#f8fafc;padding:88px 48px 48px}
 .hero{position:relative;height:520px;width:100%;max-width:1200px;margin:0 auto;display:flex;align-items:center;overflow:hidden;background:#f0f4ff;border-radius:16px}
 .hero-bg{position:absolute;inset:0;z-index:0;border-radius:16px;overflow:hidden}
 .hero-bg img{width:100%;height:100%;object-fit:cover;object-position:center top;opacity:1}
 
-.hero-content{position:relative;z-index:1;width:100%;padding:140px 48px 80px;max-width:680px}
+.hero-content{position:relative;z-index:1;width:100%;padding:0 40px;max-width:640px}
 .hero-inner{background:rgba(255,255,255,0.82);backdrop-filter:blur(8px);border-radius:16px;padding:36px 40px;display:inline-block;max-width:600px}
 
 .hero h1{font-family:'Playfair Display',serif;font-size:clamp(2rem,4.5vw,3.8rem);font-weight:700;line-height:1.1;color:#0f2460;margin-bottom:20px;letter-spacing:-0.02em}
@@ -198,7 +198,7 @@ footer a:hover{color:#93c5fd}
   .steps,.testi-grid{grid-template-columns:1fr}
   .features-grid,.why-grid,.about-grid,.pricing-grid,.contact-grid{grid-template-columns:1fr}
   .sources-grid,.security-grid{grid-template-columns:1fr 1fr}
-  .hero-wrapper{padding:16px!important}
+  .hero-wrapper{padding:88px 16px 16px!important}
   .hero{border-radius:12px!important;height:auto!important;min-height:380px!important}
   .hero-content{padding:40px 20px!important;width:100%!important;max-width:100%!important}
   .hero-inner{padding:24px 20px!important;border-radius:12px!important;width:100%;box-sizing:border-box}
