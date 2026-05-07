@@ -44,25 +44,25 @@ nav.scrolled{box-shadow:0 4px 24px rgba(0,0,0,0.08)}
 .mobile-menu .mobile-btn{background:#2563EB;color:white!important;text-align:center;margin-top:8px;font-weight:700}
 
 /* HERO */
-.hero{position:relative;min-height:100vh;width:100%;display:flex;align-items:center;overflow:hidden;background:#0f2460}
+.hero{position:relative;min-height:100vh;width:100%;display:flex;align-items:center;overflow:hidden;background:#f0f4ff}
 .hero-bg{position:absolute;inset:0;z-index:0}
-.hero-bg img{width:100%;height:100%;object-fit:cover;object-position:center 60%;opacity:0.45}
+.hero-bg img{width:100%;height:100%;object-fit:cover;object-position:center 60%;opacity:1}
 
 .hero-content{position:relative;z-index:1;width:100%;padding:80px 48px 0}
-.hero-eyebrow{display:inline-flex;align-items:center;gap:8px;background:rgba(37,99,235,0.35);border:1px solid rgba(147,197,253,0.5);color:#bfdbfe;font-size:0.72rem;font-weight:700;padding:5px 13px;border-radius:20px;margin-bottom:24px;letter-spacing:0.05em;text-transform:uppercase}
-.hero h1{font-family:'Playfair Display',serif;font-size:clamp(2rem,4.5vw,3.8rem);font-weight:700;line-height:1.1;color:white;margin-bottom:20px;letter-spacing:-0.02em}
-.hero h1 em{font-style:italic;font-weight:400;color:#93c5fd}
-.hero-sub{font-size:clamp(0.92rem,2vw,1.05rem);color:rgba(255,255,255,0.88);line-height:1.7;margin-bottom:32px;max-width:500px}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:8px;background:rgba(37,99,235,0.12);border:1px solid rgba(37,99,235,0.3);color:#1e40af;font-size:0.72rem;font-weight:700;padding:5px 13px;border-radius:20px;margin-bottom:24px;letter-spacing:0.05em;text-transform:uppercase}
+.hero h1{font-family:'Playfair Display',serif;font-size:clamp(2rem,4.5vw,3.8rem);font-weight:700;line-height:1.1;color:#0f2460;margin-bottom:20px;letter-spacing:-0.02em}
+.hero h1 em{font-style:italic;font-weight:400;color:#2563EB}
+.hero-sub{font-size:clamp(0.92rem,2vw,1.05rem);color:#334155;line-height:1.7;margin-bottom:32px;max-width:500px}
 .hero-ctas{display:flex;gap:14px;align-items:center;flex-wrap:wrap;margin-bottom:36px}
 .btn-primary{background:#2563EB;color:white;padding:14px 30px;border-radius:8px;font-size:0.95rem;font-weight:700;text-decoration:none;box-shadow:0 4px 20px rgba(37,99,235,0.45);font-family:'Outfit',sans-serif;white-space:nowrap;display:inline-block}
 .btn-primary:hover{background:#1D4ED8}
-.btn-ghost-white{color:rgba(255,255,255,0.85);font-size:0.9rem;font-weight:500;text-decoration:none;display:flex;align-items:center;gap:6px;white-space:nowrap}
-.hero-price{display:flex;align-items:center;gap:12px;padding:14px 16px;background:rgba(0,0,0,0.45);backdrop-filter:blur(12px);border-radius:12px;border:1px solid rgba(255,255,255,0.25);flex-wrap:wrap;max-width:100%}
-.price-label{font-size:0.65rem;font-weight:700;color:rgba(255,255,255,0.55);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:2px}
+.btn-ghost-white{color:#1e40af;font-size:0.9rem;font-weight:500;text-decoration:none;display:flex;align-items:center;gap:6px;white-space:nowrap}
+.hero-price{display:flex;align-items:center;gap:12px;padding:14px 16px;background:rgba(255,255,255,0.85);backdrop-filter:blur(12px);border-radius:12px;border:1px solid rgba(37,99,235,0.2);flex-wrap:wrap;max-width:100%}
+.price-label{font-size:0.65rem;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:2px}
 .price-num{display:flex;align-items:baseline;gap:1px}
-.price-num span:first-child{font-size:0.9rem;font-weight:700;color:#93c5fd}
-.price-num span:last-child{font-family:'Playfair Display',serif;font-size:2rem;font-weight:700;color:white;line-height:1}
-.price-divider{width:1px;height:40px;background:rgba(255,255,255,0.2);flex-shrink:0}
+.price-num span:first-child{font-size:0.9rem;font-weight:700;color:#2563EB}
+.price-num span:last-child{font-family:'Playfair Display',serif;font-size:2rem;font-weight:700;color:#0f2460;line-height:1}
+.price-divider{width:1px;height:40px;background:rgba(0,0,0,0.15);flex-shrink:0}
 .price-checks{display:flex;flex-direction:column;gap:5px}
 .price-check{font-size:0.78rem;color:rgba(255,255,255,0.9);display:flex;align-items:center;gap:6px}
 .price-check span:first-child{color:#93c5fd;font-weight:700}
@@ -258,7 +258,6 @@ footer a:hover{color:#93c5fd}
 <section class="hero">
   <div class="hero-bg">
     <img src="/achtergrond.jpg" alt="Kascontrole voor verenigingen"/>
-    <div class="hero-overlay"></div>
   </div>
   <div class="hero-content">
     <div style="max-width:600px">
