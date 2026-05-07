@@ -235,7 +235,6 @@ footer a:hover{color:#93c5fd}
     <li><a href="#tarieven">Tarieven</a></li>
     <li><a href="#contact">Contact</a></li>
     <li><a href="/mijn-omgeving">Mijn omgeving</a></li>
-    <li><a href="https://wa.me/31624235829?text=Hallo%2C%20ik%20heb%20een%20vraag%20over%20mijn%20kascontrole." target="_blank" style="display:flex;align-items:center;gap:6px;background:#25D366;color:white!important;padding:9px 16px;border-radius:6px;font-weight:600;font-size:0.85rem;text-decoration:none">💬 WhatsApp</a></li>
     <li><a href="/registreer" class="btn-nav">Account aanmaken</a></li>
   </ul>
   <button class="hamburger" id="hamburger" onclick="toggleMenu()" aria-label="Menu">
