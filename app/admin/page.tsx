@@ -96,6 +96,11 @@ export default function AdminPortal() {
   const [adminHuisnummer, setAdminHuisnummer] = useState('')
   const [adminProfielAdresLaden, setAdminProfielAdresLaden] = useState(false)
   const [adminProfielHuisnummer, setAdminProfielHuisnummer] = useState('')
+  const [bewerkVve, setBewerkVve] = useState<Vereniging | null>(null)
+  const [bewerkVveData, setBewerkVveData] = useState<Partial<Vereniging>>({})
+  const [bewerkVveAdresLaden, setBewerkVveAdresLaden] = useState(false)
+  const [bewerkVveHuisnummer, setBewerkVveHuisnummer] = useState('')
+  const [bewerkVveSaving, setBewerkVveSaving] = useState(false)
 
   const [lastLogins, setLastLogins] = useState<Record<string, string>>({})
   const router = useRouter()
@@ -480,12 +485,7 @@ export default function AdminPortal() {
                       <button onClick={() => setGeselecteerdeKlant(null)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#94a3b8', fontSize: '1.2rem', lineHeight: 1 }}>×</button>
                     </div>
                     <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-                      <button onClick={() => { setBewerkKlant(geselecteerdeKlant); setBewerkData({ naam: geselecteerdeKlant!.naam, telefoon: geselecteerdeKlant!.telefoon, adres: (geselecteerdeKlant as any).adres || '', postcode: (geselecteerdeKlant as any).postcode || '', plaats: (geselecteerdeKlant as any).plaats || '' })
-                      const eersteVereniging = verenigingen.find(v => v.user_id === geselecteerdeKlant!.user_id)
-                      if (eersteVereniging) {
-                        setBewerkVerenigingId(eersteVereniging.id)
-                        setBewerkVerenigingData({ naam: eersteVereniging.naam, kvk: eersteVereniging.kvk, adres: eersteVereniging.adres, postcode: eersteVereniging.postcode, plaats: eersteVereniging.plaats })
-                      } }} style={{ background: '#eff6ff', color: '#2563EB', border: '1px solid #bfdbfe', padding: '5px 10px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.78rem', fontWeight: '600', fontFamily: 'Outfit, sans-serif' }}>✏️ Bewerken</button>
+                      <button onClick={() => { setBewerkKlant(geselecteerdeKlant); setBewerkData({ naam: geselecteerdeKlant!.naam, telefoon: geselecteerdeKlant!.telefoon, adres: (geselecteerdeKlant as any).adres || '', postcode: (geselecteerdeKlant as any).postcode || '', plaats: (geselecteerdeKlant as any).plaats || '' }); setAdminProfielHuisnummer('') }} style={{ background: '#eff6ff', color: '#2563EB', border: '1px solid #bfdbfe', padding: '5px 10px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.78rem', fontWeight: '600', fontFamily: 'Outfit, sans-serif' }}>✏️ Bewerken</button>
                       <button onClick={() => handleDeleteKlant(geselecteerdeKlant!)} style={{ background: '#fee2e2', color: '#dc2626', border: '1px solid #fca5a5', padding: '5px 10px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.78rem', fontWeight: '600', fontFamily: 'Outfit, sans-serif' }}>🗑️ Verwijderen</button>
                     </div>
                   </div>
@@ -515,25 +515,29 @@ export default function AdminPortal() {
                             <div style={{ fontWeight: '700', fontSize: '0.88rem', color: '#0f172a', marginBottom: '4px' }}>{v.naam}</div>
                             {v.kvk && <div style={{ fontSize: '0.78rem', color: '#64748b' }}>KvK: {v.kvk}</div>}
                             {v.adres && <div style={{ fontSize: '0.78rem', color: '#64748b' }}>{v.adres}, {v.postcode} {v.plaats}</div>}
-                            <button
-                              onClick={async () => {
-                                if (!confirm(`Vereniging "${v.naam}" verwijderen?`)) return
-                                const { data: { session } } = await supabase.auth.getSession()
-                                const res = await fetch('/api/admin-delete-vereniging', {
-                                  method: 'DELETE',
-                                  headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${session?.access_token}` },
-                                  body: JSON.stringify({ vereniging_id: v.id })
-                                })
-                                if (res.ok) {
-                                  setVerenigingen(prev => prev.filter(x => x.id !== v.id))
-                                } else {
-                                  alert('Verwijderen mislukt')
-                                }
-                              }}
-                              style={{ marginTop: '6px', background: 'none', border: '1px solid #fecaca', color: '#ef4444', padding: '3px 8px', borderRadius: '4px', cursor: 'pointer', fontSize: '0.72rem', fontFamily: 'Outfit, sans-serif' }}
-                            >
-                              🗑️ Verwijderen
-                            </button>
+                            <div style={{ display: 'flex', gap: '6px', marginTop: '6px' }}>
+                              <button
+                                onClick={() => { setBewerkVve(v); setBewerkVveData({ naam: v.naam, kvk: v.kvk, adres: v.adres, postcode: v.postcode, plaats: v.plaats }); setBewerkVveHuisnummer('') }}
+                                style={{ background: '#eff6ff', border: '1px solid #bfdbfe', color: '#2563EB', padding: '3px 8px', borderRadius: '4px', cursor: 'pointer', fontSize: '0.72rem', fontFamily: 'Outfit, sans-serif', fontWeight: '600' }}
+                              >✏️ Bewerken</button>
+                              <button
+                                onClick={async () => {
+                                  if (!confirm(`Vereniging "${v.naam}" verwijderen?`)) return
+                                  const { data: { session } } = await supabase.auth.getSession()
+                                  const res = await fetch('/api/admin-delete-vereniging', {
+                                    method: 'DELETE',
+                                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${session?.access_token}` },
+                                    body: JSON.stringify({ vereniging_id: v.id })
+                                  })
+                                  if (res.ok) {
+                                    setVerenigingen(prev => prev.filter(x => x.id !== v.id))
+                                  } else {
+                                    alert('Verwijderen mislukt')
+                                  }
+                                }}
+                                style={{ background: 'none', border: '1px solid #fecaca', color: '#ef4444', padding: '3px 8px', borderRadius: '4px', cursor: 'pointer', fontSize: '0.72rem', fontFamily: 'Outfit, sans-serif' }}
+                              >🗑️ Verwijderen</button>
+                            </div>
                           </div>
                         ))
                       )}
@@ -684,18 +688,16 @@ export default function AdminPortal() {
         )}
       </div>
 
-      {/* Bewerk klant modal */}
+      {/* Bewerk klant modal - alleen persoonsgegevens */}
       {bewerkKlant && (
         <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)', zIndex: 1000, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px', overflowY: 'auto' }}>
-          <div style={{ background: 'white', borderRadius: '16px', width: '100%', maxWidth: '500px', padding: '28px', margin: 'auto' }}>
+          <div style={{ background: 'white', borderRadius: '16px', width: '100%', maxWidth: '480px', padding: '28px', margin: 'auto' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
-              <h3 style={{ margin: 0, fontSize: '1rem', fontWeight: '700', color: '#0f172a' }}>✏️ Klant bewerken</h3>
+              <h3 style={{ margin: 0, fontSize: '1rem', fontWeight: '700', color: '#0f172a' }}>✏️ Persoonsgegevens bewerken</h3>
               <button onClick={() => setBewerkKlant(null)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#94a3b8', fontSize: '1.2rem' }}>×</button>
             </div>
-
-            {/* Persoonsgegevens sectie */}
             <div style={{ background: '#f8fafc', borderRadius: '10px', padding: '16px', marginBottom: '16px' }}>
-              <div style={{ fontSize: '0.72rem', fontWeight: '700', color: '#2563EB', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '12px' }}>👤 Persoonsgegevens (kascommissielid)</div>
+              <div style={{ fontSize: '0.72rem', fontWeight: '700', color: '#2563EB', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '12px' }}>👤 Kascommissielid</div>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
                 <div>
                   <label style={{ fontSize: '0.78rem', fontWeight: '600', color: '#64748b', display: 'block', marginBottom: '4px' }}>Naam</label>
@@ -738,56 +740,7 @@ export default function AdminPortal() {
                 </div>
               </div>
             </div>
-
-            {/* Vereniging sectie */}
-            {bewerkVerenigingId && (
-              <div style={{ background: '#f8fafc', borderRadius: '10px', padding: '16px', marginBottom: '16px' }}>
-                <div style={{ fontSize: '0.72rem', fontWeight: '700', color: '#0f172a', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '12px' }}>🏢 Vereniging / VvE</div>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-                  <div>
-                    <label style={{ fontSize: '0.78rem', fontWeight: '600', color: '#64748b', display: 'block', marginBottom: '4px' }}>Naam vereniging</label>
-                    <input value={(bewerkVerenigingData as any)['naam'] || ''} onChange={e => setBewerkVerenigingData(d => ({ ...d, naam: e.target.value }))} style={{ width: '100%', padding: '9px 14px', border: '1.5px solid #e2e8f0', borderRadius: '8px', fontSize: '0.88rem', fontFamily: 'Outfit, sans-serif', outline: 'none', boxSizing: 'border-box' }} />
-                  </div>
-                  <div>
-                    <label style={{ fontSize: '0.78rem', fontWeight: '600', color: '#64748b', display: 'block', marginBottom: '4px' }}>KvK-nummer</label>
-                    <input value={(bewerkVerenigingData as any)['kvk'] || ''} onChange={e => setBewerkVerenigingData(d => ({ ...d, kvk: e.target.value }))} style={{ width: '100%', padding: '9px 14px', border: '1.5px solid #e2e8f0', borderRadius: '8px', fontSize: '0.88rem', fontFamily: 'Outfit, sans-serif', outline: 'none', boxSizing: 'border-box' }} />
-                  </div>
-                  <div>
-                    <label style={{ fontSize: '0.78rem', fontWeight: '600', color: '#64748b', display: 'block', marginBottom: '4px' }}>Postcode + huisnummer <span style={{ fontWeight: '400', color: '#94a3b8' }}>(adres automatisch)</span></label>
-                    <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '8px', marginBottom: '6px' }}>
-                      <input value={(bewerkVerenigingData as any)['postcode'] || ''} onChange={e => setBewerkVerenigingData(d => ({ ...d, postcode: e.target.value }))} onKeyDown={e => e.key === 'Enter' && e.preventDefault()} placeholder="1234 AB" style={{ padding: '9px 14px', border: '1.5px solid #e2e8f0', borderRadius: '8px', fontSize: '0.88rem', fontFamily: 'Outfit, sans-serif', outline: 'none', boxSizing: 'border-box' }} />
-                      <input value={adminHuisnummer} onChange={e => setAdminHuisnummer(e.target.value)} onKeyDown={e => e.key === 'Enter' && e.preventDefault()} onBlur={async e => {
-                        const pc = (bewerkVerenigingData as any)['postcode'] || ''
-                        const hn = e.target.value
-                        if (pc.replace(' ','').length < 6 || !hn) return
-                        setAdminAdresLaden(true)
-                        try {
-                          const res = await fetch(`https://api.pdok.nl/bzk/locatieserver/search/v3_1/free?q=${pc.replace(' ','')}+${hn}&fq=type:adres&rows=1`)
-                          const data = await res.json()
-                          if (data.response?.docs?.[0]) {
-                            const doc = data.response.docs[0]
-                            setBewerkVerenigingData(d => ({ ...d, adres: `${doc.straatnaam || ''} ${hn}`, plaats: doc.woonplaatsnaam || '' }))
-                          }
-                        } catch {}
-                        setAdminAdresLaden(false)
-                      }} placeholder="Nr" style={{ padding: '9px 14px', border: '1.5px solid #e2e8f0', borderRadius: '8px', fontSize: '0.88rem', fontFamily: 'Outfit, sans-serif', outline: 'none', boxSizing: 'border-box' }} />
-                    </div>
-                    {adminAdresLaden && <p style={{ fontSize: '0.78rem', color: '#2563EB', margin: '0 0 6px' }}>🔍 Adres opzoeken...</p>}
-                    {(bewerkVerenigingData as any)['adres'] && (bewerkVerenigingData as any)['plaats'] && (
-                      <div style={{ background: '#f0fdf4', border: '1px solid #bbf7d0', borderRadius: '6px', padding: '6px 10px', fontSize: '0.8rem', color: '#166534', marginBottom: '6px' }}>
-                        ✓ {(bewerkVerenigingData as any)['adres']}, {(bewerkVerenigingData as any)['postcode']} {(bewerkVerenigingData as any)['plaats']}
-                      </div>
-                    )}
-                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
-                      <input value={(bewerkVerenigingData as any)['adres'] || ''} onChange={e => setBewerkVerenigingData(d => ({ ...d, adres: e.target.value }))} placeholder="Straat + huisnummer" style={{ padding: '9px 14px', border: '1.5px solid #e2e8f0', borderRadius: '8px', fontSize: '0.85rem', fontFamily: 'Outfit, sans-serif', outline: 'none', boxSizing: 'border-box' }} />
-                      <input value={(bewerkVerenigingData as any)['plaats'] || ''} onChange={e => setBewerkVerenigingData(d => ({ ...d, plaats: e.target.value }))} placeholder="Plaats" style={{ padding: '9px 14px', border: '1.5px solid #e2e8f0', borderRadius: '8px', fontSize: '0.85rem', fontFamily: 'Outfit, sans-serif', outline: 'none', boxSizing: 'border-box' }} />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )}
-
-            <div style={{ display: 'flex', gap: '10px', marginTop: '4px' }}>
+            <div style={{ display: 'flex', gap: '10px' }}>
               <button onClick={handleSaveBewerkKlant} style={{ flex: 1, background: '#2563EB', color: 'white', border: 'none', padding: '11px', borderRadius: '8px', cursor: 'pointer', fontSize: '0.9rem', fontWeight: '700', fontFamily: 'Outfit, sans-serif' }}>Opslaan</button>
               <button onClick={() => setBewerkKlant(null)} style={{ flex: 1, background: '#f1f5f9', color: '#475569', border: 'none', padding: '11px', borderRadius: '8px', cursor: 'pointer', fontSize: '0.9rem', fontFamily: 'Outfit, sans-serif' }}>Annuleren</button>
             </div>
@@ -795,7 +748,85 @@ export default function AdminPortal() {
         </div>
       )}
 
-      {/* Rapport modal */}
+      {/* Bewerk VvE modal - apart per vereniging */}
+      {bewerkVve && (
+        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)', zIndex: 1000, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px', overflowY: 'auto' }}>
+          <div style={{ background: 'white', borderRadius: '16px', width: '100%', maxWidth: '480px', padding: '28px', margin: 'auto' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+              <h3 style={{ margin: 0, fontSize: '1rem', fontWeight: '700', color: '#0f172a' }}>🏢 VvE bewerken: {bewerkVve.naam}</h3>
+              <button onClick={() => setBewerkVve(null)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#94a3b8', fontSize: '1.2rem' }}>×</button>
+            </div>
+            <div style={{ background: '#f8fafc', borderRadius: '10px', padding: '16px', marginBottom: '16px' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                <div>
+                  <label style={{ fontSize: '0.78rem', fontWeight: '600', color: '#64748b', display: 'block', marginBottom: '4px' }}>Naam vereniging</label>
+                  <input value={bewerkVveData.naam || ''} onChange={e => setBewerkVveData(d => ({ ...d, naam: e.target.value }))} style={{ width: '100%', padding: '9px 14px', border: '1.5px solid #e2e8f0', borderRadius: '8px', fontSize: '0.88rem', fontFamily: 'Outfit, sans-serif', outline: 'none', boxSizing: 'border-box' }} />
+                </div>
+                <div>
+                  <label style={{ fontSize: '0.78rem', fontWeight: '600', color: '#64748b', display: 'block', marginBottom: '4px' }}>KvK-nummer</label>
+                  <input value={bewerkVveData.kvk || ''} onChange={e => setBewerkVveData(d => ({ ...d, kvk: e.target.value }))} style={{ width: '100%', padding: '9px 14px', border: '1.5px solid #e2e8f0', borderRadius: '8px', fontSize: '0.88rem', fontFamily: 'Outfit, sans-serif', outline: 'none', boxSizing: 'border-box' }} />
+                </div>
+                <div>
+                  <label style={{ fontSize: '0.78rem', fontWeight: '600', color: '#64748b', display: 'block', marginBottom: '4px' }}>Postcode + huisnummer <span style={{ fontWeight: '400', color: '#94a3b8' }}>(adres automatisch)</span></label>
+                  <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '8px', marginBottom: '6px' }}>
+                    <input value={bewerkVveData.postcode || ''} onChange={e => setBewerkVveData(d => ({ ...d, postcode: e.target.value }))} onKeyDown={e => e.key === 'Enter' && e.preventDefault()} placeholder="1234 AB" style={{ padding: '9px 14px', border: '1.5px solid #e2e8f0', borderRadius: '8px', fontSize: '0.88rem', fontFamily: 'Outfit, sans-serif', outline: 'none', boxSizing: 'border-box' }} />
+                    <input value={bewerkVveHuisnummer} onChange={e => setBewerkVveHuisnummer(e.target.value)} onKeyDown={e => e.key === 'Enter' && e.preventDefault()} onBlur={async e => {
+                      const pc = bewerkVveData.postcode || ''
+                      const hn = e.target.value
+                      if (pc.replace(' ','').length < 6 || !hn) return
+                      setBewerkVveAdresLaden(true)
+                      try {
+                        const res = await fetch(`https://api.pdok.nl/bzk/locatieserver/search/v3_1/free?q=${pc.replace(' ','')}+${hn}&fq=type:adres&rows=1`)
+                        const data = await res.json()
+                        if (data.response?.docs?.[0]) {
+                          const doc = data.response.docs[0]
+                          setBewerkVveData(d => ({ ...d, adres: `${doc.straatnaam || ''} ${hn}`, plaats: doc.woonplaatsnaam || '' }))
+                        }
+                      } catch {}
+                      setBewerkVveAdresLaden(false)
+                    }} placeholder="Nr" style={{ padding: '9px 14px', border: '1.5px solid #e2e8f0', borderRadius: '8px', fontSize: '0.88rem', fontFamily: 'Outfit, sans-serif', outline: 'none', boxSizing: 'border-box' }} />
+                  </div>
+                  {bewerkVveAdresLaden && <p style={{ fontSize: '0.78rem', color: '#2563EB', margin: '0 0 6px' }}>🔍 Adres opzoeken...</p>}
+                  {bewerkVveData.adres && bewerkVveData.plaats && (
+                    <div style={{ background: '#f0fdf4', border: '1px solid #bbf7d0', borderRadius: '6px', padding: '6px 10px', fontSize: '0.8rem', color: '#166534', marginBottom: '6px' }}>
+                      ✓ {bewerkVveData.adres}, {bewerkVveData.postcode} {bewerkVveData.plaats}
+                    </div>
+                  )}
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
+                    <input value={bewerkVveData.adres || ''} onChange={e => setBewerkVveData(d => ({ ...d, adres: e.target.value }))} placeholder="Straat + huisnummer" style={{ padding: '9px 14px', border: '1.5px solid #e2e8f0', borderRadius: '8px', fontSize: '0.85rem', fontFamily: 'Outfit, sans-serif', outline: 'none', boxSizing: 'border-box' }} />
+                    <input value={bewerkVveData.plaats || ''} onChange={e => setBewerkVveData(d => ({ ...d, plaats: e.target.value }))} placeholder="Plaats" style={{ padding: '9px 14px', border: '1.5px solid #e2e8f0', borderRadius: '8px', fontSize: '0.85rem', fontFamily: 'Outfit, sans-serif', outline: 'none', boxSizing: 'border-box' }} />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div style={{ display: 'flex', gap: '10px' }}>
+              <button onClick={async () => {
+                setBewerkVveSaving(true)
+                try {
+                  const { data: { session } } = await supabase.auth.getSession()
+                  const res = await fetch('/api/admin-update-vereniging', {
+                    method: 'PATCH',
+                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${session?.access_token}` },
+                    body: JSON.stringify({ vereniging_id: bewerkVve.id, data: bewerkVveData })
+                  })
+                  if (res.ok) {
+                    setVerenigingen(prev => prev.map(v => v.id === bewerkVve.id ? { ...v, ...bewerkVveData } : v))
+                    setBewerkVve(null)
+                  } else {
+                    alert('Opslaan mislukt')
+                  }
+                } catch { alert('Opslaan mislukt') }
+                setBewerkVveSaving(false)
+              }} disabled={bewerkVveSaving} style={{ flex: 1, background: '#2563EB', color: 'white', border: 'none', padding: '11px', borderRadius: '8px', cursor: 'pointer', fontSize: '0.9rem', fontWeight: '700', fontFamily: 'Outfit, sans-serif' }}>
+                {bewerkVveSaving ? 'Opslaan...' : 'Opslaan'}
+              </button>
+              <button onClick={() => setBewerkVve(null)} style={{ flex: 1, background: '#f1f5f9', color: '#475569', border: 'none', padding: '11px', borderRadius: '8px', cursor: 'pointer', fontSize: '0.9rem', fontFamily: 'Outfit, sans-serif' }}>Annuleren</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+            {/* Rapport modal */}
       {toonRapport && (
         <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)', zIndex: 999, display: 'flex', alignItems: 'flex-start', justifyContent: 'center', padding: '20px', overflowY: 'auto' }}>
           <div style={{ background: 'white', borderRadius: '16px', width: '100%', maxWidth: '900px', maxHeight: '90vh', overflow: 'auto' }}>
