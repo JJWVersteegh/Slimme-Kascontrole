@@ -198,7 +198,7 @@ export default function Registreer() {
             <div style={{ borderTop: '1px solid #e2e8f0', paddingTop: '20px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
               <p style={{ fontSize: '0.75rem', fontWeight: '700', color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '4px' }}>Wat wij met uw gegevens doen</p>
               {[
-                { icon: '🔒', tekst: 'Bestanden worden versleuteld opgeslagen in Nederlandse datacenters' },
+                { icon: '🔒', tekst: 'Bestanden worden versleuteld opgeslagen in Europese datacenters' },
                 { icon: '🇳🇱', tekst: 'AVG-conform — uw data wordt nooit gedeeld met derden' },
                 { icon: '🗑️', tekst: 'U kunt uw bestanden op elk moment permanent verwijderen' },
                 { icon: '📄', tekst: 'Alleen gebruikt voor het opstellen van uw kascontrolerapport' },
