@@ -74,6 +74,7 @@ export default function AdminPortal() {
   const [uploads, setUploads] = useState<Upload[]>([])
   const [geselecteerdeKlant, setGeselecteerdeKlant] = useState<Klant | null>(null)
   const [toonRapport, setToonRapport] = useState<Rapport | null>(null)
+  const [verborgenRapportJaren, setVerborgenRapportJaren] = useState<Set<string>>(new Set())
   const [zoekterm, setZoekterm] = useState('')
   const [filter, setFilter] = useState<'alle' | 'betaald' | 'onbetaald' | 'rapport_klaar'>('alle')
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
@@ -205,8 +206,15 @@ export default function AdminPortal() {
     loadCoupons()
   }
 
-  function getRapportenVoorKlant(userId: string) {
-    return rapporten.filter(r => r.user_id === userId)
+  function rapportJaarKey(userId: string, boekjaar: string) {
+    return `${userId}:${boekjaar}`
+  }
+
+function getRapportenVoorKlant(userId: string) {
+    return rapporten.filter(r =>
+      r.user_id === userId &&
+      !verborgenRapportJaren.has(rapportJaarKey(r.user_id, r.boekjaar))
+    )
   }
 
   function getUploadsVoorKlant(userId: string) {
@@ -290,6 +298,8 @@ export default function AdminPortal() {
   async function handleDeleteRapport(userId: string, boekjaar: string) {
     if (!confirm(`Rapport voor boekjaar ${boekjaar} verwijderen?`)) return
 
+    setVerborgenRapportJaren(prev => new Set(prev).add(rapportJaarKey(userId, boekjaar)))
+
     try {
       const { error: rapportError } = await supabase
         .from('rapporten')
@@ -300,6 +310,11 @@ export default function AdminPortal() {
       if (rapportError) {
         console.error(rapportError)
         alert('Verwijderen mislukt')
+        setVerborgenRapportJaren(prev => {
+          const next = new Set(prev)
+          next.delete(rapportJaarKey(userId, boekjaar))
+          return next
+        })
         return
       }
 
@@ -325,6 +340,11 @@ export default function AdminPortal() {
     } catch (err) {
       console.error(err)
       alert('Verwijderen mislukt')
+      setVerborgenRapportJaren(prev => {
+        const next = new Set(prev)
+        next.delete(rapportJaarKey(userId, boekjaar))
+        return next
+      })
     }
   }
 
