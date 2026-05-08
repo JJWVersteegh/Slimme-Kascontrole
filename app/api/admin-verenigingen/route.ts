@@ -1,8 +1,12 @@
+import { requireAdmin } from '../_adminAuth'
 import { NextResponse } from 'next/server'
 
 export const dynamic = 'force-dynamic'
 
-export async function GET() {
+export async function GET(req: NextRequest) {
+  const admin = await requireAdmin(req)
+  if (!admin.ok) return NextResponse.json({ error: 'Niet geautoriseerd' }, { status: 403 })
+
   try {
     const { createClient } = await import('@supabase/supabase-js')
     const supabase = createClient(

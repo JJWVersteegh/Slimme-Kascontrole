@@ -14,6 +14,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: 'https://www.slimmekascontrole.nl/stichting-kascontrole', lastModified: new Date(), changeFrequency: 'monthly', priority: 0.8 },
     { url: 'https://www.slimmekascontrole.nl/bronnen', lastModified: new Date(), changeFrequency: 'monthly', priority: 0.7 },
     { url: 'https://www.slimmekascontrole.nl/voorwaarden', lastModified: new Date(), changeFrequency: 'monthly', priority: 0.5 },
-    { url: 'https://www.slimmekascontrole.nl/mijn-omgeving', lastModified: new Date(), changeFrequency: 'monthly', priority: 0.5 },
   ]
 }

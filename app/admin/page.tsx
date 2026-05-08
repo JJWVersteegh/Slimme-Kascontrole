@@ -121,7 +121,7 @@ export default function AdminPortal() {
 
   async function loadData() {
     try {
-      const res = await fetch('/api/admin-users')
+      const res = await fetch('/api/admin-users', { headers: { 'Authorization': `Bearer ${(await supabase.auth.getSession()).data.session?.access_token}` } })
       const data = await res.json()
 
       const logins: Record<string, string> = {}
@@ -140,7 +140,7 @@ export default function AdminPortal() {
       setUploads(allUploads.sort((a, b) => new Date(b.upload_datum).getTime() - new Date(a.upload_datum).getTime()))
 
       // Haal alle verenigingen op via service role
-      const vRes = await fetch('/api/admin-verenigingen')
+      const vRes = await fetch('/api/admin-verenigingen', { headers: { 'Authorization': `Bearer ${(await supabase.auth.getSession()).data.session?.access_token}` } })
       if (vRes.ok) {
         const vData = await vRes.json()
         setVerenigingen(vData)
@@ -157,7 +157,7 @@ export default function AdminPortal() {
   async function loadCoupons() {
     setCouponsLoading(true)
     try {
-      const res = await fetch('/api/coupons')
+      const res = await fetch('/api/coupons', { headers: { 'Authorization': `Bearer ${(await supabase.auth.getSession()).data.session?.access_token}` } })
       const data = await res.json()
       setCoupons(data)
     } catch (e) {

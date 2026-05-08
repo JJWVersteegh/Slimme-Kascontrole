@@ -1,3 +1,4 @@
+import { createClient } from '@supabase/supabase-js'
 import { NextRequest, NextResponse } from 'next/server'
 
 export const dynamic = 'force-dynamic'
@@ -21,6 +22,17 @@ const MAX_FILE_SIZE = 10 * 1024 * 1024
 const MAX_TOTAL_SIZE = 30 * 1024 * 1024
 
 export async function POST(req: NextRequest) {
+  // AUTH_FIX_UPLOAD_DIRECT: vertrouw nooit user_id uit FormData; gebruik de ingelogde Supabase user.
+  const authSupabase = createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    { global: { headers: { Authorization: req.headers.get('Authorization') || '' } } }
+  )
+  const { data: { user }, error: authError } = await authSupabase.auth.getUser()
+  if (authError || !user) {
+    return NextResponse.json({ error: 'Niet ingelogd' }, { status: 401 })
+  }
+
   try {
     const { createClient } = await import('@supabase/supabase-js')
     const supabase = createClient(

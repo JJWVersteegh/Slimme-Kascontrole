@@ -157,6 +157,7 @@ export default function MijnOmgeving() {
     formData.append('vereniging_id', geselecteerdeVereniging.id)
     Array.from(files).forEach(f => formData.append('files', f))
     try {
+      const { data: { session } } = await supabase.auth.getSession()
       const res = await fetch('/api/upload-direct', { method: 'POST', body: formData })
       const data = await res.json()
       if (data.success) {

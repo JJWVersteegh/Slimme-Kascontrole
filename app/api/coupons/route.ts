@@ -1,3 +1,4 @@
+import { requireAdmin } from '../_adminAuth'
 import { NextRequest, NextResponse } from 'next/server'
 
 async function getStripe() {
@@ -6,7 +7,10 @@ async function getStripe() {
 }
 
 // GET: haal alle coupons + promotiecodes op
-export async function GET() {
+export async function GET(req: NextRequest) {
+  const admin = await requireAdmin(req)
+  if (!admin.ok) return NextResponse.json({ error: 'Niet geautoriseerd' }, { status: 403 })
+
   try {
     const stripe = await getStripe()
     const coupons = await stripe.coupons.list({ limit: 50 })
@@ -40,6 +44,9 @@ export async function GET() {
 
 // POST: maak nieuwe coupon + promotiecode aan
 export async function POST(req: NextRequest) {
+  const admin = await requireAdmin(req)
+  if (!admin.ok) return NextResponse.json({ error: 'Niet geautoriseerd' }, { status: 403 })
+
   try {
     const stripe = await getStripe()
     const { name, amount_off, code, expires_at } = await req.json()
@@ -67,6 +74,9 @@ export async function POST(req: NextRequest) {
 
 // DELETE: archiveer/deactiveer promotiecode
 export async function DELETE(req: NextRequest) {
+  const admin = await requireAdmin(req)
+  if (!admin.ok) return NextResponse.json({ error: 'Niet geautoriseerd' }, { status: 403 })
+
   try {
     const stripe = await getStripe()
     const { promoCodeId } = await req.json()
