@@ -58,6 +58,7 @@ export default function MijnOmgeving() {
   const [uploadError, setUploadError] = useState('')
   const [rapportError, setRapportError] = useState('')
   const [toonRapport, setToonRapport] = useState(false)
+  const [verborgenRapportJaren, setVerborgenRapportJaren] = useState<Set<string>>(new Set())
   const [bevestigDelete, setBevestigDelete] = useState<string | null>(null)
   const [bevestigDeleteRapport, setBevestigDeleteRapport] = useState<string | null>(null)
   const [deleteRapportLoading, setDeleteRapportLoading] = useState(false)
@@ -216,22 +217,60 @@ export default function MijnOmgeving() {
     setDeleteLoading(null)
   }
 
-  async function handleDeleteRapport(bj: string) {
-    setDeleteRapportLoading(true)
+  async function handleDeleteRapport(userId: string, boekjaar: string) {
+    if (!confirm(`Rapport voor boekjaar ${boekjaar} verwijderen?`)) return
+
+    setVerborgenRapportJaren(prev => new Set(prev).add(rapportJaarKey(userId, boekjaar)))
+
     try {
-      const { error } = await supabase.from('rapporten')
+      const { error: rapportError } = await supabase
+        .from('rapporten')
         .delete()
-        .eq('user_id', user.id)
-        .eq('boekjaar', bj)
-        .eq('vereniging_id', geselecteerdeVereniging!.id)
-      if (error) throw error
-      setRapporten(prev => prev.filter(r => !(r.boekjaar === bj && r.vereniging_id === geselecteerdeVereniging!.id)))
-      setBevestigDeleteRapport(null)
-    } catch { setError('Verwijderen mislukt') }
-    setDeleteRapportLoading(false)
+        .eq('user_id', userId)
+        .eq('boekjaar', boekjaar)
+
+      if (rapportError) {
+        console.error(rapportError)
+
+        setVerborgenRapportJaren(prev => {
+          const next = new Set(prev)
+          next.delete(rapportJaarKey(userId, boekjaar))
+          return next
+        })
+
+        alert('Verwijderen mislukt')
+        return
+      }
+
+      await supabase
+        .from('uploads')
+        .delete()
+        .eq('user_id', userId)
+        .eq('boekjaar', boekjaar)
+
+      setRapporten(prev =>
+        prev.filter(r => !(r.user_id === userId && r.boekjaar === boekjaar))
+      )
+
+      setUploads(prev =>
+        prev.filter(u => !(u.user_id === userId && u.boekjaar === boekjaar))
+      )
+
+      await loadData()
+    } catch (err) {
+      console.error(err)
+
+      setVerborgenRapportJaren(prev => {
+        const next = new Set(prev)
+        next.delete(rapportJaarKey(userId, boekjaar))
+        return next
+      })
+
+      alert('Verwijderen mislukt')
+    }
   }
 
-  async function zoekAdres(pc: string, hn: string) {
+async function zoekAdres(pc: string, hn: string) {
     if (pc.replace(' ', '').length < 6 || !hn) return
     setAdresLaden(true)
     try {
