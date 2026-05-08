@@ -285,12 +285,11 @@ function getRapportenVoorKlant(userId: string) {
     }
 
     try {
-      const { data: updatedKlant, error } = await supabase
+      const { data: updatedKlanten, error } = await supabase
         .from('klanten')
         .update(klantUpdate)
         .eq('user_id', bewerkKlant.user_id)
         .select()
-        .single()
 
       if (error) {
         console.error(error)
@@ -298,22 +297,27 @@ function getRapportenVoorKlant(userId: string) {
         return
       }
 
-      // Werk direct lokale state bij met DB-resultaat
-      if (updatedKlant) {
-        setKlanten(prev =>
-          prev.map(k =>
-            k.user_id === bewerkKlant.user_id
-              ? { ...k, ...updatedKlant }
-              : k
-          )
-        )
+      const savedRow = Array.isArray(updatedKlanten)
+        ? updatedKlanten[0]
+        : updatedKlanten
 
-        setGeselecteerdeKlant(prev =>
-          prev && prev.user_id === bewerkKlant.user_id
-            ? { ...prev, ...updatedKlant }
-            : prev
+      const bijgewerkteKlant = savedRow
+        ? { ...bewerkKlant, ...savedRow }
+        : { ...bewerkKlant, ...klantUpdate }
+
+      setKlanten(prev =>
+        prev.map(k =>
+          k.user_id === bewerkKlant.user_id
+            ? { ...k, ...bijgewerkteKlant }
+            : k
         )
-      }
+      )
+
+      setGeselecteerdeKlant(prev =>
+        prev && prev.user_id === bewerkKlant.user_id
+          ? { ...prev, ...bijgewerkteKlant }
+          : prev
+      )
 
       // Vereniging opslaan indien aangepast
       if (bewerkVerenigingId && Object.keys(bewerkVerenigingData).length > 0) {
