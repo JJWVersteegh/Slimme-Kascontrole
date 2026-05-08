@@ -219,9 +219,13 @@ export default function MijnOmgeving() {
   async function handleDeleteRapport(bj: string) {
     setDeleteRapportLoading(true)
     try {
-      const { error } = await supabase.from('rapporten').update({ rapport_tekst: null, gegenereerd_op: null }).eq('user_id', user.id).eq('boekjaar', bj).eq('vereniging_id', geselecteerdeVereniging!.id)
+      const { error } = await supabase.from('rapporten')
+        .delete()
+        .eq('user_id', user.id)
+        .eq('boekjaar', bj)
+        .eq('vereniging_id', geselecteerdeVereniging!.id)
       if (error) throw error
-      setRapporten(prev => prev.map(r => r.boekjaar === bj ? { ...r, rapport_tekst: undefined, gegenereerd_op: undefined } : r))
+      setRapporten(prev => prev.filter(r => !(r.boekjaar === bj && r.vereniging_id === geselecteerdeVereniging!.id)))
       setBevestigDeleteRapport(null)
     } catch { setError('Verwijderen mislukt') }
     setDeleteRapportLoading(false)
@@ -381,8 +385,8 @@ export default function MijnOmgeving() {
         <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)', zIndex: 200, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px' }}>
           <div style={{ background: 'white', borderRadius: '16px', padding: '32px', maxWidth: '400px', width: '100%' }}>
             <div style={{ fontSize: '2rem', marginBottom: '12px' }}>🗑️</div>
-            <h3 style={{ fontWeight: '700', color: '#0f172a', marginBottom: '8px' }}>Rapport verwijderen?</h3>
-            <p style={{ color: '#475569', fontSize: '0.9rem', marginBottom: '24px', lineHeight: 1.6 }}>Het rapport voor boekjaar {bevestigDeleteRapport} wordt permanent verwijderd.</p>
+            <h3 style={{ fontWeight: '700', color: '#0f172a', marginBottom: '8px' }}>Boekjaar verwijderen?</h3>
+            <p style={{ color: '#475569', fontSize: '0.9rem', marginBottom: '24px', lineHeight: 1.6 }}>De rapport-/betaalregel voor boekjaar {bevestigDeleteRapport} wordt permanent verwijderd. Eventuele uploads kunt u apart verwijderen bij de uploads.</p>
             <div style={{ display: 'flex', gap: '12px' }}>
               <button onClick={() => setBevestigDeleteRapport(null)} style={{ flex: 1, padding: '12px', background: 'white', border: '1.5px solid #e2e8f0', borderRadius: '8px', cursor: 'pointer', fontWeight: '600', fontFamily: 'Outfit, sans-serif' }}>Annuleren</button>
               <button onClick={() => handleDeleteRapport(bevestigDeleteRapport)} disabled={deleteRapportLoading} style={{ flex: 1, padding: '12px', background: '#ef4444', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer', fontWeight: '600', fontFamily: 'Outfit, sans-serif' }}>
@@ -729,11 +733,9 @@ export default function MijnOmgeving() {
                 </div>
                 <div style={{ display: 'flex', gap: '12px' }}>
                   {huidigJaarGegenereerd && (
-                    <>
-                      <button onClick={() => setToonRapport(true)} style={{ background: 'white', color: '#1D4ED8', padding: '12px 20px', borderRadius: '8px', border: '1.5px solid #2563EB', fontSize: '0.9rem', fontWeight: '600', cursor: 'pointer', fontFamily: 'Outfit, sans-serif' }}>📄 Bekijk rapport</button>
-                      <button onClick={() => setBevestigDeleteRapport(rapportBoekjaar)} style={{ background: 'none', border: '1.5px solid #fecaca', color: '#ef4444', padding: '12px', borderRadius: '8px', cursor: 'pointer', fontSize: '0.85rem' }}>🗑️</button>
-                    </>
+                    <button onClick={() => setToonRapport(true)} style={{ background: 'white', color: '#1D4ED8', padding: '12px 20px', borderRadius: '8px', border: '1.5px solid #2563EB', fontSize: '0.9rem', fontWeight: '600', cursor: 'pointer', fontFamily: 'Outfit, sans-serif' }}>📄 Bekijk rapport</button>
                   )}
+                  <button onClick={() => setBevestigDeleteRapport(rapportBoekjaar)} style={{ background: 'none', border: '1.5px solid #fecaca', color: '#ef4444', padding: '12px', borderRadius: '8px', cursor: 'pointer', fontSize: '0.85rem' }} title="Boekjaar verwijderen">🗑️</button>
                   <button onClick={handleGenereerRapport} disabled={rapportLoading} style={{ background: '#2563EB', color: 'white', padding: '12px 24px', borderRadius: '8px', border: 'none', fontSize: '0.9rem', fontWeight: '700', cursor: rapportLoading ? 'not-allowed' : 'pointer', fontFamily: 'Outfit, sans-serif' }}>
                     {rapportLoading ? '⏳ Genereren...' : huidigJaarGegenereerd ? '🔄 Rapport vernieuwen' : '📊 Genereer rapport'}
                   </button>

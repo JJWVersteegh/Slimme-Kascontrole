@@ -348,7 +348,7 @@ export default function AdminPortal() {
       `}</style>
 
       {/* Nav */}
-      <nav className="nav-padding" style={{ background: 'rgba(255,255,255,0.97)', backdropFilter: 'blur(12px)', borderBottom: '1px solid #e2e8f0', padding: '0 48px', height: '72px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', position: 'sticky', top: 0, zIndex: 200, width: '100%', boxSizing: 'border-box', width: '100%', maxWidth: '100%', minWidth: 0 }}>
+      <nav className="nav-padding" style={{ background: 'rgba(255,255,255,0.97)', backdropFilter: 'blur(12px)', borderBottom: '1px solid #e2e8f0', padding: '0 48px', height: '72px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', position: 'sticky', top: 0, zIndex: 200, width: '100%', boxSizing: 'border-box', maxWidth: '100%', minWidth: 0 }}>
         <a href="/" style={{ display: 'flex', alignItems: 'center', gap: '10px', textDecoration: 'none' }}>
           <div style={{ background: '#2563EB', width: '38px', height: '38px', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <svg width="20" height="20" viewBox="0 0 22 22" fill="none"><polyline points="3,12 9,18 19,6" stroke="white" strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round" /></svg>
@@ -611,11 +611,11 @@ export default function AdminPortal() {
               <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
                 <div>
                   <label style={{ fontSize: '0.78rem', fontWeight: '600', color: '#64748b', display: 'block', marginBottom: '4px' }}>Naam (bijv. BVNL Vastgoed Chat) *</label>
-                  <input className="input-field" value={nieuwNaam} onChange={e => setNieuwNaam(e.target.value)} placeholder="Campagnenaam" style={{ width: '100%', padding: '9px 14px', border: '1.5px solid #e2e8f0', borderRadius: '8px', fontSize: '0.88rem', fontFamily: 'Outfit, sans-serif', outline: 'none', boxSizing: 'border-box', width: '100%', maxWidth: '100%', minWidth: 0 }} />
+                  <input className="input-field" value={nieuwNaam} onChange={e => setNieuwNaam(e.target.value)} placeholder="Campagnenaam" style={{ width: '100%', padding: '9px 14px', border: '1.5px solid #e2e8f0', borderRadius: '8px', fontSize: '0.88rem', fontFamily: 'Outfit, sans-serif', outline: 'none', boxSizing: 'border-box', maxWidth: '100%', minWidth: 0 }} />
                 </div>
                 <div>
                   <label style={{ fontSize: '0.78rem', fontWeight: '600', color: '#64748b', display: 'block', marginBottom: '4px' }}>Kortingsbedrag in € *</label>
-                  <input className="input-field" type="number" value={nieuwBedrag} onChange={e => setNieuwBedrag(e.target.value)} placeholder="bijv. 30" style={{ width: '100%', padding: '9px 14px', border: '1.5px solid #e2e8f0', borderRadius: '8px', fontSize: '0.88rem', fontFamily: 'Outfit, sans-serif', outline: 'none', boxSizing: 'border-box', width: '100%', maxWidth: '100%', minWidth: 0 }} />
+                  <input className="input-field" type="number" value={nieuwBedrag} onChange={e => setNieuwBedrag(e.target.value)} placeholder="bijv. 30" style={{ width: '100%', padding: '9px 14px', border: '1.5px solid #e2e8f0', borderRadius: '8px', fontSize: '0.88rem', fontFamily: 'Outfit, sans-serif', outline: 'none', boxSizing: 'border-box', maxWidth: '100%', minWidth: 0 }} />
                 </div>
                 <div>
                   <label style={{ fontSize: '0.78rem', fontWeight: '600', color: '#64748b', display: 'block', marginBottom: '4px' }}>Code *</label>
@@ -623,7 +623,7 @@ export default function AdminPortal() {
                 </div>
                 <div>
                   <label style={{ fontSize: '0.78rem', fontWeight: '600', color: '#64748b', display: 'block', marginBottom: '4px' }}>Vervaldatum (optioneel)</label>
-                  <input className="input-field" type="date" value={nieuwVerloopt} onChange={e => setNieuwVerloopt(e.target.value)} style={{ width: '100%', padding: '9px 14px', border: '1.5px solid #e2e8f0', borderRadius: '8px', fontSize: '0.88rem', fontFamily: 'Outfit, sans-serif', outline: 'none', boxSizing: 'border-box', width: '100%', maxWidth: '100%', minWidth: 0 }} />
+                  <input className="input-field" type="date" value={nieuwVerloopt} onChange={e => setNieuwVerloopt(e.target.value)} style={{ width: '100%', padding: '9px 14px', border: '1.5px solid #e2e8f0', borderRadius: '8px', fontSize: '0.88rem', fontFamily: 'Outfit, sans-serif', outline: 'none', boxSizing: 'border-box', maxWidth: '100%', minWidth: 0 }} />
                 </div>
                 {aanmakenFout && <div style={{ color: '#dc2626', fontSize: '0.82rem', background: '#fee2e2', padding: '8px 12px', borderRadius: '6px' }}>{aanmakenFout}</div>}
                 <button onClick={handleAanmaken} disabled={aanmakenLoading} style={{ background: '#2563EB', color: 'white', border: 'none', padding: '11px', borderRadius: '8px', cursor: 'pointer', fontSize: '0.9rem', fontWeight: '700', fontFamily: 'Outfit, sans-serif', opacity: aanmakenLoading ? 0.7 : 1 }}>
@@ -701,11 +701,11 @@ export default function AdminPortal() {
               <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
                 <div>
                   <label style={{ fontSize: '0.78rem', fontWeight: '600', color: '#64748b', display: 'block', marginBottom: '4px' }}>Naam</label>
-                  <input value={(bewerkData as any)['naam'] || ''} onChange={e => setBewerkData(d => ({ ...d, naam: e.target.value }))} style={{ width: '100%', padding: '9px 14px', border: '1.5px solid #e2e8f0', borderRadius: '8px', fontSize: '0.88rem', fontFamily: 'Outfit, sans-serif', outline: 'none', boxSizing: 'border-box', width: '100%', maxWidth: '100%', minWidth: 0 }} />
+                  <input value={(bewerkData as any)['naam'] || ''} onChange={e => setBewerkData(d => ({ ...d, naam: e.target.value }))} style={{ width: '100%', padding: '9px 14px', border: '1.5px solid #e2e8f0', borderRadius: '8px', fontSize: '0.88rem', fontFamily: 'Outfit, sans-serif', outline: 'none', boxSizing: 'border-box', maxWidth: '100%', minWidth: 0 }} />
                 </div>
                 <div>
                   <label style={{ fontSize: '0.78rem', fontWeight: '600', color: '#64748b', display: 'block', marginBottom: '4px' }}>Postcode + huisnummer <span style={{ fontWeight: '400', color: '#94a3b8' }}>(adres automatisch)</span></label>
-                  <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 2fr) minmax(90px, 1fr)', gap: '8px', marginBottom: '6px', width: '100%', maxWidth: '100%', overflow: 'hidden', width: '100%' }}>
+                  <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 2fr) minmax(90px, 1fr)', gap: '8px', marginBottom: '6px', width: '100%', maxWidth: '100%', overflow: 'hidden' }}>
                     <input value={(bewerkData as any)['postcode'] || ''} onChange={e => setBewerkData(d => ({ ...d, postcode: e.target.value }))} onKeyDown={e => e.key === 'Enter' && e.preventDefault()} placeholder="1234 AB" style={{ padding: '9px 14px', border: '1.5px solid #e2e8f0', borderRadius: '8px', fontSize: '0.88rem', fontFamily: 'Outfit, sans-serif', outline: 'none', boxSizing: 'border-box', width: '100%', maxWidth: '100%', minWidth: 0 }} />
                     <input value={adminProfielHuisnummer} onChange={e => setAdminProfielHuisnummer(e.target.value)} onKeyDown={e => e.key === 'Enter' && e.preventDefault()} onBlur={async e => {
                       const pc = (bewerkData as any)['postcode'] || ''
@@ -736,7 +736,7 @@ export default function AdminPortal() {
                 </div>
                 <div>
                   <label style={{ fontSize: '0.78rem', fontWeight: '600', color: '#64748b', display: 'block', marginBottom: '4px' }}>Telefoonnummer</label>
-                  <input value={(bewerkData as any)['telefoon'] || ''} onChange={e => setBewerkData(d => ({ ...d, telefoon: e.target.value }))} placeholder="06-12345678" style={{ width: '100%', padding: '9px 14px', border: '1.5px solid #e2e8f0', borderRadius: '8px', fontSize: '0.88rem', fontFamily: 'Outfit, sans-serif', outline: 'none', boxSizing: 'border-box', width: '100%', maxWidth: '100%', minWidth: 0 }} />
+                  <input value={(bewerkData as any)['telefoon'] || ''} onChange={e => setBewerkData(d => ({ ...d, telefoon: e.target.value }))} placeholder="06-12345678" style={{ width: '100%', padding: '9px 14px', border: '1.5px solid #e2e8f0', borderRadius: '8px', fontSize: '0.88rem', fontFamily: 'Outfit, sans-serif', outline: 'none', boxSizing: 'border-box', maxWidth: '100%', minWidth: 0 }} />
                 </div>
               </div>
             </div>
@@ -760,15 +760,15 @@ export default function AdminPortal() {
               <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
                 <div>
                   <label style={{ fontSize: '0.78rem', fontWeight: '600', color: '#64748b', display: 'block', marginBottom: '4px' }}>Naam vereniging</label>
-                  <input value={bewerkVveData.naam || ''} onChange={e => setBewerkVveData(d => ({ ...d, naam: e.target.value }))} style={{ width: '100%', padding: '9px 14px', border: '1.5px solid #e2e8f0', borderRadius: '8px', fontSize: '0.88rem', fontFamily: 'Outfit, sans-serif', outline: 'none', boxSizing: 'border-box', width: '100%', maxWidth: '100%', minWidth: 0 }} />
+                  <input value={bewerkVveData.naam || ''} onChange={e => setBewerkVveData(d => ({ ...d, naam: e.target.value }))} style={{ width: '100%', padding: '9px 14px', border: '1.5px solid #e2e8f0', borderRadius: '8px', fontSize: '0.88rem', fontFamily: 'Outfit, sans-serif', outline: 'none', boxSizing: 'border-box', maxWidth: '100%', minWidth: 0 }} />
                 </div>
                 <div>
                   <label style={{ fontSize: '0.78rem', fontWeight: '600', color: '#64748b', display: 'block', marginBottom: '4px' }}>KvK-nummer</label>
-                  <input value={bewerkVveData.kvk || ''} onChange={e => setBewerkVveData(d => ({ ...d, kvk: e.target.value }))} style={{ width: '100%', padding: '9px 14px', border: '1.5px solid #e2e8f0', borderRadius: '8px', fontSize: '0.88rem', fontFamily: 'Outfit, sans-serif', outline: 'none', boxSizing: 'border-box', width: '100%', maxWidth: '100%', minWidth: 0 }} />
+                  <input value={bewerkVveData.kvk || ''} onChange={e => setBewerkVveData(d => ({ ...d, kvk: e.target.value }))} style={{ width: '100%', padding: '9px 14px', border: '1.5px solid #e2e8f0', borderRadius: '8px', fontSize: '0.88rem', fontFamily: 'Outfit, sans-serif', outline: 'none', boxSizing: 'border-box', maxWidth: '100%', minWidth: 0 }} />
                 </div>
                 <div>
                   <label style={{ fontSize: '0.78rem', fontWeight: '600', color: '#64748b', display: 'block', marginBottom: '4px' }}>Postcode + huisnummer <span style={{ fontWeight: '400', color: '#94a3b8' }}>(adres automatisch)</span></label>
-                  <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 2fr) minmax(90px, 1fr)', gap: '8px', marginBottom: '6px', width: '100%', maxWidth: '100%', overflow: 'hidden', width: '100%' }}>
+                  <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 2fr) minmax(90px, 1fr)', gap: '8px', marginBottom: '6px', width: '100%', maxWidth: '100%', overflow: 'hidden' }}>
                     <input value={bewerkVveData.postcode || ''} onChange={e => setBewerkVveData(d => ({ ...d, postcode: e.target.value }))} onKeyDown={e => e.key === 'Enter' && e.preventDefault()} placeholder="1234 AB" style={{ padding: '9px 14px', border: '1.5px solid #e2e8f0', borderRadius: '8px', fontSize: '0.88rem', fontFamily: 'Outfit, sans-serif', outline: 'none', boxSizing: 'border-box', width: '100%', maxWidth: '100%', minWidth: 0 }} />
                     <input value={bewerkVveHuisnummer} onChange={e => setBewerkVveHuisnummer(e.target.value)} onKeyDown={e => e.key === 'Enter' && e.preventDefault()} onBlur={async e => {
                       const pc = bewerkVveData.postcode || ''
