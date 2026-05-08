@@ -284,47 +284,65 @@ function getRapportenVoorKlant(userId: string) {
       plaats: (bewerkData as any).plaats || '',
     }
 
-    const { error } = await supabase
-      .from("klanten")
-      .update(klantUpdate)
-      .eq("user_id", bewerkKlant.user_id)
+    try {
+      const { data: updatedKlant, error } = await supabase
+        .from('klanten')
+        .update(klantUpdate)
+        .eq('user_id', bewerkKlant.user_id)
+        .select()
+        .single()
 
-    if (error) {
-      alert("Fout bij opslaan: " + error.message)
-      return
+      if (error) {
+        console.error(error)
+        alert('Opslaan mislukt: ' + error.message)
+        return
+      }
+
+      // Werk direct lokale state bij met DB-resultaat
+      if (updatedKlant) {
+        setKlanten(prev =>
+          prev.map(k =>
+            k.user_id === bewerkKlant.user_id
+              ? { ...k, ...updatedKlant }
+              : k
+          )
+        )
+
+        setGeselecteerdeKlant(prev =>
+          prev && prev.user_id === bewerkKlant.user_id
+            ? { ...prev, ...updatedKlant }
+            : prev
+        )
+      }
+
+      // Vereniging opslaan indien aangepast
+      if (bewerkVerenigingId && Object.keys(bewerkVerenigingData).length > 0) {
+        const { data: { session } } = await supabase.auth.getSession()
+
+        await fetch('/api/admin-update-vereniging', {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${session?.access_token}`
+          },
+          body: JSON.stringify({
+            vereniging_id: bewerkVerenigingId,
+            data: bewerkVerenigingData
+          })
+        })
+      }
+
+      setBewerkKlant(null)
+      setBewerkData({})
+      setBewerkVerenigingData({})
+      setBewerkVerenigingId(null)
+      setAdminProfielHuisnummer('')
+
+      await loadData()
+    } catch (err) {
+      console.error(err)
+      alert('Opslaan mislukt')
     }
-
-    setKlanten(prev =>
-      prev.map(k =>
-        k.user_id === bewerkKlant.user_id
-          ? { ...k, ...klantUpdate }
-          : k
-      )
-    )
-
-    setGeselecteerdeKlant(prev =>
-      prev && prev.user_id === bewerkKlant.user_id
-        ? { ...prev, ...klantUpdate }
-        : prev
-    )
-
-    // Update ook de vereniging via service role als die modaldata is aangepast
-    if (bewerkVerenigingId && Object.keys(bewerkVerenigingData).length > 0) {
-      const { data: { session } } = await supabase.auth.getSession()
-      await fetch('/api/admin-update-vereniging', {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${session?.access_token}` },
-        body: JSON.stringify({ vereniging_id: bewerkVerenigingId, data: bewerkVerenigingData })
-      })
-    }
-
-    setBewerkKlant(null)
-    setBewerkData({})
-    setBewerkVerenigingData({})
-    setBewerkVerenigingId(null)
-    setAdminProfielHuisnummer('')
-
-    await loadData()
   }
 
   async function handleSetBetaald(userId: string, boekjaar: string, betaald: boolean) {
