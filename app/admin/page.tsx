@@ -77,7 +77,6 @@ export default function AdminPortal() {
   const [uploads, setUploads] = useState<Upload[]>([])
   const [geselecteerdeKlant, setGeselecteerdeKlant] = useState<Klant | null>(null)
   const [toonRapport, setToonRapport] = useState<Rapport | null>(null)
-  const [verborgenRapportJaren, setVerborgenRapportJaren] = useState<Set<string>>(new Set())
   const [zoekterm, setZoekterm] = useState('')
   const [filter, setFilter] = useState<'alle' | 'betaald' | 'onbetaald' | 'rapport_klaar'>('alle')
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
@@ -209,15 +208,8 @@ export default function AdminPortal() {
     loadCoupons()
   }
 
-  function rapportJaarKey(userId: string, boekjaar: string) {
-    return `${userId}:${boekjaar}`
-  }
-
-function getRapportenVoorKlant(userId: string) {
-    return rapporten.filter(r =>
-      r.user_id === userId &&
-      !verborgenRapportJaren.has(rapportJaarKey(r.user_id, r.boekjaar))
-    )
+  function getRapportenVoorKlant(userId: string) {
+    return rapporten.filter(r => r.user_id === userId)
   }
 
   function getUploadsVoorKlant(userId: string) {
@@ -285,24 +277,29 @@ function getRapportenVoorKlant(userId: string) {
     }
 
     try {
-      const { data: updatedKlanten, error } = await supabase
-        .from('klanten')
-        .update(klantUpdate)
-        .eq('user_id', bewerkKlant.user_id)
-        .select()
+      const { data: { session } } = await supabase.auth.getSession()
 
-      if (error) {
-        console.error(error)
-        alert('Opslaan mislukt: ' + error.message)
+      const res = await fetch('/api/admin-update-klant', {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${session?.access_token}`
+        },
+        body: JSON.stringify({
+          user_id: bewerkKlant.user_id,
+          data: klantUpdate
+        })
+      })
+
+      const result = await res.json()
+
+      if (!res.ok) {
+        alert('Opslaan mislukt: ' + (result.error || 'Onbekende fout'))
         return
       }
 
-      const savedRow = Array.isArray(updatedKlanten)
-        ? updatedKlanten[0]
-        : updatedKlanten
-
-      const bijgewerkteKlant = savedRow
-        ? { ...bewerkKlant, ...savedRow }
+      const bijgewerkteKlant = result.klant
+        ? { ...bewerkKlant, ...result.klant }
         : { ...bewerkKlant, ...klantUpdate }
 
       setKlanten(prev =>
@@ -321,8 +318,6 @@ function getRapportenVoorKlant(userId: string) {
 
       // Vereniging opslaan indien aangepast
       if (bewerkVerenigingId && Object.keys(bewerkVerenigingData).length > 0) {
-        const { data: { session } } = await supabase.auth.getSession()
-
         await fetch('/api/admin-update-vereniging', {
           method: 'PATCH',
           headers: {
@@ -356,54 +351,16 @@ function getRapportenVoorKlant(userId: string) {
 
   async function handleDeleteRapport(userId: string, boekjaar: string) {
     if (!confirm(`Rapport voor boekjaar ${boekjaar} verwijderen?`)) return
-
-    setVerborgenRapportJaren(prev => new Set(prev).add(rapportJaarKey(userId, boekjaar)))
-
-    try {
-      const { error: rapportError } = await supabase
-        .from('rapporten')
-        .delete()
-        .eq('user_id', userId)
-        .eq('boekjaar', boekjaar)
-
-      if (rapportError) {
-        console.error(rapportError)
-        alert('Verwijderen mislukt')
-        setVerborgenRapportJaren(prev => {
-          const next = new Set(prev)
-          next.delete(rapportJaarKey(userId, boekjaar))
-          return next
-        })
-        return
-      }
-
-      const { error: uploadError } = await supabase
-        .from('uploads')
-        .delete()
-        .eq('user_id', userId)
-        .eq('boekjaar', boekjaar)
-
-      if (uploadError) {
-        console.error(uploadError)
-      }
-
-      setRapporten(prev =>
-        prev.filter(r => !(r.user_id === userId && r.boekjaar === boekjaar))
-      )
-
-      setUploads(prev =>
-        prev.filter(u => !(u.user_id === userId && u.boekjaar === boekjaar))
-      )
-
-      await loadData()
-    } catch (err) {
-      console.error(err)
+    const { data: { session } } = await supabase.auth.getSession()
+    const res = await fetch('/api/admin-delete-vereniging', {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${session?.access_token}` },
+      body: JSON.stringify({ rapport_boekjaar: boekjaar, user_id: userId })
+    })
+    if (res.ok) {
+      loadData()
+    } else {
       alert('Verwijderen mislukt')
-      setVerborgenRapportJaren(prev => {
-        const next = new Set(prev)
-        next.delete(rapportJaarKey(userId, boekjaar))
-        return next
-      })
     }
   }
 
@@ -822,7 +779,7 @@ function getRapportenVoorKlant(userId: string) {
                         const data = await res.json()
                         if (data.response?.docs?.[0]) {
                           const doc = data.response.docs[0]
-                          setBewerkData(d => ({ ...d, postcode: pc, adres: `${doc.straatnaam || ''} ${hn}`, plaats: doc.woonplaatsnaam || '' }))
+                          setBewerkData(d => ({ ...d, adres: `${doc.straatnaam || ''} ${hn}`, plaats: doc.woonplaatsnaam || '' }))
                         }
                       } catch {}
                       setAdminProfielAdresLaden(false)
