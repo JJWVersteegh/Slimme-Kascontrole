@@ -18,6 +18,10 @@ interface Klant {
   id: string
   email: string
   naam?: string
+  telefoon?: string
+  adres?: string
+  postcode?: string
+  plaats?: string
 }
 
 interface Vereniging {
@@ -292,7 +296,7 @@ async function zoekAdres(pc: string, hn: string) {
       const data = await res.json()
       if (data.response?.docs?.[0]) {
         const doc = data.response.docs[0]
-        setProfielForm(p => ({ ...p, adres: `${doc.straatnaam || ''} ${hn}`, plaats: doc.woonplaatsnaam || '' }))
+        setProfielForm(p => ({ ...p, postcode: pc, adres: `${doc.straatnaam || ''} ${hn}`, plaats: doc.woonplaatsnaam || '' }))
       }
     } catch {}
     setProfielAdresLaden(false)
@@ -301,12 +305,69 @@ async function zoekAdres(pc: string, hn: string) {
   async function handleProfielSave(e: React.FormEvent) {
     e.preventDefault()
     setProfielSaving(true)
+
     try {
-      await supabase.from('klanten').update({ naam: profielForm.naam, telefoon: profielForm.telefoon, adres: profielForm.adres, postcode: profielForm.postcode, plaats: profielForm.plaats }).eq('user_id', user.id)
-      setKlant(prev => prev ? { ...prev, ...profielForm } : prev)
+      let updateData = {
+        naam: profielForm.naam,
+        telefoon: profielForm.telefoon,
+        adres: profielForm.adres,
+        postcode: profielForm.postcode,
+        plaats: profielForm.plaats,
+      }
+
+      // Als de gebruiker direct na postcode/huisnummer op Opslaan klikt,
+      // kan de onBlur-adrescheck nog bezig zijn. Daarom checken we hier nogmaals.
+      if (profielForm.postcode && profielHuisnummer) {
+        try {
+          const pc = profielForm.postcode
+          const hn = profielHuisnummer
+          const res = await fetch(`https://api.pdok.nl/bzk/locatieserver/search/v3_1/free?q=${pc.replace(' ', '')}+${hn}&fq=type:adres&rows=1`)
+          const data = await res.json()
+
+          if (data.response?.docs?.[0]) {
+            const doc = data.response.docs[0]
+            updateData = {
+              ...updateData,
+              postcode: pc,
+              adres: `${doc.straatnaam || ''} ${hn}`,
+              plaats: doc.woonplaatsnaam || '',
+            }
+          }
+        } catch {
+          // Als lookup faalt, slaan we de handmatig ingevulde velden alsnog op.
+        }
+      }
+
+      const { data, error } = await supabase
+        .from('klanten')
+        .update(updateData)
+        .eq('user_id', user.id)
+        .select()
+        .single()
+
+      if (error) {
+        setError('Opslaan mislukt: ' + error.message)
+        setProfielSaving(false)
+        return
+      }
+
+      const opgeslagenKlant = data || { ...klant, ...updateData }
+
+      setKlant(opgeslagenKlant)
+      setProfielForm({
+        naam: opgeslagenKlant?.naam || '',
+        telefoon: opgeslagenKlant?.telefoon || '',
+        adres: opgeslagenKlant?.adres || '',
+        postcode: opgeslagenKlant?.postcode || '',
+        plaats: opgeslagenKlant?.plaats || '',
+      })
+      setProfielHuisnummer('')
       setProfielSuccess(true)
       setTimeout(() => { setProfielSuccess(false); setToonProfiel(false) }, 1500)
-    } catch { setError('Opslaan mislukt') }
+    } catch {
+      setError('Opslaan mislukt')
+    }
+
     setProfielSaving(false)
   }
 
@@ -465,7 +526,7 @@ async function zoekAdres(pc: string, hn: string) {
               </div>
               <div style={{ marginBottom: '14px' }}>
                 <label style={{ display: 'block', fontWeight: '600', color: '#0f172a', marginBottom: '5px', fontSize: '0.88rem' }}>Postcode + huisnummer <span style={{ fontWeight: '400', color: '#94a3b8', fontSize: '0.78rem' }}>(adres wordt automatisch ingevuld)</span></label>
-                <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '8px', marginBottom: '6px' }}>
+                <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 2fr) minmax(90px, 1fr)', gap: '8px', marginBottom: '6px', width: '100%', maxWidth: '100%', overflow: 'hidden' }}>
                   <input value={profielForm.postcode} onChange={e => setProfielForm(p => ({ ...p, postcode: e.target.value }))} onKeyDown={e => e.key === 'Enter' && e.preventDefault()} placeholder="1234 AB" style={inp} />
                   <input value={profielHuisnummer} onChange={e => setProfielHuisnummer(e.target.value)} onBlur={e => zoekAdresProfiel(profielForm.postcode, e.target.value)} onKeyDown={e => e.key === 'Enter' && e.preventDefault()} placeholder="Nr" style={inp} />
                 </div>
@@ -514,7 +575,7 @@ async function zoekAdres(pc: string, hn: string) {
               </div>
               <div style={{ marginBottom: '14px' }}>
                 <label style={{ display: 'block', fontWeight: '600', color: '#0f172a', marginBottom: '5px', fontSize: '0.88rem' }}>Postcode + huisnummer <span style={{ fontWeight: '400', color: '#94a3b8', fontSize: '0.78rem' }}>(adres wordt automatisch ingevuld)</span></label>
-                <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '8px', marginBottom: '6px' }}>
+                <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 2fr) minmax(90px, 1fr)', gap: '8px', marginBottom: '6px', width: '100%', maxWidth: '100%', overflow: 'hidden' }}>
                   <input value={verenigingForm.postcode} onChange={e => setVerenigingForm(p => ({ ...p, postcode: e.target.value }))} onKeyDown={e => e.key === 'Enter' && e.preventDefault()} placeholder="1234 AB" style={inp} />
                   <input placeholder="Nr" onBlur={e => zoekAdres(verenigingForm.postcode, e.target.value)} style={inp} />
                 </div>

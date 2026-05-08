@@ -12,6 +12,9 @@ interface Klant {
   email: string
   naam?: string
   telefoon?: string
+  adres?: string
+  postcode?: string
+  plaats?: string
   plan: string
   rapport_beschikbaar: boolean
 }
@@ -272,9 +275,40 @@ function getRapportenVoorKlant(userId: string) {
 
   async function handleSaveBewerkKlant() {
     if (!bewerkKlant) return
-    const { error } = await supabase.from("klanten").update(bewerkData).eq("user_id", bewerkKlant.user_id)
-    if (error) { alert("Fout bij opslaan: " + error.message); return }
-    // Update ook de vereniging via service role
+
+    const klantUpdate = {
+      naam: (bewerkData as any).naam || '',
+      telefoon: (bewerkData as any).telefoon || '',
+      adres: (bewerkData as any).adres || '',
+      postcode: (bewerkData as any).postcode || '',
+      plaats: (bewerkData as any).plaats || '',
+    }
+
+    const { error } = await supabase
+      .from("klanten")
+      .update(klantUpdate)
+      .eq("user_id", bewerkKlant.user_id)
+
+    if (error) {
+      alert("Fout bij opslaan: " + error.message)
+      return
+    }
+
+    setKlanten(prev =>
+      prev.map(k =>
+        k.user_id === bewerkKlant.user_id
+          ? { ...k, ...klantUpdate }
+          : k
+      )
+    )
+
+    setGeselecteerdeKlant(prev =>
+      prev && prev.user_id === bewerkKlant.user_id
+        ? { ...prev, ...klantUpdate }
+        : prev
+    )
+
+    // Update ook de vereniging via service role als die modaldata is aangepast
     if (bewerkVerenigingId && Object.keys(bewerkVerenigingData).length > 0) {
       const { data: { session } } = await supabase.auth.getSession()
       await fetch('/api/admin-update-vereniging', {
@@ -283,11 +317,14 @@ function getRapportenVoorKlant(userId: string) {
         body: JSON.stringify({ vereniging_id: bewerkVerenigingId, data: bewerkVerenigingData })
       })
     }
+
     setBewerkKlant(null)
     setBewerkData({})
     setBewerkVerenigingData({})
     setBewerkVerenigingId(null)
-    loadData()
+    setAdminProfielHuisnummer('')
+
+    await loadData()
   }
 
   async function handleSetBetaald(userId: string, boekjaar: string, betaald: boolean) {
@@ -763,7 +800,7 @@ function getRapportenVoorKlant(userId: string) {
                         const data = await res.json()
                         if (data.response?.docs?.[0]) {
                           const doc = data.response.docs[0]
-                          setBewerkData(d => ({ ...d, adres: `${doc.straatnaam || ''} ${hn}`, plaats: doc.woonplaatsnaam || '' }))
+                          setBewerkData(d => ({ ...d, postcode: pc, adres: `${doc.straatnaam || ''} ${hn}`, plaats: doc.woonplaatsnaam || '' }))
                         }
                       } catch {}
                       setAdminProfielAdresLaden(false)
