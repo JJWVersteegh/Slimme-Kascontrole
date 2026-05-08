@@ -291,24 +291,27 @@ export default function AdminPortal() {
     if (!confirm(`Rapport voor boekjaar ${boekjaar} verwijderen?`)) return
 
     try {
-      const { error } = await supabase
+      const { error: rapportError } = await supabase
         .from('rapporten')
         .delete()
         .eq('user_id', userId)
         .eq('boekjaar', boekjaar)
 
-      if (error) {
-        console.error(error)
+      if (rapportError) {
+        console.error(rapportError)
         alert('Verwijderen mislukt')
         return
       }
 
-      // verwijder ook uploads voor dit boekjaar indien aanwezig
-      await supabase
+      const { error: uploadError } = await supabase
         .from('uploads')
         .delete()
         .eq('user_id', userId)
         .eq('boekjaar', boekjaar)
+
+      if (uploadError) {
+        console.error(uploadError)
+      }
 
       setRapporten(prev =>
         prev.filter(r => !(r.user_id === userId && r.boekjaar === boekjaar))
@@ -318,15 +321,9 @@ export default function AdminPortal() {
         prev.filter(u => !(u.user_id === userId && u.boekjaar === boekjaar))
       )
 
-      loadData()
+      await loadData()
     } catch (err) {
       console.error(err)
-      alert('Verwijderen mislukt')
-    }
-  })
-    if (res.ok) {
-      loadData()
-    } else {
       alert('Verwijderen mislukt')
     }
   }
