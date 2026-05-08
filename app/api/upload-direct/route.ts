@@ -30,6 +30,7 @@ export async function POST(req: NextRequest) {
   )
   const { data: { user }, error: authError } = await authSupabase.auth.getUser()
   if (authError || !user) {
+    console.error('UPLOAD AUTH ERROR', authError)
     return NextResponse.json({ error: 'Niet ingelogd' }, { status: 401 })
   }
 
