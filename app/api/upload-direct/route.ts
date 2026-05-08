@@ -26,11 +26,10 @@ export async function POST(req: NextRequest) {
   const authSupabase = createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    { global: { headers: { Authorization: req.headers.get('Authorization') || '' } } }
+    { global: { headers: { Authorization: req.headers.get('Authorization') || req.headers.get('authorization') || '' } } }
   )
   const { data: { user }, error: authError } = await authSupabase.auth.getUser()
   if (authError || !user) {
-    console.error('UPLOAD AUTH ERROR', authError)
     return NextResponse.json({ error: 'Niet ingelogd' }, { status: 401 })
   }
 
@@ -42,13 +41,13 @@ export async function POST(req: NextRequest) {
     )
 
     const formData = await req.formData()
-    const userId = formData.get('user_id') as string
+    const userId = user.id
     const boekjaar = formData.get('boekjaar') as string
     const toelichting = formData.get('toelichting') as string
     const verenigingId = formData.get('vereniging_id') as string | null
     const files = formData.getAll('files') as File[]
 
-    if (!userId) return NextResponse.json({ error: 'Niet ingelogd' }, { status: 401 })
+    
 
     let totalSize = 0
     for (const file of files) {
