@@ -80,11 +80,17 @@ export default function MijnOmgeving() {
   const [toonVerenigingForm, setToonVerenigingForm] = useState(false)
   const [bewerkVereniging, setBewerkVereniging] = useState<Vereniging | null>(null)
   const [verenigingForm, setVerenigingForm] = useState({ naam: '', kvk: '', adres: '', postcode: '', plaats: '' })
+  const [verenigingHuisnummer, setVerenigingHuisnummer] = useState('')
   const [verenigingSaving, setVerenigingSaving] = useState(false)
   const [adresLaden, setAdresLaden] = useState(false)
 
   const router = useRouter()
   const currentYear = new Date().getFullYear()
+
+  function haalHuisnummerUitAdres(adres?: string) {
+    const match = (adres || '').match(/\b(\d+[A-Za-z0-9\-]*)\b\s*$/)
+    return match ? match[1] : ''
+  }
   const [rapportBoekjaar, setRapportBoekjaar] = useState(currentYear.toString())
   const jaren = [currentYear + 1, currentYear, currentYear - 1, currentYear - 2, currentYear - 3]
   const ADMIN_EMAIL = 'info@slimmekascontrole.nl'
@@ -284,6 +290,7 @@ export default function MijnOmgeving() {
 
 async function zoekAdres(pc: string, hn: string) {
     if (pc.replace(' ', '').length < 6 || !hn) return
+    setVerenigingHuisnummer(hn)
     setAdresLaden(true)
     try {
       const res = await fetch(`https://api.pdok.nl/bzk/locatieserver/search/v3_1/free?q=${pc.replace(' ', '')}+${hn}&fq=type:adres&rows=1`)
@@ -298,6 +305,7 @@ async function zoekAdres(pc: string, hn: string) {
 
   async function zoekAdresProfiel(pc: string, hn: string) {
     if (pc.replace(' ', '').length < 6 || !hn) return
+    setProfielHuisnummer(hn)
     setProfielAdresLaden(true)
     try {
       const res = await fetch(`https://api.pdok.nl/bzk/locatieserver/search/v3_1/free?q=${pc.replace(' ', '')}+${hn}&fq=type:adres&rows=1`)
@@ -383,9 +391,11 @@ async function zoekAdres(pc: string, hn: string) {
     if (v) {
       setBewerkVereniging(v)
       setVerenigingForm({ naam: v.naam, kvk: v.kvk || '', adres: v.adres || '', postcode: v.postcode || '', plaats: v.plaats || '' })
+      setVerenigingHuisnummer(haalHuisnummerUitAdres(v.adres))
     } else {
       setBewerkVereniging(null)
       setVerenigingForm({ naam: '', kvk: '', adres: '', postcode: '', plaats: '' })
+      setVerenigingHuisnummer('')
     }
     setToonVerenigingForm(true)
   }
@@ -395,15 +405,40 @@ async function zoekAdres(pc: string, hn: string) {
     if (!verenigingForm.naam) return
     setVerenigingSaving(true)
     try {
+      let saveData = { ...verenigingForm }
+
+      // Ook bij direct opslaan na postcode/huisnummer nogmaals ophalen,
+      // zodat het echte adresveld inclusief huisnummer wordt opgeslagen.
+      if (verenigingForm.postcode && verenigingHuisnummer) {
+        try {
+          const pc = verenigingForm.postcode
+          const hn = verenigingHuisnummer
+          const res = await fetch(`https://api.pdok.nl/bzk/locatieserver/search/v3_1/free?q=${pc.replace(' ', '')}+${hn}&fq=type:adres&rows=1`)
+          const data = await res.json()
+          if (data.response?.docs?.[0]) {
+            const doc = data.response.docs[0]
+            saveData = {
+              ...saveData,
+              postcode: pc,
+              adres: `${doc.straatnaam || ''} ${hn}`,
+              plaats: doc.woonplaatsnaam || '',
+            }
+            setVerenigingForm(saveData)
+          }
+        } catch {
+          // Als lookup faalt, slaan we handmatig ingevulde velden alsnog op.
+        }
+      }
+
       if (bewerkVereniging) {
-        const { data } = await supabase.from('verenigingen').update(verenigingForm).eq('id', bewerkVereniging.id).select().single()
+        const { data } = await supabase.from('verenigingen').update(saveData).eq('id', bewerkVereniging.id).select().single()
         if (data) {
           setVerenigingen(prev => prev.map(v => v.id === data.id ? data : v))
           if (geselecteerdeVereniging?.id === data.id) setGeselecteerdeVereniging(data)
         }
       } else {
         if (verenigingen.length >= 10) { setError('Maximum van 10 verenigingen bereikt'); setVerenigingSaving(false); return }
-        const { data } = await supabase.from('verenigingen').insert({ ...verenigingForm, user_id: user.id }).select().single()
+        const { data } = await supabase.from('verenigingen').insert({ ...saveData, user_id: user.id }).select().single()
         if (data) {
           setVerenigingen(prev => [...prev, data])
           setGeselecteerdeVereniging(data)
@@ -649,7 +684,7 @@ async function zoekAdres(pc: string, hn: string) {
                 <label style={{ display: 'block', fontWeight: '600', color: '#0f172a', marginBottom: '5px', fontSize: '0.84rem' }}>Postcode + huisnummer <span style={{ fontWeight: '400', color: '#94a3b8', fontSize: '0.78rem' }}>(adres wordt automatisch ingevuld)</span></label>
                 <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 2fr) minmax(90px, 1fr)', gap: '8px', marginBottom: '6px', width: '100%', maxWidth: '100%', overflow: 'hidden' }}>
                   <input value={verenigingForm.postcode} onChange={e => setVerenigingForm(p => ({ ...p, postcode: e.target.value }))} onKeyDown={e => e.key === 'Enter' && e.preventDefault()} placeholder="1234 AB" style={inp} />
-                  <input placeholder="Nr" onBlur={e => zoekAdres(verenigingForm.postcode, e.target.value)} style={inp} />
+                  <input value={verenigingHuisnummer} onChange={e => setVerenigingHuisnummer(e.target.value)} onBlur={e => zoekAdres(verenigingForm.postcode, e.target.value)} onKeyDown={e => e.key === 'Enter' && e.preventDefault()} placeholder="Nr" style={inp} />
                 </div>
                 {adresLaden && <p style={{ fontSize: '0.78rem', color: '#2563EB', margin: '0 0 6px' }}>🔍 Adres opzoeken...</p>}
                 {verenigingForm.adres && verenigingForm.plaats && (
@@ -715,7 +750,7 @@ async function zoekAdres(pc: string, hn: string) {
               <span style={{ fontWeight: '600', color: '#0f172a' }}>{klant?.naam || ''}</span>
               <span style={{ fontSize: '0.75rem', color: '#94a3b8' }}>{user?.email}</span>
             </span>
-            <button onClick={() => setToonProfiel(true)} style={{ background: 'none', border: '1.5px solid #bfdbfe', color: '#1e3a8a', padding: '7px 12px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.8rem', fontFamily: 'Outfit, sans-serif', fontWeight: '500' }}>✏️ Gegevens</button>
+            <button onClick={() => { setProfielHuisnummer(haalHuisnummerUitAdres(profielForm.adres)); setToonProfiel(true) }} style={{ background: 'none', border: '1.5px solid #bfdbfe', color: '#1e3a8a', padding: '7px 12px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.8rem', fontFamily: 'Outfit, sans-serif', fontWeight: '500' }}>✏️ Gegevens</button>
             <button onClick={handleLogout} style={{ background: '#2563EB', color: 'white', border: 'none', padding: '9px 20px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.84rem', fontFamily: 'Outfit, sans-serif', fontWeight: '600' }}>Uitloggen</button>
           </li>
         </ul>
@@ -739,7 +774,7 @@ async function zoekAdres(pc: string, hn: string) {
               <span style={{ fontWeight: '600', color: '#0f172a' }}>{klant?.naam || ''}</span>
               <span style={{ fontSize: '0.75rem', color: '#94a3b8' }}>{user?.email}</span>
             </span>
-            <button onClick={() => { setMobileMenuOpen(false); setToonProfiel(true) }} style={{ background: 'none', border: '1.5px solid #bfdbfe', color: '#1e3a8a', padding: '12px 16px', borderRadius: '8px', cursor: 'pointer', fontSize: '0.84rem', fontWeight: '600', textAlign: 'left', fontFamily: 'Outfit, sans-serif' }}>✏️ Gegevens bewerken</button>
+            <button onClick={() => { setMobileMenuOpen(false); setProfielHuisnummer(haalHuisnummerUitAdres(profielForm.adres)); setToonProfiel(true) }} style={{ background: 'none', border: '1.5px solid #bfdbfe', color: '#1e3a8a', padding: '12px 16px', borderRadius: '8px', cursor: 'pointer', fontSize: '0.84rem', fontWeight: '600', textAlign: 'left', fontFamily: 'Outfit, sans-serif' }}>✏️ Gegevens bewerken</button>
             <button onClick={handleLogout} style={{ background: '#2563EB', color: 'white', border: 'none', padding: '12px 16px', borderRadius: '8px', cursor: 'pointer', fontSize: '0.84rem', fontWeight: '700', textAlign: 'center', fontFamily: 'Outfit, sans-serif' }}>Uitloggen</button>
           </div>
         </div>

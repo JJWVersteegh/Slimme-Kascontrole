@@ -110,6 +110,11 @@ export default function AdminPortal() {
   const [lastLogins, setLastLogins] = useState<Record<string, string>>({})
   const router = useRouter()
 
+  function haalHuisnummerUitAdres(adres?: string) {
+    const match = (adres || '').match(/\b(\d+[A-Za-z0-9\-]*)\b\s*$/)
+    return match ? match[1] : ''
+  }
+
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (!session) { router.push('/registreer'); return }
@@ -270,12 +275,34 @@ export default function AdminPortal() {
   async function handleSaveBewerkKlant() {
     if (!bewerkKlant) return
 
-    const klantUpdate = {
+    let klantUpdate = {
       naam: (bewerkData as any).naam || '',
       telefoon: (bewerkData as any).telefoon || '',
       adres: (bewerkData as any).adres || '',
       postcode: (bewerkData as any).postcode || '',
       plaats: (bewerkData as any).plaats || '',
+    }
+
+    // Ook in admin opnieuw ophalen bij opslaan, zodat adres + huisnummer echt worden opgeslagen.
+    if (klantUpdate.postcode && adminProfielHuisnummer) {
+      try {
+        const pc = klantUpdate.postcode
+        const hn = adminProfielHuisnummer
+        const res = await fetch(`https://api.pdok.nl/bzk/locatieserver/search/v3_1/free?q=${pc.replace(' ', '')}+${hn}&fq=type:adres&rows=1`)
+        const data = await res.json()
+        if (data.response?.docs?.[0]) {
+          const doc = data.response.docs[0]
+          klantUpdate = {
+            ...klantUpdate,
+            postcode: pc,
+            adres: `${doc.straatnaam || ''} ${hn}`,
+            plaats: doc.woonplaatsnaam || '',
+          }
+          setBewerkData(d => ({ ...d, ...klantUpdate }))
+        }
+      } catch {
+        // Als lookup faalt, slaan we handmatig ingevulde velden alsnog op.
+      }
     }
 
     try {
@@ -549,7 +576,7 @@ export default function AdminPortal() {
                       <button onClick={() => setGeselecteerdeKlant(null)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#94a3b8', fontSize: '1.2rem', lineHeight: 1 }}>×</button>
                     </div>
                     <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-                      <button onClick={() => { setBewerkKlant(geselecteerdeKlant); setBewerkData({ naam: geselecteerdeKlant!.naam, telefoon: geselecteerdeKlant!.telefoon, adres: (geselecteerdeKlant as any).adres || '', postcode: (geselecteerdeKlant as any).postcode || '', plaats: (geselecteerdeKlant as any).plaats || '' }); setAdminProfielHuisnummer('') }} style={{ background: '#eff6ff', color: '#2563EB', border: '1px solid #bfdbfe', padding: '5px 10px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.78rem', fontWeight: '600', fontFamily: 'Outfit, sans-serif' }}>✏️ Bewerken</button>
+                      <button onClick={() => { setBewerkKlant(geselecteerdeKlant); setBewerkData({ naam: geselecteerdeKlant!.naam, telefoon: geselecteerdeKlant!.telefoon, adres: (geselecteerdeKlant as any).adres || '', postcode: (geselecteerdeKlant as any).postcode || '', plaats: (geselecteerdeKlant as any).plaats || '' }); setAdminProfielHuisnummer(haalHuisnummerUitAdres((geselecteerdeKlant as any).adres)) }} style={{ background: '#eff6ff', color: '#2563EB', border: '1px solid #bfdbfe', padding: '5px 10px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.78rem', fontWeight: '600', fontFamily: 'Outfit, sans-serif' }}>✏️ Bewerken</button>
                       <button onClick={() => handleDeleteKlant(geselecteerdeKlant!)} style={{ background: '#fee2e2', color: '#dc2626', border: '1px solid #fca5a5', padding: '5px 10px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.78rem', fontWeight: '600', fontFamily: 'Outfit, sans-serif' }}>🗑️ Verwijderen</button>
                     </div>
                   </div>
@@ -591,7 +618,7 @@ export default function AdminPortal() {
 
                               <div style={{ display: 'flex', gap: '6px', marginTop: '8px', marginBottom: '10px' }}>
                                 <button
-                                  onClick={() => { setBewerkVve(v); setBewerkVveData({ naam: v.naam, kvk: v.kvk, adres: v.adres, postcode: v.postcode, plaats: v.plaats }); setBewerkVveHuisnummer('') }}
+                                  onClick={() => { setBewerkVve(v); setBewerkVveData({ naam: v.naam, kvk: v.kvk, adres: v.adres, postcode: v.postcode, plaats: v.plaats }); setBewerkVveHuisnummer(haalHuisnummerUitAdres(v.adres)) }}
                                   style={{ background: '#eff6ff', border: '1px solid #bfdbfe', color: '#2563EB', padding: '3px 8px', borderRadius: '4px', cursor: 'pointer', fontSize: '0.72rem', fontFamily: 'Outfit, sans-serif', fontWeight: '600' }}
                                 >✏️ Bewerken</button>
                                 <button
@@ -783,6 +810,7 @@ export default function AdminPortal() {
                       const pc = (bewerkData as any)['postcode'] || ''
                       const hn = e.target.value
                       if (pc.replace(' ','').length < 6 || !hn) return
+                      setAdminProfielHuisnummer(hn)
                       setAdminProfielAdresLaden(true)
                       try {
                         const res = await fetch(`https://api.pdok.nl/bzk/locatieserver/search/v3_1/free?q=${pc.replace(' ','')}+${hn}&fq=type:adres&rows=1`)
@@ -846,6 +874,7 @@ export default function AdminPortal() {
                       const pc = bewerkVveData.postcode || ''
                       const hn = e.target.value
                       if (pc.replace(' ','').length < 6 || !hn) return
+                      setBewerkVveHuisnummer(hn)
                       setBewerkVveAdresLaden(true)
                       try {
                         const res = await fetch(`https://api.pdok.nl/bzk/locatieserver/search/v3_1/free?q=${pc.replace(' ','')}+${hn}&fq=type:adres&rows=1`)
@@ -875,14 +904,38 @@ export default function AdminPortal() {
               <button onClick={async () => {
                 setBewerkVveSaving(true)
                 try {
+                  let vveUpdate = { ...bewerkVveData }
+
+                  // Ook in admin opnieuw ophalen bij opslaan, zodat adres + huisnummer echt worden opgeslagen.
+                  if (vveUpdate.postcode && bewerkVveHuisnummer) {
+                    try {
+                      const pc = vveUpdate.postcode
+                      const hn = bewerkVveHuisnummer
+                      const res = await fetch(`https://api.pdok.nl/bzk/locatieserver/search/v3_1/free?q=${String(pc).replace(' ', '')}+${hn}&fq=type:adres&rows=1`)
+                      const data = await res.json()
+                      if (data.response?.docs?.[0]) {
+                        const doc = data.response.docs[0]
+                        vveUpdate = {
+                          ...vveUpdate,
+                          postcode: pc,
+                          adres: `${doc.straatnaam || ''} ${hn}`,
+                          plaats: doc.woonplaatsnaam || '',
+                        }
+                        setBewerkVveData(d => ({ ...d, ...vveUpdate }))
+                      }
+                    } catch {
+                      // Als lookup faalt, slaan we handmatig ingevulde velden alsnog op.
+                    }
+                  }
+
                   const { data: { session } } = await supabase.auth.getSession()
                   const res = await fetch('/api/admin-update-vereniging', {
                     method: 'PATCH',
                     headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${session?.access_token}` },
-                    body: JSON.stringify({ vereniging_id: bewerkVve.id, data: bewerkVveData })
+                    body: JSON.stringify({ vereniging_id: bewerkVve.id, data: vveUpdate })
                   })
                   if (res.ok) {
-                    setVerenigingen(prev => prev.map(v => v.id === bewerkVve.id ? { ...v, ...bewerkVveData } : v))
+                    setVerenigingen(prev => prev.map(v => v.id === bewerkVve.id ? { ...v, ...vveUpdate } : v))
                     setBewerkVve(null)
                   } else {
                     alert('Opslaan mislukt')
