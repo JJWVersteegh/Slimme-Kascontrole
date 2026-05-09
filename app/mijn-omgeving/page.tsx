@@ -416,17 +416,64 @@ async function zoekAdres(pc: string, hn: string) {
   }
 
   async function handleDeleteVereniging(v: Vereniging) {
-    if (!confirm(`Vereniging "${v.naam}" verwijderen? Alle uploads en rapporten van deze vereniging blijven bewaard maar zijn niet meer gekoppeld.`)) return
-    await supabase.from('verenigingen').delete().eq('id', v.id)
-    const newList = verenigingen.filter(x => x.id !== v.id)
-    setVerenigingen(newList)
-    if (newList.length > 0) {
-      setGeselecteerdeVereniging(newList[0])
-      await loadUploadsEnRapporten(user.id, newList[0].id)
-    } else {
-      setGeselecteerdeVereniging(null)
-      setUploads([])
-      setRapporten([])
+    if (!user) return
+    if (!confirm(`Vereniging "${v.naam}" verwijderen? Uploads en rapporten blijven bewaard, maar worden losgekoppeld van deze vereniging.`)) return
+
+    setError('')
+
+    try {
+      const { error: uploadsError } = await supabase
+        .from('uploads')
+        .update({ vereniging_id: null })
+        .eq('user_id', user.id)
+        .eq('vereniging_id', v.id)
+
+      if (uploadsError) {
+        setError(`Vereniging verwijderen mislukt: uploads konden niet worden losgekoppeld. ${uploadsError.message}`)
+        return
+      }
+
+      const { error: rapportenError } = await supabase
+        .from('rapporten')
+        .update({ vereniging_id: null })
+        .eq('user_id', user.id)
+        .eq('vereniging_id', v.id)
+
+      if (rapportenError) {
+        setError(`Vereniging verwijderen mislukt: rapporten konden niet worden losgekoppeld. ${rapportenError.message}`)
+        return
+      }
+
+      const { data: verwijderd, error: deleteError } = await supabase
+        .from('verenigingen')
+        .delete()
+        .eq('id', v.id)
+        .eq('user_id', user.id)
+        .select('id')
+
+      if (deleteError) {
+        setError(`Vereniging verwijderen mislukt. ${deleteError.message}`)
+        return
+      }
+
+      if (!verwijderd || verwijderd.length === 0) {
+        setError('Vereniging verwijderen mislukt. Controleer of de delete-policy in Supabase goed staat ingesteld.')
+        return
+      }
+
+      const newList = verenigingen.filter(x => x.id !== v.id)
+      setVerenigingen(newList)
+
+      if (newList.length > 0) {
+        setGeselecteerdeVereniging(newList[0])
+        await loadUploadsEnRapporten(user.id, newList[0].id)
+      } else {
+        setGeselecteerdeVereniging(null)
+        setUploads([])
+        setRapporten([])
+      }
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Vereniging verwijderen mislukt')
     }
   }
 
