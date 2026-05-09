@@ -32,6 +32,7 @@ interface Vereniging {
 interface Rapport {
   id: string
   user_id: string
+  vereniging_id?: string | null
   boekjaar: string
   betaald: boolean
   rapport_tekst?: string
@@ -41,6 +42,7 @@ interface Rapport {
 interface Upload {
   id: string
   user_id: string
+  vereniging_id?: string | null
   boekjaar: string
   status: string
   upload_datum: string
@@ -349,13 +351,13 @@ export default function AdminPortal() {
     loadData()
   }
 
-  async function handleDeleteRapport(userId: string, boekjaar: string) {
+  async function handleDeleteRapport(userId: string, boekjaar: string, verenigingId?: string | null) {
     if (!confirm(`Rapport voor boekjaar ${boekjaar} verwijderen?`)) return
     const { data: { session } } = await supabase.auth.getSession()
     const res = await fetch('/api/admin-delete-vereniging', {
       method: 'DELETE',
       headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${session?.access_token}` },
-      body: JSON.stringify({ rapport_boekjaar: boekjaar, user_id: userId })
+      body: JSON.stringify({ rapport_boekjaar: boekjaar, user_id: userId, ...(verenigingId ? { vereniging_id: verenigingId } : {}) })
     })
     if (res.ok) {
       loadData()
@@ -566,94 +568,102 @@ export default function AdminPortal() {
                       ) : null)}
                     </div>
 
-                    {/* Verenigingen */}
+                    {/* Verenigingen met rapporten */}
                     <div style={{ marginBottom: '20px' }}>
-                      <div style={{ fontSize: '0.72rem', fontWeight: '700', color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '10px' }}>Verenigingen</div>
+                      <div style={{ fontSize: '0.72rem', fontWeight: '700', color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '10px' }}>Verenigingen & rapporten</div>
                       {verenigingen.filter(v => v.user_id === geselecteerdeKlant.user_id).length === 0 ? (
                         <p style={{ fontSize: '0.85rem', color: '#94a3b8' }}>Geen verenigingen</p>
                       ) : (
-                        verenigingen.filter(v => v.user_id === geselecteerdeKlant.user_id).map(v => (
-                          <div key={v.id} style={{ background: '#f8fafc', borderRadius: '8px', padding: '10px 12px', marginBottom: '8px', border: '1px solid #e2e8f0' }}>
-                            <div style={{ fontWeight: '700', fontSize: '0.88rem', color: '#0f172a', marginBottom: '4px' }}>{v.naam}</div>
-                            {v.kvk && <div style={{ fontSize: '0.78rem', color: '#64748b' }}>KvK: {v.kvk}</div>}
-                            {v.adres && <div style={{ fontSize: '0.78rem', color: '#64748b' }}>{v.adres}, {v.postcode} {v.plaats}</div>}
-                            <div style={{ display: 'flex', gap: '6px', marginTop: '6px' }}>
-                              <button
-                                onClick={() => { setBewerkVve(v); setBewerkVveData({ naam: v.naam, kvk: v.kvk, adres: v.adres, postcode: v.postcode, plaats: v.plaats }); setBewerkVveHuisnummer('') }}
-                                style={{ background: '#eff6ff', border: '1px solid #bfdbfe', color: '#2563EB', padding: '3px 8px', borderRadius: '4px', cursor: 'pointer', fontSize: '0.72rem', fontFamily: 'Outfit, sans-serif', fontWeight: '600' }}
-                              >✏️ Bewerken</button>
-                              <button
-                                onClick={async () => {
-                                  if (!confirm(`Vereniging "${v.naam}" verwijderen?`)) return
-                                  const { data: { session } } = await supabase.auth.getSession()
-                                  const res = await fetch('/api/admin-delete-vereniging', {
-                                    method: 'DELETE',
-                                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${session?.access_token}` },
-                                    body: JSON.stringify({ vereniging_id: v.id })
-                                  })
-                                  if (res.ok) {
-                                    setVerenigingen(prev => prev.filter(x => x.id !== v.id))
-                                  } else {
-                                    alert('Verwijderen mislukt')
-                                  }
-                                }}
-                                style={{ background: 'none', border: '1px solid #fecaca', color: '#ef4444', padding: '3px 8px', borderRadius: '4px', cursor: 'pointer', fontSize: '0.72rem', fontFamily: 'Outfit, sans-serif' }}
-                              >🗑️ Verwijderen</button>
-                            </div>
-                          </div>
-                        ))
-                      )}
-                    </div>
+                        verenigingen.filter(v => v.user_id === geselecteerdeKlant.user_id).map(v => {
+                          const rapportenVoorVereniging = getRapportenVoorKlant(geselecteerdeKlant.user_id)
+                            .filter(r => r.vereniging_id === v.id)
+                            .sort((a, b) => b.boekjaar.localeCompare(a.boekjaar))
 
-                    <div style={{ marginBottom: '20px' }}>
-                      <div style={{ fontSize: '0.72rem', fontWeight: '700', color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '10px' }}>Rapporten & bestanden</div>
-                      {getRapportenVoorKlant(geselecteerdeKlant.user_id).length === 0 ? (
-                        <p style={{ fontSize: '0.85rem', color: '#94a3b8' }}>Geen rapporten</p>
-                      ) : (
-                        getRapportenVoorKlant(geselecteerdeKlant.user_id).map(r => {
-                          const uploadsVoorBoekjaar = getUploadsVoorKlant(geselecteerdeKlant.user_id).filter(u => u.boekjaar === r.boekjaar)
                           return (
-                            <div key={r.id} style={{ background: '#f8fafc', borderRadius: '8px', padding: '12px', marginBottom: '8px', border: '1px solid #e2e8f0' }}>
-                              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
-                                <span style={{ fontWeight: '700', fontSize: '0.9rem', color: '#0f172a' }}>Boekjaar {r.boekjaar}</span>
-                                <div style={{ display: 'flex', gap: '6px', alignItems: 'center' }}>
-                                  <span style={{ background: r.betaald ? '#dcfce7' : '#fef3c7', color: r.betaald ? '#166534' : '#92400e', padding: '2px 8px', borderRadius: '12px', fontSize: '0.72rem', fontWeight: '600' }}>{r.betaald ? '✓ Betaald' : '⏳ Onbetaald'}</span>
-                                  <button onClick={() => handleDeleteRapport(r.user_id, r.boekjaar)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#ef4444', fontSize: '0.8rem', padding: '2px' }} title="Rapport verwijderen">🗑️</button>
+                            <div key={v.id} style={{ background: '#f8fafc', borderRadius: '10px', padding: '12px', marginBottom: '10px', border: '1px solid #e2e8f0' }}>
+                              <div style={{ display: 'flex', justifyContent: 'space-between', gap: '8px', alignItems: 'flex-start' }}>
+                                <div>
+                                  <div style={{ fontWeight: '700', fontSize: '0.9rem', color: '#0f172a', marginBottom: '4px' }}>{v.naam}</div>
+                                  {v.kvk && <div style={{ fontSize: '0.78rem', color: '#64748b' }}>KvK: {v.kvk}</div>}
+                                  {v.adres && <div style={{ fontSize: '0.78rem', color: '#64748b' }}>{v.adres}, {v.postcode} {v.plaats}</div>}
                                 </div>
                               </div>
-                              {r.rapport_tekst ? (
-                                <button onClick={() => setToonRapport(r)} style={{ width: '100%', background: '#2563EB', color: 'white', border: 'none', padding: '8px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.82rem', fontWeight: '600', fontFamily: 'Outfit, sans-serif' }}>
-                                  📄 Rapport openen
-                                </button>
-                              ) : (
-                                <span style={{ fontSize: '0.78rem', color: '#94a3b8' }}>Nog geen rapport gegenereerd</span>
-                              )}
-                              {r.gegenereerd_op && (
-                                <div style={{ fontSize: '0.72rem', color: '#94a3b8', marginTop: '4px' }}>
-                                  Gegenereerd op {new Date(r.gegenereerd_op).toLocaleDateString('nl-NL')}
-                                </div>
-                              )}
-                              {uploadsVoorBoekjaar.length > 0 && (
-                                <div style={{ marginTop: '10px', borderTop: '1px solid #e2e8f0', paddingTop: '8px' }}>
-                                  <div style={{ fontSize: '0.72rem', fontWeight: '600', color: '#94a3b8', marginBottom: '4px' }}>
-                                    {uploadsVoorBoekjaar.reduce((acc, u) => acc + (u.bestanden?.length || 0), 0)} geüploade bestanden
-                                  </div>
-                                  <ul style={{ margin: 0, padding: '0 0 0 12px' }}>
-                                    {uploadsVoorBoekjaar.flatMap(u => u.bestanden || []).map((b: string, idx: number) => {
-                                      const naam = b.split('/').pop()?.replace(/^\d+-/, '') || b
-                                      return <li key={idx} style={{ fontSize: '0.73rem', color: '#64748b', marginBottom: '2px' }}>· {naam}</li>
-                                    })}
-                                  </ul>
-                                </div>
-                              )}
-                              {uploadsVoorBoekjaar.length === 0 && (
-                                <div style={{ marginTop: '8px', fontSize: '0.73rem', color: '#94a3b8', borderTop: '1px solid #e2e8f0', paddingTop: '6px' }}>
-                                  Geen bestanden geüpload voor dit boekjaar
-                                </div>
-                              )}
+
+                              <div style={{ display: 'flex', gap: '6px', marginTop: '8px', marginBottom: '10px' }}>
+                                <button
+                                  onClick={() => { setBewerkVve(v); setBewerkVveData({ naam: v.naam, kvk: v.kvk, adres: v.adres, postcode: v.postcode, plaats: v.plaats }); setBewerkVveHuisnummer('') }}
+                                  style={{ background: '#eff6ff', border: '1px solid #bfdbfe', color: '#2563EB', padding: '3px 8px', borderRadius: '4px', cursor: 'pointer', fontSize: '0.72rem', fontFamily: 'Outfit, sans-serif', fontWeight: '600' }}
+                                >✏️ Bewerken</button>
+                                <button
+                                  onClick={async () => {
+                                    if (!confirm(`Vereniging "${v.naam}" verwijderen?`)) return
+                                    const { data: { session } } = await supabase.auth.getSession()
+                                    const res = await fetch('/api/admin-delete-vereniging', {
+                                      method: 'DELETE',
+                                      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${session?.access_token}` },
+                                      body: JSON.stringify({ vereniging_id: v.id })
+                                    })
+                                    if (res.ok) {
+                                      setVerenigingen(prev => prev.filter(x => x.id !== v.id))
+                                    } else {
+                                      alert('Verwijderen mislukt')
+                                    }
+                                  }}
+                                  style={{ background: 'none', border: '1px solid #fecaca', color: '#ef4444', padding: '3px 8px', borderRadius: '4px', cursor: 'pointer', fontSize: '0.72rem', fontFamily: 'Outfit, sans-serif' }}
+                                >🗑️ Verwijderen</button>
+                              </div>
+
+                              <div style={{ borderTop: '1px solid #e2e8f0', paddingTop: '10px' }}>
+                                {rapportenVoorVereniging.length === 0 ? (
+                                  <div style={{ fontSize: '0.78rem', color: '#94a3b8' }}>Geen rapporten voor deze VvE</div>
+                                ) : (
+                                  rapportenVoorVereniging.map(r => (
+                                    <div key={r.id} style={{ background: 'white', borderRadius: '8px', padding: '10px', marginBottom: '8px', border: '1px solid #e2e8f0' }}>
+                                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+                                        <span style={{ fontWeight: '700', fontSize: '0.86rem', color: '#0f172a' }}>Boekjaar {r.boekjaar}</span>
+                                        <div style={{ display: 'flex', gap: '6px', alignItems: 'center' }}>
+                                          <span style={{ background: r.betaald ? '#dcfce7' : '#fef3c7', color: r.betaald ? '#166534' : '#92400e', padding: '2px 8px', borderRadius: '12px', fontSize: '0.72rem', fontWeight: '600' }}>{r.betaald ? '✓ Betaald' : '⏳ Onbetaald'}</span>
+                                          <button onClick={() => handleDeleteRapport(r.user_id, r.boekjaar, r.vereniging_id)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#ef4444', fontSize: '0.8rem', padding: '2px' }} title="Rapport verwijderen">🗑️</button>
+                                        </div>
+                                      </div>
+                                      {r.rapport_tekst ? (
+                                        <button onClick={() => setToonRapport(r)} style={{ width: '100%', background: '#2563EB', color: 'white', border: 'none', padding: '8px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.82rem', fontWeight: '600', fontFamily: 'Outfit, sans-serif' }}>
+                                          📄 Rapport openen
+                                        </button>
+                                      ) : (
+                                        <span style={{ fontSize: '0.78rem', color: '#94a3b8' }}>Nog geen rapport gegenereerd</span>
+                                      )}
+                                      {r.gegenereerd_op && (
+                                        <div style={{ fontSize: '0.72rem', color: '#94a3b8', marginTop: '4px' }}>
+                                          Gegenereerd op {new Date(r.gegenereerd_op).toLocaleDateString('nl-NL')}
+                                        </div>
+                                      )}
+                                    </div>
+                                  ))
+                                )}
+                              </div>
                             </div>
                           )
                         })
+                      )}
+
+                      {getRapportenVoorKlant(geselecteerdeKlant.user_id).some(r => !r.vereniging_id) && (
+                        <div style={{ background: '#fff7ed', borderRadius: '10px', padding: '12px', marginTop: '12px', border: '1px solid #fed7aa' }}>
+                          <div style={{ fontWeight: '700', fontSize: '0.86rem', color: '#9a3412', marginBottom: '8px' }}>Rapporten zonder gekoppelde VvE</div>
+                          {getRapportenVoorKlant(geselecteerdeKlant.user_id).filter(r => !r.vereniging_id).map(r => (
+                            <div key={r.id} style={{ background: 'white', borderRadius: '8px', padding: '10px', marginBottom: '8px', border: '1px solid #fed7aa' }}>
+                              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+                                <span style={{ fontWeight: '700', fontSize: '0.86rem', color: '#0f172a' }}>Boekjaar {r.boekjaar}</span>
+                                <span style={{ background: r.betaald ? '#dcfce7' : '#fef3c7', color: r.betaald ? '#166534' : '#92400e', padding: '2px 8px', borderRadius: '12px', fontSize: '0.72rem', fontWeight: '600' }}>{r.betaald ? '✓ Betaald' : '⏳ Onbetaald'}</span>
+                              </div>
+                              {r.rapport_tekst && (
+                                <button onClick={() => setToonRapport(r)} style={{ width: '100%', background: '#2563EB', color: 'white', border: 'none', padding: '8px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.82rem', fontWeight: '600', fontFamily: 'Outfit, sans-serif' }}>
+                                  📄 Rapport openen
+                                </button>
+                              )}
+                            </div>
+                          ))}
+                        </div>
                       )}
                     </div>
                   </div>
