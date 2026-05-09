@@ -435,7 +435,7 @@ async function zoekAdres(pc: string, hn: string) {
     router.push('/registreer')
   }
 
-  const inp: any = { width: '100%', padding: '11px 14px', borderRadius: '8px', border: '1.5px solid #bfdbfe', fontSize: '0.95rem', background: 'white', outline: 'none', fontFamily: 'Outfit, sans-serif' }
+  const inp: any = { width: '100%', padding: '11px 14px', borderRadius: '8px', border: '1.5px solid #bfdbfe', fontSize: '0.84rem', background: 'white', outline: 'none', fontFamily: 'Outfit, sans-serif' }
   const boekjaren = [...new Set(uploads.map(u => u.boekjaar))].sort().reverse()
   const rapportJaarNum = parseInt(rapportBoekjaar)
   const huidigRapport = rapporten.find(r => r.boekjaar === rapportBoekjaar)
@@ -475,13 +475,13 @@ async function zoekAdres(pc: string, hn: string) {
             <svg width="20" height="20" viewBox="0 0 22 22" fill="none"><polyline points="3,12 9,18 19,6" stroke="white" strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round" /></svg>
           </div>
           <div style={{ lineHeight: 1.1 }}>
-            <div style={{ fontWeight: '700', fontSize: '0.95rem', color: '#1D4ED8' }}>slimme</div>
-            <div style={{ fontWeight: '500', fontSize: '0.95rem', color: '#3b82f6' }}>kascontrole</div>
+            <div style={{ fontWeight: '700', fontSize: '0.84rem', color: '#1D4ED8' }}>slimme</div>
+            <div style={{ fontWeight: '500', fontSize: '0.84rem', color: '#3b82f6' }}>kascontrole</div>
           </div>
         </a>
         <div style={{ display: 'flex', gap: '12px' }}>
-          <button onClick={() => window.print()} style={{ background: '#2563EB', color: 'white', padding: '10px 20px', borderRadius: '8px', border: 'none', cursor: 'pointer', fontWeight: '600', fontSize: '0.9rem', fontFamily: 'Outfit, sans-serif' }}>🖨️ Afdrukken / PDF</button>
-          <button onClick={() => setToonRapport(false)} style={{ background: 'white', color: '#1e3a8a', padding: '10px 20px', borderRadius: '8px', border: '1.5px solid #bfdbfe', cursor: 'pointer', fontWeight: '600', fontSize: '0.9rem', fontFamily: 'Outfit, sans-serif' }}>← Terug</button>
+          <button onClick={() => window.print()} style={{ background: '#2563EB', color: 'white', padding: '10px 20px', borderRadius: '8px', border: 'none', cursor: 'pointer', fontWeight: '600', fontSize: '0.84rem', fontFamily: 'Outfit, sans-serif' }}>🖨️ Afdrukken / PDF</button>
+          <button onClick={() => setToonRapport(false)} style={{ background: 'white', color: '#1e3a8a', padding: '10px 20px', borderRadius: '8px', border: '1.5px solid #bfdbfe', cursor: 'pointer', fontWeight: '600', fontSize: '0.84rem', fontFamily: 'Outfit, sans-serif' }}>← Terug</button>
         </div>
       </nav>
       <div style={{ maxWidth: '860px', margin: '0 auto', padding: '48px 24px' }}>
@@ -494,7 +494,7 @@ async function zoekAdres(pc: string, hn: string) {
               <span style={{ fontWeight: '700', color: '#1D4ED8', fontSize: '1.1rem', fontFamily: 'Outfit, sans-serif' }}>slimmekascontrole.nl</span>
             </div>
             <h1 style={{ fontFamily: 'Outfit, sans-serif', fontSize: '1.6rem', fontWeight: '600', color: '#0f172a', margin: '0 0 8px' }}>KASCOMMISSIE RAPPORT</h1>
-            <p style={{ color: '#475569', margin: 0, fontSize: '0.95rem' }}>{geselecteerdeVereniging?.naam} · Boekjaar {rapportBoekjaar}</p>
+            <p style={{ color: '#475569', margin: 0, fontSize: '0.84rem' }}>{geselecteerdeVereniging?.naam} · Boekjaar {rapportBoekjaar}</p>
           </div>
           <RapportRenderer tekst={rapportTekstVoorWeergave!} />
         </div>
@@ -511,7 +511,7 @@ async function zoekAdres(pc: string, hn: string) {
           <div style={{ background: 'white', borderRadius: '16px', padding: '32px', maxWidth: '400px', width: '100%' }}>
             <div style={{ fontSize: '2rem', marginBottom: '12px' }}>🗑️</div>
             <h3 style={{ fontWeight: '600', color: '#0f172a', marginBottom: '8px' }}>Boekjaar verwijderen?</h3>
-            <p style={{ color: '#475569', fontSize: '0.9rem', marginBottom: '24px', lineHeight: 1.6 }}>De rapport-/betaalregel voor boekjaar {bevestigDeleteRapport} wordt permanent verwijderd. Eventuele uploads kunt u apart verwijderen bij de uploads.</p>
+            <p style={{ color: '#475569', fontSize: '0.84rem', marginBottom: '24px', lineHeight: 1.6 }}>De rapport-/betaalregel voor boekjaar {bevestigDeleteRapport} wordt permanent verwijderd. Eventuele uploads kunt u apart verwijderen bij de uploads.</p>
             <div style={{ display: 'flex', gap: '12px' }}>
               <button onClick={() => setBevestigDeleteRapport(null)} style={{ flex: 1, padding: '12px', background: 'white', border: '1.5px solid #e2e8f0', borderRadius: '8px', cursor: 'pointer', fontWeight: '600', fontFamily: 'Outfit, sans-serif' }}>Annuleren</button>
               <button onClick={() => handleDeleteRapport(bevestigDeleteRapport)} disabled={deleteRapportLoading} style={{ flex: 1, padding: '12px', background: '#ef4444', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer', fontWeight: '600', fontFamily: 'Outfit, sans-serif' }}>
@@ -528,7 +528,7 @@ async function zoekAdres(pc: string, hn: string) {
           <div style={{ background: 'white', borderRadius: '16px', padding: '32px', maxWidth: '400px', width: '100%' }}>
             <div style={{ fontSize: '2rem', marginBottom: '12px' }}>🗑️</div>
             <h3 style={{ fontWeight: '600', color: '#0f172a', marginBottom: '8px' }}>Upload permanent verwijderen?</h3>
-            <p style={{ color: '#475569', fontSize: '0.9rem', marginBottom: '24px', lineHeight: 1.6 }}>De bestanden worden <strong>permanent</strong> verwijderd en kunnen niet worden hersteld.</p>
+            <p style={{ color: '#475569', fontSize: '0.84rem', marginBottom: '24px', lineHeight: 1.6 }}>De bestanden worden <strong>permanent</strong> verwijderd en kunnen niet worden hersteld.</p>
             <div style={{ display: 'flex', gap: '12px' }}>
               <button onClick={() => setBevestigDelete(null)} style={{ flex: 1, padding: '12px', background: 'white', border: '1.5px solid #e2e8f0', borderRadius: '8px', cursor: 'pointer', fontWeight: '600', fontFamily: 'Outfit, sans-serif' }}>Annuleren</button>
               <button onClick={() => handleDelete(bevestigDelete)} disabled={!!deleteLoading} style={{ flex: 1, padding: '12px', background: '#ef4444', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer', fontWeight: '600', fontFamily: 'Outfit, sans-serif' }}>
@@ -546,11 +546,11 @@ async function zoekAdres(pc: string, hn: string) {
             <h3 style={{ fontWeight: '600', color: '#0f172a', marginBottom: '20px' }}>✏️ Persoonlijke gegevens</h3>
             <form onSubmit={handleProfielSave}>
               <div style={{ marginBottom: '14px' }}>
-                <label style={{ display: 'block', fontWeight: '600', color: '#0f172a', marginBottom: '5px', fontSize: '0.88rem' }}>Uw naam <span style={{ fontWeight: '400', color: '#94a3b8', fontSize: '0.78rem' }}>(kascommissielid)</span></label>
+                <label style={{ display: 'block', fontWeight: '600', color: '#0f172a', marginBottom: '5px', fontSize: '0.84rem' }}>Uw naam <span style={{ fontWeight: '400', color: '#94a3b8', fontSize: '0.78rem' }}>(kascommissielid)</span></label>
                 <input value={profielForm.naam} onChange={e => setProfielForm(p => ({ ...p, naam: e.target.value }))} placeholder="Volledige naam" style={inp} />
               </div>
               <div style={{ marginBottom: '14px' }}>
-                <label style={{ display: 'block', fontWeight: '600', color: '#0f172a', marginBottom: '5px', fontSize: '0.88rem' }}>Postcode + huisnummer <span style={{ fontWeight: '400', color: '#94a3b8', fontSize: '0.78rem' }}>(adres wordt automatisch ingevuld)</span></label>
+                <label style={{ display: 'block', fontWeight: '600', color: '#0f172a', marginBottom: '5px', fontSize: '0.84rem' }}>Postcode + huisnummer <span style={{ fontWeight: '400', color: '#94a3b8', fontSize: '0.78rem' }}>(adres wordt automatisch ingevuld)</span></label>
                 <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 2fr) minmax(90px, 1fr)', gap: '8px', marginBottom: '6px', width: '100%', maxWidth: '100%', overflow: 'hidden' }}>
                   <input value={profielForm.postcode} onChange={e => setProfielForm(p => ({ ...p, postcode: e.target.value }))} onKeyDown={e => e.key === 'Enter' && e.preventDefault()} placeholder="1234 AB" style={inp} />
                   <input value={profielHuisnummer} onChange={e => setProfielHuisnummer(e.target.value)} onBlur={e => zoekAdresProfiel(profielForm.postcode, e.target.value)} onKeyDown={e => e.key === 'Enter' && e.preventDefault()} placeholder="Nr" style={inp} />
@@ -567,7 +567,7 @@ async function zoekAdres(pc: string, hn: string) {
                 </div>
               </div>
               <div style={{ marginBottom: '14px' }}>
-                <label style={{ display: 'block', fontWeight: '600', color: '#0f172a', marginBottom: '5px', fontSize: '0.88rem' }}>Telefoonnummer <span style={{ fontWeight: '400', color: '#94a3b8' }}>(optioneel)</span></label>
+                <label style={{ display: 'block', fontWeight: '600', color: '#0f172a', marginBottom: '5px', fontSize: '0.84rem' }}>Telefoonnummer <span style={{ fontWeight: '400', color: '#94a3b8' }}>(optioneel)</span></label>
                 <input value={profielForm.telefoon} onChange={e => setProfielForm(p => ({ ...p, telefoon: e.target.value }))} placeholder="06-12345678" style={inp} />
               </div>
               {profielSuccess && <p style={{ color: '#16a34a', fontSize: '0.85rem', marginBottom: '12px' }}>✓ Opgeslagen!</p>}
@@ -591,15 +591,15 @@ async function zoekAdres(pc: string, hn: string) {
             </h3>
             <form onSubmit={handleVerenigingSave}>
               <div style={{ marginBottom: '14px' }}>
-                <label style={{ display: 'block', fontWeight: '600', color: '#0f172a', marginBottom: '5px', fontSize: '0.88rem' }}>Naam vereniging / VvE *</label>
+                <label style={{ display: 'block', fontWeight: '600', color: '#0f172a', marginBottom: '5px', fontSize: '0.84rem' }}>Naam vereniging / VvE *</label>
                 <input value={verenigingForm.naam} onChange={e => setVerenigingForm(p => ({ ...p, naam: e.target.value }))} placeholder="bijv. VvE Bergschenhoek" required style={inp} />
               </div>
               <div style={{ marginBottom: '14px' }}>
-                <label style={{ display: 'block', fontWeight: '600', color: '#0f172a', marginBottom: '5px', fontSize: '0.88rem' }}>KvK-nummer <span style={{ fontWeight: '400', color: '#94a3b8' }}>(optioneel)</span></label>
+                <label style={{ display: 'block', fontWeight: '600', color: '#0f172a', marginBottom: '5px', fontSize: '0.84rem' }}>KvK-nummer <span style={{ fontWeight: '400', color: '#94a3b8' }}>(optioneel)</span></label>
                 <input value={verenigingForm.kvk} onChange={e => setVerenigingForm(p => ({ ...p, kvk: e.target.value }))} placeholder="12345678" style={inp} />
               </div>
               <div style={{ marginBottom: '14px' }}>
-                <label style={{ display: 'block', fontWeight: '600', color: '#0f172a', marginBottom: '5px', fontSize: '0.88rem' }}>Postcode + huisnummer <span style={{ fontWeight: '400', color: '#94a3b8', fontSize: '0.78rem' }}>(adres wordt automatisch ingevuld)</span></label>
+                <label style={{ display: 'block', fontWeight: '600', color: '#0f172a', marginBottom: '5px', fontSize: '0.84rem' }}>Postcode + huisnummer <span style={{ fontWeight: '400', color: '#94a3b8', fontSize: '0.78rem' }}>(adres wordt automatisch ingevuld)</span></label>
                 <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 2fr) minmax(90px, 1fr)', gap: '8px', marginBottom: '6px', width: '100%', maxWidth: '100%', overflow: 'hidden' }}>
                   <input value={verenigingForm.postcode} onChange={e => setVerenigingForm(p => ({ ...p, postcode: e.target.value }))} onKeyDown={e => e.key === 'Enter' && e.preventDefault()} placeholder="1234 AB" style={inp} />
                   <input placeholder="Nr" onBlur={e => zoekAdres(verenigingForm.postcode, e.target.value)} style={inp} />
@@ -651,25 +651,25 @@ async function zoekAdres(pc: string, hn: string) {
             <svg width="20" height="20" viewBox="0 0 22 22" fill="none"><polyline points="3,12 9,18 19,6" stroke="white" strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round" /></svg>
           </div>
           <div style={{ lineHeight: 1.1 }}>
-            <div style={{ fontWeight: '700', fontSize: '0.95rem', color: '#1D4ED8' }}>slimme</div>
-            <div style={{ fontWeight: '500', fontSize: '0.95rem', color: '#3b82f6' }}>kascontrole</div>
+            <div style={{ fontWeight: '700', fontSize: '0.84rem', color: '#1D4ED8' }}>slimme</div>
+            <div style={{ fontWeight: '500', fontSize: '0.84rem', color: '#3b82f6' }}>kascontrole</div>
           </div>
         </a>
         <ul className="nav-links-desktop" style={{ display: 'flex', gap: '22px', listStyle: 'none', alignItems: 'center', margin: 0, padding: 0 }}>
-          <li><a href="/#waarom" style={{ fontSize: '0.88rem', fontWeight: '500', color: '#475569', textDecoration: 'none' }}>Waarom</a></li>
-          <li><a href="/#hoe-het-werkt" style={{ fontSize: '0.88rem', fontWeight: '500', color: '#475569', textDecoration: 'none' }}>Hoe het werkt</a></li>
-          <li><a href="/#handleidingen" style={{ fontSize: '0.88rem', fontWeight: '500', color: '#475569', textDecoration: 'none' }}>Handleidingen</a></li>
-          <li><a href="/#over-ons" style={{ fontSize: '0.88rem', fontWeight: '500', color: '#475569', textDecoration: 'none' }}>Over ons</a></li>
-          <li><a href="/#tarieven" style={{ fontSize: '0.88rem', fontWeight: '500', color: '#475569', textDecoration: 'none' }}>Tarieven</a></li>
-          <li><a href="/#contact" style={{ fontSize: '0.88rem', fontWeight: '500', color: '#475569', textDecoration: 'none' }}>Contact</a></li>
-          <li><a href="/mijn-omgeving" style={{ fontSize: '0.88rem', fontWeight: '500', color: '#2563EB', textDecoration: 'none' }}>Mijn omgeving</a></li>
+          <li><a href="/#waarom" style={{ fontSize: '0.84rem', fontWeight: '500', color: '#475569', textDecoration: 'none' }}>Waarom</a></li>
+          <li><a href="/#hoe-het-werkt" style={{ fontSize: '0.84rem', fontWeight: '500', color: '#475569', textDecoration: 'none' }}>Hoe het werkt</a></li>
+          <li><a href="/#handleidingen" style={{ fontSize: '0.84rem', fontWeight: '500', color: '#475569', textDecoration: 'none' }}>Handleidingen</a></li>
+          <li><a href="/#over-ons" style={{ fontSize: '0.84rem', fontWeight: '500', color: '#475569', textDecoration: 'none' }}>Over ons</a></li>
+          <li><a href="/#tarieven" style={{ fontSize: '0.84rem', fontWeight: '500', color: '#475569', textDecoration: 'none' }}>Tarieven</a></li>
+          <li><a href="/#contact" style={{ fontSize: '0.84rem', fontWeight: '500', color: '#475569', textDecoration: 'none' }}>Contact</a></li>
+          <li><a href="/mijn-omgeving" style={{ fontSize: '0.84rem', fontWeight: '500', color: '#2563EB', textDecoration: 'none' }}>Mijn omgeving</a></li>
           <li style={{ display: 'flex', alignItems: 'center', gap: '8px', marginLeft: '8px' }}>
-            <span style={{ fontSize: '0.82rem', color: '#475569', display: 'flex', flexDirection: 'column', alignItems: 'flex-end', lineHeight: 1.3 }}>
+            <span style={{ fontSize: '0.78rem', color: '#475569', display: 'flex', flexDirection: 'column', alignItems: 'flex-end', lineHeight: 1.3 }}>
               <span style={{ fontWeight: '600', color: '#0f172a' }}>{klant?.naam || ''}</span>
               <span style={{ fontSize: '0.75rem', color: '#94a3b8' }}>{user?.email}</span>
             </span>
             <button onClick={() => setToonProfiel(true)} style={{ background: 'none', border: '1.5px solid #bfdbfe', color: '#1e3a8a', padding: '7px 12px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.8rem', fontFamily: 'Outfit, sans-serif', fontWeight: '500' }}>✏️ Gegevens</button>
-            <button onClick={handleLogout} style={{ background: '#2563EB', color: 'white', border: 'none', padding: '9px 20px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.88rem', fontFamily: 'Outfit, sans-serif', fontWeight: '600' }}>Uitloggen</button>
+            <button onClick={handleLogout} style={{ background: '#2563EB', color: 'white', border: 'none', padding: '9px 20px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.84rem', fontFamily: 'Outfit, sans-serif', fontWeight: '600' }}>Uitloggen</button>
           </li>
         </ul>
         <button className="nav-hamburger" onClick={() => setMobileMenuOpen(o => !o)} style={{ display: 'none', background: 'none', border: '1.5px solid #e2e8f0', borderRadius: '6px', cursor: 'pointer', padding: '7px', flexDirection: 'column', gap: '4px', alignItems: 'center', justifyContent: 'center' }}>
@@ -688,12 +688,12 @@ async function zoekAdres(pc: string, hn: string) {
           <a href="/#contact" onClick={() => setMobileMenuOpen(false)}>Contact</a>
           <a href="/mijn-omgeving" onClick={() => setMobileMenuOpen(false)} style={{ color: '#2563EB' }}>Mijn omgeving</a>
           <div style={{ borderTop: '1px solid #e2e8f0', marginTop: '8px', paddingTop: '12px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
-            <span style={{ fontSize: '0.82rem', color: '#475569', padding: '0 16px', display: 'flex', flexDirection: 'column', gap: '2px' }}>
+            <span style={{ fontSize: '0.78rem', color: '#475569', padding: '0 16px', display: 'flex', flexDirection: 'column', gap: '2px' }}>
               <span style={{ fontWeight: '600', color: '#0f172a' }}>{klant?.naam || ''}</span>
               <span style={{ fontSize: '0.75rem', color: '#94a3b8' }}>{user?.email}</span>
             </span>
-            <button onClick={() => { setMobileMenuOpen(false); setToonProfiel(true) }} style={{ background: 'none', border: '1.5px solid #bfdbfe', color: '#1e3a8a', padding: '12px 16px', borderRadius: '8px', cursor: 'pointer', fontSize: '0.9rem', fontWeight: '600', textAlign: 'left', fontFamily: 'Outfit, sans-serif' }}>✏️ Gegevens bewerken</button>
-            <button onClick={handleLogout} style={{ background: '#2563EB', color: 'white', border: 'none', padding: '12px 16px', borderRadius: '8px', cursor: 'pointer', fontSize: '0.9rem', fontWeight: '700', textAlign: 'center', fontFamily: 'Outfit, sans-serif' }}>Uitloggen</button>
+            <button onClick={() => { setMobileMenuOpen(false); setToonProfiel(true) }} style={{ background: 'none', border: '1.5px solid #bfdbfe', color: '#1e3a8a', padding: '12px 16px', borderRadius: '8px', cursor: 'pointer', fontSize: '0.84rem', fontWeight: '600', textAlign: 'left', fontFamily: 'Outfit, sans-serif' }}>✏️ Gegevens bewerken</button>
+            <button onClick={handleLogout} style={{ background: '#2563EB', color: 'white', border: 'none', padding: '12px 16px', borderRadius: '8px', cursor: 'pointer', fontSize: '0.84rem', fontWeight: '700', textAlign: 'center', fontFamily: 'Outfit, sans-serif' }}>Uitloggen</button>
           </div>
         </div>
       )}
@@ -708,7 +708,7 @@ async function zoekAdres(pc: string, hn: string) {
             <p style={{ color: '#475569', fontSize: '0.92rem', margin: 0 }}>Volg de stappen en ontvang een professioneel kascontrolerapport.</p>
           </div>
           {geselecteerdeVereniging && (
-            <div style={{ background: 'white', border: '1px solid #e2e8f0', borderRadius: '16px', padding: '14px 16px', minWidth: '220px', boxShadow: '0 12px 30px rgba(15,23,42,0.04)' }}>
+            <div style={{ background: 'white', border: '1px solid #e2e8f0', borderRadius: '16px', padding: '14px 16px', minWidth: '220px', boxShadow: '0 1px 2px rgba(15,23,42,0.04)' }}>
               <div style={{ fontSize: '0.75rem', color: '#64748b', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '4px' }}>Geselecteerd</div>
               <div style={{ color: '#0f172a', fontWeight: '700' }}>{geselecteerdeVereniging.naam}</div>
               <div style={{ color: '#64748b', fontSize: '0.85rem', marginTop: '2px' }}>Boekjaar {rapportBoekjaar}</div>
@@ -721,31 +721,31 @@ async function zoekAdres(pc: string, hn: string) {
             const actief = huidigeStap === stap.nr
             const klaar = huidigeStap > stap.nr || (stap.nr === 4 && huidigJaarGegenereerd)
             return (
-              <div key={stap.nr} style={{ background: actief ? '#eff6ff' : klaar ? '#f0fdf4' : 'white', border: `1.5px solid ${actief ? '#2563EB' : klaar ? '#86efac' : '#e2e8f0'}`, borderRadius: '18px', padding: '16px', boxShadow: actief ? '0 14px 34px rgba(37,99,235,0.13)' : '0 10px 26px rgba(15,23,42,0.04)' }}>
+              <div key={stap.nr} style={{ background: actief ? '#eff6ff' : 'white', border: `1px solid ${actief ? '#bfdbfe' : klaar ? '#bbf7d0' : '#e2e8f0'}`, borderRadius: '14px', padding: '14px', boxShadow: 'none' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '10px' }}>
-                  <div style={{ width: '30px', height: '30px', borderRadius: '999px', display: 'flex', alignItems: 'center', justifyContent: 'center', background: klaar ? '#16a34a' : actief ? '#2563EB' : '#f1f5f9', color: klaar || actief ? 'white' : '#94a3b8', fontWeight: '700', fontSize: '0.9rem' }}>
+                  <div style={{ width: '28px', height: '28px', borderRadius: '999px', display: 'flex', alignItems: 'center', justifyContent: 'center', background: klaar ? '#dcfce7' : actief ? '#2563EB' : '#f1f5f9', color: klaar ? '#166534' : actief ? 'white' : '#94a3b8', fontWeight: '700', fontSize: '0.84rem' }}>
                     {klaar ? '✓' : stap.nr}
                   </div>
                   <div style={{ fontSize: '0.72rem', color: actief ? '#2563EB' : '#64748b', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
                     Stap {index + 1}
                   </div>
                 </div>
-                <div style={{ color: '#0f172a', fontWeight: '700', marginBottom: '4px' }}>{stap.titel}</div>
-                <div style={{ color: '#64748b', fontSize: '0.82rem' }}>{stap.tekst}</div>
+                <div style={{ color: '#0f172a', fontWeight: '600', marginBottom: '4px' }}>{stap.titel}</div>
+                <div style={{ color: '#64748b', fontSize: '0.78rem' }}>{stap.tekst}</div>
               </div>
             )
           })}
         </div>
 
-        <div style={{ background: 'linear-gradient(135deg, #eff6ff 0%, #ffffff 45%, #f8fafc 100%)', border: '1px solid #bfdbfe', borderRadius: '20px', padding: '18px', marginBottom: '26px', boxShadow: '0 16px 40px rgba(37,99,235,0.08)' }}>
+        <div style={{ background: 'white', border: '1px solid #e2e8f0', borderRadius: '16px', padding: '22px', marginBottom: '22px', boxShadow: 'none' }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '16px', marginBottom: '18px', flexWrap: 'wrap' }}>
             <div>
               <div style={{ color: '#2563EB', fontSize: '0.72rem', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '6px' }}>Stap 1</div>
-              <h2 style={{ fontSize: '1.12rem', fontWeight: '600', color: '#0f172a', margin: 0 }}>Kies de VvE</h2>
-              <p style={{ color: '#475569', margin: '6px 0 0', fontSize: '0.95rem' }}>Selecteer voor welke vereniging u wilt uploaden of rapporteren.</p>
+              <h2 style={{ fontSize: '1rem', fontWeight: '600', color: '#0f172a', margin: 0 }}>Kies de VvE</h2>
+              <p style={{ color: '#475569', margin: '6px 0 0', fontSize: '0.84rem' }}>Selecteer voor welke vereniging u wilt uploaden of rapporteren.</p>
             </div>
             {verenigingen.length < 10 && (
-              <button onClick={() => openVerenigingForm()} style={{ background: '#2563EB', color: 'white', border: 'none', padding: '11px 18px', borderRadius: '12px', cursor: 'pointer', fontSize: '0.88rem', fontWeight: '700', fontFamily: 'Outfit, sans-serif', boxShadow: '0 10px 22px rgba(37,99,235,0.2)' }}>
+              <button onClick={() => openVerenigingForm()} style={{ background: '#2563EB', color: 'white', border: 'none', padding: '11px 18px', borderRadius: '12px', cursor: 'pointer', fontSize: '0.84rem', fontWeight: '700', fontFamily: 'Outfit, sans-serif', boxShadow: 'none' }}>
                 + Vereniging toevoegen
               </button>
             )}
@@ -760,17 +760,17 @@ async function zoekAdres(pc: string, hn: string) {
               </button>
             </div>
           ) : (
-            <div className="step-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(2, minmax(0, 1fr))', gap: '14px' }}>
+            <div className="step-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(2, minmax(0, 1fr))', gap: '12px' }}>
               {verenigingen.map(v => {
                 const actief = geselecteerdeVereniging?.id === v.id
                 return (
-                  <div key={v.id} style={{ background: actief ? '#ffffff' : 'rgba(255,255,255,0.72)', border: `2px solid ${actief ? '#2563EB' : '#e2e8f0'}`, borderRadius: '18px', padding: '16px', boxShadow: actief ? '0 16px 32px rgba(37,99,235,0.14)' : 'none' }}>
+                  <div key={v.id} style={{ background: actief ? '#eff6ff' : 'white', border: `1px solid ${actief ? '#bfdbfe' : '#e2e8f0'}`, borderRadius: '14px', padding: '14px', boxShadow: 'none' }}>
                     <button onClick={() => handleWisselVereniging(v)} style={{ width: '100%', background: 'none', border: 'none', padding: 0, textAlign: 'left', cursor: 'pointer', fontFamily: 'Outfit, sans-serif' }}>
                       <div style={{ display: 'flex', justifyContent: 'space-between', gap: '12px', alignItems: 'flex-start' }}>
                         <div>
-                          <div style={{ fontSize: '0.95rem', fontWeight: '600', color: '#0f172a', marginBottom: '5px' }}>{v.naam}</div>
-                          {v.kvk && <div style={{ fontSize: '0.82rem', color: '#64748b', marginBottom: '4px' }}>KvK: {v.kvk}</div>}
-                          {v.adres && <div style={{ fontSize: '0.82rem', color: '#64748b' }}>📍 {v.adres}, {v.postcode} {v.plaats}</div>}
+                          <div style={{ fontSize: '0.84rem', fontWeight: '600', color: '#0f172a', marginBottom: '5px' }}>{v.naam}</div>
+                          {v.kvk && <div style={{ fontSize: '0.78rem', color: '#64748b', marginBottom: '4px' }}>KvK: {v.kvk}</div>}
+                          {v.adres && <div style={{ fontSize: '0.78rem', color: '#64748b' }}>📍 {v.adres}, {v.postcode} {v.plaats}</div>}
                         </div>
                         <span style={{ background: actief ? '#2563EB' : '#f1f5f9', color: actief ? 'white' : '#64748b', borderRadius: '999px', padding: '6px 10px', fontSize: '0.72rem', fontWeight: '700', whiteSpace: 'nowrap' }}>
                           {actief ? 'Geselecteerd' : 'Kies'}
@@ -794,34 +794,34 @@ async function zoekAdres(pc: string, hn: string) {
 
         {geselecteerdeVereniging && (
           <>
-            <div style={{ background: 'white', borderRadius: '24px', padding: '26px', border: '1px solid #e2e8f0', marginBottom: '26px', boxShadow: '0 16px 40px rgba(15,23,42,0.05)' }}>
+            <div style={{ background: 'white', borderRadius: '16px', padding: '22px', border: '1px solid #e2e8f0', marginBottom: '26px', boxShadow: 'none' }}>
               <div style={{ color: '#2563EB', fontSize: '0.72rem', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '6px' }}>Stap 2</div>
               <h2 style={{ fontWeight: '600', color: '#0f172a', fontSize: '1.12rem', marginBottom: '6px' }}>Kies het boekjaar</h2>
-              <p style={{ color: '#475569', fontSize: '0.95rem', marginBottom: '18px' }}>Voor welk boekjaar wilt u een kascontrolerapport maken voor <strong>{geselecteerdeVereniging.naam}</strong>?</p>
+              <p style={{ color: '#475569', fontSize: '0.84rem', marginBottom: '18px' }}>Voor welk boekjaar wilt u een kascontrolerapport maken voor <strong>{geselecteerdeVereniging.naam}</strong>?</p>
               <div className="upload-grid" style={{ display: 'grid', gridTemplateColumns: 'minmax(180px, 260px) 1fr', gap: '16px', alignItems: 'stretch' }}>
-                <select value={rapportBoekjaar} onChange={e => { setRapportBoekjaar(e.target.value); setBoekjaar(e.target.value) }} style={{ ...inp, minHeight: '54px', fontSize: '0.95rem', fontWeight: '700', borderRadius: '14px', borderColor: '#93c5fd' }}>
+                <select value={rapportBoekjaar} onChange={e => { setRapportBoekjaar(e.target.value); setBoekjaar(e.target.value) }} style={{ ...inp, minHeight: '54px', fontSize: '0.84rem', fontWeight: '700', borderRadius: '14px', borderColor: '#93c5fd' }}>
                   {jaren.map(j => <option key={j} value={j}>Boekjaar {j}</option>)}
                 </select>
-                <div style={{ background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: '16px', padding: '14px 16px', color: '#475569', fontSize: '0.9rem', lineHeight: 1.6 }}>
+                <div style={{ background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: '16px', padding: '14px 16px', color: '#475569', fontSize: '0.84rem', lineHeight: 1.6 }}>
                   <strong style={{ color: '#0f172a' }}>Verplicht:</strong> upload bestanden van {rapportJaarNum}.<br />
                   <strong style={{ color: '#0f172a' }}>Optioneel voor trendanalyse:</strong> upload ook {rapportJaarNum - 2} en {rapportJaarNum - 1}.
                 </div>
               </div>
             </div>
 
-            <div style={{ background: '#ffffff', borderRadius: '24px', padding: '28px', border: '2px solid #bfdbfe', marginBottom: '26px', boxShadow: '0 18px 46px rgba(37,99,235,0.09)' }}>
+            <div style={{ background: '#ffffff', borderRadius: '16px', padding: '22px', border: '1px solid #e2e8f0', marginBottom: '26px', boxShadow: 'none' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', gap: '16px', alignItems: 'flex-start', flexWrap: 'wrap', marginBottom: '18px' }}>
                 <div>
                   <div style={{ color: '#2563EB', fontSize: '0.72rem', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '6px' }}>Stap 3</div>
-                  <h2 style={{ fontSize: '1.12rem', fontWeight: '600', color: '#0f172a', margin: 0 }}>Upload uw bestanden</h2>
-                  <p style={{ color: '#475569', margin: '6px 0 0', fontSize: '0.95rem' }}>Voeg de financiële documenten toe voor {geselecteerdeVereniging.naam}.</p>
+                  <h2 style={{ fontSize: '1rem', fontWeight: '600', color: '#0f172a', margin: 0 }}>Upload uw bestanden</h2>
+                  <p style={{ color: '#475569', margin: '6px 0 0', fontSize: '0.84rem' }}>Voeg de financiële documenten toe voor {geselecteerdeVereniging.naam}.</p>
                 </div>
-                <div style={{ background: heeftUploadsVoorRapportjaar ? '#f0fdf4' : '#fffbeb', border: `1px solid ${heeftUploadsVoorRapportjaar ? '#bbf7d0' : '#fde68a'}`, color: heeftUploadsVoorRapportjaar ? '#166534' : '#92400e', padding: '9px 12px', borderRadius: '999px', fontSize: '0.82rem', fontWeight: '700' }}>
+                <div style={{ background: heeftUploadsVoorRapportjaar ? '#f0fdf4' : '#fffbeb', border: `1px solid ${heeftUploadsVoorRapportjaar ? '#bbf7d0' : '#fde68a'}`, color: heeftUploadsVoorRapportjaar ? '#166534' : '#92400e', padding: '9px 12px', borderRadius: '999px', fontSize: '0.78rem', fontWeight: '700' }}>
                   {heeftUploadsVoorRapportjaar ? `✓ ${uploadsVoorRapportjaar.length} upload(s) voor ${rapportBoekjaar}` : `Nog geen uploads voor ${rapportBoekjaar}`}
                 </div>
               </div>
 
-              <div style={{ background: '#eff6ff', borderRadius: '16px', padding: '14px 16px', marginBottom: '18px', fontSize: '0.9rem', color: '#1e3a8a', lineHeight: 1.65 }}>
+              <div style={{ background: '#eff6ff', borderRadius: '16px', padding: '14px 16px', marginBottom: '18px', fontSize: '0.84rem', color: '#1e3a8a', lineHeight: 1.65 }}>
                 Upload in ieder geval de bestanden van boekjaar <strong>{rapportBoekjaar}</strong>. Voor trendanalyse kunt u daarna extra jaren uploaden via het veld “Boekjaar van deze bestanden”.<br />
                 <span style={{ color: '#64748b', fontSize: '0.88em' }}>Ondersteunde typen: PDF, Excel, CSV, Word, PNG, JPG, HEIC · Max 10MB per bestand</span>
               </div>
@@ -829,26 +829,26 @@ async function zoekAdres(pc: string, hn: string) {
               <form onSubmit={handleUpload}>
                 <div className="upload-grid" style={{ display: 'grid', gridTemplateColumns: '220px 1fr', gap: '16px', marginBottom: '16px', alignItems: 'stretch' }}>
                   <div>
-                    <label style={{ display: 'block', fontWeight: '600', color: '#0f172a', marginBottom: '7px', fontSize: '0.88rem' }}>Boekjaar van deze bestanden</label>
+                    <label style={{ display: 'block', fontWeight: '600', color: '#0f172a', marginBottom: '7px', fontSize: '0.84rem' }}>Boekjaar van deze bestanden</label>
                     <select value={boekjaar} onChange={e => setBoekjaar(e.target.value)} style={{ ...inp, minHeight: '52px', borderRadius: '14px' }}>
                       {jaren.map(j => <option key={j} value={j}>{j}</option>)}
                     </select>
                   </div>
                   <div>
-                    <label style={{ display: 'block', fontWeight: '600', color: '#0f172a', marginBottom: '7px', fontSize: '0.88rem' }}>Bestanden</label>
-                    <div onClick={() => document.getElementById('fileInput')?.click()} style={{ border: '2px dashed #60a5fa', borderRadius: '16px', padding: '18px 20px', minHeight: '52px', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', background: files ? '#f0fdf4' : '#f8fafc', fontSize: '0.95rem', color: files ? '#166534' : '#475569', fontWeight: '700' }}>
+                    <label style={{ display: 'block', fontWeight: '600', color: '#0f172a', marginBottom: '7px', fontSize: '0.84rem' }}>Bestanden</label>
+                    <div onClick={() => document.getElementById('fileInput')?.click()} style={{ border: '2px dashed #60a5fa', borderRadius: '16px', padding: '18px 20px', minHeight: '52px', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', background: files ? '#f0fdf4' : '#f8fafc', fontSize: '0.84rem', color: files ? '#166534' : '#475569', fontWeight: '700' }}>
                       {files ? `✓ ${files.length} bestand(en) geselecteerd` : '📎 Klik om bestanden te selecteren'}
                     </div>
                     <input id="fileInput" type="file" multiple accept=".pdf,.xlsx,.xls,.csv,.txt,.ods,.docx,.doc,.png,.jpg,.jpeg,.heic" style={{ display: 'none' }} onChange={e => setFiles(e.target.files)} />
                   </div>
                 </div>
                 <div style={{ marginBottom: '16px' }}>
-                  <label style={{ display: 'block', fontWeight: '600', color: '#0f172a', marginBottom: '7px', fontSize: '0.88rem' }}>Toelichting <span style={{ fontWeight: '400', color: '#94a3b8' }}>(optioneel)</span></label>
+                  <label style={{ display: 'block', fontWeight: '600', color: '#0f172a', marginBottom: '7px', fontSize: '0.84rem' }}>Toelichting <span style={{ fontWeight: '400', color: '#94a3b8' }}>(optioneel)</span></label>
                   <textarea value={toelichting} onChange={e => setToelichting(e.target.value)} placeholder="Bijzonderheden voor dit boekjaar..." rows={2} style={{ ...inp, resize: 'vertical', borderRadius: '14px' }} />
                 </div>
-                {uploadSuccess && <p style={{ color: '#16a34a', fontSize: '0.9rem', marginBottom: '12px', fontWeight: '700' }}>✓ Bestanden geüpload!</p>}
-                {uploadError && <p style={{ color: '#ef4444', fontSize: '0.9rem', marginBottom: '12px', fontWeight: '700' }}>{uploadError}</p>}
-                <button type="submit" disabled={uploading} style={{ background: '#0f172a', color: 'white', padding: '14px 26px', borderRadius: '14px', border: 'none', fontSize: '0.95rem', fontWeight: '700', cursor: uploading ? 'not-allowed' : 'pointer', fontFamily: 'Outfit, sans-serif', boxShadow: '0 12px 24px rgba(15,23,42,0.18)' }}>
+                {uploadSuccess && <p style={{ color: '#16a34a', fontSize: '0.84rem', marginBottom: '12px', fontWeight: '700' }}>✓ Bestanden geüpload!</p>}
+                {uploadError && <p style={{ color: '#ef4444', fontSize: '0.84rem', marginBottom: '12px', fontWeight: '700' }}>{uploadError}</p>}
+                <button type="submit" disabled={uploading} style={{ background: '#0f172a', color: 'white', padding: '14px 26px', borderRadius: '14px', border: 'none', fontSize: '0.84rem', fontWeight: '700', cursor: uploading ? 'not-allowed' : 'pointer', fontFamily: 'Outfit, sans-serif', boxShadow: '0 12px 24px rgba(15,23,42,0.18)' }}>
                   {uploading ? 'Uploaden...' : '📤 Upload bestanden'}
                 </button>
               </form>
@@ -857,15 +857,15 @@ async function zoekAdres(pc: string, hn: string) {
             <div style={{ background: 'white', borderRadius: '20px', border: '1px solid #e2e8f0', overflow: 'hidden', marginBottom: '26px', boxShadow: '0 12px 32px rgba(15,23,42,0.04)' }}>
               <div style={{ padding: '18px 24px', borderBottom: '1px solid #e2e8f0', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '12px', flexWrap: 'wrap' }}>
                 <div>
-                  <h2 style={{ fontSize: '0.95rem', fontWeight: '600', color: '#0f172a', margin: 0 }}>Geüploade jaren</h2>
+                  <h2 style={{ fontSize: '0.84rem', fontWeight: '600', color: '#0f172a', margin: 0 }}>Geüploade jaren</h2>
                   <p style={{ color: '#64748b', fontSize: '0.84rem', margin: '4px 0 0' }}>Controleer welke boekjaren al zijn aangeleverd.</p>
                 </div>
-                {boekjaren.length > 0 && <span style={{ fontSize: '0.82rem', color: '#475569', background: '#f8fafc', padding: '7px 10px', borderRadius: '999px', fontWeight: '700' }}>{uploads.length} upload(s) · {boekjaren.join(', ')}</span>}
+                {boekjaren.length > 0 && <span style={{ fontSize: '0.78rem', color: '#475569', background: '#f8fafc', padding: '7px 10px', borderRadius: '999px', fontWeight: '700' }}>{uploads.length} upload(s) · {boekjaren.join(', ')}</span>}
               </div>
               {uploads.length === 0 ? (
                 <div style={{ padding: '34px', textAlign: 'center' }}>
                   <div style={{ fontSize: '2rem', marginBottom: '8px' }}>📂</div>
-                  <p style={{ color: '#475569', fontSize: '0.9rem' }}>Nog geen uploads voor {geselecteerdeVereniging.naam}.</p>
+                  <p style={{ color: '#475569', fontSize: '0.84rem' }}>Nog geen uploads voor {geselecteerdeVereniging.naam}.</p>
                 </div>
               ) : (
                 <div>
@@ -891,7 +891,7 @@ async function zoekAdres(pc: string, hn: string) {
             {rapporten.filter(r => r.rapport_tekst && r.boekjaar !== rapportBoekjaar).length > 0 && (
               <div style={{ background: 'white', borderRadius: '20px', border: '1px solid #e2e8f0', overflow: 'hidden', marginBottom: '26px', boxShadow: '0 12px 32px rgba(15,23,42,0.04)' }}>
                 <div style={{ padding: '18px 24px', borderBottom: '1px solid #e2e8f0' }}>
-                  <h2 style={{ fontSize: '0.95rem', fontWeight: '600', color: '#0f172a', margin: 0 }}>📋 Eerdere rapporten</h2>
+                  <h2 style={{ fontSize: '0.84rem', fontWeight: '600', color: '#0f172a', margin: 0 }}>📋 Eerdere rapporten</h2>
                 </div>
                 {rapporten.filter(r => r.rapport_tekst && r.boekjaar !== rapportBoekjaar).map(r => (
                   <div key={r.boekjaar} style={{ padding: '16px 24px', borderBottom: '1px solid #f1f5f9', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '12px' }}>
@@ -911,10 +911,10 @@ async function zoekAdres(pc: string, hn: string) {
               <div style={{ background: 'linear-gradient(135deg, #eff6ff 0%, #ffffff 100%)', borderRadius: '24px', padding: '26px 28px', border: '2px solid #bfdbfe', marginBottom: '26px', boxShadow: '0 18px 46px rgba(37,99,235,0.1)' }}>
                 <div style={{ color: '#2563EB', fontSize: '0.72rem', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '6px' }}>Stap 4</div>
                 <h2 style={{ fontWeight: '600', color: '#0f172a', fontSize: '1.12rem', marginBottom: '8px' }}>Betaal en ontvang het rapport</h2>
-                <p style={{ color: '#475569', fontSize: '0.95rem', marginBottom: '18px', lineHeight: 1.6 }}>
+                <p style={{ color: '#475569', fontSize: '0.84rem', marginBottom: '18px', lineHeight: 1.6 }}>
                   Betaal éénmalig €59 via iDEAL voor <strong>{geselecteerdeVereniging.naam}</strong> boekjaar <strong>{rapportBoekjaar}</strong>. Daarna kunt u het rapport genereren.
                 </p>
-                <button onClick={handleBetaal} disabled={betaalLoading || !heeftUploadsVoorRapportjaar} style={{ background: !heeftUploadsVoorRapportjaar ? '#94a3b8' : '#2563EB', color: 'white', padding: '15px 30px', borderRadius: '14px', border: 'none', fontSize: '0.95rem', fontWeight: '700', cursor: !heeftUploadsVoorRapportjaar ? 'not-allowed' : 'pointer', fontFamily: 'Outfit, sans-serif', boxShadow: !heeftUploadsVoorRapportjaar ? 'none' : '0 12px 24px rgba(37,99,235,0.2)' }}>
+                <button onClick={handleBetaal} disabled={betaalLoading || !heeftUploadsVoorRapportjaar} style={{ background: !heeftUploadsVoorRapportjaar ? '#94a3b8' : '#2563EB', color: 'white', padding: '15px 30px', borderRadius: '14px', border: 'none', fontSize: '0.84rem', fontWeight: '700', cursor: !heeftUploadsVoorRapportjaar ? 'not-allowed' : 'pointer', fontFamily: 'Outfit, sans-serif', boxShadow: !heeftUploadsVoorRapportjaar ? 'none' : '0 12px 24px rgba(37,99,235,0.2)' }}>
                   {betaalLoading ? 'Laden...' : !heeftUploadsVoorRapportjaar ? `⬆️ Upload eerst bestanden voor ${rapportBoekjaar}` : '🔒 Betaal €59 via iDEAL'}
                 </button>
               </div>
@@ -925,32 +925,32 @@ async function zoekAdres(pc: string, hn: string) {
                   <div>
                     <div style={{ color: '#166534', fontSize: '0.72rem', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '4px' }}>Stap 4</div>
                     <h2 style={{ fontWeight: '600', color: '#14532d', fontSize: '1.08rem', marginBottom: '4px' }}>Betaald — rapport beschikbaar</h2>
-                    <p style={{ color: '#166534', fontSize: '0.9rem', margin: 0 }}>{huidigJaarGegenereerd ? `Rapport gegenereerd op ${new Date(huidigRapport!.gegenereerd_op!).toLocaleDateString('nl-NL')}` : `U kunt nu uw rapport genereren voor ${geselecteerdeVereniging.naam} boekjaar ${rapportBoekjaar}.`}</p>
+                    <p style={{ color: '#166534', fontSize: '0.84rem', margin: 0 }}>{huidigJaarGegenereerd ? `Rapport gegenereerd op ${new Date(huidigRapport!.gegenereerd_op!).toLocaleDateString('nl-NL')}` : `U kunt nu uw rapport genereren voor ${geselecteerdeVereniging.naam} boekjaar ${rapportBoekjaar}.`}</p>
                   </div>
                 </div>
                 <div className="card-actions" style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
                   {huidigJaarGegenereerd && (
-                    <button onClick={() => setToonRapport(true)} style={{ background: 'white', color: '#166534', padding: '12px 20px', borderRadius: '12px', border: '1.5px solid #86efac', fontSize: '0.9rem', fontWeight: '700', cursor: 'pointer', fontFamily: 'Outfit, sans-serif' }}>📄 Bekijk rapport</button>
+                    <button onClick={() => setToonRapport(true)} style={{ background: 'white', color: '#166534', padding: '12px 20px', borderRadius: '12px', border: '1.5px solid #86efac', fontSize: '0.84rem', fontWeight: '700', cursor: 'pointer', fontFamily: 'Outfit, sans-serif' }}>📄 Bekijk rapport</button>
                   )}
                   <button onClick={() => setBevestigDeleteRapport(rapportBoekjaar)} style={{ background: 'white', border: '1.5px solid #fecaca', color: '#ef4444', padding: '12px', borderRadius: '12px', cursor: 'pointer', fontSize: '0.85rem' }} title="Boekjaar verwijderen">🗑️</button>
-                  <button onClick={handleGenereerRapport} disabled={rapportLoading} style={{ background: '#16a34a', color: 'white', padding: '12px 24px', borderRadius: '12px', border: 'none', fontSize: '0.9rem', fontWeight: '700', cursor: rapportLoading ? 'not-allowed' : 'pointer', fontFamily: 'Outfit, sans-serif', boxShadow: '0 12px 24px rgba(22,163,74,0.18)' }}>
+                  <button onClick={handleGenereerRapport} disabled={rapportLoading} style={{ background: '#16a34a', color: 'white', padding: '12px 24px', borderRadius: '12px', border: 'none', fontSize: '0.84rem', fontWeight: '700', cursor: rapportLoading ? 'not-allowed' : 'pointer', fontFamily: 'Outfit, sans-serif', boxShadow: '0 12px 24px rgba(22,163,74,0.18)' }}>
                     {rapportLoading ? '⏳ Genereren...' : huidigJaarGegenereerd ? '🔄 Rapport vernieuwen' : '📊 Genereer rapport'}
                   </button>
                 </div>
               </div>
             )}
 
-            {rapportError && <p style={{ color: '#ef4444', marginBottom: '16px', fontSize: '0.9rem', fontWeight: '700' }}>{rapportError}</p>}
-            {error && <p style={{ color: '#ef4444', marginBottom: '16px', fontSize: '0.9rem', fontWeight: '700' }}>{error}</p>}
+            {rapportError && <p style={{ color: '#ef4444', marginBottom: '16px', fontSize: '0.84rem', fontWeight: '700' }}>{rapportError}</p>}
+            {error && <p style={{ color: '#ef4444', marginBottom: '16px', fontSize: '0.84rem', fontWeight: '700' }}>{error}</p>}
 
             <div style={{ background: '#fffbeb', borderRadius: '16px', padding: '16px 20px', border: '1px solid #fde68a', marginTop: '8px' }}>
-              <p style={{ margin: 0, fontSize: '0.82rem', color: '#92400e', lineHeight: 1.6 }}>
+              <p style={{ margin: 0, fontSize: '0.78rem', color: '#92400e', lineHeight: 1.6 }}>
                 <strong>⚠️ Disclaimer:</strong> Het kascontrolerapport is een hulpmiddel voor de kascommissie en wordt opgesteld op basis van de door u aangeleverde documenten. Wij adviseren de kascontroleur om het rapport te gebruiken als ondersteuning bij zijn of haar eigen controle en de bevindingen zelf te verifiëren. Slimme Kascontrole is niet aansprakelijk voor eventuele fouten of beslissingen op basis van het rapport. De verantwoordelijkheid voor de kascontrole blijft bij de kascommissie. Zie ook onze <a href="/voorwaarden" style={{ color: '#92400e' }}>algemene voorwaarden</a>.
               </p>
             </div>
             {rapportLoading && (
               <div style={{ background: '#eff6ff', borderRadius: '12px', padding: '16px', marginTop: '16px' }}>
-                <p style={{ color: '#1D4ED8', margin: 0, fontSize: '0.9rem' }}>⏳ Uw uploads worden geanalyseerd voor {geselecteerdeVereniging.naam} boekjaar {rapportBoekjaar}... Dit duurt circa 2 minuten.</p>
+                <p style={{ color: '#1D4ED8', margin: 0, fontSize: '0.84rem' }}>⏳ Uw uploads worden geanalyseerd voor {geselecteerdeVereniging.naam} boekjaar {rapportBoekjaar}... Dit duurt circa 2 minuten.</p>
               </div>
             )}
           </>
