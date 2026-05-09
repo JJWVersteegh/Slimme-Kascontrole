@@ -256,15 +256,7 @@ footer a:hover{color:#93c5fd}
   <a href="#tarieven" onclick="closeMenu()">Tarieven</a>
   <a href="#contact" onclick="closeMenu()">Contact</a>
   <a href="/mijn-omgeving" onclick="closeMenu()">Mijn omgeving</a>
-  <a href="/registreer" class="mobile-btn">Account aanmaken
-          <a
-            href="/voorbeeld-rapport"
-            className="inline-flex items-center justify-center px-6 py-4 rounded-2xl bg-white border border-gray-300 hover:bg-gray-50 transition text-gray-900 font-medium"
-          >
-            Bekijk voorbeeldrapport
-          </a>
-
-</a>
+  <a href="/registreer" class="mobile-btn">Account aanmaken</a>
 </div>
 
 <!-- HERO -->
@@ -280,6 +272,13 @@ footer a:hover{color:#93c5fd}
       <div class="hero-ctas">
         <a href="/registreer" class="btn-primary">Account aanmaken</a>
         <a href="#hoe-het-werkt" class="btn-ghost-white">Bekijk hoe het werkt →</a>
+
+              <a
+                href="/voorbeeld-rapport"
+                className="text-blue-700 font-semibold hover:text-blue-900 transition"
+              >
+                Bekijk voorbeeldrapport →
+              </a>
       </div>
       <div class="hero-price">
         <div>
