@@ -58,21 +58,24 @@ export default function VoorbeeldRapportPage() {
             </svg>
           </div>
 
-          <div style={{ lineHeight: 1.1 }}>
+          <div style={{ lineHeight: 0.92 }}>
             <div
               style={{
-                fontWeight: '700',
-                fontSize: '1.05rem',
-                color: '#1D4ED8',
+                fontWeight: 800,
+                fontSize: '1.12rem',
+                letterSpacing: '-0.02em',
+                color: '#2563EB',
               }}
             >
               slimme
             </div>
+
             <div
               style={{
-                fontWeight: '500',
-                fontSize: '1.05rem',
-                color: '#3b82f6',
+                fontWeight: 700,
+                fontSize: '1.12rem',
+                letterSpacing: '-0.02em',
+                color: '#2563EB',
               }}
             >
               kascontrole
