@@ -25,12 +25,13 @@ a{text-decoration:none}
 
 /* NAV */
 nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(255,255,255,0.97);backdrop-filter:blur(12px);border-bottom:1px solid #e2e8f0;height:72px;display:flex;align-items:center;justify-content:space-between;padding:0 48px}
-.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
-.nav-logo-icon{background:#2563EB;width:38px;height:38px;border-radius:8px;display:flex;align-items:center;justify-content:center}
-.nav-links{display:flex;gap:28px;list-style:none;align-items:center;flex-wrap:wrap}
-.nav-links a{font-size:0.88rem;font-weight:500;color:#475569;text-decoration:none;transition:color 0.2s}
+.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none;flex-shrink:0}
+.nav-logo-icon{background:#2563EB;width:38px;height:38px;border-radius:8px;display:flex;align-items:center;justify-content:center;box-shadow:0 1px 2px rgba(15,23,42,0.08)}
+.nav-logo-text{font-size:1.12rem;font-weight:800;color:#2563EB;line-height:0.92;letter-spacing:-0.02em}
+.nav-links{display:flex;gap:28px;list-style:none;align-items:center;flex-wrap:nowrap}
+.nav-links a{font-size:0.88rem;font-weight:500;color:#475569;text-decoration:none;transition:color 0.2s;white-space:nowrap}
 .nav-links a:hover{color:#2563EB}
-.btn-nav{background:#2563EB;color:white!important;padding:9px 20px;border-radius:6px;font-weight:600}
+.btn-nav{background:#2563EB;color:white!important;padding:10px 22px;border-radius:6px;font-weight:700}
 .btn-nav:hover{background:#1D4ED8!important}
 .hamburger{display:none;background:none;border:1.5px solid #e2e8f0;border-radius:6px;cursor:pointer;padding:7px;flex-direction:column;gap:4px;align-items:center;justify-content:center}
 .ham-bar{display:block;width:20px;height:2px;background:#0f172a;border-radius:2px}
@@ -40,7 +41,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(255,255,255,
 .mobile-menu .mobile-btn{background:#2563EB;color:white!important;text-align:center;margin-top:8px;font-weight:700}
 
 /* PAGE */
-.page-wrap{padding:128px 48px 72px;background:#f8fafc;min-height:100vh}
+.page-wrap{padding:132px 48px 72px;background:#f8fafc;min-height:100vh}
 .container{max-width:1120px;margin:0 auto}
 .hero-card{background:white;border:1px solid #e2e8f0;border-radius:18px;overflow:hidden;box-shadow:0 16px 48px rgba(15,23,42,0.06)}
 .hero-top{display:grid;grid-template-columns:1.05fr 0.95fr;gap:0}
@@ -107,7 +108,7 @@ h1 em{font-style:italic;font-weight:400;color:#2563EB}
         <path d="M20 6L9 17l-5-5" stroke="white" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
       </svg>
     </span>
-    <span style="font-size:1.2rem;font-weight:800;color:#2563EB;line-height:0.95">slimme<br/>kascontrole</span>
+    <span class="nav-logo-text">slimme<br/>kascontrole</span>
   </a>
 
   <ul class="nav-links">
@@ -199,9 +200,9 @@ h1 em{font-style:italic;font-weight:400;color:#2563EB}
         <p>
           Open of download het volledige voorbeeldrapport en bekijk hoe de bevindingen, tabellen en adviezen worden gepresenteerd.
         </p>
-        <a href="/voorbeeldrapport-slimme-kascontrole.pdf" target="_blank" class="btn-primary">
-          Download voorbeeldrapport
-        </a>
+        <div style="margin-top:4px;color:#64748b;font-size:0.92rem;line-height:1.7;max-width:360px">
+          Volledig fictief voorbeeldrapport in PDF-formaat, bedoeld om exact te laten zien hoe uw uiteindelijke kascontrolerapport eruitziet.
+        </div>
       </section>
     </div>
 
