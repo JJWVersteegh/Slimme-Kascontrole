@@ -102,33 +102,18 @@ h1 em{font-style:italic;font-weight:400;color:#2563EB}
 </head>
 <body>
 
-<nav>
-  <a href="/" class="nav-logo" aria-label="Slimme Kascontrole">
-    <span class="nav-logo-icon">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-        <path d="M20 6L9 17l-5-5" stroke="white" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
-    </span>
-    <span style="font-size:1.2rem;font-weight:800;color:#2563EB;line-height:0.95">slimme<br/>kascontrole</span>
-  </a>
-
-  <ul class="nav-links">
-    <li><a href="/#waarom">Waarom</a></li>
-    <li><a href="/#hoe-het-werkt">Hoe het werkt</a></li>
-    <li><a href="/handleidingen">Handleidingen</a></li>
-    <li><a href="/#over-ons">Over ons</a></li>
-    <li><a href="/#tarieven">Tarieven</a></li>
-    <li><a href="/#contact">Contact</a></li>
-    <li><a href="/mijn-omgeving">Mijn omgeving</a></li>
-    <li><a href="/login" class="btn-nav">Account aanmaken</a></li>
-  </ul>
-
-  <button class="hamburger" onclick="document.querySelector('.mobile-menu').style.display = document.querySelector('.mobile-menu').style.display === 'block' ? 'none' : 'block'" aria-label="Menu">
-    <span class="ham-bar"></span>
-    <span class="ham-bar"></span>
-    <span class="ham-bar"></span>
-  </button>
-</nav>
+<nav style={{ background: 'white', borderBottom: '1px solid #e2e8f0', padding: '0 48px', height: '72px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        <a href="/#handleidingen" style={{ display: 'flex', alignItems: 'center', gap: '10px', textDecoration: 'none' }}>
+          <div style={{ background: '#2563EB', width: '38px', height: '38px', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <svg width="20" height="20" viewBox="0 0 22 22" fill="none"><polyline points="3,12 9,18 19,6" stroke="white" strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round"/></svg>
+          </div>
+          <div style={{ lineHeight: 1.1 }}>
+            <div style={{ fontWeight: '700', fontSize: '1.05rem', color: '#1D4ED8' }}>slimme</div>
+            <div style={{ fontWeight: '500', fontSize: '1.05rem', color: '#3b82f6' }}>kascontrole</div>
+          </div>
+        </a>
+        <a href="/#handleidingen" style={{ color: '#475569', textDecoration: 'none', fontSize: '0.9rem', fontWeight: '500', display: 'flex', alignItems: 'center', gap: '6px' }}>← Terug</a>
+      </nav>
 
 <div class="mobile-menu">
   <a href="/#waarom">Waarom</a>
@@ -141,7 +126,14 @@ h1 em{font-style:italic;font-weight:400;color:#2563EB}
   <a href="/login" class="mobile-btn">Account aanmaken</a>
 </div>
 
-<main class="page-wrap">
+
+<div style="display:flex;justify-content:flex-end;max-width:1120px;margin:92px auto 0;padding:0 48px">
+  <a href="/" style="color:#475569;font-weight:500;text-decoration:none;font-size:0.95rem">
+    ← Terug
+  </a>
+</div>
+
+<main class="page-wrap" style="padding-top:32px">
   <div class="container">
     <section class="hero-card">
       <div class="hero-top">
