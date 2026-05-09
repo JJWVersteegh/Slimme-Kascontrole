@@ -13,6 +13,7 @@ const html = `<!DOCTYPE html>
 <html lang="nl">
 <head>
 <meta charset="UTF-8"/>
+<title>Voorbeeldrapport Kascontrole - Slimme Kascontrole</title>
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"/>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
@@ -25,9 +26,9 @@ a{text-decoration:none}
 
 /* NAV */
 nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(255,255,255,0.97);backdrop-filter:blur(12px);border-bottom:1px solid #e2e8f0;height:72px;display:flex;align-items:center;justify-content:space-between;padding:0 48px}
-.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none;flex-shrink:0}
-.nav-logo-icon{background:#2563EB;width:38px;height:38px;border-radius:8px;display:flex;align-items:center;justify-content:center;box-shadow:0 1px 2px rgba(15,23,42,0.08)}
-.nav-logo-text{font-size:1.12rem;font-weight:800;color:#2563EB;line-height:0.92;letter-spacing:-0.02em}
+.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.nav-logo-icon{background:#2563EB;width:38px;height:38px;border-radius:8px;display:flex;align-items:center;justify-content:center}
+
 .nav-links{display:flex;gap:28px;list-style:none;align-items:center;flex-wrap:nowrap}
 .nav-links a{font-size:0.88rem;font-weight:500;color:#475569;text-decoration:none;transition:color 0.2s;white-space:nowrap}
 .nav-links a:hover{color:#2563EB}
@@ -108,7 +109,7 @@ h1 em{font-style:italic;font-weight:400;color:#2563EB}
         <path d="M20 6L9 17l-5-5" stroke="white" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
       </svg>
     </span>
-    <span class="nav-logo-text">slimme<br/>kascontrole</span>
+    <span style="font-size:1.2rem;font-weight:800;color:#2563EB;line-height:0.95">slimme<br/>kascontrole</span>
   </a>
 
   <ul class="nav-links">
