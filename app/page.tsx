@@ -272,13 +272,6 @@ footer a:hover{color:#93c5fd}
       <div class="hero-ctas">
         <a href="/registreer" class="btn-primary">Account aanmaken</a>
         <a href="#hoe-het-werkt" class="btn-ghost-white">Bekijk hoe het werkt →</a>
-
-              <a
-                href="/voorbeeld-rapport"
-                className="text-blue-700 font-semibold hover:text-blue-900 transition"
-              >
-                Bekijk voorbeeldrapport →
-              </a>
       </div>
       <div class="hero-price">
         <div>
@@ -297,24 +290,6 @@ footer a:hover{color:#93c5fd}
   </div>
 </section>
 </div>
-
-<!-- WAAROM -->
-<section id="waarom">
-  <div class="why-grid">
-    <div class="why-text fade-in">
-      <p class="section-label">Waarom kascontrole?</p>
-      <h2>Elke vereniging is <em>wettelijk verplicht</em> tot kascontrole</h2>
-      <p>Volgens de statuten van vrijwel elke vereniging en de Algemene Ledenvergadering (ALV) is het bestuur verplicht verantwoording af te leggen over het financiële beheer. Een kascommissie controleert of de penningmeester en beheerder alles correct hebben geboekt.</p>
-      <div class="why-callout">
-        <strong>Controleer ook uw beheerder:</strong> Als uw vereniging een externe beheerder heeft — zoals een VvE-beheerder — dan heeft u als lid het recht én de plicht om te controleren of deze partij uw geld correct beheert. Slimme Kascontrole helpt u daarbij.
-      </div>
-      <p>Traditionele kascontrole is vaak steekproefsgewijs. Met Slimme Kascontrole voert u een <strong>volledige controle</strong> uit — elke factuur, elk saldo, elk boekjaar. Zo staat u sterk op uw ALV.</p>
-    </div>
-    <div class="why-img fade-in">
-      <img src="https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=700&q=80" alt="Financiële controle"/>
-    </div>
-  </div>
-</section>
 
 <!-- HOW IT WORKS -->
 <section class="how-bg" id="hoe-het-werkt" style="background:#f8fafc">
@@ -349,20 +324,26 @@ footer a:hover{color:#93c5fd}
       </div>
     </div>
   </div>
+</section>
 
-        <div style="margin-top:32px;text-align:center">
-          <a
-            href="/voorbeeld-rapport"
-            style="display:inline-flex;align-items:center;gap:10px;background:#eff6ff;color:#2563EB;border:1px solid #bfdbfe;padding:14px 22px;border-radius:12px;font-weight:600;text-decoration:none;font-size:0.95rem"
-          >
-            📄 Bekijk een voorbeeldrapport
-          </a>
-          <p style="margin-top:10px;color:#64748b;font-size:0.88rem">
-            Bekijk vooraf exact hoe uw kascontrolerapport eruitziet.
-          </p>
-        </div>
 
-      </section>
+<!-- WAAROM -->
+<section id="waarom">
+  <div class="why-grid">
+    <div class="why-text fade-in">
+      <p class="section-label">Waarom kascontrole?</p>
+      <h2>Elke vereniging is <em>wettelijk verplicht</em> tot kascontrole</h2>
+      <p>Volgens de statuten van vrijwel elke vereniging en de Algemene Ledenvergadering (ALV) is het bestuur verplicht verantwoording af te leggen over het financiële beheer. Een kascommissie controleert of de penningmeester en beheerder alles correct hebben geboekt.</p>
+      <div class="why-callout">
+        <strong>Controleer ook uw beheerder:</strong> Als uw vereniging een externe beheerder heeft — zoals een VvE-beheerder — dan heeft u als lid het recht én de plicht om te controleren of deze partij uw geld correct beheert. Slimme Kascontrole helpt u daarbij.
+      </div>
+      <p>Traditionele kascontrole is vaak steekproefsgewijs. Met Slimme Kascontrole voert u een <strong>volledige controle</strong> uit — elke factuur, elk saldo, elk boekjaar. Zo staat u sterk op uw ALV.</p>
+    </div>
+    <div class="why-img fade-in">
+      <img src="https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=700&q=80" alt="Financiële controle"/>
+    </div>
+  </div>
+</section>
 
 <!-- SOURCES -->
 <section id="handleidingen">
