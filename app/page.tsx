@@ -249,7 +249,7 @@ footer a:hover{color:#93c5fd}
 
 <!-- MOBIEL MENU -->
 <div class="mobile-menu" id="mobile-menu">
-  <a href="#waarom" onclick="closeMenu()">Waarom kascontrole?</a>
+  <a href="#waarom" onclick="closeMenu()">Waarom</a>
   <a href="#hoe-het-werkt" onclick="closeMenu()">Hoe het werkt</a>
   <a href="#handleidingen" onclick="closeMenu()">Handleidingen</a>
   <a href="#over-ons" onclick="closeMenu()">Over ons</a>
