@@ -8,45 +8,268 @@ export const metadata: Metadata = {
 
 export default function VoorbeeldRapportPage() {
   return (
-    <main
-      style={{
-        minHeight: '100vh',
-        background: '#f8fafc',
-        fontFamily: 'Outfit, sans-serif',
-      }}
-    >
-      {/* Nav exact zoals de handleidingenpagina */}
-      <nav
-        style={{
-          background: 'white',
-          borderBottom: '1px solid #e2e8f0',
-          padding: '0 48px',
-          height: '72px',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-        }}
-      >
-        <a
-          href="/"
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '10px',
-            textDecoration: 'none',
-          }}
-        >
-          <div
-            style={{
-              background: '#2563EB',
-              width: '38px',
-              height: '38px',
-              borderRadius: '8px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
-          >
+    <main className="voorbeeld-page">
+
+      <style>{`
+        .voorbeeld-page {
+          min-height: 100vh;
+          background: #f8fafc;
+          font-family: Outfit, sans-serif;
+          color: #0f172a;
+        }
+
+        .voorbeeld-nav {
+          background: white;
+          border-bottom: 1px solid #e2e8f0;
+          padding: 0 48px;
+          height: 72px;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+        }
+
+        .voorbeeld-logo {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          text-decoration: none;
+        }
+
+        .voorbeeld-logo-icon {
+          background: #2563EB;
+          width: 38px;
+          height: 38px;
+          border-radius: 8px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          flex-shrink: 0;
+        }
+
+        .voorbeeld-logo-text {
+          line-height: 1.1;
+        }
+
+        .voorbeeld-logo-text div:first-child {
+          font-weight: 700;
+          font-size: 1.05rem;
+          color: #1D4ED8;
+        }
+
+        .voorbeeld-logo-text div:last-child {
+          font-weight: 500;
+          font-size: 1.05rem;
+          color: #3b82f6;
+        }
+
+        .terug-link {
+          color: #475569;
+          text-decoration: none;
+          font-size: 0.9rem;
+          font-weight: 500;
+          display: flex;
+          align-items: center;
+          gap: 6px;
+          white-space: nowrap;
+        }
+
+        .container {
+          max-width: 860px;
+          margin: 0 auto;
+          padding: 64px 24px;
+        }
+
+        .label {
+          display: inline-flex;
+          align-items: center;
+          background: #eff6ff;
+          color: #2563EB;
+          border: 1px solid #bfdbfe;
+          border-radius: 999px;
+          padding: 7px 14px;
+          font-size: 0.78rem;
+          font-weight: 700;
+          margin-bottom: 18px;
+        }
+
+        h1 {
+          font-family: Outfit, sans-serif;
+          font-size: 2.2rem;
+          line-height: 1.15;
+          font-weight: 700;
+          color: #0f172a;
+          margin: 0 0 12px;
+          letter-spacing: -0.02em;
+        }
+
+        .intro {
+          color: #475569;
+          font-size: 1rem;
+          line-height: 1.7;
+          margin: 0 0 40px;
+          max-width: 680px;
+        }
+
+        .download-card {
+          background: white;
+          border: 1px solid #e2e8f0;
+          border-radius: 18px;
+          padding: 30px;
+          margin-bottom: 28px;
+          box-shadow: 0 8px 30px rgba(15,23,42,0.04);
+        }
+
+        .download-card-inner {
+          display: grid;
+          grid-template-columns: 1fr auto;
+          gap: 24px;
+          align-items: center;
+        }
+
+        .download-card h2 {
+          font-size: 1.25rem;
+          font-weight: 700;
+          color: #0f172a;
+          margin: 0 0 8px;
+        }
+
+        .download-card p {
+          color: #475569;
+          font-size: 0.95rem;
+          line-height: 1.7;
+          margin: 0;
+        }
+
+        .btn-primary {
+          background: #2563EB;
+          color: white;
+          padding: 14px 24px;
+          border-radius: 10px;
+          font-size: 0.95rem;
+          font-weight: 700;
+          text-decoration: none;
+          white-space: nowrap;
+          box-shadow: 0 4px 20px rgba(37,99,235,0.22);
+        }
+
+        .info-card {
+          background: #eff6ff;
+          border: 1px solid #bfdbfe;
+          border-radius: 16px;
+          padding: 28px;
+          margin-bottom: 32px;
+        }
+
+        .info-card h2 {
+          font-weight: 700;
+          color: #1e3a8a;
+          font-size: 1rem;
+          margin: 0 0 16px;
+        }
+
+        .checks {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 10px 18px;
+        }
+
+        .check {
+          font-size: 0.9rem;
+          color: #1e3a8a;
+          font-weight: 500;
+          line-height: 1.5;
+        }
+
+        .section-card {
+          background: white;
+          border: 1px solid #e2e8f0;
+          border-radius: 16px;
+          padding: 28px;
+          margin-bottom: 24px;
+          box-shadow: 0 8px 30px rgba(15,23,42,0.04);
+        }
+
+        .section-card h2 {
+          font-size: 1.15rem;
+          font-weight: 700;
+          color: #0f172a;
+          margin: 0 0 10px;
+        }
+
+        .section-card p {
+          color: #475569;
+          font-size: 0.95rem;
+          line-height: 1.7;
+          margin: 0;
+        }
+
+        .demo-note {
+          background: #fff7ed;
+          border: 1px solid #fed7aa;
+          color: #9a3412;
+          border-radius: 16px;
+          padding: 22px;
+          font-size: 0.9rem;
+          line-height: 1.7;
+          margin-top: 32px;
+        }
+
+        @media (max-width: 700px) {
+          .voorbeeld-nav {
+            padding: 0 20px;
+            height: 72px;
+          }
+
+          .voorbeeld-logo-icon {
+            width: 36px;
+            height: 36px;
+          }
+
+          .voorbeeld-logo-text div:first-child,
+          .voorbeeld-logo-text div:last-child {
+            font-size: 1rem;
+          }
+
+          .container {
+            padding: 36px 18px 56px;
+          }
+
+          h1 {
+            font-size: 1.75rem;
+          }
+
+          .intro {
+            font-size: 0.95rem;
+            margin-bottom: 28px;
+          }
+
+          .download-card,
+          .info-card,
+          .section-card {
+            padding: 22px;
+            border-radius: 14px;
+          }
+
+          .download-card-inner {
+            grid-template-columns: 1fr;
+            gap: 18px;
+          }
+
+          .btn-primary {
+            display: block;
+            text-align: center;
+            width: 100%;
+          }
+
+          .checks {
+            grid-template-columns: 1fr;
+          }
+        }
+      `}</style>
+
+      <nav className="voorbeeld-nav">
+        <a href="/#handleidingen" className="voorbeeld-logo">
+          <div className="voorbeeld-logo-icon">
             <svg width="20" height="20" viewBox="0 0 22 22" fill="none">
               <polyline
                 points="3,12 9,18 19,6"
@@ -58,325 +281,81 @@ export default function VoorbeeldRapportPage() {
             </svg>
           </div>
 
-          <div style={{ lineHeight: 0.92 }}>
-            <div
-              style={{
-                fontWeight: 800,
-                fontSize: '1.12rem',
-                letterSpacing: '-0.02em',
-                color: '#2563EB',
-              }}
-            >
-              slimme
-            </div>
-
-            <div
-              style={{
-                fontWeight: 700,
-                fontSize: '1.12rem',
-                letterSpacing: '-0.02em',
-                color: '#2563EB',
-              }}
-            >
-              kascontrole
-            </div>
+          <div className="voorbeeld-logo-text">
+            <div>slimme</div>
+            <div>kascontrole</div>
           </div>
         </a>
 
-        <a
-          href="/"
-          style={{
-            color: '#475569',
-            textDecoration: 'none',
-            fontSize: '0.9rem',
-            fontWeight: '500',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '6px',
-          }}
-        >
-          ← Terug
-        </a>
+        <a href="/" className="terug-link">← Terug</a>
       </nav>
 
-      <div style={{ maxWidth: '1120px', margin: '0 auto', padding: '64px 24px 72px' }}>
-        <section
-          style={{
-            background: 'white',
-            border: '1px solid #e2e8f0',
-            borderRadius: '18px',
-            overflow: 'hidden',
-            boxShadow: '0 16px 48px rgba(15,23,42,0.06)',
-            display: 'grid',
-            gridTemplateColumns: '1.05fr 0.95fr',
-          }}
-        >
-          <div style={{ padding: '52px' }}>
-            <div
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                background: '#eff6ff',
-                color: '#2563EB',
-                border: '1px solid #bfdbfe',
-                borderRadius: '999px',
-                padding: '7px 14px',
-                fontSize: '0.78rem',
-                fontWeight: 700,
-                marginBottom: '22px',
-              }}
-            >
-              Voorbeeldrapport
+      <div className="container">
+        <div className="label">Voorbeeldrapport</div>
+
+        <h1>Bekijk een voorbeeld van een kascontrolerapport</h1>
+
+        <p className="intro">
+          Bekijk een fictief maar realistisch voorbeeld van een kascontrolerapport van
+          Slimme Kascontrole. De opbouw, analyses en stijl zijn gelijk aan het rapport
+          dat u na upload ontvangt.
+        </p>
+
+        <section className="download-card">
+          <div className="download-card-inner">
+            <div>
+              <h2>📄 Voorbeeldrapport PDF</h2>
+              <p>
+                Download het volledige voorbeeldrapport en bekijk hoe bevindingen,
+                tabellen en adviezen worden gepresenteerd.
+              </p>
             </div>
 
-            <h1
-              style={{
-                fontFamily: 'Playfair Display, serif',
-                fontSize: 'clamp(2rem, 4vw, 3.3rem)',
-                lineHeight: 1.08,
-                color: '#0f2460',
-                letterSpacing: '-0.03em',
-                marginBottom: '18px',
-              }}
+            <a
+              href="/voorbeeldrapport-slimme-kascontrole.pdf"
+              target="_blank"
+              className="btn-primary"
             >
-              Bekijk wat u straks{' '}
-              <em style={{ fontStyle: 'italic', fontWeight: 400, color: '#2563EB' }}>
-                echt ontvangt.
-              </em>
-            </h1>
-
-            <p
-              style={{
-                fontSize: '1.02rem',
-                color: '#475569',
-                lineHeight: 1.8,
-                maxWidth: '560px',
-                marginBottom: '32px',
-              }}
-            >
-              Bekijk een fictief maar realistisch voorbeeld van een kascontrolerapport van
-              Slimme Kascontrole. De opbouw, analyses en stijl zijn gelijk aan het rapport
-              dat u na upload ontvangt.
-            </p>
-
-            <div style={{ display: 'flex', gap: '14px', alignItems: 'center', flexWrap: 'wrap' }}>
-              <a
-                href="/voorbeeldrapport-slimme-kascontrole.pdf"
-                target="_blank"
-                style={{
-                  background: '#2563EB',
-                  color: 'white',
-                  padding: '14px 28px',
-                  borderRadius: '8px',
-                  fontSize: '0.95rem',
-                  fontWeight: 700,
-                  boxShadow: '0 4px 20px rgba(37,99,235,0.32)',
-                  textDecoration: 'none',
-                }}
-              >
-                Download voorbeeldrapport
-              </a>
-            </div>
-          </div>
-
-          <div
-            style={{
-              background: '#1e3a8a',
-              color: 'white',
-              padding: '52px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
-          >
-            <div
-              style={{
-                width: '100%',
-                maxWidth: '360px',
-                background: 'white',
-                borderRadius: '14px',
-                color: '#0f172a',
-                boxShadow: '0 24px 70px rgba(0,0,0,0.22)',
-                padding: '26px',
-              }}
-            >
-              <div
-                style={{
-                  height: '16px',
-                  background: '#1e3a8a',
-                  borderRadius: '5px',
-                  marginBottom: '18px',
-                }}
-              />
-              <div style={{ fontWeight: 800, fontSize: '1.05rem', marginBottom: '5px' }}>
-                Kascommissie rapport
-              </div>
-              <div style={{ fontSize: '0.75rem', color: '#64748b', marginBottom: '18px' }}>
-                VvE Parkzicht Residence · Boekjaar 2025
-              </div>
-
-              {[100, 100, 70].map((w, i) => (
-                <div
-                  key={i}
-                  style={{
-                    width: `${w}%`,
-                    height: '10px',
-                    background: '#e2e8f0',
-                    borderRadius: '6px',
-                    marginBottom: '9px',
-                  }}
-                />
-              ))}
-
-              <div
-                style={{
-                  marginTop: '18px',
-                  border: '1px solid #e2e8f0',
-                  borderRadius: '8px',
-                  overflow: 'hidden',
-                }}
-              >
-                {[0, 1, 2].map((row) => (
-                  <div key={row} style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr' }}>
-                    {[0, 1, 2].map((cell) => (
-                      <div
-                        key={cell}
-                        style={{
-                          height: '28px',
-                          borderRight: cell < 2 ? '1px solid #e2e8f0' : undefined,
-                          borderBottom: row < 2 ? '1px solid #e2e8f0' : undefined,
-                          background: '#f8fafc',
-                        }}
-                      />
-                    ))}
-                  </div>
-                ))}
-              </div>
-
-              <span
-                style={{
-                  display: 'inline-block',
-                  marginTop: '18px',
-                  background: '#fef3c7',
-                  color: '#92400e',
-                  border: '1px solid #fde68a',
-                  borderRadius: '999px',
-                  padding: '6px 10px',
-                  fontSize: '0.72rem',
-                  fontWeight: 800,
-                }}
-              >
-                DEMO RAPPORT
-              </span>
-            </div>
+              Download voorbeeldrapport
+            </a>
           </div>
         </section>
 
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: '1fr 1fr',
-            gap: '24px',
-            marginTop: '28px',
-          }}
-        >
-          <section
-            style={{
-              background: 'white',
-              border: '1px solid #e2e8f0',
-              borderRadius: '16px',
-              padding: '30px',
-              boxShadow: '0 8px 30px rgba(15,23,42,0.04)',
-            }}
-          >
-            <h2 style={{ fontSize: '1.25rem', color: '#0f172a', marginBottom: '16px' }}>
-              Wat ontvangt u?
-            </h2>
+        <section className="info-card">
+          <h2>✅ Wat ziet u in het voorbeeldrapport?</h2>
 
-            {[
-              'Analyse van inkomsten en uitgaven',
-              'Controle van banksaldi en transacties',
-              'Analyse van openstaande posten',
-              'Inzichtelijke tabellen en bevindingen',
-              'Advies voor de Algemene Ledenvergadering',
-            ].map((item) => (
-              <div
-                key={item}
-                style={{
-                  display: 'flex',
-                  gap: '10px',
-                  color: '#475569',
-                  fontSize: '0.93rem',
-                  lineHeight: 1.55,
-                  marginBottom: '12px',
-                }}
-              >
-                <span style={{ color: '#2563EB', fontWeight: 800 }}>✓</span>
-                <span>{item}</span>
-              </div>
-            ))}
+          <div className="checks">
+            <div className="check">✓ Analyse van inkomsten en uitgaven</div>
+            <div className="check">✓ Controle van banksaldi en transacties</div>
+            <div className="check">✓ Analyse van openstaande posten</div>
+            <div className="check">✓ Inzichtelijke tabellen en bevindingen</div>
+            <div className="check">✓ Risico-indeling per aandachtspunt</div>
+            <div className="check">✓ Advies voor de Algemene Ledenvergadering</div>
+          </div>
+        </section>
 
-            <div
-              style={{
-                marginTop: '20px',
-                background: '#eff6ff',
-                borderLeft: '4px solid #2563EB',
-                borderRadius: '0 10px 10px 0',
-                padding: '16px 18px',
-                color: '#1e3a8a',
-                fontSize: '0.88rem',
-                lineHeight: 1.65,
-              }}
-            >
-              Dit voorbeeldrapport bevat uitsluitend fictieve gegevens. Het is bedoeld om te
-              laten zien wat u qua structuur en inhoud kunt verwachten.
-            </div>
-          </section>
+        <section className="section-card">
+          <h2>Zelfde structuur als het echte rapport</h2>
+          <p>
+            Het voorbeeldrapport is bewust niet mooier gemaakt dan het echte rapport.
+            Zo ziet u vooraf duidelijk wat u als VvE kunt verwachten na het uploaden van
+            de financiële bestanden.
+          </p>
+        </section>
 
-          <section
-            style={{
-              background: 'white',
-              border: '1px solid #e2e8f0',
-              borderRadius: '16px',
-              padding: '30px',
-              boxShadow: '0 8px 30px rgba(15,23,42,0.04)',
-              textAlign: 'center',
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              justifyContent: 'center',
-              minHeight: '100%',
-            }}
-          >
-            <div style={{ fontSize: '2.8rem', marginBottom: '12px' }}>📄</div>
-            <h2 style={{ fontSize: '1.25rem', color: '#0f172a', marginBottom: '16px' }}>
-              Voorbeeldrapport PDF
-            </h2>
-            <p
-              style={{
-                fontSize: '0.9rem',
-                color: '#64748b',
-                lineHeight: 1.7,
-                marginBottom: '14px',
-                maxWidth: '360px',
-              }}
-            >
-              Open of download het volledige voorbeeldrapport en bekijk hoe de bevindingen,
-              tabellen en adviezen worden gepresenteerd.
-            </p>
-            <div
-              style={{
-                marginTop: '4px',
-                color: '#64748b',
-                fontSize: '0.92rem',
-                lineHeight: 1.7,
-                maxWidth: '360px',
-              }}
-            >
-              Volledig fictief voorbeeldrapport in PDF-formaat, bedoeld om exact te laten
-              zien hoe uw uiteindelijke kascontrolerapport eruitziet.
-            </div>
-          </section>
+        <section className="section-card">
+          <h2>Fictieve gegevens, realistische inhoud</h2>
+          <p>
+            Alle namen, bedragen, leveranciers en openstaande posten in het voorbeeld zijn
+            fictief. De controle-opzet, onderdelen en toelichting zijn representatief voor
+            het uiteindelijke kascontrolerapport.
+          </p>
+        </section>
+
+        <div className="demo-note">
+          <strong>Let op:</strong> dit voorbeeldrapport is uitsluitend bedoeld als demonstratie.
+          Het bevat geen echte VvE-gegevens en kan niet worden gebruikt als formeel
+          kascontrolerapport.
         </div>
       </div>
     </main>

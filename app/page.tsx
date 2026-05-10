@@ -349,7 +349,20 @@ footer a:hover{color:#93c5fd}
       </div>
     </div>
   </div>
-</section>
+
+        <div style="margin-top:32px;text-align:center">
+          <a
+            href="/voorbeeld-rapport"
+            style="display:inline-flex;align-items:center;gap:10px;background:#eff6ff;color:#2563EB;border:1px solid #bfdbfe;padding:14px 22px;border-radius:12px;font-weight:600;text-decoration:none;font-size:0.95rem"
+          >
+            📄 Bekijk een voorbeeldrapport
+          </a>
+          <p style="margin-top:10px;color:#64748b;font-size:0.88rem">
+            Bekijk vooraf exact hoe uw kascontrolerapport eruitziet.
+          </p>
+        </div>
+
+      </section>
 
 <!-- SOURCES -->
 <section id="handleidingen">
