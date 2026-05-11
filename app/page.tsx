@@ -212,6 +212,8 @@ footer a:hover{color:#93c5fd}
   .footer-links{justify-content:center}
 }
 @media(max-width:500px){
+  .hero-ctas-vertical{margin-bottom:34px}
+  .hero-secondary-links{gap:20px}
   .sources-grid,.security-grid{grid-template-columns:1fr}
   .pricing-grid{grid-template-columns:1fr}
   .hero-price{gap:10px;padding:12px}
@@ -226,18 +228,16 @@ footer a:hover{color:#93c5fd}
   flex-direction:column;
   align-items:flex-start;
   gap:18px;
+  margin-bottom:30px;
 }
 
 .hero-secondary-links{
   display:flex;
   flex-direction:column;
-  gap:22px;
-  margin-top:2px;
+  gap:18px;
 }
 
 .hero-secondary-links a{
-  display:block;
-  line-height:1.35;
   color:#1e40af;
   text-decoration:none;
   font-size:0.95rem;
@@ -247,16 +247,6 @@ footer a:hover{color:#93c5fd}
 
 .hero-secondary-links a:hover{
   color:#2563eb;
-}
-
-.hero-secondary-links a:first-child{
-  margin-bottom:2px;
-}
-
-@media(max-width:900px){
-  .hero-secondary-links{
-    gap:24px;
-  }
 }
 
 </style>
