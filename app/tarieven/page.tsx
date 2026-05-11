@@ -66,7 +66,7 @@ export default function Tarieven() {
   }
 
   return (
-    <main style={{ minHeight: '100vh', background: '#f8fafc', fontFamily: 'Inter, sans-serif' }}>
+    <main style={{ minHeight: '100vh', paddingTop: '72px', background: '#f8fafc', fontFamily: 'Inter, sans-serif' }}>
       <Navbar links={[{ href: '/mijn-omgeving', label: 'Mijn omgeving →' }]} />
 
       <div style={{ maxWidth: '560px', margin: '0 auto', padding: '80px 24px' }}>

@@ -28,7 +28,7 @@ export default function Navbar({ links = publicLinks, rightContent, mobileExtra,
   return (
     <>
       <style>{`
-        .skc-nav{position:sticky;top:0;left:0;right:0;z-index:200;background:rgba(255,255,255,0.97);backdrop-filter:blur(12px);border-bottom:1px solid #e2e8f0;height:72px;display:flex;align-items:center;justify-content:space-between;padding:0 48px;box-sizing:border-box;width:100%;max-width:100%}
+        .skc-nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(255,255,255,0.97);backdrop-filter:blur(12px);border-bottom:1px solid #e2e8f0;height:72px;display:flex;align-items:center;justify-content:space-between;padding:0 48px;box-sizing:border-box;width:100%;max-width:100%;transition:box-shadow 0.3s}
         .skc-nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none;flex-shrink:0}
         .skc-nav-logo-icon{background:#2563EB;width:38px;height:38px;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
         .skc-nav-links{display:flex;gap:28px;list-style:none;align-items:center;flex-wrap:wrap;margin:0;padding:0}
@@ -43,6 +43,7 @@ export default function Navbar({ links = publicLinks, rightContent, mobileExtra,
         .skc-mobile-menu a:hover{background:#f8fafc}
         .skc-mobile-menu .skc-mobile-btn{background:#2563EB;color:white!important;text-align:center;margin-top:8px;font-weight:700}
         @media(max-width:900px){.skc-nav{padding:0 20px}.skc-nav-links,.skc-nav-right{display:none!important}.skc-hamburger{display:flex!important}}
+        @media(max-width:500px){.skc-nav{padding:0 16px!important}}
       `}</style>
 
       <nav className={`skc-nav ${className}`.trim()}>
