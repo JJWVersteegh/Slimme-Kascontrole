@@ -7,7 +7,7 @@ export async function POST(req: NextRequest) {
     const Stripe = (await import('stripe')).default
     const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, { apiVersion: '2025-01-27.acacia' as any })
 
-    const { email, user_id, boekjaar, vereniging_id } = await req.json()
+    const { email, user_id, boekjaar, vereniging_id, naam, vereniging, adres, postcode, plaats } = await req.json()
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://www.slimmekascontrole.nl'
 
     const session = await stripe.checkout.sessions.create({
@@ -19,7 +19,7 @@ export async function POST(req: NextRequest) {
         price_data: {
           currency: 'eur',
           product_data: {
-            name: `Slimme Kascontrole – Kascontrole boekjaar ${boekjaar}`,
+            name: `Slimme Kascontrole – Kascontrole boekjaar ${boekjaar || new Date().getFullYear()}`,
           },
           unit_amount: 5900,
         },
@@ -27,7 +27,17 @@ export async function POST(req: NextRequest) {
       }],
       success_url: `${baseUrl}/betaald?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${baseUrl}/mijn-omgeving`,
-      metadata: { email, user_id, boekjaar, ...(vereniging_id ? { vereniging_id } : {}) },
+      metadata: {
+        email: email || '',
+        user_id: user_id || '',
+        boekjaar: boekjaar || '',
+        ...(vereniging_id ? { vereniging_id } : {}),
+        ...(naam ? { naam } : {}),
+        ...(vereniging ? { vereniging } : {}),
+        ...(adres ? { adres } : {}),
+        ...(postcode ? { postcode } : {}),
+        ...(plaats ? { plaats } : {}),
+      },
     })
 
     return NextResponse.json({ url: session.url })

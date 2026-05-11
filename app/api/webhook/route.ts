@@ -33,6 +33,7 @@ async function maakMoneybirdFactuur(klant: {
   if (contacten.length > 0) {
     contactId = contacten[0].id
   } else {
+    const naamDelen = (klant.naam || '').trim().split(/\s+/).filter(Boolean)
     const nieuwContact = await fetch(
       `https://moneybird.com/api/v2/${MONEYBIRD_ADMIN_ID}/contacts`,
       {
@@ -40,24 +41,33 @@ async function maakMoneybirdFactuur(klant: {
         headers,
         body: JSON.stringify({
           contact: {
-            company_name: klant.vereniging || klant.naam,
-            firstname: klant.naam.split(' ')[0] || '',
-            lastname: klant.naam.split(' ').slice(1).join(' ') || '',
+            company_name: klant.vereniging || klant.naam || klant.email,
+            firstname: naamDelen[0] || 'Klant',
+            lastname: naamDelen.slice(1).join(' ') || '',
             email: klant.email,
-            address1: klant.adres,
-            zipcode: klant.postcode,
-            city: klant.plaats,
+            address1: klant.adres || '',
+            zipcode: klant.postcode || '',
+            city: klant.plaats || '',
             country: 'NL',
-            send_invoices_to_email: true,
+            send_invoices_to_email: klant.email,
           }
         })
       }
     )
+
+    if (!nieuwContact.ok) {
+      console.error('Moneybird contact aanmaken mislukt:', await nieuwContact.text())
+      return
+    }
+
     const contactData = await nieuwContact.json()
     contactId = contactData.id
   }
 
-  if (!contactId) return
+  if (!contactId) {
+    console.error('Moneybird contactId ontbreekt voor:', klant.email)
+    return
+  }
 
   // Vaste prijs is €59 incl. BTW = €48.76 excl. BTW
   const volPrijsExclBTW = (5900 / 121).toFixed(2)  // €48.76
@@ -109,6 +119,11 @@ async function maakMoneybirdFactuur(klant: {
       })
     }
   )
+
+  if (!factuurRes.ok) {
+    console.error('Moneybird factuur aanmaken mislukt:', await factuurRes.text())
+    return
+  }
 
   const factuurData = await factuurRes.json()
   const factuurId = factuurData.id
@@ -180,13 +195,13 @@ export async function POST(req: NextRequest) {
       const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://www.slimmekascontrole.nl'
 
       let klantInfo = {
-        naam: '',
-        vereniging: '',
-        email: email || '',
-        adres: '',
-        postcode: '',
-        plaats: '',
-        boekjaar: boekjaar || '',
+        naam: session.metadata?.naam || '',
+        vereniging: session.metadata?.vereniging || '',
+        email: email || session.metadata?.email || '',
+        adres: session.metadata?.adres || '',
+        postcode: session.metadata?.postcode || '',
+        plaats: session.metadata?.plaats || '',
+        boekjaar: boekjaar || new Date().getFullYear().toString(),
       }
 
       if (user_id && boekjaar) {
@@ -268,8 +283,16 @@ export async function POST(req: NextRequest) {
               ...(vereniging_id ? { vereniging_id } : {}),
             }, { onConflict: 'user_id,boekjaar,vereniging_id' })
           }
-          klantInfo.email = email
-          klantInfo.boekjaar = boekjaar || ''
+          await supabase.from('klanten').update({
+            naam: klantInfo.naam || null,
+            vereniging: klantInfo.vereniging || null,
+            adres: klantInfo.adres || null,
+            postcode: klantInfo.postcode || null,
+            plaats: klantInfo.plaats || null,
+          }).eq('user_id', authData.user.id)
+
+          klantInfo.email = email || klantInfo.email
+          klantInfo.boekjaar = boekjaar || klantInfo.boekjaar
         }
       }
 
