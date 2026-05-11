@@ -41,7 +41,7 @@ export default function Registreer() {
               <svg width="24" height="24" viewBox="0 0 22 22" fill="none"><polyline points="3,12 9,18 19,6" stroke="white" strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round" /></svg>
             </div>
             <div style={{ textAlign: 'left' }}>
-              <div style={{ fontWeight: '700', color: '#2d5a0e', fontSize: '1rem', lineHeight: 1.1 }}>slimme</div>
+              <div style={{ fontWeight: '700', color: '#2563EB', fontSize: '1rem', lineHeight: 1.1 }}>slimme</div>
               <div style={{ fontWeight: '500', color: '#6aaa2a', fontSize: '1rem', lineHeight: 1.1 }}>kascontrole</div>
             </div>
           </a>

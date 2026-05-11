@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import { supabase } from '@/lib/supabase'
 import { useRouter } from 'next/navigation'
 import { RapportRenderer } from '@/components/RapportRenderer'
+import Navbar from '@/components/Navbar'
 
 interface Upload {
   id: string
@@ -552,21 +553,22 @@ async function zoekAdres(pc: string, hn: string) {
   if (toonRapport && rapportTekstVoorWeergave) return (
     <main style={{ minHeight: '100vh', background: '#f8fafc', fontFamily: 'Outfit, sans-serif' }}>
       <style>{`@media print { .no-print { display: none !important; } @page { size: A4 portrait; margin: 12mm 14mm; } body { background: white !important; } .rapport-wrapper { box-shadow: none !important; border: none !important; border-radius: 0 !important; padding: 8mm !important; margin: 0 !important; max-width: 100% !important; } .rapport-table { font-size: 8pt !important; width: 100% !important; } .rapport-table th, .rapport-table td { padding: 4px 6px !important; font-size: 8pt !important; } h1 { font-size: 12pt !important; } h2 { font-size: 10pt !important; } h3 { font-size: 9.5pt !important; } p, div, span { font-size: 9.5pt !important; } }`}</style>
-      <nav className="no-print" style={{ background: 'white', borderBottom: '1px solid #e2e8f0', padding: '0 40px', height: '72px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <a href="/" style={{ display: 'flex', alignItems: 'center', gap: '10px', textDecoration: 'none' }}>
-          <div style={{ background: '#2563EB', width: '38px', height: '38px', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <svg width="20" height="20" viewBox="0 0 22 22" fill="none"><polyline points="3,12 9,18 19,6" stroke="white" strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round" /></svg>
+      <Navbar
+        className="no-print"
+        links={[{ href: '/', label: '← Terug naar home' }]}
+        rightContent={(
+          <div style={{ display: 'flex', gap: '12px' }}>
+            <button onClick={() => window.print()} style={{ background: '#2563EB', color: 'white', padding: '10px 20px', borderRadius: '8px', border: 'none', cursor: 'pointer', fontWeight: '600', fontSize: '0.84rem', fontFamily: 'Outfit, sans-serif' }}>🖨️ Afdrukken / PDF</button>
+            <button onClick={() => setToonRapport(false)} style={{ background: 'white', color: '#1e3a8a', padding: '10px 20px', borderRadius: '8px', border: '1.5px solid #bfdbfe', cursor: 'pointer', fontWeight: '600', fontSize: '0.84rem', fontFamily: 'Outfit, sans-serif' }}>← Terug</button>
           </div>
-          <div style={{ lineHeight: 1.1 }}>
-            <div style={{ fontWeight: '700', fontSize: '1rem', color: '#2563EB' }}>slimme</div>
-            <div style={{ fontWeight: '500', fontSize: '1rem', color: '#3b82f6' }}>kascontrole</div>
+        )}
+        mobileExtra={(
+          <div style={{ borderTop: '1px solid #e2e8f0', marginTop: '8px', paddingTop: '12px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+            <button onClick={() => window.print()} style={{ background: '#2563EB', color: 'white', padding: '12px 16px', borderRadius: '8px', border: 'none', cursor: 'pointer', fontWeight: '700', fontSize: '0.84rem', fontFamily: 'Outfit, sans-serif' }}>🖨️ Afdrukken / PDF</button>
+            <button onClick={() => setToonRapport(false)} style={{ background: 'white', color: '#1e3a8a', padding: '12px 16px', borderRadius: '8px', border: '1.5px solid #bfdbfe', cursor: 'pointer', fontWeight: '600', fontSize: '0.84rem', fontFamily: 'Outfit, sans-serif' }}>← Terug</button>
           </div>
-        </a>
-        <div style={{ display: 'flex', gap: '12px' }}>
-          <button onClick={() => window.print()} style={{ background: '#2563EB', color: 'white', padding: '10px 20px', borderRadius: '8px', border: 'none', cursor: 'pointer', fontWeight: '600', fontSize: '0.84rem', fontFamily: 'Outfit, sans-serif' }}>🖨️ Afdrukken / PDF</button>
-          <button onClick={() => setToonRapport(false)} style={{ background: 'white', color: '#1e3a8a', padding: '10px 20px', borderRadius: '8px', border: '1.5px solid #bfdbfe', cursor: 'pointer', fontWeight: '600', fontSize: '0.84rem', fontFamily: 'Outfit, sans-serif' }}>← Terug</button>
-        </div>
-      </nav>
+        )}
+      />
       <div style={{ maxWidth: '860px', margin: '0 auto', padding: '48px 24px' }}>
         <div className="rapport-wrapper" style={{ background: 'white', borderRadius: '16px', padding: '56px', border: '1px solid #e2e8f0', boxShadow: '0 4px 24px rgba(0,0,0,0.06)' }}>
           <div style={{ textAlign: 'center', borderBottom: '3px solid #2563EB', paddingBottom: '28px', marginBottom: '36px' }}>
@@ -728,58 +730,46 @@ async function zoekAdres(pc: string, hn: string) {
         }
       `}</style>
 
-      <nav className="nav-padding" style={{ background: 'rgba(255,255,255,0.97)', backdropFilter: 'blur(12px)', borderBottom: '1px solid #e2e8f0', padding: '0 48px', height: '72px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', position: 'sticky', top: 0, zIndex: 200, width: '100%', boxSizing: 'border-box' }}>
-        <a href="/" style={{ display: 'flex', alignItems: 'center', gap: '10px', textDecoration: 'none' }}>
-          <div style={{ background: '#2563EB', width: '38px', height: '38px', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <svg width="20" height="20" viewBox="0 0 22 22" fill="none"><polyline points="3,12 9,18 19,6" stroke="white" strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round" /></svg>
-          </div>
-          <div style={{ lineHeight: 1.1 }}>
-            <div style={{ fontWeight: '700', fontSize: '1rem', color: '#2563EB' }}>slimme</div>
-            <div style={{ fontWeight: '500', fontSize: '1rem', color: '#3b82f6' }}>kascontrole</div>
-          </div>
-        </a>
-        <ul className="nav-links-desktop" style={{ display: 'flex', gap: '22px', listStyle: 'none', alignItems: 'center', margin: 0, padding: 0 }}>
-          <li><a href="/#waarom" style={{ fontSize: '0.84rem', fontWeight: '500', color: '#475569', textDecoration: 'none' }}>Waarom</a></li>
-          <li><a href="/#hoe-het-werkt" style={{ fontSize: '0.84rem', fontWeight: '500', color: '#475569', textDecoration: 'none' }}>Hoe het werkt</a></li>
-          <li><a href="/#handleidingen" style={{ fontSize: '0.84rem', fontWeight: '500', color: '#475569', textDecoration: 'none' }}>Handleidingen</a></li>
-          <li><a href="/#over-ons" style={{ fontSize: '0.84rem', fontWeight: '500', color: '#475569', textDecoration: 'none' }}>Over ons</a></li>
-          <li><a href="/#tarieven" style={{ fontSize: '0.84rem', fontWeight: '500', color: '#475569', textDecoration: 'none' }}>Tarieven</a></li>
-          <li><a href="/#contact" style={{ fontSize: '0.84rem', fontWeight: '500', color: '#475569', textDecoration: 'none' }}>Contact</a></li>
-          <li><a href="/mijn-omgeving" style={{ fontSize: '0.84rem', fontWeight: '500', color: '#2563EB', textDecoration: 'none' }}>Mijn omgeving</a></li>
-          <li style={{ display: 'flex', alignItems: 'center', gap: '8px', marginLeft: '8px' }}>
+      <Navbar
+        links={[
+          { href: '/#waarom', label: 'Waarom' },
+          { href: '/#hoe-het-werkt', label: 'Hoe het werkt' },
+          { href: '/#handleidingen', label: 'Handleidingen' },
+          { href: '/#over-ons', label: 'Over ons' },
+          { href: '/#tarieven', label: 'Tarieven' },
+          { href: '/#contact', label: 'Contact' },
+          { href: '/mijn-omgeving', label: 'Mijn omgeving', active: true },
+        ]}
+        rightContent={(
+          <>
+            <ul className="skc-nav-links" style={{ display: 'flex', gap: '22px', listStyle: 'none', alignItems: 'center', margin: 0, padding: 0 }}>
+              <li><a href="/#waarom">Waarom</a></li>
+              <li><a href="/#hoe-het-werkt">Hoe het werkt</a></li>
+              <li><a href="/#handleidingen">Handleidingen</a></li>
+              <li><a href="/#over-ons">Over ons</a></li>
+              <li><a href="/#tarieven">Tarieven</a></li>
+              <li><a href="/#contact">Contact</a></li>
+              <li><a href="/mijn-omgeving" style={{ color: '#2563EB' }}>Mijn omgeving</a></li>
+            </ul>
             <span style={{ fontSize: '0.78rem', color: '#475569', display: 'flex', flexDirection: 'column', alignItems: 'flex-end', lineHeight: 1.3 }}>
               <span style={{ fontWeight: '600', color: '#0f172a' }}>{klant?.naam || ''}</span>
               <span style={{ fontSize: '0.75rem', color: '#94a3b8' }}>{user?.email}</span>
             </span>
             <button onClick={() => { setProfielHuisnummer(haalHuisnummerUitAdres(profielForm.adres)); setToonProfiel(true) }} style={{ background: 'none', border: '1.5px solid #bfdbfe', color: '#1e3a8a', padding: '7px 12px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.8rem', fontFamily: 'Outfit, sans-serif', fontWeight: '500' }}>✏️ Gegevens</button>
             <button onClick={handleLogout} style={{ background: '#2563EB', color: 'white', border: 'none', padding: '9px 20px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.84rem', fontFamily: 'Outfit, sans-serif', fontWeight: '600' }}>Uitloggen</button>
-          </li>
-        </ul>
-        <button className="nav-hamburger" onClick={() => setMobileMenuOpen(o => !o)} style={{ display: 'none', background: 'none', border: '1.5px solid #e2e8f0', borderRadius: '6px', cursor: 'pointer', padding: '7px', flexDirection: 'column', gap: '4px', alignItems: 'center', justifyContent: 'center' }}>
-          <span style={{ display: 'block', width: '20px', height: '2px', background: '#0f172a', borderRadius: '2px' }} />
-          <span style={{ display: 'block', width: '20px', height: '2px', background: '#0f172a', borderRadius: '2px' }} />
-          <span style={{ display: 'block', width: '20px', height: '2px', background: '#0f172a', borderRadius: '2px' }} />
-        </button>
-      </nav>
-      {mobileMenuOpen && (
-        <div className="nav-mobile-menu" style={{ position: 'fixed', top: '72px', left: 0, right: 0, background: 'white', borderBottom: '1px solid #e2e8f0', zIndex: 199, padding: '12px 20px 20px', boxShadow: '0 8px 24px rgba(0,0,0,0.1)' }}>
-          <a href="/#waarom" onClick={() => setMobileMenuOpen(false)}>Waarom</a>
-          <a href="/#hoe-het-werkt" onClick={() => setMobileMenuOpen(false)}>Hoe het werkt</a>
-          <a href="/#handleidingen" onClick={() => setMobileMenuOpen(false)}>Handleidingen</a>
-          <a href="/#over-ons" onClick={() => setMobileMenuOpen(false)}>Over ons</a>
-          <a href="/#tarieven" onClick={() => setMobileMenuOpen(false)}>Tarieven</a>
-          <a href="/#contact" onClick={() => setMobileMenuOpen(false)}>Contact</a>
-          <a href="/mijn-omgeving" onClick={() => setMobileMenuOpen(false)} style={{ color: '#2563EB' }}>Mijn omgeving</a>
+          </>
+        )}
+        mobileExtra={(
           <div style={{ borderTop: '1px solid #e2e8f0', marginTop: '8px', paddingTop: '12px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
             <span style={{ fontSize: '0.78rem', color: '#475569', padding: '0 16px', display: 'flex', flexDirection: 'column', gap: '2px' }}>
               <span style={{ fontWeight: '600', color: '#0f172a' }}>{klant?.naam || ''}</span>
               <span style={{ fontSize: '0.75rem', color: '#94a3b8' }}>{user?.email}</span>
             </span>
-            <button onClick={() => { setMobileMenuOpen(false); setProfielHuisnummer(haalHuisnummerUitAdres(profielForm.adres)); setToonProfiel(true) }} style={{ background: 'none', border: '1.5px solid #bfdbfe', color: '#1e3a8a', padding: '12px 16px', borderRadius: '8px', cursor: 'pointer', fontSize: '0.84rem', fontWeight: '600', textAlign: 'left', fontFamily: 'Outfit, sans-serif' }}>✏️ Gegevens bewerken</button>
+            <button onClick={() => { setProfielHuisnummer(haalHuisnummerUitAdres(profielForm.adres)); setToonProfiel(true) }} style={{ background: 'none', border: '1.5px solid #bfdbfe', color: '#1e3a8a', padding: '12px 16px', borderRadius: '8px', cursor: 'pointer', fontSize: '0.84rem', fontWeight: '600', textAlign: 'left', fontFamily: 'Outfit, sans-serif' }}>✏️ Gegevens bewerken</button>
             <button onClick={handleLogout} style={{ background: '#2563EB', color: 'white', border: 'none', padding: '12px 16px', borderRadius: '8px', cursor: 'pointer', fontSize: '0.84rem', fontWeight: '700', textAlign: 'center', fontFamily: 'Outfit, sans-serif' }}>Uitloggen</button>
           </div>
-        </div>
-      )}
+        )}
+      />
 
       <div style={{ maxWidth: '1040px', margin: '0 auto', padding: '48px 24px' }}>
         <div style={{ marginBottom: '26px', display: 'flex', justifyContent: 'space-between', gap: '20px', alignItems: 'flex-end', flexWrap: 'wrap' }}>

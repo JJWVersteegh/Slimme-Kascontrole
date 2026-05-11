@@ -1,4 +1,5 @@
 'use client'
+import Navbar from '@/components/Navbar'
 
 export default function BronnenOverzicht() {
   return (
@@ -17,18 +18,7 @@ export default function BronnenOverzicht() {
       `}</style>
 
       {/* Nav */}
-      <nav className="site-nav" style={{ background: 'white', borderBottom: '1px solid #e2e8f0', padding: '0 48px', height: '72px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <a href="/" style={{ display: 'flex', alignItems: 'center', gap: '10px', textDecoration: 'none' }}>
-          <div style={{ background: '#2563EB', width: '38px', height: '38px', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <svg width="20" height="20" viewBox="0 0 22 22" fill="none"><polyline points="3,12 9,18 19,6" stroke="white" strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round"/></svg>
-          </div>
-          <div style={{ lineHeight: 1.1 }}>
-            <div style={{ fontWeight: '700', fontSize: '1rem', color: '#1D4ED8' }}>slimme</div>
-            <div style={{ fontWeight: '500', fontSize: '1rem', color: '#3b82f6' }}>kascontrole</div>
-          </div>
-        </a>
-        <a href="/" style={{ color: '#475569', textDecoration: 'none', fontSize: '0.9rem', fontWeight: '500' }}>← Terug naar home</a>
-      </nav>
+      <Navbar links={[{ href: '/', label: '← Terug naar home' }]} />
 
       <div style={{ maxWidth: '900px', margin: '0 auto', padding: '64px 24px' }}>
         <p style={{ fontSize: '0.75rem', fontWeight: '700', letterSpacing: '0.12em', textTransform: 'uppercase', color: '#2563EB', marginBottom: '12px' }}>Handleidingen</p>

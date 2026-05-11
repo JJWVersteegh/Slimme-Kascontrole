@@ -136,8 +136,8 @@ export default function Registreer() {
             <svg width="20" height="20" viewBox="0 0 22 22" fill="none"><polyline points="3,12 9,18 19,6" stroke="white" strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round" /></svg>
           </div>
           <div style={{ lineHeight: 1.1 }}>
-            <div style={{ fontWeight: '700', fontSize: '1.05rem', color: '#1D4ED8', fontFamily: 'Outfit, sans-serif' }}>slimme</div>
-            <div style={{ fontWeight: '500', fontSize: '1.05rem', color: '#3b82f6', fontFamily: 'Outfit, sans-serif' }}>kascontrole</div>
+            <div style={{ fontWeight: '700', fontSize: '1rem', color: '#2563EB', fontFamily: 'Outfit, sans-serif' }}>slimme</div>
+            <div style={{ fontWeight: '500', fontSize: '1rem', color: '#3b82f6', fontFamily: 'Outfit, sans-serif' }}>kascontrole</div>
           </div>
         </a>
         <ul className="nav-links-desktop" style={{ display: 'flex', gap: '28px', listStyle: 'none', alignItems: 'center', margin: 0, padding: 0 }}>

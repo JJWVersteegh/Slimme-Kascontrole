@@ -445,8 +445,8 @@ export default function AdminPortal() {
             <svg width="20" height="20" viewBox="0 0 22 22" fill="none"><polyline points="3,12 9,18 19,6" stroke="white" strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round" /></svg>
           </div>
           <div style={{ lineHeight: 1.1 }}>
-            <div style={{ fontWeight: '700', fontSize: '1.05rem', color: '#1D4ED8' }}>slimme</div>
-            <div style={{ fontWeight: '500', fontSize: '1.05rem', color: '#3b82f6' }}>kascontrole</div>
+            <div style={{ fontWeight: '700', fontSize: '1rem', color: '#2563EB' }}>slimme</div>
+            <div style={{ fontWeight: '500', fontSize: '1rem', color: '#3b82f6' }}>kascontrole</div>
           </div>
         </a>
         <div className="nav-links-desktop" style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>

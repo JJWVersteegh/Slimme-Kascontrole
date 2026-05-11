@@ -1,12 +1,13 @@
 'use client'
 import { useState } from 'react'
+import Navbar from '@/components/Navbar'
 
 export default function Tarieven() {
-  const huidigJaar = new Date().getFullYear().toString()
+  const standaardBoekjaar = (new Date().getFullYear() - 1).toString()
   const [email, setEmail] = useState('')
   const [naam, setNaam] = useState('')
   const [vereniging, setVereniging] = useState('')
-  const [boekjaar, setBoekjaar] = useState(huidigJaar)
+  const [boekjaar, setBoekjaar] = useState(standaardBoekjaar)
   const [adres, setAdres] = useState('')
   const [postcode, setPostcode] = useState('')
   const [plaats, setPlaats] = useState('')
@@ -66,18 +67,7 @@ export default function Tarieven() {
 
   return (
     <main style={{ minHeight: '100vh', background: '#f8fafc', fontFamily: 'Inter, sans-serif' }}>
-      <nav style={{ background: 'rgba(250,248,243,0.95)', backdropFilter: 'blur(12px)', borderBottom: '1px solid #e0ede6', padding: '16px 48px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', position: 'sticky', top: 0, zIndex: 100 }}>
-        <a href="/" style={{ display: 'flex', alignItems: 'center', gap: '10px', textDecoration: 'none' }}>
-          <div style={{ background: '#2563EB', width: '36px', height: '36px', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <svg width="20" height="20" viewBox="0 0 22 22" fill="none"><polyline points="3,12 9,18 19,6" stroke="white" strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round" /></svg>
-          </div>
-          <div>
-            <div style={{ fontWeight: '700', fontSize: '1rem', color: '#1D4ED8', lineHeight: 1.1 }}>slimme</div>
-            <div style={{ fontWeight: '500', fontSize: '1rem', color: '#3b82f6', lineHeight: 1.1 }}>kascontrole</div>
-          </div>
-        </a>
-        <a href="/mijn-omgeving" style={{ color: '#1e3a8a', textDecoration: 'none', fontWeight: '500', fontSize: '0.9rem' }}>Mijn omgeving →</a>
-      </nav>
+      <Navbar links={[{ href: '/mijn-omgeving', label: 'Mijn omgeving →' }]} />
 
       <div style={{ maxWidth: '560px', margin: '0 auto', padding: '80px 24px' }}>
         <div style={{ textAlign: 'center', marginBottom: '48px' }}>
