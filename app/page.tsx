@@ -300,7 +300,7 @@ footer a:hover{color:#93c5fd}
   <div class="hero-content">
     <div class="hero-inner">
       <h1>Kascontrole voor uw VvE of vereniging. <em>€59. Klaar in minuten.</em></h1>
-      <p class="hero-sub">Upload uw financiële bestanden en ontvang binnen enkele minuten een volledig gecontroleerd kascontrolerapport — ongeacht de grootte van uw VvE. Eenmalig €59 incl. btw, zonder abonnement.</p>
+      <p class="hero-sub">Upload uw financiële bestanden en ontvang binnen minuten een volledig gecontroleerd kascontrolerapport. Eenmalig €59 incl. btw — geen abonnement.</p>
       <div class="hero-ctas-vertical">
         <a href="/registreer" class="btn-primary">
           Account aanmaken
