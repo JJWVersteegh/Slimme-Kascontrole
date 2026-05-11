@@ -306,7 +306,7 @@ export default function Registreer() {
                     2. Gegevens eerste VvE
                   </h3>
                   <p style={{ margin: '0 0 18px', color: '#475569', fontSize: '0.88rem', lineHeight: 1.45 }}>
-                    Vul hier de gegevens en het adres van de VvE in. Later kunt u in Mijn omgeving extra VvE’s toevoegen.
+                    Vul hier de gegevens en het adres van uw vereniging in. Later kunt u in Mijn omgeving extra verenigingen toevoegen.
                   </p>
 
                   <div style={{ marginBottom: '16px' }}>
