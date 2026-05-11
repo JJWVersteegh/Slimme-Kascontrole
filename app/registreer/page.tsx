@@ -11,8 +11,8 @@ export default function Registreer() {
   const [naam, setNaam] = useState('')
   const [vereniging, setVereniging] = useState('')
   const [kvk, setKvk] = useState('')
-  const [postcode, setPostcode contactpersoon] = useState('')
-  const [huisnummer, setHuisnummer contactpersoon] = useState('')
+  const [postcode, setPostcode] = useState('')
+  const [huisnummer, setHuisnummer] = useState('')
   const [adres, setAdres] = useState('')
   const [plaats, setPlaats] = useState('')
   const [telefoon, setTelefoon] = useState('')
@@ -243,9 +243,9 @@ export default function Registreer() {
                 <div style={{ marginBottom: '16px' }}>
                   <label style={lbl}>Uw adres <span style={{ fontWeight: '400', fontSize: '0.8rem', color: '#94a3b8' }}>(van kascommissielid)</span></label>
                   <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '8px', marginBottom: '8px' }}>
-                    <input type="text" value={postcode} onChange={e => { setPostcode contactpersoon(e.target.value); zoekAdres(e.target.value, huisnummer) }}
+                    <input type="text" value={postcode} onChange={e => { setPostcode(e.target.value); zoekAdres(e.target.value, huisnummer) }}
                       style={inp} placeholder="1234 AB" maxLength={7} />
-                    <input type="text" value={huisnummer} onChange={e => { setHuisnummer contactpersoon(e.target.value); zoekAdres(postcode, e.target.value) }}
+                    <input type="text" value={huisnummer} onChange={e => { setHuisnummer(e.target.value); zoekAdres(postcode, e.target.value) }}
                       style={inp} placeholder="12" />
                   </div>
                   {adresLaden && <p style={{ fontSize: '0.78rem', color: '#2563EB', margin: '0 0 6px' }}>🔍 Adres opzoeken...</p>}
