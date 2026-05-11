@@ -1,14 +1,23 @@
 export default function Voorwaarden() {
   return (
     <main style={{ minHeight: '100vh', background: '#f8fafc', fontFamily: 'Outfit, sans-serif' }}>
-      <nav style={{ background: 'white', borderBottom: '1px solid #e2e8f0', padding: '0 48px', height: '72px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+      <style>{`
+        .site-nav { box-sizing: border-box; width: 100%; }
+        @media (max-width: 900px) {
+          .site-nav { padding: 0 20px !important; }
+        }
+        @media (max-width: 500px) {
+          .site-nav { padding: 0 16px !important; }
+        }
+      `}</style>
+      <nav className="site-nav" style={{ background: 'white', borderBottom: '1px solid #e2e8f0', padding: '0 48px', height: '72px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <a href="/" style={{ display: 'flex', alignItems: 'center', gap: '10px', textDecoration: 'none' }}>
           <div style={{ background: '#2563EB', width: '38px', height: '38px', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <svg width="20" height="20" viewBox="0 0 22 22" fill="none"><polyline points="3,12 9,18 19,6" stroke="white" strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round" /></svg>
           </div>
           <div style={{ lineHeight: 1.1 }}>
-            <div style={{ fontWeight: '700', fontSize: '1.05rem', color: '#1D4ED8' }}>slimme</div>
-            <div style={{ fontWeight: '500', fontSize: '1.05rem', color: '#3b82f6' }}>kascontrole</div>
+            <div style={{ fontWeight: '700', fontSize: '1rem', color: '#1D4ED8' }}>slimme</div>
+            <div style={{ fontWeight: '500', fontSize: '1rem', color: '#3b82f6' }}>kascontrole</div>
           </div>
         </a>
         <a href="/" style={{ color: '#475569', textDecoration: 'none', fontSize: '0.9rem' }}>← Terug</a>
@@ -27,7 +36,7 @@ export default function Voorwaarden() {
           { t: '8. Toepasselijk recht', c: 'Op deze voorwaarden is Nederlands recht van toepassing. Geschillen worden voorgelegd aan de bevoegde rechter in Rotterdam.' },
         ].map((item, i) => (
           <div key={i} style={{ marginBottom: '28px' }}>
-            <h2 style={{ fontSize: '1.05rem', fontWeight: '700', color: '#0f172a', marginBottom: '8px' }}>{item.t}</h2>
+            <h2 style={{ fontSize: '1rem', fontWeight: '700', color: '#0f172a', marginBottom: '8px' }}>{item.t}</h2>
             <p style={{ fontSize: '0.92rem', color: '#475569', lineHeight: 1.7 }}>{item.c}</p>
           </div>
         ))}

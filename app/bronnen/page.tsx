@@ -4,19 +4,27 @@ export default function BronnenOverzicht() {
   return (
     <main style={{ minHeight: '100vh', background: '#f8fafc', fontFamily: 'Outfit, sans-serif' }}>
       <style>{`
+        .site-nav { box-sizing: border-box; width: 100%; }
+        @media (max-width: 900px) {
+          .site-nav { padding: 0 20px !important; }
+        }
+        @media (max-width: 500px) {
+          .site-nav { padding: 0 16px !important; }
+        }
+
         .bron-card { transition: transform 0.2s, box-shadow 0.2s; }
         .bron-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(0,0,0,0.08); }
       `}</style>
 
       {/* Nav */}
-      <nav style={{ background: 'white', borderBottom: '1px solid #e2e8f0', padding: '0 48px', height: '72px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+      <nav className="site-nav" style={{ background: 'white', borderBottom: '1px solid #e2e8f0', padding: '0 48px', height: '72px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <a href="/" style={{ display: 'flex', alignItems: 'center', gap: '10px', textDecoration: 'none' }}>
           <div style={{ background: '#2563EB', width: '38px', height: '38px', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <svg width="20" height="20" viewBox="0 0 22 22" fill="none"><polyline points="3,12 9,18 19,6" stroke="white" strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round"/></svg>
           </div>
           <div style={{ lineHeight: 1.1 }}>
-            <div style={{ fontWeight: '700', fontSize: '1.05rem', color: '#1D4ED8' }}>slimme</div>
-            <div style={{ fontWeight: '500', fontSize: '1.05rem', color: '#3b82f6' }}>kascontrole</div>
+            <div style={{ fontWeight: '700', fontSize: '1rem', color: '#1D4ED8' }}>slimme</div>
+            <div style={{ fontWeight: '500', fontSize: '1rem', color: '#3b82f6' }}>kascontrole</div>
           </div>
         </a>
         <a href="/" style={{ color: '#475569', textDecoration: 'none', fontSize: '0.9rem', fontWeight: '500' }}>← Terug naar home</a>
@@ -36,21 +44,21 @@ export default function BronnenOverzicht() {
             <div style={{ height: '48px', display: 'flex', alignItems: 'center', marginBottom: '16px' }}>
               <img src="/twinq-logo.jpg" alt="Twinq" style={{ maxHeight: '36px', objectFit: 'contain' }}/>
             </div>
-            <h2 style={{ fontWeight: '700', color: '#0f172a', fontSize: '1.05rem', marginBottom: '8px' }}>Twinq</h2>
+            <h2 style={{ fontWeight: '700', color: '#0f172a', fontSize: '1rem', marginBottom: '8px' }}>Twinq</h2>
             <p style={{ color: '#475569', fontSize: '0.85rem', lineHeight: 1.6, marginBottom: '16px' }}>Exporteer de P&amp;L, balans, bankmutaties, debiteuren en crediteuren uit Twinq.</p>
             <span style={{ color: '#2563EB', fontSize: '0.85rem', fontWeight: '600' }}>Bekijk handleiding →</span>
           </a>
 
           <a href="/bronnen/isabel-yuki" className="bron-card" style={{ background: 'white', borderRadius: '16px', padding: '32px 24px', border: '1px solid #e2e8f0', textDecoration: 'none', color: 'inherit', display: 'block' }}>
             <div style={{ height: '48px', display: 'flex', alignItems: 'center', marginBottom: '16px', fontSize: '2rem' }}>💼</div>
-            <h2 style={{ fontWeight: '700', color: '#0f172a', fontSize: '1.05rem', marginBottom: '8px' }}>Isabel / Yuki</h2>
+            <h2 style={{ fontWeight: '700', color: '#0f172a', fontSize: '1rem', marginBottom: '8px' }}>Isabel / Yuki</h2>
             <p style={{ color: '#475569', fontSize: '0.85rem', lineHeight: 1.6, marginBottom: '16px' }}>Exporteer uw jaarrekening, balans en bankafschriften uit Isabel of Yuki.</p>
             <span style={{ color: '#2563EB', fontSize: '0.85rem', fontWeight: '600' }}>Bekijk handleiding →</span>
           </a>
 
           <a href="/bronnen/eigen-excel" className="bron-card" style={{ background: 'white', borderRadius: '16px', padding: '32px 24px', border: '1px solid #e2e8f0', textDecoration: 'none', color: 'inherit', display: 'block' }}>
             <div style={{ height: '48px', display: 'flex', alignItems: 'center', marginBottom: '16px', fontSize: '2rem' }}>📁</div>
-            <h2 style={{ fontWeight: '700', color: '#0f172a', fontSize: '1.05rem', marginBottom: '8px' }}>Eigen Excel</h2>
+            <h2 style={{ fontWeight: '700', color: '#0f172a', fontSize: '1rem', marginBottom: '8px' }}>Eigen Excel</h2>
             <p style={{ color: '#475569', fontSize: '0.85rem', lineHeight: 1.6, marginBottom: '16px' }}>Werkt u met een eigen kasboek of Excel? Hier leest u hoe u dit aanlevert.</p>
             <span style={{ color: '#2563EB', fontSize: '0.85rem', fontWeight: '600' }}>Bekijk handleiding →</span>
           </a>
