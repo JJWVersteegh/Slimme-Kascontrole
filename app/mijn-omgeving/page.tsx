@@ -878,7 +878,7 @@ async function zoekAdres(pc: string, hn: string) {
                 </select>
                 <div style={{ background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: '16px', padding: '14px 16px', color: '#475569', fontSize: '0.84rem', lineHeight: 1.6 }}>
                   <strong style={{ color: '#0f172a' }}>Verplicht:</strong> upload bestanden van {rapportJaarNum}.<br />
-                  <strong style={{ color: '#0f172a' }}>Optioneel voor trendanalyse:</strong> upload ook {rapportJaarNum - 2} en {rapportJaarNum - 1}.
+                  <strong style={{ color: '#0f172a' }}>Optioneel voor trendanalyse:</strong> upload ook {rapportJaarNum - 2}, {rapportJaarNum - 1} en {rapportJaarNum + 1}.
                 </div>
               </div>
             </div>
