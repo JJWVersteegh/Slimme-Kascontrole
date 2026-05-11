@@ -523,7 +523,7 @@ async function zoekAdres(pc: string, hn: string) {
   const boekjaren = [...new Set(uploads.map(u => u.boekjaar))].sort().reverse()
   const rapportJaarNum = parseInt(rapportBoekjaar)
   const huidigRapport = rapporten.find(r => r.boekjaar === rapportBoekjaar)
-  const huidigJaarBetaald = huidigRapport?.betaald || false
+  const huidigJaarKlaar om te genereren = huidigRapport?.betaald || false
   const huidigJaarGegenereerd = !!huidigRapport?.rapport_tekst
   const rapportTekstVoorWeergave = huidigRapport?.rapport_tekst
   const uploadsVoorRapportjaar = uploads.filter(u => u.boekjaar === rapportBoekjaar)
@@ -534,14 +534,14 @@ async function zoekAdres(pc: string, hn: string) {
       ? 2
       : !heeftUploadsVoorRapportjaar
         ? 3
-        : huidigJaarBetaald
+        : huidigJaarKlaar om te genereren
           ? 4
           : 3
   const workflowStappen = [
     { nr: 1, titel: 'Kies VvE', tekst: geselecteerdeVereniging?.naam || 'Selecteer vereniging' },
     { nr: 2, titel: 'Kies boekjaar', tekst: `Boekjaar ${rapportBoekjaar}` },
     { nr: 3, titel: 'Upload bestanden', tekst: heeftUploadsVoorRapportjaar ? `${uploadsVoorRapportjaar.length} upload(s)` : 'Nog te uploaden' },
-    { nr: 4, titel: 'Rapport ontvangen', tekst: huidigJaarGegenereerd ? 'Beschikbaar' : huidigJaarBetaald ? 'Betaald' : 'Na betaling' },
+    { nr: 4, titel: 'Rapport genereren', tekst: huidigJaarGegenereerd ? 'Beschikbaar' : huidigJaarKlaar om te genereren ? 'Klaar om te genereren' : 'Na betaling' },
   ]
 
   if (loading) return (
@@ -791,7 +791,7 @@ async function zoekAdres(pc: string, hn: string) {
 
         <div className="workflow-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '12px', marginBottom: '28px' }}>
           {workflowStappen.map((stap, index) => {
-            const klaar = huidigeStap > stap.nr || (stap.nr === 4 && huidigJaarBetaald)
+            const klaar = huidigeStap > stap.nr || (stap.nr === 4 && huidigJaarKlaar om te genereren)
             const actief = !klaar && huidigeStap === stap.nr
             return (
               <div key={stap.nr} style={{ background: klaar ? '#f0fdf4' : actief ? '#eff6ff' : 'white', border: `1px solid ${klaar ? '#bbf7d0' : actief ? '#bfdbfe' : '#e2e8f0'}`, borderRadius: '14px', padding: '14px', boxShadow: 'none' }}>
@@ -980,7 +980,7 @@ async function zoekAdres(pc: string, hn: string) {
               </div>
             )}
 
-            {!huidigJaarBetaald ? (
+            {!huidigJaarKlaar om te genereren ? (
               <div style={{ background: 'linear-gradient(135deg, #eff6ff 0%, #ffffff 100%)', borderRadius: '24px', padding: '26px 28px', border: '2px solid #bfdbfe', marginBottom: '26px', boxShadow: '0 18px 46px rgba(37,99,235,0.1)' }}>
                 <div style={{ color: '#2563EB', fontSize: '0.72rem', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '6px' }}>Stap 4</div>
                 <h2 style={{ fontWeight: '600', color: '#0f172a', fontSize: '1.12rem', marginBottom: '8px' }}>Betaal en ontvang het rapport</h2>
@@ -997,7 +997,7 @@ async function zoekAdres(pc: string, hn: string) {
                   <div style={{ width: '44px', height: '44px', borderRadius: '999px', background: '#16a34a', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: '900', fontSize: '1.2rem', flexShrink: 0 }}>✓</div>
                   <div>
                     <div style={{ color: '#166534', fontSize: '0.72rem', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '4px' }}>Stap 4</div>
-                    <h2 style={{ fontWeight: '600', color: '#14532d', fontSize: '1.08rem', marginBottom: '4px' }}>Betaald — klaar om rapport te genereren</h2>
+                    <h2 style={{ fontWeight: '600', color: '#14532d', fontSize: '1.08rem', marginBottom: '4px' }}>Klaar om te genereren — klaar om rapport te genereren</h2>
                     <p style={{ color: '#166534', fontSize: '0.84rem', margin: 0 }}>{huidigJaarGegenereerd ? `Rapport gegenereerd op ${new Date(huidigRapport!.gegenereerd_op!).toLocaleDateString('nl-NL')}` : `U kunt nu uw kascontrolerapport genereren voor ${geselecteerdeVereniging.naam} boekjaar ${rapportBoekjaar}.`}</p>
                   </div>
                 </div>
