@@ -55,7 +55,8 @@ export default function MijnOmgeving() {
   const [rapportLoading, setRapportLoading] = useState(false)
   const [deleteLoading, setDeleteLoading] = useState<string | null>(null)
   const [files, setFiles] = useState<FileList | null>(null)
-  const [boekjaar, setBoekjaar] = useState(new Date().getFullYear().toString())
+  const defaultBoekjaar = (new Date().getFullYear() - 1).toString()
+  const [boekjaar, setBoekjaar] = useState(defaultBoekjaar)
   const [toelichting, setToelichting] = useState('')
   const [uploadSuccess, setUploadSuccess] = useState(false)
   const [error, setError] = useState('')
@@ -91,8 +92,8 @@ export default function MijnOmgeving() {
     const match = (adres || '').match(/\b(\d+[A-Za-z0-9\-]*)\b\s*$/)
     return match ? match[1] : ''
   }
-  const [rapportBoekjaar, setRapportBoekjaar] = useState(currentYear.toString())
-  const jaren = [currentYear + 1, currentYear, currentYear - 1, currentYear - 2, currentYear - 3]
+  const [rapportBoekjaar, setRapportBoekjaar] = useState('')
+  const jaren = [currentYear, currentYear - 1, currentYear - 2, currentYear - 3]
   const ADMIN_EMAIL = 'info@slimmekascontrole.nl'
 
   useEffect(() => {
@@ -120,9 +121,15 @@ export default function MijnOmgeving() {
     const vList = verenigingenData || []
     setVerenigingen(vList)
 
-    if (vList.length > 0) {
+    if (vList.length === 1) {
       setGeselecteerdeVereniging(vList[0])
       await loadUploadsEnRapporten(userId, vList[0].id)
+    } else {
+      setGeselecteerdeVereniging(null)
+      setUploads([])
+      setRapporten([])
+      setRapportBoekjaar('')
+      setBoekjaar(defaultBoekjaar)
     }
 
     setLoading(false)
@@ -146,8 +153,8 @@ export default function MijnOmgeving() {
     setGeselecteerdeVereniging(v)
     setUploads([])
     setRapporten([])
-    setRapportBoekjaar(currentYear.toString())
-    setBoekjaar(currentYear.toString())
+    setRapportBoekjaar('')
+    setBoekjaar(defaultBoekjaar)
     await loadUploadsEnRapporten(user.id, v.id)
   }
 
@@ -155,6 +162,7 @@ export default function MijnOmgeving() {
     e.preventDefault()
     if (!files || files.length === 0) { setUploadError('Selecteer minimaal één bestand'); return }
     if (!geselecteerdeVereniging) { setUploadError('Selecteer eerst een vereniging'); return }
+    if (!rapportBoekjaar) { setUploadError('Kies eerst het boekjaar waarvoor u een rapport wilt maken'); return }
     setUploading(true); setUploadError('')
     const formData = new FormData()
     formData.append('user_id', user.id)
@@ -187,7 +195,7 @@ export default function MijnOmgeving() {
   }
 
   async function handleBetaal() {
-    if (!geselecteerdeVereniging) return
+    if (!geselecteerdeVereniging || !rapportBoekjaar) return
     setBetaalLoading(true)
     try {
       const res = await fetch('/api/checkout', {
@@ -202,7 +210,7 @@ export default function MijnOmgeving() {
   }
 
   async function handleGenereerRapport() {
-    if (!geselecteerdeVereniging) return
+    if (!geselecteerdeVereniging || !rapportBoekjaar) return
     setRapportLoading(true)
     setRapportError('')
     try {
@@ -519,7 +527,7 @@ async function zoekAdres(pc: string, hn: string) {
 
   const inp: any = { width: '100%', padding: '11px 14px', borderRadius: '8px', border: '1.5px solid #bfdbfe', fontSize: '0.84rem', background: 'white', outline: 'none', fontFamily: 'Outfit, sans-serif' }
   const boekjaren = [...new Set(uploads.map(u => u.boekjaar))].sort().reverse()
-  const rapportJaarNum = parseInt(rapportBoekjaar)
+  const rapportJaarNum = rapportBoekjaar ? parseInt(rapportBoekjaar) : currentYear - 1
   const huidigRapport = rapporten.find(r => r.boekjaar === rapportBoekjaar)
   const huidigJaarBetaald = huidigRapport?.betaald || false
   const huidigJaarGegenereerd = !!huidigRapport?.rapport_tekst
@@ -537,7 +545,7 @@ async function zoekAdres(pc: string, hn: string) {
           : 3
   const workflowStappen = [
     { nr: 1, titel: 'Kies VvE', tekst: geselecteerdeVereniging?.naam || 'Selecteer vereniging' },
-    { nr: 2, titel: 'Kies boekjaar', tekst: `Boekjaar ${rapportBoekjaar}` },
+    { nr: 2, titel: 'Kies boekjaar', tekst: rapportBoekjaar ? `Boekjaar ${rapportBoekjaar}` : 'Nog te kiezen' },
     { nr: 3, titel: 'Upload bestanden', tekst: heeftUploadsVoorRapportjaar ? `${uploadsVoorRapportjaar.length} upload(s)` : 'Nog te uploaden' },
     { nr: 4, titel: 'Rapport ontvangen', tekst: huidigJaarGegenereerd ? 'Beschikbaar' : huidigJaarBetaald ? 'Betaald' : 'Na betaling' },
   ]
@@ -882,6 +890,7 @@ async function zoekAdres(pc: string, hn: string) {
               <p style={{ color: '#475569', fontSize: '0.84rem', marginBottom: '18px' }}>Voor welk boekjaar wilt u een kascontrolerapport maken voor <strong>{geselecteerdeVereniging.naam}</strong>?</p>
               <div className="upload-grid" style={{ display: 'grid', gridTemplateColumns: 'minmax(180px, 260px) 1fr', gap: '16px', alignItems: 'stretch' }}>
                 <select value={rapportBoekjaar} onChange={e => { setRapportBoekjaar(e.target.value); setBoekjaar(e.target.value) }} style={{ ...inp, minHeight: '54px', fontSize: '0.84rem', fontWeight: '700', borderRadius: '14px', borderColor: '#93c5fd' }}>
+                  <option value="" disabled>Kies boekjaar</option>
                   {jaren.map(j => <option key={j} value={j}>Boekjaar {j}</option>)}
                 </select>
                 <div style={{ background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: '16px', padding: '14px 16px', color: '#475569', fontSize: '0.84rem', lineHeight: 1.6 }}>
@@ -904,7 +913,7 @@ async function zoekAdres(pc: string, hn: string) {
               </div>
 
               <div style={{ background: '#eff6ff', borderRadius: '16px', padding: '14px 16px', marginBottom: '18px', fontSize: '0.84rem', color: '#1e3a8a', lineHeight: 1.65 }}>
-                Upload in ieder geval de bestanden van boekjaar <strong>{rapportBoekjaar}</strong>. Voor trendanalyse kunt u daarna extra jaren uploaden via het veld “Boekjaar van deze bestanden”.<br />
+                Upload in ieder geval de bestanden van boekjaar <strong>{rapportBoekjaar || defaultBoekjaar}</strong>. Voor trendanalyse kunt u daarna extra jaren uploaden via het veld “Boekjaar van deze bestanden”.<br />
                 <span style={{ color: '#64748b', fontSize: '0.88em' }}>Ondersteunde typen: PDF, Excel, CSV, Word, PNG, JPG, HEIC · Max 10MB per bestand</span>
               </div>
 
