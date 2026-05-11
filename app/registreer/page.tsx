@@ -239,7 +239,14 @@ export default function Registreer() {
                   <input type="text" value={naam} onChange={e => setNaam(e.target.value)} style={inp} placeholder="Voor- en achternaam" required />
                 </div>
 
-                {/* Postcode contactpersoon + huisnummer met auto-lookup */}
+                <div className="mb-6 rounded-xl border border-blue-100 bg-blue-50 p-4">
+  <h3 className="font-semibold text-[#1E2A78]">Gegevens kascommissielid / contactpersoon</h3>
+  <p className="mt-1 text-sm text-gray-600">
+    Vul hier uw persoonlijke adresgegevens in. Dit hoeft niet hetzelfde te zijn als het adres van de VvE.
+  </p>
+</div>
+
+{/* Postcode contactpersoon + huisnummer met auto-lookup */}
                 <div style={{ marginBottom: '16px' }}>
                   <label style={lbl}>Uw adres <span style={{ fontWeight: '400', fontSize: '0.8rem', color: '#94a3b8' }}>(van kascommissielid)</span></label>
                   <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '8px', marginBottom: '8px' }}>
