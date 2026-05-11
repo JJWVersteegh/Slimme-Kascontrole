@@ -231,10 +231,13 @@ footer a:hover{color:#93c5fd}
 .hero-secondary-links{
   display:flex;
   flex-direction:column;
-  gap:16px;
+  gap:22px;
+  margin-top:2px;
 }
 
 .hero-secondary-links a{
+  display:block;
+  line-height:1.35;
   color:#1e40af;
   text-decoration:none;
   font-size:0.95rem;
@@ -244,6 +247,16 @@ footer a:hover{color:#93c5fd}
 
 .hero-secondary-links a:hover{
   color:#2563eb;
+}
+
+.hero-secondary-links a:first-child{
+  margin-bottom:2px;
+}
+
+@media(max-width:900px){
+  .hero-secondary-links{
+    gap:24px;
+  }
 }
 
 </style>
