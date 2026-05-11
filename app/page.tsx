@@ -56,6 +56,11 @@ nav.scrolled{box-shadow:0 4px 24px rgba(0,0,0,0.08)}
 .hero h1 em{font-style:italic;font-weight:400;color:#2563EB}
 .hero-sub{font-size:clamp(0.92rem,2vw,1.05rem);color:#334155;line-height:1.7;margin-bottom:32px;max-width:500px}
 .hero-ctas{display:flex;gap:14px;align-items:center;flex-wrap:wrap;margin-bottom:36px}
+
+.hero-report-link{margin-top:14px}
+.hero-report-link a{font-size:0.95rem;font-weight:600;color:#1e40af;text-decoration:none}
+.hero-report-link a:hover{color:#2563EB}
+
 .btn-primary{background:#2563EB;color:white;padding:14px 30px;border-radius:8px;font-size:0.95rem;font-weight:700;text-decoration:none;box-shadow:0 4px 20px rgba(37,99,235,0.45);font-family:'Outfit',sans-serif;white-space:nowrap;display:inline-block}
 .btn-primary:hover{background:#1D4ED8}
 .btn-ghost-white{color:#1e40af;font-size:0.9rem;font-weight:500;text-decoration:none;display:flex;align-items:center;gap:6px;white-space:nowrap}
@@ -215,6 +220,32 @@ footer a:hover{color:#93c5fd}
   section{padding:48px 16px!important}
   nav{padding:0 16px!important}
 }
+
+.hero-ctas-vertical{
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  gap:18px;
+}
+
+.hero-secondary-links{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+
+.hero-secondary-links a{
+  color:#1e40af;
+  text-decoration:none;
+  font-size:0.95rem;
+  font-weight:600;
+  transition:0.2s;
+}
+
+.hero-secondary-links a:hover{
+  color:#2563eb;
+}
+
 </style>
 </head>
 <body>
@@ -269,11 +300,20 @@ footer a:hover{color:#93c5fd}
     <div class="hero-inner">
       <h1>Kascontrole voor uw VvE of vereniging. <em>€59. Klaar in minuten.</em></h1>
       <p class="hero-sub">Upload uw financiële bestanden en ontvang binnen minuten een volledig gecontroleerd kascontrolerapport. Eenmalig €59 incl. btw — geen abonnement.</p>
-      <div class="hero-ctas">
-        <a href="/registreer" class="btn-primary">Account aanmaken</a>
-        <a href="#hoe-het-werkt" class="btn-ghost-white">Bekijk hoe het werkt →</a>
+      <div class="hero-ctas-vertical">
+        <a href="/registreer" class="btn-primary">
+          Account aanmaken
+        </a>
 
-              <a href="/voorbeeld-rapport" class="btn-ghost-white">Bekijk voorbeeldrapport →</a>
+        <div class="hero-secondary-links">
+          <a href="#hoe-het-werkt">
+            Bekijk hoe het werkt →
+          </a>
+
+          <a href="/voorbeeld-rapport">
+            Bekijk voorbeeldrapport →
+          </a>
+        </div>
       </div>
       <div class="hero-price">
         <div>
