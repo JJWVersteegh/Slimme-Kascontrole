@@ -541,7 +541,7 @@ async function zoekAdres(pc: string, hn: string) {
     { nr: 1, titel: 'Kies VvE', tekst: geselecteerdeVereniging?.naam || 'Selecteer vereniging' },
     { nr: 2, titel: 'Kies boekjaar', tekst: `Boekjaar ${rapportBoekjaar}` },
     { nr: 3, titel: 'Upload bestanden', tekst: heeftUploadsVoorRapportjaar ? `${uploadsVoorRapportjaar.length} upload(s)` : 'Nog te uploaden' },
-    { nr: 4, titel: 'Rapport ontvangen', tekst: huidigJaarGegenereerd ? 'Beschikbaar' : huidigJaarBetaald ? 'Betaald' : 'Na betaling' },
+    { nr: 4, titel: huidigJaarGegenereerd ? 'Rapport beschikbaar' : huidigJaarBetaald ? 'Rapport wordt gegenereerd' : 'Rapport ontvangen', tekst: huidigJaarGegenereerd ? 'Download gereed' : huidigJaarBetaald ? 'Analyse bezig — circa 2 minuten' : 'Na betaling' },
   ]
 
   if (loading) return (
@@ -791,8 +791,9 @@ async function zoekAdres(pc: string, hn: string) {
 
         <div className="workflow-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '12px', marginBottom: '28px' }}>
           {workflowStappen.map((stap, index) => {
-            const klaar = huidigeStap > stap.nr || (stap.nr === 4 && huidigJaarBetaald)
-            const actief = !klaar && huidigeStap === stap.nr
+            const klaar = stap.nr === 4 ? huidigJaarGegenereerd : huidigeStap > stap.nr
+            const bezig = stap.nr === 4 && huidigJaarBetaald && !huidigJaarGegenereerd
+            const actief = !klaar && huidigeStap === stap.nr && !bezig
             return (
               <div key={stap.nr} style={{ background: klaar ? '#f0fdf4' : (actief || bezig) ? '#eff6ff' : 'white', border: `1px solid ${klaar ? '#bbf7d0' : (actief || bezig) ? '#bfdbfe' : '#e2e8f0'}`, borderRadius: '14px', padding: '14px', boxShadow: 'none' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '10px' }}>
@@ -992,13 +993,13 @@ async function zoekAdres(pc: string, hn: string) {
                 </button>
               </div>
             ) : (
-              <div style={{ background: '#f0fdf4', borderRadius: '24px', padding: '26px 28px', border: '2px solid #86efac', marginBottom: '26px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '18px', boxShadow: '0 18px 46px rgba(22,163,74,0.1)' }}>
+              <div style={{ background: huidigJaarGegenereerd ? '#f0fdf4' : '#eff6ff', borderRadius: '24px', padding: '26px 28px', border: `2px solid ${huidigJaarGegenereerd ? '#86efac' : '#bfdbfe'}`, marginBottom: '26px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '18px', boxShadow: huidigJaarGegenereerd ? '0 18px 46px rgba(22,163,74,0.1)' : '0 18px 46px rgba(37,99,235,0.1)' }}>
                 <div style={{ display: 'flex', gap: '14px', alignItems: 'flex-start' }}>
-                  <div style={{ width: '44px', height: '44px', borderRadius: '999px', background: '#16a34a', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: '900', fontSize: '1.2rem', flexShrink: 0 }}>✓</div>
+                  <div style={{ width: '44px', height: '44px', borderRadius: '999px', background: huidigJaarGegenereerd ? '#16a34a' : '#2563EB', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: '900', fontSize: '1.2rem', flexShrink: 0 }}>{huidigJaarGegenereerd ? '✓' : '4'}</div>
                   <div>
-                    <div style={{ color: '#166534', fontSize: '0.72rem', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '4px' }}>Stap 4</div>
-                    <h2 style={{ fontWeight: '600', color: '#14532d', fontSize: '1.08rem', marginBottom: '4px' }}>Betaald — klaar om rapport te genereren</h2>
-                    <p style={{ color: '#166534', fontSize: '0.84rem', margin: 0 }}>{huidigJaarGegenereerd ? `Rapport gegenereerd op ${new Date(huidigRapport!.gegenereerd_op!).toLocaleDateString('nl-NL')}` : `U kunt nu uw kascontrolerapport genereren voor ${geselecteerdeVereniging.naam} boekjaar ${rapportBoekjaar}.`}</p>
+                    <div style={{ color: huidigJaarGegenereerd ? '#166534' : '#2563EB', fontSize: '0.72rem', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '4px' }}>Stap 4</div>
+                    <h2 style={{ fontWeight: '600', color: huidigJaarGegenereerd ? '#14532d' : '#1e3a8a', fontSize: '1.08rem', marginBottom: '4px' }}>{huidigJaarGegenereerd ? 'Rapport beschikbaar' : 'Rapport wordt gegenereerd'}</h2>
+                    <p style={{ color: huidigJaarGegenereerd ? '#166534' : '#1D4ED8', fontSize: '0.84rem', margin: 0 }}>{huidigJaarGegenereerd ? `Rapport gegenereerd op ${new Date(huidigRapport!.gegenereerd_op!).toLocaleDateString('nl-NL')}` : `Uw uploads worden geanalyseerd voor ${geselecteerdeVereniging.naam} boekjaar ${rapportBoekjaar}. Dit duurt meestal circa 2 minuten.`}</p>
                   </div>
                 </div>
                 <div className="card-actions" style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
@@ -1021,11 +1022,6 @@ async function zoekAdres(pc: string, hn: string) {
                 <strong>⚠️ Disclaimer:</strong> Het kascontrolerapport is een hulpmiddel voor de kascommissie en wordt opgesteld op basis van de door u aangeleverde documenten. Wij adviseren de kascontroleur om het rapport te gebruiken als ondersteuning bij zijn of haar eigen controle en de bevindingen zelf te verifiëren. Slimme Kascontrole is niet aansprakelijk voor eventuele fouten of beslissingen op basis van het rapport. De verantwoordelijkheid voor de kascontrole blijft bij de kascommissie. Zie ook onze <a href="/voorwaarden" style={{ color: '#92400e' }}>algemene voorwaarden</a>.
               </p>
             </div>
-            {rapportLoading && (
-              <div style={{ background: '#eff6ff', borderRadius: '12px', padding: '16px', marginTop: '16px' }}>
-                <p style={{ color: '#1D4ED8', margin: 0, fontSize: '0.84rem' }}>⏳ Uw uploads worden geanalyseerd voor {geselecteerdeVereniging.naam} boekjaar {rapportBoekjaar}... Dit duurt circa 2 minuten.</p>
-              </div>
-            )}
           </>
         )}
       </div>
