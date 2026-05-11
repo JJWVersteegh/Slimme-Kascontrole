@@ -554,12 +554,12 @@ async function zoekAdres(pc: string, hn: string) {
       <style>{`@media print { .no-print { display: none !important; } @page { size: A4 portrait; margin: 12mm 14mm; } body { background: white !important; } .rapport-wrapper { box-shadow: none !important; border: none !important; border-radius: 0 !important; padding: 8mm !important; margin: 0 !important; max-width: 100% !important; } .rapport-table { font-size: 8pt !important; width: 100% !important; } .rapport-table th, .rapport-table td { padding: 4px 6px !important; font-size: 8pt !important; } h1 { font-size: 12pt !important; } h2 { font-size: 10pt !important; } h3 { font-size: 9.5pt !important; } p, div, span { font-size: 9.5pt !important; } }`}</style>
       <nav className="no-print" style={{ background: 'white', borderBottom: '1px solid #e2e8f0', padding: '0 40px', height: '72px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <a href="/" style={{ display: 'flex', alignItems: 'center', gap: '10px', textDecoration: 'none' }}>
-          <div style={{ background: '#2563EB', width: '36px', height: '36px', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <div style={{ background: '#2563EB', width: '38px', height: '38px', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <svg width="20" height="20" viewBox="0 0 22 22" fill="none"><polyline points="3,12 9,18 19,6" stroke="white" strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round" /></svg>
           </div>
           <div style={{ lineHeight: 1.1 }}>
-            <div style={{ fontWeight: '700', fontSize: '0.84rem', color: '#1D4ED8' }}>slimme</div>
-            <div style={{ fontWeight: '500', fontSize: '0.84rem', color: '#3b82f6' }}>kascontrole</div>
+            <div style={{ fontWeight: '700', fontSize: '1rem', color: '#2563EB' }}>slimme</div>
+            <div style={{ fontWeight: '500', fontSize: '1rem', color: '#3b82f6' }}>kascontrole</div>
           </div>
         </a>
         <div style={{ display: 'flex', gap: '12px' }}>
@@ -730,12 +730,12 @@ async function zoekAdres(pc: string, hn: string) {
 
       <nav className="nav-padding" style={{ background: 'rgba(255,255,255,0.97)', backdropFilter: 'blur(12px)', borderBottom: '1px solid #e2e8f0', padding: '0 48px', height: '72px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', position: 'sticky', top: 0, zIndex: 200, width: '100%', boxSizing: 'border-box' }}>
         <a href="/" style={{ display: 'flex', alignItems: 'center', gap: '10px', textDecoration: 'none' }}>
-          <div style={{ background: '#2563EB', width: '36px', height: '36px', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <div style={{ background: '#2563EB', width: '38px', height: '38px', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <svg width="20" height="20" viewBox="0 0 22 22" fill="none"><polyline points="3,12 9,18 19,6" stroke="white" strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round" /></svg>
           </div>
           <div style={{ lineHeight: 1.1 }}>
-            <div style={{ fontWeight: '700', fontSize: '0.84rem', color: '#1D4ED8' }}>slimme</div>
-            <div style={{ fontWeight: '500', fontSize: '0.84rem', color: '#3b82f6' }}>kascontrole</div>
+            <div style={{ fontWeight: '700', fontSize: '1rem', color: '#2563EB' }}>slimme</div>
+            <div style={{ fontWeight: '500', fontSize: '1rem', color: '#3b82f6' }}>kascontrole</div>
           </div>
         </a>
         <ul className="nav-links-desktop" style={{ display: 'flex', gap: '22px', listStyle: 'none', alignItems: 'center', margin: 0, padding: 0 }}>
