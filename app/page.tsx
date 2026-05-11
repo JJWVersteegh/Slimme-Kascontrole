@@ -231,7 +231,7 @@ footer a:hover{color:#93c5fd}
 .hero-secondary-links{
   display:flex;
   flex-direction:column;
-  gap:10px;
+  gap:16px;
 }
 
 .hero-secondary-links a{
