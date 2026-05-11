@@ -997,8 +997,8 @@ async function zoekAdres(pc: string, hn: string) {
                   <div style={{ width: '44px', height: '44px', borderRadius: '999px', background: '#16a34a', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: '900', fontSize: '1.2rem', flexShrink: 0 }}>✓</div>
                   <div>
                     <div style={{ color: '#166534', fontSize: '0.72rem', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '4px' }}>Stap 4</div>
-                    <h2 style={{ fontWeight: '600', color: '#14532d', fontSize: '1.08rem', marginBottom: '4px' }}>Betaald — rapport beschikbaar</h2>
-                    <p style={{ color: '#166534', fontSize: '0.84rem', margin: 0 }}>{huidigJaarGegenereerd ? `Rapport gegenereerd op ${new Date(huidigRapport!.gegenereerd_op!).toLocaleDateString('nl-NL')}` : `U kunt nu uw rapport genereren voor ${geselecteerdeVereniging.naam} boekjaar ${rapportBoekjaar}.`}</p>
+                    <h2 style={{ fontWeight: '600', color: '#14532d', fontSize: '1.08rem', marginBottom: '4px' }}>Betaald — klaar om rapport te genereren</h2>
+                    <p style={{ color: '#166534', fontSize: '0.84rem', margin: 0 }}>{huidigJaarGegenereerd ? `Rapport gegenereerd op ${new Date(huidigRapport!.gegenereerd_op!).toLocaleDateString('nl-NL')}` : `U kunt nu uw kascontrolerapport genereren voor ${geselecteerdeVereniging.naam} boekjaar ${rapportBoekjaar}.`}</p>
                   </div>
                 </div>
                 <div className="card-actions" style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
