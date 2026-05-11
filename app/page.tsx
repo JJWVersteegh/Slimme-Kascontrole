@@ -273,12 +273,7 @@ footer a:hover{color:#93c5fd}
         <a href="/registreer" class="btn-primary">Account aanmaken</a>
         <a href="#hoe-het-werkt" class="btn-ghost-white">Bekijk hoe het werkt →</a>
 
-              <a
-                href="/voorbeeld-rapport"
-                className="text-blue-700 font-semibold hover:text-blue-900 transition"
-              >
-                Bekijk voorbeeldrapport →
-              </a>
+              <a href="/voorbeeld-rapport" class="btn-ghost-white">Bekijk voorbeeldrapport →</a>
       </div>
       <div class="hero-price">
         <div>
@@ -302,7 +297,7 @@ footer a:hover{color:#93c5fd}
 <section id="waarom">
   <div class="why-grid">
     <div class="why-text fade-in">
-      <p class="section-label">Waarom kascontrole?</p>
+      <p class="section-label">Waarom?</p>
       <h2>Elke vereniging is <em>wettelijk verplicht</em> tot kascontrole</h2>
       <p>Volgens de statuten van vrijwel elke vereniging en de Algemene Ledenvergadering (ALV) is het bestuur verplicht verantwoording af te leggen over het financiële beheer. Een kascommissie controleert of de penningmeester en beheerder alles correct hebben geboekt.</p>
       <div class="why-callout">
