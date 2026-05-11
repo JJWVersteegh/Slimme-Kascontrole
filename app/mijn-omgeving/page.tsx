@@ -522,6 +522,9 @@ async function zoekAdres(pc: string, hn: string) {
   const inp: any = { width: '100%', padding: '11px 14px', borderRadius: '8px', border: '1.5px solid #bfdbfe', fontSize: '0.84rem', background: 'white', outline: 'none', fontFamily: 'Outfit, sans-serif' }
   const boekjaren = [...new Set(uploads.map(u => u.boekjaar))].sort().reverse()
   const rapportJaarNum = parseInt(rapportBoekjaar)
+  const trendJaren = rapportBoekjaar
+    ? [rapportJaarNum - 2, rapportJaarNum - 1, rapportJaarNum + 1].join(', ')
+    : ''
   const huidigRapport = rapporten.find(r => r.boekjaar === rapportBoekjaar)
   const huidigJaarBetaald = huidigRapport?.betaald || false
   const huidigJaarGegenereerd = !!huidigRapport?.rapport_tekst
