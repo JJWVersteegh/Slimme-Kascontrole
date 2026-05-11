@@ -541,7 +541,7 @@ async function zoekAdres(pc: string, hn: string) {
     { nr: 1, titel: 'Kies VvE', tekst: geselecteerdeVereniging?.naam || 'Selecteer vereniging' },
     { nr: 2, titel: 'Kies boekjaar', tekst: `Boekjaar ${rapportBoekjaar}` },
     { nr: 3, titel: 'Upload bestanden', tekst: heeftUploadsVoorRapportjaar ? `${uploadsVoorRapportjaar.length} upload(s)` : 'Nog te uploaden' },
-    { nr: 4, titel: huidigJaarGegenereerd ? 'Rapport beschikbaar' : 'Rapport genereren', tekst: huidigJaarGegenereerd ? 'Download gereed' : huidigJaarBetaald ? 'Klaar om te genereren' : 'Na betaling' },
+    { nr: 4, titel: 'Rapport ontvangen', tekst: huidigJaarGegenereerd ? 'Beschikbaar' : huidigJaarBetaald ? 'Betaald' : 'Na betaling' },
   ]
 
   if (loading) return (
@@ -791,15 +791,15 @@ async function zoekAdres(pc: string, hn: string) {
 
         <div className="workflow-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '12px', marginBottom: '28px' }}>
           {workflowStappen.map((stap, index) => {
-            const klaar = stap.nr === 4 ? huidigJaarGegenereerd : huidigeStap > stap.nr
+            const klaar = huidigeStap > stap.nr || (stap.nr === 4 && huidigJaarBetaald)
             const actief = !klaar && huidigeStap === stap.nr
             return (
-              <div key={stap.nr} style={{ background: klaar ? '#f0fdf4' : actief ? '#eff6ff' : 'white', border: `1px solid ${klaar ? '#bbf7d0' : actief ? '#bfdbfe' : '#e2e8f0'}`, borderRadius: '14px', padding: '14px', boxShadow: 'none' }}>
+              <div key={stap.nr} style={{ background: klaar ? '#f0fdf4' : (actief || bezig) ? '#eff6ff' : 'white', border: `1px solid ${klaar ? '#bbf7d0' : (actief || bezig) ? '#bfdbfe' : '#e2e8f0'}`, borderRadius: '14px', padding: '14px', boxShadow: 'none' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '10px' }}>
-                  <div style={{ width: '28px', height: '28px', borderRadius: '999px', display: 'flex', alignItems: 'center', justifyContent: 'center', background: klaar ? '#dcfce7' : actief ? '#2563EB' : '#f1f5f9', color: klaar ? '#166534' : actief ? 'white' : '#94a3b8', fontWeight: '700', fontSize: '0.84rem' }}>
+                  <div style={{ width: '28px', height: '28px', borderRadius: '999px', display: 'flex', alignItems: 'center', justifyContent: 'center', background: klaar ? '#dcfce7' : (actief || bezig) ? '#2563EB' : '#f1f5f9', color: klaar ? '#166534' : (actief || bezig) ? 'white' : '#94a3b8', fontWeight: '700', fontSize: '0.84rem' }}>
                     {klaar ? '✓' : stap.nr}
                   </div>
-                  <div style={{ fontSize: '0.72rem', color: actief ? '#2563EB' : '#64748b', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+                  <div style={{ fontSize: '0.72rem', color: (actief || bezig) ? '#2563EB' : '#64748b', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
                     Stap {index + 1}
                   </div>
                 </div>
