@@ -3,7 +3,11 @@ export default function IsabelYukiBron() {
     <main style={{ minHeight: '100vh', background: '#f8fafc', fontFamily: 'Outfit, sans-serif' }}>
       <style>{`
         .mobile-only-back { display: none !important; }
-        @media (max-width: 767px) { .mobile-only-back { display: inline-flex !important; } }
+        .desktop-only-back { display: inline-flex !important; }
+        @media (max-width: 767px) {
+          .mobile-only-back { display: inline-flex !important; }
+          .desktop-only-back { display: none !important; }
+        }
       `}</style>
 
       {/* Nav */}
@@ -17,7 +21,10 @@ export default function IsabelYukiBron() {
             <div style={{ fontWeight: '500', fontSize: '1.05rem', color: '#3b82f6' }}>kascontrole</div>
           </div>
         </a>
-        <a className="mobile-only-back" href="/#handleidingen" style={{ color: '#475569', textDecoration: 'none', fontSize: '0.9rem', fontWeight: '500' }}>← Terug</a>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+          <a className="desktop-only-back" href="/#handleidingen" style={{ color: '#475569', textDecoration: 'none', fontSize: '0.9rem', fontWeight: '600', alignItems: 'center', gap: '6px', whiteSpace: 'nowrap' }}>← Terug naar handleidingen</a>
+          <a className="mobile-only-back" href="/#handleidingen" style={{ color: '#475569', textDecoration: 'none', fontSize: '0.9rem', fontWeight: '500' }}>← Terug</a>
+        </div>
       </nav>
 
       <div style={{ maxWidth: '860px', margin: '0 auto', padding: '64px 24px' }}>

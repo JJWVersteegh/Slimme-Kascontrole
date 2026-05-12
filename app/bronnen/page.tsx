@@ -5,7 +5,11 @@ export default function BronnenOverzicht() {
     <main style={{ minHeight: '100vh', background: '#f8fafc', fontFamily: 'Outfit, sans-serif' }}>
       <style>{`
         .mobile-only-back { display: none !important; }
-        @media (max-width: 767px) { .mobile-only-back { display: inline-flex !important; } }
+        .desktop-only-back { display: inline-flex !important; }
+        @media (max-width: 767px) {
+          .mobile-only-back { display: inline-flex !important; }
+          .desktop-only-back { display: none !important; }
+        }
 
         .bron-card { transition: transform 0.2s, box-shadow 0.2s; }
         .bron-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(0,0,0,0.08); }
@@ -22,7 +26,10 @@ export default function BronnenOverzicht() {
             <div style={{ fontWeight: '500', fontSize: '1.05rem', color: '#3b82f6' }}>kascontrole</div>
           </div>
         </a>
-        <a className="mobile-only-back" href="/" style={{ color: '#475569', textDecoration: 'none', fontSize: '0.9rem', fontWeight: '500' }}>← Terug naar home</a>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+          <a className="desktop-only-back" href="/" style={{ color: '#475569', textDecoration: 'none', fontSize: '0.9rem', fontWeight: '600', alignItems: 'center', gap: '6px', whiteSpace: 'nowrap' }}>← Terug naar home</a>
+          <a className="mobile-only-back" href="/" style={{ color: '#475569', textDecoration: 'none', fontSize: '0.9rem', fontWeight: '500' }}>← Terug naar home</a>
+        </div>
       </nav>
 
       <div style={{ maxWidth: '900px', margin: '0 auto', padding: '64px 24px' }}>

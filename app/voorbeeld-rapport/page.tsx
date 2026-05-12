@@ -3,7 +3,11 @@ export default function VoorbeeldRapportPage() {
     <main style={{ minHeight: '100vh', background: '#f8fafc', fontFamily: 'Outfit, sans-serif' }}>
       <style>{`
         .mobile-only-back { display: none !important; }
-        @media (max-width: 767px) { .mobile-only-back { display: inline-flex !important; } }
+        .desktop-only-back { display: inline-flex !important; }
+        @media (max-width: 767px) {
+          .mobile-only-back { display: inline-flex !important; }
+          .desktop-only-back { display: none !important; }
+        }
       `}</style>
 
       {/* Nav - zelfde stijl als Twinq pagina */}
@@ -17,7 +21,10 @@ export default function VoorbeeldRapportPage() {
             <div style={{ fontWeight: '500', fontSize: '1.05rem', color: '#3b82f6' }}>kascontrole</div>
           </div>
         </a>
-        <a className="mobile-only-back" href="/" style={{ color: '#475569', textDecoration: 'none', fontSize: '0.9rem', fontWeight: '500', display: 'flex', alignItems: 'center', gap: '6px', whiteSpace: 'nowrap' }}>← Terug</a>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+          <a className="desktop-only-back" href="/" style={{ color: '#475569', textDecoration: 'none', fontSize: '0.9rem', fontWeight: '600', alignItems: 'center', gap: '6px', whiteSpace: 'nowrap' }}>← Terug naar home</a>
+          <a className="mobile-only-back" href="/" style={{ color: '#475569', textDecoration: 'none', fontSize: '0.9rem', fontWeight: '500', display: 'flex', alignItems: 'center', gap: '6px', whiteSpace: 'nowrap' }}>← Terug</a>
+        </div>
       </nav>
 
       <div style={{ maxWidth: '860px', margin: '0 auto', padding: '64px 24px' }}>
