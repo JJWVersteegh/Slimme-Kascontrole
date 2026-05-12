@@ -1,37 +1,19 @@
+import Navbar from '@/components/Navbar'
 export default function EigenExcelBron() {
   return (
-    <main style={{ minHeight: '100vh', background: '#f8fafc', fontFamily: 'Outfit, sans-serif' }}>
+    <main style={{ minHeight: '100vh', paddingTop: '72px', background: '#f8fafc', fontFamily: 'Outfit, sans-serif' }}>
       <style>{`
-
-        .desktop-back-link { display: flex; align-items: center; gap: 6px; color: #475569; text-decoration: none; font-size: 0.9rem; font-weight: 500; white-space: nowrap; }
-        .desktop-back-link:hover { color: #0f172a; }
-        .mobile-back-link-wrap { display: none; max-width: 860px; margin: 0 auto; padding: 16px 24px 0; }
-        .mobile-back-link { color: #475569; text-decoration: none; font-size: 0.9rem; font-weight: 500; display: inline-flex; align-items: center; gap: 6px; }
-        .mobile-back-link:hover { color: #0f172a; }
-        @media (max-width: 768px) {
-          .page-nav { padding: 0 20px !important; }
-          .desktop-back-link { display: none !important; }
-          .mobile-back-link-wrap { display: block !important; }
+        .site-nav { box-sizing: border-box; width: 100%; }
+        @media (max-width: 900px) {
+          .site-nav { padding: 0 20px !important; }
+        }
+        @media (max-width: 500px) {
+          .site-nav { padding: 0 16px !important; }
         }
       `}</style>
 
       {/* Nav */}
-      <nav className="page-nav" style={{ background: 'white', borderBottom: '1px solid #e2e8f0', padding: '0 48px', height: '72px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <a href="/#handleidingen" style={{ display: 'flex', alignItems: 'center', gap: '10px', textDecoration: 'none' }}>
-          <div style={{ background: '#2563EB', width: '38px', height: '38px', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <svg width="20" height="20" viewBox="0 0 22 22" fill="none"><polyline points="3,12 9,18 19,6" stroke="white" strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round"/></svg>
-          </div>
-          <div style={{ lineHeight: 1.1 }}>
-            <div style={{ fontWeight: '700', fontSize: '1.05rem', color: '#1D4ED8' }}>slimme</div>
-            <div style={{ fontWeight: '500', fontSize: '1.05rem', color: '#3b82f6' }}>kascontrole</div>
-          </div>
-        </a>
-        <a href="/bronnen" className="desktop-back-link">← Terug naar handleidingen</a>
-      </nav>
-
-      <div className="mobile-back-link-wrap">
-        <a href="/bronnen" className="mobile-back-link">← Terug naar handleidingen</a>
-      </div>
+      <Navbar links={[{ href: '/', label: '← Terug naar home' }]} />
 
       <div style={{ maxWidth: '860px', margin: '0 auto', padding: '64px 24px' }}>
 

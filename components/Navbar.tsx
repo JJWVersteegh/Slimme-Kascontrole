@@ -24,8 +24,6 @@ interface NavbarProps {
 
 export default function Navbar({ links = publicLinks, rightContent, mobileExtra, className = '' }: NavbarProps) {
   const [open, setOpen] = useState(false)
-  const backLink = links.length === 1 && links[0].label.toLowerCase().includes('terug') ? links[0] : null
-  const navLinks = backLink ? publicLinks : links
 
   return (
     <>
@@ -44,11 +42,8 @@ export default function Navbar({ links = publicLinks, rightContent, mobileExtra,
         .skc-mobile-menu a{display:block;padding:12px 16px;color:#0f172a;text-decoration:none;font-weight:500;border-radius:8px;font-size:0.95rem;transition:background 0.15s;font-family:Outfit,sans-serif}
         .skc-mobile-menu a:hover{background:#f8fafc}
         .skc-mobile-menu .skc-mobile-btn{background:#2563EB;color:white!important;text-align:center;margin-top:8px;font-weight:700}
-        .skc-back-row{background:white;border-bottom:1px solid #e2e8f0;padding:28px 48px;box-sizing:border-box;width:100%;font-family:Outfit,sans-serif}
-        .skc-back-row a{display:inline-flex;align-items:center;gap:8px;color:#0f172a;text-decoration:none;font-size:1.05rem;font-weight:700}
-        .skc-back-row a:hover{color:#2563EB}
-        @media(max-width:900px){.skc-nav{padding:0 20px}.skc-nav-links,.skc-nav-right{display:none!important}.skc-hamburger{display:flex!important}.skc-back-row{padding:28px 20px}}
-        @media(max-width:500px){.skc-nav{padding:0 16px!important}.skc-back-row{padding:28px 16px}}
+        @media(max-width:900px){.skc-nav{padding:0 20px}.skc-nav-links,.skc-nav-right{display:none!important}.skc-hamburger{display:flex!important}}
+        @media(max-width:500px){.skc-nav{padding:0 16px!important}}
       `}</style>
 
       <nav className={`skc-nav ${className}`.trim()}>
@@ -66,7 +61,7 @@ export default function Navbar({ links = publicLinks, rightContent, mobileExtra,
           <div className="skc-nav-right" style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>{rightContent}</div>
         ) : (
           <ul className="skc-nav-links">
-            {navLinks.map(link => (
+            {links.map(link => (
               <li key={`${link.href}-${link.label}`}>
                 <a href={link.href} className={link.primary ? 'skc-btn-nav' : undefined} style={link.active ? { color: '#2563EB' } : undefined}>{link.label}</a>
               </li>
@@ -81,15 +76,9 @@ export default function Navbar({ links = publicLinks, rightContent, mobileExtra,
         </button>
       </nav>
 
-      {backLink && (
-        <div className="skc-back-row">
-          <a href={backLink.href}>{backLink.label}</a>
-        </div>
-      )}
-
       {open && (
         <div className="skc-mobile-menu">
-          {navLinks.map(link => (
+          {links.map(link => (
             <a key={`${link.href}-${link.label}`} href={link.href} onClick={() => setOpen(false)} className={link.primary ? 'skc-mobile-btn' : undefined} style={link.active ? { color: '#2563EB' } : undefined}>{link.label}</a>
           ))}
           {mobileExtra}
