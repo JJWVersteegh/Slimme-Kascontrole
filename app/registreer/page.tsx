@@ -120,12 +120,15 @@ export default function Registreer() {
 
   return (
     <main style={{ minHeight: '100vh', background: '#f8fafc', fontFamily: 'Outfit, sans-serif' }}>
-      <style>{`
-        .mobile-only-back { display: none !important; }
-        @media (max-width: 767px) { .mobile-only-back { display: inline-flex !important; } }
-      `}</style>
 
       <style>{`
+        
+          .mobile-back-link-wrap { display: none; max-width: 420px; margin: 0 auto; padding: 16px 20px 0; }
+          .mobile-back-link { color: #475569; text-decoration: none; font-size: 0.9rem; font-weight: 500; display: inline-flex; align-items: center; gap: 6px; }
+          .mobile-back-link:hover { color: #0f172a; }
+          @media (max-width: 768px) {
+            .mobile-back-link-wrap { display: block !important; }
+          }
         @media (max-width: 768px) {
           .nav-links-desktop { display: none !important; }
           .nav-hamburger { display: flex !important; }
@@ -160,6 +163,10 @@ export default function Registreer() {
           <span style={{ display: 'block', width: '20px', height: '2px', background: '#0f172a', borderRadius: '2px' }} />
         </button>
       </nav>
+      <div className="mobile-back-link-wrap">
+        <a href="/" className="mobile-back-link">← Terug naar home</a>
+      </div>
+
       {mobileMenuOpen && (
         <div className="nav-mobile-menu" style={{ position: 'fixed', top: '72px', left: 0, right: 0, background: 'white', borderBottom: '1px solid #e2e8f0', zIndex: 199, padding: '12px 20px 20px', boxShadow: '0 8px 24px rgba(0,0,0,0.1)' }}>
           <a href="/#waarom" onClick={() => setMobileMenuOpen(false)}>Waarom</a>
@@ -226,7 +233,7 @@ export default function Registreer() {
                 </button>
               ))}
             </div>
-            <button className="mobile-only-back" onClick={() => { setMode('keuze'); setError('') }} style={{ background: 'none', border: 'none', color: '#64748b', fontSize: '0.82rem', cursor: 'pointer', marginBottom: '12px', display: 'flex', alignItems: 'center', gap: '4px', padding: 0 }}>
+            <button onClick={() => { setMode('keuze'); setError('') }} style={{ background: 'none', border: 'none', color: '#64748b', fontSize: '0.82rem', cursor: 'pointer', marginBottom: '12px', display: 'flex', alignItems: 'center', gap: '4px', padding: 0 }}>
               ← Terug
             </button>
           </>

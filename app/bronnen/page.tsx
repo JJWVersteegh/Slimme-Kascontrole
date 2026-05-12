@@ -4,11 +4,16 @@ export default function BronnenOverzicht() {
   return (
     <main style={{ minHeight: '100vh', background: '#f8fafc', fontFamily: 'Outfit, sans-serif' }}>
       <style>{`
-        .mobile-only-back { display: none !important; }
-        .desktop-only-back { display: inline-flex !important; }
-        @media (max-width: 767px) {
-          .mobile-only-back { display: inline-flex !important; }
-          .desktop-only-back { display: none !important; }
+
+        .desktop-back-link { display: flex; align-items: center; gap: 6px; color: #475569; text-decoration: none; font-size: 0.9rem; font-weight: 500; white-space: nowrap; }
+        .desktop-back-link:hover { color: #0f172a; }
+        .mobile-back-link-wrap { display: none; max-width: 860px; margin: 0 auto; padding: 16px 24px 0; }
+        .mobile-back-link { color: #475569; text-decoration: none; font-size: 0.9rem; font-weight: 500; display: inline-flex; align-items: center; gap: 6px; }
+        .mobile-back-link:hover { color: #0f172a; }
+        @media (max-width: 768px) {
+          .page-nav { padding: 0 20px !important; }
+          .desktop-back-link { display: none !important; }
+          .mobile-back-link-wrap { display: block !important; }
         }
 
         .bron-card { transition: transform 0.2s, box-shadow 0.2s; }
@@ -16,7 +21,7 @@ export default function BronnenOverzicht() {
       `}</style>
 
       {/* Nav */}
-      <nav style={{ background: 'white', borderBottom: '1px solid #e2e8f0', padding: '0 48px', height: '72px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+      <nav className="page-nav" style={{ background: 'white', borderBottom: '1px solid #e2e8f0', padding: '0 48px', height: '72px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <a href="/" style={{ display: 'flex', alignItems: 'center', gap: '10px', textDecoration: 'none' }}>
           <div style={{ background: '#2563EB', width: '38px', height: '38px', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <svg width="20" height="20" viewBox="0 0 22 22" fill="none"><polyline points="3,12 9,18 19,6" stroke="white" strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round"/></svg>
@@ -26,11 +31,12 @@ export default function BronnenOverzicht() {
             <div style={{ fontWeight: '500', fontSize: '1.05rem', color: '#3b82f6' }}>kascontrole</div>
           </div>
         </a>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-          <a className="desktop-only-back" href="/" style={{ color: '#475569', textDecoration: 'none', fontSize: '0.9rem', fontWeight: '600', alignItems: 'center', gap: '6px', whiteSpace: 'nowrap' }}>← Terug naar home</a>
-          <a className="mobile-only-back" href="/" style={{ color: '#475569', textDecoration: 'none', fontSize: '0.9rem', fontWeight: '500' }}>← Terug naar home</a>
-        </div>
+        <a href="/" className="desktop-back-link">← Terug naar home</a>
       </nav>
+
+      <div className="mobile-back-link-wrap">
+        <a href="/" className="mobile-back-link">← Terug naar home</a>
+      </div>
 
       <div style={{ maxWidth: '900px', margin: '0 auto', padding: '64px 24px' }}>
         <p style={{ fontSize: '0.75rem', fontWeight: '700', letterSpacing: '0.12em', textTransform: 'uppercase', color: '#2563EB', marginBottom: '12px' }}>Handleidingen</p>
