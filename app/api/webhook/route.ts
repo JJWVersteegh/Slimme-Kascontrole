@@ -75,7 +75,8 @@ async function maakMoneybirdFactuur(klant: {
   // Korting = verschil tussen volle prijs en betaald bedrag (excl. BTW)
   const kortingExclBTW = (parseFloat(volPrijsExclBTW) - klant.amountTotal / 121).toFixed(2)
   const vandaag = new Date().toISOString().split('T')[0]
-  const heeftKorting = klant.amountTotal < 5900
+  const heeftKorting = klant.amountTotal < 5900  // ook bij 0 (100% korting)
+  console.log('Moneybird factuur — amountTotal:', klant.amountTotal, 'heeftKorting:', heeftKorting, 'kortingscode:', klant.kortingscode, 'kortingExclBTW:', kortingExclBTW)
 
   const omschrijving = `Kascontrole boekjaar ${klant.boekjaar} — Slimme Kascontrole`
   const kortingOmschrijving = klant.kortingscode
@@ -294,17 +295,21 @@ export async function POST(req: NextRequest) {
         }
       }
 
-      // Haal kortingscode op uit Stripe sessie — expand nodig want webhook bevat geen breakdown
+      // Haal kortingscode en werkelijk betaald bedrag op via expanded session
       let kortingscode: string | undefined
+      let amountTotal = session.amount_total ?? 5900  // tijdelijk, wordt overschreven door expanded
       try {
         const expandedSession = await stripe.checkout.sessions.retrieve(session.id, {
           expand: ['total_details.breakdown.discounts.discount.promotion_code'],
         })
+        // Gebruik het bedrag uit de expanded session (betrouwbaarder dan webhook)
+        amountTotal = expandedSession.amount_total ?? amountTotal
         const discounts = expandedSession.total_details?.breakdown?.discounts
         if (discounts && discounts.length > 0) {
           const promoCode = (discounts[0]?.discount as any)?.promotion_code
           kortingscode = typeof promoCode === 'object' ? promoCode?.code : undefined
         }
+        console.log('Stripe expanded — amountTotal:', amountTotal, 'kortingscode:', kortingscode)
       } catch (e) {
         console.error('Kortingscode ophalen mislukt:', e)
       }
@@ -313,7 +318,7 @@ export async function POST(req: NextRequest) {
       try {
         await maakMoneybirdFactuur({
           ...klantInfo,
-          amountTotal: session.amount_total || 5900,
+          amountTotal,
           kortingscode,
         })
       } catch (e: any) {
