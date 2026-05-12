@@ -169,6 +169,8 @@ export async function POST(req: NextRequest) {
 
 TAAL: Het gehele rapport is in het Nederlands. Alle kolomnamen in tabellen zijn Nederlands. Gebruik nooit Engelse woorden. Gebruik "Mutatie" of "Verschil" (niet "Change" of "Verchange"), "Rekening" (niet "Account"), "Begroting" (niet "Budget"), enzovoort.
 
+BEDRAGEN: Schrijf alle geldbedragen altijd met exact 2 decimalen en een komma als decimaalteken, bijvoorbeeld € 1.350,00 en nooit € 1.350 of € 1350. Gebruik een punt als duizendtalscheidingsteken.
+
 ⚠️ TWEE SOORTEN INHOUD — LEES DIT GOED:
 
 1. CIJFERS & FEITEN → Nooit verzinnen. Gebruik alleen bedragen, namen, datums en rekeningen die letterlijk in de uploads staan. Als een cijfer niet beschikbaar is, laat het veld leeg of schrijf "–". Maak geen tabel aan als je geen enkele rij kunt invullen met echte data.
