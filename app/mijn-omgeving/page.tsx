@@ -869,8 +869,7 @@ async function zoekAdres(pc: string, hn: string) {
                   {jaren.map(j => <option key={j} value={j}>Boekjaar {j}</option>)}
                 </select>
                 <div style={{ background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: '16px', padding: '14px 16px', color: '#475569', fontSize: '0.84rem', lineHeight: 1.6 }}>
-                  <strong style={{ color: '#0f172a' }}>Verplicht:</strong> upload bestanden van {rapportJaarNum}.<br />
-                  <strong style={{ color: '#0f172a' }}>Optioneel voor trendanalyse:</strong> upload ook {rapportJaarNum - 2}, {rapportJaarNum - 1} en {rapportJaarNum + 1}.
+                  Selecteer het boekjaar waarover u een kascontrolerapport wilt ontvangen.
                 </div>
               </div>
             </div>
@@ -888,7 +887,7 @@ async function zoekAdres(pc: string, hn: string) {
               </div>
 
               <div style={{ background: '#eff6ff', borderRadius: '16px', padding: '14px 16px', marginBottom: '18px', fontSize: '0.84rem', color: '#1e3a8a', lineHeight: 1.65 }}>
-                Upload in ieder geval de bestanden van boekjaar <strong>{rapportBoekjaar}</strong>. Voor trendanalyse kunt u daarna extra jaren uploaden via het veld “Boekjaar van deze bestanden”.<br />
+                Upload de bestanden van boekjaar <strong>{rapportBoekjaar}</strong>. Wilt u ook een trendanalyse? Upload dan extra jaren via het veld “Boekjaar van deze bestanden” — optioneel zijn {rapportJaarNum - 2}, {rapportJaarNum - 1} en {rapportJaarNum + 1}.<br />
                 <span style={{ color: '#64748b', fontSize: '0.88em' }}>Ondersteunde typen: PDF, Excel, CSV, Word, PNG, JPG, HEIC · Max 10MB per bestand</span>
               </div>
 
