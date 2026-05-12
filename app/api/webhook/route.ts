@@ -81,7 +81,7 @@ async function maakMoneybirdFactuur(klant: {
   const omschrijving = `Kascontrole boekjaar ${klant.boekjaar} — Slimme Kascontrole`
   const kortingOmschrijving = klant.kortingscode
     ? `Korting — kortingscode: ${klant.kortingscode}`
-    : `Korting`
+    : `Korting — promotieactie`
 
   // Bouw details: altijd volle prijs, en indien korting een negatieve kortingsregel
   // Belangrijk: tax_rate_id en ledger_account_id NIET meesturen als null — Moneybird verwerpt die dan
@@ -306,10 +306,19 @@ export async function POST(req: NextRequest) {
         amountTotal = expandedSession.amount_total ?? amountTotal
         const discounts = expandedSession.total_details?.breakdown?.discounts
         if (discounts && discounts.length > 0) {
-          const promoCode = (discounts[0]?.discount as any)?.promotion_code
-          kortingscode = typeof promoCode === 'object' ? promoCode?.code : undefined
+          const discount = discounts[0]?.discount as any
+          // Probeer kortingscode op meerdere manieren op te halen
+          if (typeof discount?.promotion_code === 'object' && discount.promotion_code?.code) {
+            kortingscode = discount.promotion_code.code
+          } else if (typeof discount?.promotion_code === 'string') {
+            // Als het een string is (ID), haal dan de volledige promotiecode op
+            try {
+              const promoCode = await stripe.promotionCodes.retrieve(discount.promotion_code)
+              kortingscode = promoCode.code
+            } catch {}
+          }
         }
-        console.log('Stripe expanded — amountTotal:', amountTotal, 'kortingscode:', kortingscode)
+        console.log('Stripe expanded — amountTotal:', amountTotal, 'kortingscode:', kortingscode, 'discounts:', JSON.stringify(discounts?.[0]))
       } catch (e) {
         console.error('Kortingscode ophalen mislukt:', e)
       }
