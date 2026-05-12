@@ -69,11 +69,11 @@ async function maakMoneybirdFactuur(klant: {
     return
   }
 
-  // Vaste prijs is €59 incl. BTW = €48.76 excl. BTW
+  // Vaste prijs is €59 incl. BTW = €48,76 excl. BTW (59 / 1.21)
   const volPrijsExclBTW = (5900 / 121).toFixed(2)  // €48.76
   const betaaldInclBTW = (klant.amountTotal / 100).toFixed(2)
-  const betaaldExclBTW = (klant.amountTotal / 121).toFixed(2)
-  const kortingExclBTW = (parseFloat(volPrijsExclBTW) - parseFloat(betaaldExclBTW)).toFixed(2)
+  // Korting = verschil tussen volle prijs en betaald bedrag (excl. BTW)
+  const kortingExclBTW = (parseFloat(volPrijsExclBTW) - klant.amountTotal / 121).toFixed(2)
   const vandaag = new Date().toISOString().split('T')[0]
   const heeftKorting = klant.amountTotal < 5900
 
@@ -83,12 +83,11 @@ async function maakMoneybirdFactuur(klant: {
     : `Korting`
 
   // Bouw details: altijd volle prijs, en indien korting een negatieve kortingsregel
+  // Belangrijk: tax_rate_id en ledger_account_id NIET meesturen als null — Moneybird verwerpt die dan
   const details: any[] = [{
     description: omschrijving,
     price: volPrijsExclBTW,
     amount: '1',
-    tax_rate_id: null,
-    ledger_account_id: null,
   }]
 
   if (heeftKorting) {
@@ -96,8 +95,6 @@ async function maakMoneybirdFactuur(klant: {
       description: kortingOmschrijving,
       price: `-${kortingExclBTW}`,
       amount: '1',
-      tax_rate_id: null,
-      ledger_account_id: null,
     })
   }
 
@@ -144,22 +141,23 @@ async function maakMoneybirdFactuur(klant: {
       }
     )
 
-    await fetch(
-      `https://moneybird.com/api/v2/${MONEYBIRD_ADMIN_ID}/sales_invoices/${factuurId}/payments`,
-      {
-        method: 'POST',
-        headers,
-        body: JSON.stringify({
-          payment: {
-            payment_date: vandaag,
-            price: betaaldInclBTW,
-            price_base: betaaldInclBTW,
-            financial_account_id: null,
-            financial_mutation_id: null,
-          }
-        })
-      }
-    )
+    // Alleen betaling registreren als het bedrag groter dan €0 is
+    if (klant.amountTotal > 0) {
+      await fetch(
+        `https://moneybird.com/api/v2/${MONEYBIRD_ADMIN_ID}/sales_invoices/${factuurId}/payments`,
+        {
+          method: 'POST',
+          headers,
+          body: JSON.stringify({
+            payment: {
+              payment_date: vandaag,
+              price: betaaldInclBTW,
+              price_base: betaaldInclBTW,
+            }
+          })
+        }
+      )
+    }
   }
 
   return factuurData
