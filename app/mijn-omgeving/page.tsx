@@ -241,13 +241,13 @@ export default function MijnOmgeving() {
     const { boekjaar, vereniging_id } = info
     if (!confirm(`Rapport voor boekjaar ${boekjaar} verwijderen?`)) return
 
-    setVerborgenRapportJaren(prev => new Set(prev).add(rapportJaarKey(userId, boekjaar)))
+    setVerborgenRapportJaren(prev => new Set(prev).add(rapportJaarKey(user?.id, boekjaar)))
 
     try {
       let rapportQuery = supabase
         .from('rapporten')
         .delete()
-        .eq('user_id', userId)
+        .eq('user_id', user?.id)
         .eq('boekjaar', boekjaar)
 
       if (vereniging_id) rapportQuery = rapportQuery.eq('vereniging_id', vereniging_id)
@@ -255,28 +255,29 @@ export default function MijnOmgeving() {
       const { error: rapportError } = await rapportQuery
 
       if (rapportError) {
-        console.error(rapportError)
-        setVerborgenRapportJaren(prev => { const next = new Set(prev); next.delete(rapportJaarKey(userId, boekjaar)); return next })
-        alert('Verwijderen mislukt')
+        console.error('Delete rapport error:', rapportError)
+        setVerborgenRapportJaren(prev => { const next = new Set(prev); next.delete(rapportJaarKey(user?.id, boekjaar)); return next })
+        alert(`Verwijderen mislukt: ${rapportError.message} (code: ${rapportError.code})`)
         return
       }
 
       let uploadsQuery = supabase
         .from('uploads')
         .delete()
-        .eq('user_id', userId)
+        .eq('user_id', user?.id)
         .eq('boekjaar', boekjaar)
 
       if (vereniging_id) uploadsQuery = uploadsQuery.eq('vereniging_id', vereniging_id)
 
       await uploadsQuery
 
-      setRapporten(prev => prev.filter(r => !(r.user_id === userId && r.boekjaar === boekjaar)))
-      setUploads(prev => prev.filter(u => !(u.user_id === userId && u.boekjaar === boekjaar)))
+      setRapporten(prev => prev.filter(r => !(r.user_id === user?.id && r.boekjaar === boekjaar)))
+      setUploads(prev => prev.filter(u => !(u.user_id === user?.id && u.boekjaar === boekjaar)))
+      setBevestigDeleteRapport(null)
       await loadData()
     } catch (err) {
       console.error(err)
-      setVerborgenRapportJaren(prev => { const next = new Set(prev); next.delete(rapportJaarKey(userId, boekjaar)); return next })
+      setVerborgenRapportJaren(prev => { const next = new Set(prev); next.delete(rapportJaarKey(user?.id, boekjaar)); return next })
       alert('Verwijderen mislukt')
     }
   }
