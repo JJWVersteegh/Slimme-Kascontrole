@@ -185,9 +185,10 @@ export default function AdminPortal() {
     setAanmakenLoading(true)
     setAanmakenFout('')
     try {
+      const { data: { session: postSession } } = await supabase.auth.getSession()
       const res = await fetch('/api/coupons', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${postSession?.access_token}` },
         body: JSON.stringify({
           name: nieuwNaam,
           amount_off: parseFloat(nieuwBedrag),
@@ -207,9 +208,10 @@ export default function AdminPortal() {
 
   async function handleDeactiveer(promoCodeId: string) {
     if (!confirm('Code deactiveren?')) return
+    const { data: { session: delSession } } = await supabase.auth.getSession()
     await fetch('/api/coupons', {
       method: 'DELETE',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${delSession?.access_token}` },
       body: JSON.stringify({ promoCodeId })
     })
     loadCoupons()

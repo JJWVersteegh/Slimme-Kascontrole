@@ -118,13 +118,38 @@ export async function POST(req: NextRequest) {
         try {
           if (['csv', 'txt'].includes(extensie)) {
             const tekst = await data.text()
-            bestandenVanUpload.push(`  [${bestandsnaam}]\n${tekst.substring(0, 5000)}`)
+            bestandenVanUpload.push(`  [${bestandsnaam}]\n${tekst.substring(0, 8000)}`)
+          } else if (['xlsx', 'xls', 'xlsm', 'ods'].includes(extensie)) {
+            // Excel bestanden uitlezen en omzetten naar tekst voor de AI
+            const XLSX = await import('xlsx')
+            const buffer = await data.arrayBuffer()
+            const workbook = XLSX.read(buffer, { type: 'array', cellDates: true })
+            const sheetsText: string[] = []
+            for (const sheetName of workbook.SheetNames) {
+              const ws = workbook.Sheets[sheetName]
+              // Zet sheet om naar array van rijen
+              const rows: any[][] = XLSX.utils.sheet_to_json(ws, { header: 1, defval: '' })
+              // Filter lege rijen eruit
+              const gevuldeRijen = rows.filter((r: any[]) => r.some((cel: any) => cel !== '' && cel !== null && cel !== undefined))
+              if (gevuldeRijen.length === 0) continue
+              // Formatteer als leesbare tekst (max 300 rijen per sheet)
+              const rijen = gevuldeRijen.slice(0, 300).map((rij: any[]) =>
+                rij.map((cel: any) => {
+                  if (cel === '' || cel === null || cel === undefined) return ''
+                  if (typeof cel === 'number') return Number.isInteger(cel) ? cel.toString() : cel.toFixed(2)
+                  if (cel instanceof Date) return cel.toLocaleDateString('nl-NL')
+                  return String(cel).trim()
+                }).join('\t')
+              ).join('\n')
+              sheetsText.push(`  --- Tabblad: ${sheetName} ---\n${rijen}`)
+            }
+            bestandenVanUpload.push(`  [${bestandsnaam} — Excel]\n${sheetsText.join('\n\n').substring(0, 12000)}`)
           } else {
             const buffer = await data.arrayBuffer()
-            bestandenVanUpload.push(`  [${bestandsnaam} — ${extensie.toUpperCase()}, ${Math.round(buffer.byteLength / 1024)}KB]`)
+            bestandenVanUpload.push(`  [${bestandsnaam} — ${extensie.toUpperCase()}, ${Math.round(buffer.byteLength / 1024)}KB — formaat niet ondersteund]`)
           }
-        } catch {
-          bestandenVanUpload.push(`  [${bestandsnaam} — kon niet worden uitgelezen]`)
+        } catch (e: any) {
+          bestandenVanUpload.push(`  [${bestandsnaam} — kon niet worden uitgelezen: ${e.message}]`)
         }
       }
       uploadsContent.push(
@@ -141,6 +166,14 @@ export async function POST(req: NextRequest) {
     const boekjaren = alleBoekjaren.filter(j => j <= huidigJaar)
 
     const prompt = `Je bent een kascontroleur voor Nederlandse verenigingen, VvE's en stichtingen. Je schrijft rapporten in begrijpelijke, gewone taal — alsof je het uitlegt aan een vrijwilliger zonder financiële achtergrond. Geen vakjargon, geen ingewikkelde zinnen. Wel volledig en professioneel.
+
+⚠️ TWEE SOORTEN INHOUD — LEES DIT GOED:
+
+1. CIJFERS & FEITEN → Nooit verzinnen. Gebruik alleen bedragen, namen, datums en rekeningen die letterlijk in de uploads staan. Als een cijfer niet beschikbaar is, laat het veld leeg of schrijf "–". Maak geen tabel aan als je geen enkele rij kunt invullen met echte data.
+
+2. ANALYSE & UITLEG → Schrijf altijd volledig. Op basis van de beschikbare data schrijf je een uitgebreide, professionele analyse per sectie. Beschrijf wat je ziet, wat opvalt, wat goed gaat en wat aandacht verdient. Zelfs als een sectie weinig cijfers heeft, schrijf je een goede inhoudelijke toelichting. Een sectie mag nooit leeg blijven als er data is om over te schrijven.
+
+Kort gezegd: verzin geen cijfers, maar schrijf wél altijd een volledige analyse.
 
 OPDRACHTGEVER:
 - Kascommissielid: ${naam || 'Niet opgegeven'}
@@ -203,39 +236,33 @@ Beschrijf welke documenten zijn beoordeeld en welke werkzaamheden zijn verricht.
 ## 3. BEVINDINGEN BOEKJAAR ${huidigJaar} — HOOFDANALYSE
 
 ### 3.1 Balans en aansluiting banksaldi
+Schrijf een volledige analyse van de balans en banksaldi. Als er saldi beschikbaar zijn in de uploads, maak dan een tabel:
 | Rekening | Beginsaldo | Eindsaldo |
 | --- | --- | --- |
-| [rekening] | €... | €... |
-| **Totaal** | **€...** | **€...** |
+Vul alleen echte bedragen in. Laat cellen leeg (–) als het bedrag niet in de data staat. Voeg altijd een tekstuele toelichting toe over wat je ziet in de banksaldi.
 
 ### 3.2 Inkoopfacturen en uitgaven
-Volledige analyse van alle facturen en uitgaven in ${huidigJaar}.
+Schrijf een volledige analyse van alle facturen en uitgaven in ${huidigJaar}. Beschrijf de uitgavenpatronen, grootste kostenposten, en eventuele bijzonderheden. Gebruik alleen namen en bedragen die in de uploads staan. Als er transacties zijn, maak dan een overzichtstabel van de grootste posten.
 
 ### 3.3 Exploitatieresultaat
+Schrijf een volledige analyse van het financiële resultaat. Als inkomsten en uitgaven beschikbaar zijn, maak dan een tabel:
 | Post | Werkelijk ${huidigJaar} | Begroting ${huidigJaar} | Afwijking |
 | --- | --- | --- | --- |
-| Inkomsten | €... | €... | ... |
-| Uitgaven | €... | €... | ... |
-| **Exploitatieresultaat** | **€...** | **€...** | **...** |
+Vul alleen echte bedragen in. Laat cellen leeg (–) als het bedrag niet beschikbaar is. Voeg altijd een tekstuele toelichting toe over het resultaat.
 
 ### 3.4 Openstaande posten
-| Post | Bedrag | Status |
-| --- | --- | --- |
-| [debiteur/crediteur] | €... | Vereffend ✓ / Nog open ⚠️ |
+Schrijf een analyse van openstaande debiteuren en crediteuren. Als er openstaande posten in de uploads staan, maak dan een tabel met de posten. Als er geen openstaande posten zijn, benoem dat expliciet als positief bevinding.
 
 ### 3.5 Contracten en abonnementen
+Schrijf een analyse van de contracten en abonnementen. Als contracten vermeld worden in de uploads, maak dan een tabel:
 | Contract | Leverancier | Jaarlijkse kosten | Vervaldatum | Beoordeling |
 | --- | --- | --- | --- | --- |
-| [naam] | [leverancier] | €... | [datum] | Actueel ✓ / Verloopt binnenkort ⚠️ |
+Vul alleen echte gegevens in uit de uploads. Als er geen contractinformatie beschikbaar is, schrijf dat dan kort.
 
 ### 3.6 Bijzonderheden boekjaar ${huidigJaar}
 
 ${boekjaren.length > 1 ? `## 4. TRENDANALYSE ${boekjaren.join(' – ')}
-| Post | ${boekjaren.join(' | ')} | Trend |
-| --- | ${boekjaren.map(() => '---').join(' | ')} | --- |
-| Inkomsten | ... | |
-| Uitgaven | ... | |
-| Exploitatieresultaat | ... | |` : ''}
+Maak een trendtabel ALLEEN met bedragen die daadwerkelijk in de uploads staan voor de jaren ${boekjaren.join(', ')}. Vul geen lege vakken in met schattingen of fictieve bedragen.` : ''}
 
 ## ${boekjaren.length > 1 ? '5' : '4'}. ADVIES AAN DE ALGEMENE LEDENVERGADERING
 
@@ -245,7 +272,12 @@ ${boekjaren.length > 1 ? `## 4. TRENDANALYSE ${boekjaren.join(' – ')}
 ---
 *Vertrouwelijk · Opgesteld door slimmekascontrole.nl, een dienst van Vertras B.V.*
 
-BELANGRIJK: Schrijf in begrijpelijke taal. Gebruik tabellen voor cijfers. Wees concreet met bedragen en datums.`
+BELANGRIJK:
+- Schrijf altijd een volledige, uitgebreide analyse — een kort rapport is NIET goed genoeg.
+- Gebruik tabellen voor cijfers waar de data beschikbaar is; laat cellen leeg (–) als een specifiek getal ontbreekt.
+- Verzin nooit bedragen, namen of datums die niet in de uploads staan.
+- Schrijf wél altijd een volledige tekstuele analyse en toelichting, ook als er weinig cijfers zijn.
+- Elke sectie moet inhoudelijk zijn — "Geen gegevens beschikbaar" is alleen acceptabel als er echt niets over die sectie in de uploads staat.`
 
     const apiKey = process.env.ANTHROPIC_API_KEY
     if (!apiKey) return NextResponse.json({ error: 'API key niet geconfigureerd' }, { status: 500 })
