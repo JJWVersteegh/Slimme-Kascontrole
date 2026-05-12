@@ -968,10 +968,10 @@ async function zoekAdres(pc: string, hn: string) {
             )}
 
             {!huidigJaarBetaald ? (
-              <div style={{ background: 'linear-gradient(135deg, #eff6ff 0%, #ffffff 100%)', borderRadius: '24px', padding: '26px 28px', border: '2px solid #bfdbfe', marginBottom: '26px', boxShadow: '0 18px 46px rgba(37,99,235,0.1)' }}>
+              <div style={{ background: 'white', borderRadius: '16px', padding: '22px', border: '1px solid #e2e8f0', marginBottom: '22px', boxShadow: 'none' }}>
                 <div style={{ color: '#2563EB', fontSize: '0.72rem', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '6px' }}>Stap 4</div>
-                <h2 style={{ fontWeight: '600', color: '#0f172a', fontSize: '1.12rem', marginBottom: '8px' }}>Betaal en ontvang het rapport</h2>
-                <p style={{ color: '#475569', fontSize: '0.84rem', marginBottom: '18px', lineHeight: 1.6 }}>
+                <h2 style={{ fontWeight: '600', color: '#0f172a', fontSize: '1rem', marginBottom: '6px' }}>Betaal en ontvang het rapport</h2>
+                <p style={{ color: '#475569', fontSize: '0.84rem', marginBottom: '16px', lineHeight: 1.6 }}>
                   Betaal éénmalig €59 via iDEAL voor <strong>{geselecteerdeVereniging.naam}</strong> boekjaar <strong>{rapportBoekjaar}</strong>. Daarna kunt u het rapport genereren.
                 </p>
                 <button onClick={handleBetaal} disabled={betaalLoading || !heeftUploadsVoorRapportjaar} style={{ background: !heeftUploadsVoorRapportjaar ? '#94a3b8' : '#2563EB', color: 'white', padding: '15px 30px', borderRadius: '14px', border: 'none', fontSize: '0.84rem', fontWeight: '700', cursor: !heeftUploadsVoorRapportjaar ? 'not-allowed' : 'pointer', fontFamily: 'Outfit, sans-serif', boxShadow: !heeftUploadsVoorRapportjaar ? 'none' : '0 12px 24px rgba(37,99,235,0.2)' }}>
@@ -979,7 +979,7 @@ async function zoekAdres(pc: string, hn: string) {
                 </button>
               </div>
             ) : (
-              <div style={{ background: huidigJaarGegenereerd ? '#f0fdf4' : '#eff6ff', borderRadius: '16px', padding: '22px', border: `1px solid ${huidigJaarGegenereerd ? '#bbf7d0' : '#bfdbfe'}`, marginBottom: '22px', boxShadow: 'none' }}>
+              <div style={{ background: 'white', borderRadius: '16px', padding: '22px', border: '1px solid #e2e8f0', marginBottom: '22px', boxShadow: 'none' }}>
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '16px', flexWrap: 'wrap' }}>
                   <div>
                     <div style={{ color: huidigJaarGegenereerd ? '#166534' : '#2563EB', fontSize: '0.72rem', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '6px' }}>Stap 4</div>
