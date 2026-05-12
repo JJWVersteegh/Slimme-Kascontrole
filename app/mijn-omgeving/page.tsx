@@ -966,7 +966,6 @@ async function zoekAdres(pc: string, hn: string) {
                 </div>
               )}
             </div>
-            )}
 
             {rapporten.filter(r => r.rapport_tekst && r.boekjaar !== rapportBoekjaar).length > 0 && (
               <div style={{ background: 'white', borderRadius: '20px', border: '1px solid #e2e8f0', overflow: 'hidden', marginBottom: '26px', boxShadow: '0 12px 32px rgba(15,23,42,0.04)' }}>
