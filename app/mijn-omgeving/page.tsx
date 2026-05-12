@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import { supabase } from '@/lib/supabase'
 import { useRouter } from 'next/navigation'
 import { RapportRenderer } from '@/components/RapportRenderer'
+import Navbar from '@/components/Navbar'
 
 interface Upload {
   id: string
@@ -55,7 +56,8 @@ export default function MijnOmgeving() {
   const [rapportLoading, setRapportLoading] = useState(false)
   const [deleteLoading, setDeleteLoading] = useState<string | null>(null)
   const [files, setFiles] = useState<FileList | null>(null)
-  const [boekjaar, setBoekjaar] = useState(new Date().getFullYear().toString())
+  const standaardBoekjaar = (new Date().getFullYear() - 1).toString()
+  const [boekjaar, setBoekjaar] = useState(standaardBoekjaar)
   const [toelichting, setToelichting] = useState('')
   const [uploadSuccess, setUploadSuccess] = useState(false)
   const [error, setError] = useState('')
@@ -64,7 +66,7 @@ export default function MijnOmgeving() {
   const [toonRapport, setToonRapport] = useState(false)
   const [verborgenRapportJaren, setVerborgenRapportJaren] = useState<Set<string>>(new Set())
   const [bevestigDelete, setBevestigDelete] = useState<string | null>(null)
-  const [bevestigDeleteRapport, setBevestigDeleteRapport] = useState<string | null>(null)
+  const [bevestigDeleteRapport, setBevestigDeleteRapport] = useState<{ boekjaar: string, vereniging_id: string | null } | null>(null)
   const [deleteRapportLoading, setDeleteRapportLoading] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
@@ -91,8 +93,8 @@ export default function MijnOmgeving() {
     const match = (adres || '').match(/\b(\d+[A-Za-z0-9\-]*)\b\s*$/)
     return match ? match[1] : ''
   }
-  const [rapportBoekjaar, setRapportBoekjaar] = useState(currentYear.toString())
-  const jaren = [currentYear + 1, currentYear, currentYear - 1, currentYear - 2, currentYear - 3]
+  const [rapportBoekjaar, setRapportBoekjaar] = useState(standaardBoekjaar)
+  const jaren = [currentYear, currentYear - 1, currentYear - 2, currentYear - 3, currentYear - 4, currentYear - 5]
   const ADMIN_EMAIL = 'info@slimmekascontrole.nl'
 
   useEffect(() => {
@@ -146,8 +148,8 @@ export default function MijnOmgeving() {
     setGeselecteerdeVereniging(v)
     setUploads([])
     setRapporten([])
-    setRapportBoekjaar(currentYear.toString())
-    setBoekjaar(currentYear.toString())
+    setRapportBoekjaar(standaardBoekjaar)
+    setBoekjaar(standaardBoekjaar)
     await loadUploadsEnRapporten(user.id, v.id)
   }
 
@@ -235,55 +237,46 @@ export default function MijnOmgeving() {
     setDeleteLoading(null)
   }
 
-  async function handleDeleteRapport(userId: string, boekjaar: string) {
+  async function handleDeleteRapport(info: { boekjaar: string, vereniging_id: string | null }) {
+    const { boekjaar, vereniging_id } = info
     if (!confirm(`Rapport voor boekjaar ${boekjaar} verwijderen?`)) return
 
     setVerborgenRapportJaren(prev => new Set(prev).add(rapportJaarKey(userId, boekjaar)))
 
     try {
-      const { error: rapportError } = await supabase
+      let rapportQuery = supabase
         .from('rapporten')
         .delete()
         .eq('user_id', userId)
         .eq('boekjaar', boekjaar)
 
+      if (vereniging_id) rapportQuery = rapportQuery.eq('vereniging_id', vereniging_id)
+
+      const { error: rapportError } = await rapportQuery
+
       if (rapportError) {
         console.error(rapportError)
-
-        setVerborgenRapportJaren(prev => {
-          const next = new Set(prev)
-          next.delete(rapportJaarKey(userId, boekjaar))
-          return next
-        })
-
+        setVerborgenRapportJaren(prev => { const next = new Set(prev); next.delete(rapportJaarKey(userId, boekjaar)); return next })
         alert('Verwijderen mislukt')
         return
       }
 
-      await supabase
+      let uploadsQuery = supabase
         .from('uploads')
         .delete()
         .eq('user_id', userId)
         .eq('boekjaar', boekjaar)
 
-      setRapporten(prev =>
-        prev.filter(r => !(r.user_id === userId && r.boekjaar === boekjaar))
-      )
+      if (vereniging_id) uploadsQuery = uploadsQuery.eq('vereniging_id', vereniging_id)
 
-      setUploads(prev =>
-        prev.filter(u => !(u.user_id === userId && u.boekjaar === boekjaar))
-      )
+      await uploadsQuery
 
+      setRapporten(prev => prev.filter(r => !(r.user_id === userId && r.boekjaar === boekjaar)))
+      setUploads(prev => prev.filter(u => !(u.user_id === userId && u.boekjaar === boekjaar)))
       await loadData()
     } catch (err) {
       console.error(err)
-
-      setVerborgenRapportJaren(prev => {
-        const next = new Set(prev)
-        next.delete(rapportJaarKey(userId, boekjaar))
-        return next
-      })
-
+      setVerborgenRapportJaren(prev => { const next = new Set(prev); next.delete(rapportJaarKey(userId, boekjaar)); return next })
       alert('Verwijderen mislukt')
     }
   }
@@ -539,33 +532,34 @@ async function zoekAdres(pc: string, hn: string) {
     { nr: 1, titel: 'Kies VvE', tekst: geselecteerdeVereniging?.naam || 'Selecteer vereniging' },
     { nr: 2, titel: 'Kies boekjaar', tekst: `Boekjaar ${rapportBoekjaar}` },
     { nr: 3, titel: 'Upload bestanden', tekst: heeftUploadsVoorRapportjaar ? `${uploadsVoorRapportjaar.length} upload(s)` : 'Nog te uploaden' },
-    { nr: 4, titel: 'Rapport ontvangen', tekst: huidigJaarGegenereerd ? 'Beschikbaar' : huidigJaarBetaald ? 'Betaald' : 'Na betaling' },
+    { nr: 4, titel: huidigJaarGegenereerd ? 'Rapport beschikbaar' : huidigJaarBetaald ? 'Rapport wordt gegenereerd' : 'Rapport ontvangen', tekst: huidigJaarGegenereerd ? 'Download gereed' : huidigJaarBetaald ? 'Analyse bezig — circa 2 minuten' : 'Na betaling' },
   ]
 
   if (loading) return (
-    <main style={{ minHeight: '100vh', background: '#f8fafc', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'Outfit, sans-serif' }}>
+    <main style={{ minHeight: '100vh', paddingTop: '72px', background: '#f8fafc', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'Outfit, sans-serif' }}>
       <p style={{ color: '#475569' }}>Laden...</p>
     </main>
   )
 
   if (toonRapport && rapportTekstVoorWeergave) return (
-    <main style={{ minHeight: '100vh', background: '#f8fafc', fontFamily: 'Outfit, sans-serif' }}>
+    <main style={{ minHeight: '100vh', paddingTop: '72px', background: '#f8fafc', fontFamily: 'Outfit, sans-serif' }}>
       <style>{`@media print { .no-print { display: none !important; } @page { size: A4 portrait; margin: 12mm 14mm; } body { background: white !important; } .rapport-wrapper { box-shadow: none !important; border: none !important; border-radius: 0 !important; padding: 8mm !important; margin: 0 !important; max-width: 100% !important; } .rapport-table { font-size: 8pt !important; width: 100% !important; } .rapport-table th, .rapport-table td { padding: 4px 6px !important; font-size: 8pt !important; } h1 { font-size: 12pt !important; } h2 { font-size: 10pt !important; } h3 { font-size: 9.5pt !important; } p, div, span { font-size: 9.5pt !important; } }`}</style>
-      <nav className="no-print" style={{ background: 'white', borderBottom: '1px solid #e2e8f0', padding: '0 40px', height: '72px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <a href="/" style={{ display: 'flex', alignItems: 'center', gap: '10px', textDecoration: 'none' }}>
-          <div style={{ background: '#2563EB', width: '36px', height: '36px', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <svg width="20" height="20" viewBox="0 0 22 22" fill="none"><polyline points="3,12 9,18 19,6" stroke="white" strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round" /></svg>
+      <Navbar
+        className="no-print"
+        links={[{ href: '/', label: '← Terug naar home' }]}
+        rightContent={(
+          <div style={{ display: 'flex', gap: '12px' }}>
+            <button onClick={() => window.print()} style={{ background: '#2563EB', color: 'white', padding: '10px 20px', borderRadius: '8px', border: 'none', cursor: 'pointer', fontWeight: '600', fontSize: '0.84rem', fontFamily: 'Outfit, sans-serif' }}>🖨️ Afdrukken / PDF</button>
+            <button onClick={() => setToonRapport(false)} style={{ background: 'white', color: '#1e3a8a', padding: '10px 20px', borderRadius: '8px', border: '1.5px solid #bfdbfe', cursor: 'pointer', fontWeight: '600', fontSize: '0.84rem', fontFamily: 'Outfit, sans-serif' }}>← Terug</button>
           </div>
-          <div style={{ lineHeight: 1.1 }}>
-            <div style={{ fontWeight: '700', fontSize: '0.84rem', color: '#1D4ED8' }}>slimme</div>
-            <div style={{ fontWeight: '500', fontSize: '0.84rem', color: '#3b82f6' }}>kascontrole</div>
+        )}
+        mobileExtra={(
+          <div style={{ borderTop: '1px solid #e2e8f0', marginTop: '8px', paddingTop: '12px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+            <button onClick={() => window.print()} style={{ background: '#2563EB', color: 'white', padding: '12px 16px', borderRadius: '8px', border: 'none', cursor: 'pointer', fontWeight: '700', fontSize: '0.84rem', fontFamily: 'Outfit, sans-serif' }}>🖨️ Afdrukken / PDF</button>
+            <button onClick={() => setToonRapport(false)} style={{ background: 'white', color: '#1e3a8a', padding: '12px 16px', borderRadius: '8px', border: '1.5px solid #bfdbfe', cursor: 'pointer', fontWeight: '600', fontSize: '0.84rem', fontFamily: 'Outfit, sans-serif' }}>← Terug</button>
           </div>
-        </a>
-        <div style={{ display: 'flex', gap: '12px' }}>
-          <button onClick={() => window.print()} style={{ background: '#2563EB', color: 'white', padding: '10px 20px', borderRadius: '8px', border: 'none', cursor: 'pointer', fontWeight: '600', fontSize: '0.84rem', fontFamily: 'Outfit, sans-serif' }}>🖨️ Afdrukken / PDF</button>
-          <button onClick={() => setToonRapport(false)} style={{ background: 'white', color: '#1e3a8a', padding: '10px 20px', borderRadius: '8px', border: '1.5px solid #bfdbfe', cursor: 'pointer', fontWeight: '600', fontSize: '0.84rem', fontFamily: 'Outfit, sans-serif' }}>← Terug</button>
-        </div>
-      </nav>
+        )}
+      />
       <div style={{ maxWidth: '860px', margin: '0 auto', padding: '48px 24px' }}>
         <div className="rapport-wrapper" style={{ background: 'white', borderRadius: '16px', padding: '56px', border: '1px solid #e2e8f0', boxShadow: '0 4px 24px rgba(0,0,0,0.06)' }}>
           <div style={{ textAlign: 'center', borderBottom: '3px solid #2563EB', paddingBottom: '28px', marginBottom: '36px' }}>
@@ -585,7 +579,7 @@ async function zoekAdres(pc: string, hn: string) {
   )
 
   return (
-    <main style={{ minHeight: '100vh', background: '#f8fafc', fontFamily: 'Outfit, sans-serif' }}>
+    <main style={{ minHeight: '100vh', paddingTop: '72px', background: '#f8fafc', fontFamily: 'Outfit, sans-serif' }}>
 
       {/* Delete rapport modal */}
       {bevestigDeleteRapport && (
@@ -593,7 +587,7 @@ async function zoekAdres(pc: string, hn: string) {
           <div style={{ background: 'white', borderRadius: '16px', padding: '32px', maxWidth: '400px', width: '100%' }}>
             <div style={{ fontSize: '2rem', marginBottom: '12px' }}>🗑️</div>
             <h3 style={{ fontWeight: '600', color: '#0f172a', marginBottom: '8px' }}>Boekjaar verwijderen?</h3>
-            <p style={{ color: '#475569', fontSize: '0.84rem', marginBottom: '24px', lineHeight: 1.6 }}>De rapport-/betaalregel voor boekjaar {bevestigDeleteRapport} wordt permanent verwijderd. Eventuele uploads kunt u apart verwijderen bij de uploads.</p>
+            <p style={{ color: '#475569', fontSize: '0.84rem', marginBottom: '24px', lineHeight: 1.6 }}>De rapport-/betaalregel voor boekjaar {bevestigDeleteRapport.boekjaar} wordt permanent verwijderd. Eventuele uploads kunt u apart verwijderen bij de uploads.</p>
             <div style={{ display: 'flex', gap: '12px' }}>
               <button onClick={() => setBevestigDeleteRapport(null)} style={{ flex: 1, padding: '12px', background: 'white', border: '1.5px solid #e2e8f0', borderRadius: '8px', cursor: 'pointer', fontWeight: '600', fontFamily: 'Outfit, sans-serif' }}>Annuleren</button>
               <button onClick={() => handleDeleteRapport(bevestigDeleteRapport)} disabled={deleteRapportLoading} style={{ flex: 1, padding: '12px', background: '#ef4444', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer', fontWeight: '600', fontFamily: 'Outfit, sans-serif' }}>
@@ -727,58 +721,46 @@ async function zoekAdres(pc: string, hn: string) {
         }
       `}</style>
 
-      <nav className="nav-padding" style={{ background: 'rgba(255,255,255,0.97)', backdropFilter: 'blur(12px)', borderBottom: '1px solid #e2e8f0', padding: '0 48px', height: '72px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', position: 'sticky', top: 0, zIndex: 200, width: '100%', boxSizing: 'border-box' }}>
-        <a href="/" style={{ display: 'flex', alignItems: 'center', gap: '10px', textDecoration: 'none' }}>
-          <div style={{ background: '#2563EB', width: '36px', height: '36px', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <svg width="20" height="20" viewBox="0 0 22 22" fill="none"><polyline points="3,12 9,18 19,6" stroke="white" strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round" /></svg>
-          </div>
-          <div style={{ lineHeight: 1.1 }}>
-            <div style={{ fontWeight: '700', fontSize: '0.84rem', color: '#1D4ED8' }}>slimme</div>
-            <div style={{ fontWeight: '500', fontSize: '0.84rem', color: '#3b82f6' }}>kascontrole</div>
-          </div>
-        </a>
-        <ul className="nav-links-desktop" style={{ display: 'flex', gap: '22px', listStyle: 'none', alignItems: 'center', margin: 0, padding: 0 }}>
-          <li><a href="/#waarom" style={{ fontSize: '0.84rem', fontWeight: '500', color: '#475569', textDecoration: 'none' }}>Waarom</a></li>
-          <li><a href="/#hoe-het-werkt" style={{ fontSize: '0.84rem', fontWeight: '500', color: '#475569', textDecoration: 'none' }}>Hoe het werkt</a></li>
-          <li><a href="/#handleidingen" style={{ fontSize: '0.84rem', fontWeight: '500', color: '#475569', textDecoration: 'none' }}>Handleidingen</a></li>
-          <li><a href="/#over-ons" style={{ fontSize: '0.84rem', fontWeight: '500', color: '#475569', textDecoration: 'none' }}>Over ons</a></li>
-          <li><a href="/#tarieven" style={{ fontSize: '0.84rem', fontWeight: '500', color: '#475569', textDecoration: 'none' }}>Tarieven</a></li>
-          <li><a href="/#contact" style={{ fontSize: '0.84rem', fontWeight: '500', color: '#475569', textDecoration: 'none' }}>Contact</a></li>
-          <li><a href="/mijn-omgeving" style={{ fontSize: '0.84rem', fontWeight: '500', color: '#2563EB', textDecoration: 'none' }}>Mijn omgeving</a></li>
-          <li style={{ display: 'flex', alignItems: 'center', gap: '8px', marginLeft: '8px' }}>
+      <Navbar
+        links={[
+          { href: '/#waarom', label: 'Waarom' },
+          { href: '/#hoe-het-werkt', label: 'Hoe het werkt' },
+          { href: '/#handleidingen', label: 'Handleidingen' },
+          { href: '/#over-ons', label: 'Over ons' },
+          { href: '/#tarieven', label: 'Tarieven' },
+          { href: '/#contact', label: 'Contact' },
+          { href: '/mijn-omgeving', label: 'Mijn omgeving', active: true },
+        ]}
+        rightContent={(
+          <>
+            <ul className="skc-nav-links" style={{ display: 'flex', gap: '22px', listStyle: 'none', alignItems: 'center', margin: 0, padding: 0 }}>
+              <li><a href="/#waarom">Waarom</a></li>
+              <li><a href="/#hoe-het-werkt">Hoe het werkt</a></li>
+              <li><a href="/#handleidingen">Handleidingen</a></li>
+              <li><a href="/#over-ons">Over ons</a></li>
+              <li><a href="/#tarieven">Tarieven</a></li>
+              <li><a href="/#contact">Contact</a></li>
+              <li><a href="/mijn-omgeving" style={{ color: '#2563EB' }}>Mijn omgeving</a></li>
+            </ul>
             <span style={{ fontSize: '0.78rem', color: '#475569', display: 'flex', flexDirection: 'column', alignItems: 'flex-end', lineHeight: 1.3 }}>
               <span style={{ fontWeight: '600', color: '#0f172a' }}>{klant?.naam || ''}</span>
               <span style={{ fontSize: '0.75rem', color: '#94a3b8' }}>{user?.email}</span>
             </span>
             <button onClick={() => { setProfielHuisnummer(haalHuisnummerUitAdres(profielForm.adres)); setToonProfiel(true) }} style={{ background: 'none', border: '1.5px solid #bfdbfe', color: '#1e3a8a', padding: '7px 12px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.8rem', fontFamily: 'Outfit, sans-serif', fontWeight: '500' }}>✏️ Gegevens</button>
             <button onClick={handleLogout} style={{ background: '#2563EB', color: 'white', border: 'none', padding: '9px 20px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.84rem', fontFamily: 'Outfit, sans-serif', fontWeight: '600' }}>Uitloggen</button>
-          </li>
-        </ul>
-        <button className="nav-hamburger" onClick={() => setMobileMenuOpen(o => !o)} style={{ display: 'none', background: 'none', border: '1.5px solid #e2e8f0', borderRadius: '6px', cursor: 'pointer', padding: '7px', flexDirection: 'column', gap: '4px', alignItems: 'center', justifyContent: 'center' }}>
-          <span style={{ display: 'block', width: '20px', height: '2px', background: '#0f172a', borderRadius: '2px' }} />
-          <span style={{ display: 'block', width: '20px', height: '2px', background: '#0f172a', borderRadius: '2px' }} />
-          <span style={{ display: 'block', width: '20px', height: '2px', background: '#0f172a', borderRadius: '2px' }} />
-        </button>
-      </nav>
-      {mobileMenuOpen && (
-        <div className="nav-mobile-menu" style={{ position: 'fixed', top: '72px', left: 0, right: 0, background: 'white', borderBottom: '1px solid #e2e8f0', zIndex: 199, padding: '12px 20px 20px', boxShadow: '0 8px 24px rgba(0,0,0,0.1)' }}>
-          <a href="/#waarom" onClick={() => setMobileMenuOpen(false)}>Waarom</a>
-          <a href="/#hoe-het-werkt" onClick={() => setMobileMenuOpen(false)}>Hoe het werkt</a>
-          <a href="/#handleidingen" onClick={() => setMobileMenuOpen(false)}>Handleidingen</a>
-          <a href="/#over-ons" onClick={() => setMobileMenuOpen(false)}>Over ons</a>
-          <a href="/#tarieven" onClick={() => setMobileMenuOpen(false)}>Tarieven</a>
-          <a href="/#contact" onClick={() => setMobileMenuOpen(false)}>Contact</a>
-          <a href="/mijn-omgeving" onClick={() => setMobileMenuOpen(false)} style={{ color: '#2563EB' }}>Mijn omgeving</a>
+          </>
+        )}
+        mobileExtra={(
           <div style={{ borderTop: '1px solid #e2e8f0', marginTop: '8px', paddingTop: '12px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
             <span style={{ fontSize: '0.78rem', color: '#475569', padding: '0 16px', display: 'flex', flexDirection: 'column', gap: '2px' }}>
               <span style={{ fontWeight: '600', color: '#0f172a' }}>{klant?.naam || ''}</span>
               <span style={{ fontSize: '0.75rem', color: '#94a3b8' }}>{user?.email}</span>
             </span>
-            <button onClick={() => { setMobileMenuOpen(false); setProfielHuisnummer(haalHuisnummerUitAdres(profielForm.adres)); setToonProfiel(true) }} style={{ background: 'none', border: '1.5px solid #bfdbfe', color: '#1e3a8a', padding: '12px 16px', borderRadius: '8px', cursor: 'pointer', fontSize: '0.84rem', fontWeight: '600', textAlign: 'left', fontFamily: 'Outfit, sans-serif' }}>✏️ Gegevens bewerken</button>
+            <button onClick={() => { setProfielHuisnummer(haalHuisnummerUitAdres(profielForm.adres)); setToonProfiel(true) }} style={{ background: 'none', border: '1.5px solid #bfdbfe', color: '#1e3a8a', padding: '12px 16px', borderRadius: '8px', cursor: 'pointer', fontSize: '0.84rem', fontWeight: '600', textAlign: 'left', fontFamily: 'Outfit, sans-serif' }}>✏️ Gegevens bewerken</button>
             <button onClick={handleLogout} style={{ background: '#2563EB', color: 'white', border: 'none', padding: '12px 16px', borderRadius: '8px', cursor: 'pointer', fontSize: '0.84rem', fontWeight: '700', textAlign: 'center', fontFamily: 'Outfit, sans-serif' }}>Uitloggen</button>
           </div>
-        </div>
-      )}
+        )}
+      />
 
       <div style={{ maxWidth: '1040px', margin: '0 auto', padding: '48px 24px' }}>
         <div style={{ marginBottom: '26px', display: 'flex', justifyContent: 'space-between', gap: '20px', alignItems: 'flex-end', flexWrap: 'wrap' }}>
@@ -800,15 +782,16 @@ async function zoekAdres(pc: string, hn: string) {
 
         <div className="workflow-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '12px', marginBottom: '28px' }}>
           {workflowStappen.map((stap, index) => {
-            const actief = huidigeStap === stap.nr
-            const klaar = huidigeStap > stap.nr || (stap.nr === 4 && huidigJaarGegenereerd)
+            const klaar = stap.nr === 4 ? huidigJaarGegenereerd : huidigeStap > stap.nr
+            const bezig = stap.nr === 4 && huidigJaarBetaald && !huidigJaarGegenereerd
+            const actief = !klaar && huidigeStap === stap.nr && !bezig
             return (
-              <div key={stap.nr} style={{ background: actief ? '#eff6ff' : 'white', border: `1px solid ${actief ? '#bfdbfe' : klaar ? '#bbf7d0' : '#e2e8f0'}`, borderRadius: '14px', padding: '14px', boxShadow: 'none' }}>
+              <div key={stap.nr} style={{ background: klaar ? '#f0fdf4' : (actief || bezig) ? '#eff6ff' : 'white', border: `1px solid ${klaar ? '#bbf7d0' : (actief || bezig) ? '#bfdbfe' : '#e2e8f0'}`, borderRadius: '14px', padding: '14px', boxShadow: 'none' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '10px' }}>
-                  <div style={{ width: '28px', height: '28px', borderRadius: '999px', display: 'flex', alignItems: 'center', justifyContent: 'center', background: klaar ? '#dcfce7' : actief ? '#2563EB' : '#f1f5f9', color: klaar ? '#166534' : actief ? 'white' : '#94a3b8', fontWeight: '700', fontSize: '0.84rem' }}>
+                  <div style={{ width: '28px', height: '28px', borderRadius: '999px', display: 'flex', alignItems: 'center', justifyContent: 'center', background: klaar ? '#dcfce7' : (actief || bezig) ? '#2563EB' : '#f1f5f9', color: klaar ? '#166534' : (actief || bezig) ? 'white' : '#94a3b8', fontWeight: '700', fontSize: '0.84rem' }}>
                     {klaar ? '✓' : stap.nr}
                   </div>
-                  <div style={{ fontSize: '0.72rem', color: actief ? '#2563EB' : '#64748b', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+                  <div style={{ fontSize: '0.72rem', color: (actief || bezig) ? '#2563EB' : '#64748b', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
                     Stap {index + 1}
                   </div>
                 </div>
@@ -904,7 +887,7 @@ async function zoekAdres(pc: string, hn: string) {
               </div>
 
               <div style={{ background: '#eff6ff', borderRadius: '16px', padding: '14px 16px', marginBottom: '18px', fontSize: '0.84rem', color: '#1e3a8a', lineHeight: 1.65 }}>
-                Upload in ieder geval de bestanden van boekjaar <strong>{rapportBoekjaar}</strong>. Voor boekjaar <strong>{rapportBoekjaar}</strong> kunt u ook bestanden uploaden van <strong>{rapportJaarNum - 2}</strong>, <strong>{rapportJaarNum - 1}</strong> en <strong>{rapportJaarNum + 1}</strong> voor trendanalyse.<br />
+                Upload in ieder geval de bestanden van boekjaar <strong>{rapportBoekjaar}</strong>. Voor trendanalyse kunt u daarna extra jaren uploaden via het veld “Boekjaar van deze bestanden”.<br />
                 <span style={{ color: '#64748b', fontSize: '0.88em' }}>Ondersteunde typen: PDF, Excel, CSV, Word, PNG, JPG, HEIC · Max 10MB per bestand</span>
               </div>
 
@@ -1001,20 +984,20 @@ async function zoekAdres(pc: string, hn: string) {
                 </button>
               </div>
             ) : (
-              <div style={{ background: '#f0fdf4', borderRadius: '24px', padding: '26px 28px', border: '2px solid #86efac', marginBottom: '26px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '18px', boxShadow: '0 18px 46px rgba(22,163,74,0.1)' }}>
+              <div style={{ background: huidigJaarGegenereerd ? '#f0fdf4' : '#eff6ff', borderRadius: '24px', padding: '26px 28px', border: `2px solid ${huidigJaarGegenereerd ? '#86efac' : '#bfdbfe'}`, marginBottom: '26px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '18px', boxShadow: huidigJaarGegenereerd ? '0 18px 46px rgba(22,163,74,0.1)' : '0 18px 46px rgba(37,99,235,0.1)' }}>
                 <div style={{ display: 'flex', gap: '14px', alignItems: 'flex-start' }}>
-                  <div style={{ width: '44px', height: '44px', borderRadius: '999px', background: '#16a34a', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: '900', fontSize: '1.2rem', flexShrink: 0 }}>✓</div>
+                  <div style={{ width: '44px', height: '44px', borderRadius: '999px', background: huidigJaarGegenereerd ? '#16a34a' : '#2563EB', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: '900', fontSize: '1.2rem', flexShrink: 0 }}>{huidigJaarGegenereerd ? '✓' : '4'}</div>
                   <div>
-                    <div style={{ color: '#166534', fontSize: '0.72rem', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '4px' }}>Stap 4</div>
-                    <h2 style={{ fontWeight: '600', color: '#14532d', fontSize: '1.08rem', marginBottom: '4px' }}>Betaald — rapport beschikbaar</h2>
-                    <p style={{ color: '#166534', fontSize: '0.84rem', margin: 0 }}>{huidigJaarGegenereerd ? `Rapport gegenereerd op ${new Date(huidigRapport!.gegenereerd_op!).toLocaleDateString('nl-NL')}` : `U kunt nu uw rapport genereren voor ${geselecteerdeVereniging.naam} boekjaar ${rapportBoekjaar}.`}</p>
+                    <div style={{ color: huidigJaarGegenereerd ? '#166534' : '#2563EB', fontSize: '0.72rem', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '4px' }}>Stap 4</div>
+                    <h2 style={{ fontWeight: '600', color: huidigJaarGegenereerd ? '#14532d' : '#1e3a8a', fontSize: '1.08rem', marginBottom: '4px' }}>{huidigJaarGegenereerd ? 'Rapport beschikbaar' : 'Rapport wordt gegenereerd'}</h2>
+                    <p style={{ color: huidigJaarGegenereerd ? '#166534' : '#1D4ED8', fontSize: '0.84rem', margin: 0 }}>{huidigJaarGegenereerd ? `Rapport gegenereerd op ${new Date(huidigRapport!.gegenereerd_op!).toLocaleDateString('nl-NL')}` : `Uw uploads worden geanalyseerd voor ${geselecteerdeVereniging.naam} boekjaar ${rapportBoekjaar}. Dit duurt meestal circa 2 minuten.`}</p>
                   </div>
                 </div>
                 <div className="card-actions" style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
                   {huidigJaarGegenereerd && (
                     <button onClick={() => setToonRapport(true)} style={{ background: 'white', color: '#166534', padding: '12px 20px', borderRadius: '12px', border: '1.5px solid #86efac', fontSize: '0.84rem', fontWeight: '700', cursor: 'pointer', fontFamily: 'Outfit, sans-serif' }}>📄 Bekijk rapport</button>
                   )}
-                  <button onClick={() => setBevestigDeleteRapport(rapportBoekjaar)} style={{ background: 'white', border: '1.5px solid #fecaca', color: '#ef4444', padding: '12px', borderRadius: '12px', cursor: 'pointer', fontSize: '0.85rem' }} title="Boekjaar verwijderen">🗑️</button>
+                  <button onClick={() => setBevestigDeleteRapport({ boekjaar: rapportBoekjaar, vereniging_id: geselecteerdeVereniging?.id || null })} style={{ background: 'white', border: '1.5px solid #fecaca', color: '#ef4444', padding: '12px', borderRadius: '12px', cursor: 'pointer', fontSize: '0.85rem' }} title="Boekjaar verwijderen">🗑️</button>
                   <button onClick={handleGenereerRapport} disabled={rapportLoading} style={{ background: '#16a34a', color: 'white', padding: '12px 24px', borderRadius: '12px', border: 'none', fontSize: '0.84rem', fontWeight: '700', cursor: rapportLoading ? 'not-allowed' : 'pointer', fontFamily: 'Outfit, sans-serif', boxShadow: '0 12px 24px rgba(22,163,74,0.18)' }}>
                     {rapportLoading ? '⏳ Genereren...' : huidigJaarGegenereerd ? '🔄 Rapport vernieuwen' : '📊 Genereer rapport'}
                   </button>
@@ -1030,11 +1013,6 @@ async function zoekAdres(pc: string, hn: string) {
                 <strong>⚠️ Disclaimer:</strong> Het kascontrolerapport is een hulpmiddel voor de kascommissie en wordt opgesteld op basis van de door u aangeleverde documenten. Wij adviseren de kascontroleur om het rapport te gebruiken als ondersteuning bij zijn of haar eigen controle en de bevindingen zelf te verifiëren. Slimme Kascontrole is niet aansprakelijk voor eventuele fouten of beslissingen op basis van het rapport. De verantwoordelijkheid voor de kascontrole blijft bij de kascommissie. Zie ook onze <a href="/voorwaarden" style={{ color: '#92400e' }}>algemene voorwaarden</a>.
               </p>
             </div>
-            {rapportLoading && (
-              <div style={{ background: '#eff6ff', borderRadius: '12px', padding: '16px', marginTop: '16px' }}>
-                <p style={{ color: '#1D4ED8', margin: 0, fontSize: '0.84rem' }}>⏳ Uw uploads worden geanalyseerd voor {geselecteerdeVereniging.naam} boekjaar {rapportBoekjaar}... Dit duurt circa 2 minuten.</p>
-              </div>
-            )}
           </>
         )}
       </div>
