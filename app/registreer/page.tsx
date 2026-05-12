@@ -233,7 +233,7 @@ export default function Registreer() {
                 </button>
               ))}
             </div>
-            <button onClick={() => { setMode('keuze'); setError('') }} style={{ background: 'none', border: 'none', color: '#64748b', fontSize: '0.82rem', cursor: 'pointer', marginBottom: '12px', display: 'flex', alignItems: 'center', gap: '4px', padding: 0 }}>
+            <button onClick={() => { setMode('keuze'); setError('') }} style={{ background: 'none', border: 'none', color: '#0f172a', fontSize: '1.05rem', fontWeight: 700, cursor: 'pointer', marginBottom: '24px', display: 'inline-flex', alignItems: 'center', gap: '8px', padding: 0, fontFamily: 'Outfit, sans-serif' }}>
               ← Terug
             </button>
           </>

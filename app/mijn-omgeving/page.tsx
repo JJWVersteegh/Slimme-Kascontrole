@@ -93,7 +93,7 @@ export default function MijnOmgeving() {
     const match = (adres || '').match(/\b(\d+[A-Za-z0-9\-]*)\b\s*$/)
     return match ? match[1] : ''
   }
-  const [rapportBoekjaar, setRapportBoekjaar] = useState(standaardBoekjaar)
+  const [rapportBoekjaar, setRapportBoekjaar] = useState('')
   const jaren = [currentYear, currentYear - 1, currentYear - 2, currentYear - 3, currentYear - 4, currentYear - 5]
   const ADMIN_EMAIL = 'info@slimmekascontrole.nl'
 
@@ -122,7 +122,7 @@ export default function MijnOmgeving() {
     const vList = verenigingenData || []
     setVerenigingen(vList)
 
-    if (vList.length > 0) {
+    if (vList.length === 1) {
       setGeselecteerdeVereniging(vList[0])
       await loadUploadsEnRapporten(userId, vList[0].id)
     }
@@ -142,13 +142,14 @@ export default function MijnOmgeving() {
     const betaaldeMetRapport = rapportenLijst.filter(r => r.betaald && r.rapport_tekst).sort((a, b) => b.boekjaar.localeCompare(a.boekjaar))
     if (betaaldeZonderRapport.length > 0) { setRapportBoekjaar(betaaldeZonderRapport[0].boekjaar); setBoekjaar(betaaldeZonderRapport[0].boekjaar) }
     else if (betaaldeMetRapport.length > 0) { setRapportBoekjaar(betaaldeMetRapport[0].boekjaar); setBoekjaar(betaaldeMetRapport[0].boekjaar) }
+    else { setRapportBoekjaar(''); setBoekjaar(standaardBoekjaar) }
   }
 
   async function handleWisselVereniging(v: Vereniging) {
     setGeselecteerdeVereniging(v)
     setUploads([])
     setRapporten([])
-    setRapportBoekjaar(standaardBoekjaar)
+    setRapportBoekjaar('')
     setBoekjaar(standaardBoekjaar)
     await loadUploadsEnRapporten(user.id, v.id)
   }
@@ -157,6 +158,7 @@ export default function MijnOmgeving() {
     e.preventDefault()
     if (!files || files.length === 0) { setUploadError('Selecteer minimaal één bestand'); return }
     if (!geselecteerdeVereniging) { setUploadError('Selecteer eerst een vereniging'); return }
+    if (!rapportBoekjaar) { setUploadError('Kies eerst het boekjaar waarvoor u een rapport wilt maken'); return }
     setUploading(true); setUploadError('')
     const formData = new FormData()
     formData.append('user_id', user.id)
@@ -521,7 +523,7 @@ async function zoekAdres(pc: string, hn: string) {
 
   const inp: any = { width: '100%', padding: '11px 14px', borderRadius: '8px', border: '1.5px solid #bfdbfe', fontSize: '0.84rem', background: 'white', outline: 'none', fontFamily: 'Outfit, sans-serif' }
   const boekjaren = [...new Set(uploads.map(u => u.boekjaar))].sort().reverse()
-  const rapportJaarNum = parseInt(rapportBoekjaar)
+  const rapportJaarNum = rapportBoekjaar ? parseInt(rapportBoekjaar) : parseInt(standaardBoekjaar)
   const huidigRapport = rapporten.find(r => r.boekjaar === rapportBoekjaar)
   const huidigJaarBetaald = huidigRapport?.betaald || false
   const huidigJaarGegenereerd = !!huidigRapport?.rapport_tekst
@@ -539,7 +541,7 @@ async function zoekAdres(pc: string, hn: string) {
           : 3
   const workflowStappen = [
     { nr: 1, titel: 'Kies VvE', tekst: geselecteerdeVereniging?.naam || 'Selecteer vereniging' },
-    { nr: 2, titel: 'Kies boekjaar', tekst: `Boekjaar ${rapportBoekjaar}` },
+    { nr: 2, titel: 'Kies boekjaar', tekst: rapportBoekjaar ? `Boekjaar ${rapportBoekjaar}` : 'Nog te kiezen' },
     { nr: 3, titel: 'Upload bestanden', tekst: heeftUploadsVoorRapportjaar ? `${uploadsVoorRapportjaar.length} upload(s)` : 'Nog te uploaden' },
     { nr: 4, titel: huidigJaarGegenereerd ? 'Rapport beschikbaar' : huidigJaarBetaald ? 'Rapport wordt gegenereerd' : 'Rapport ontvangen', tekst: huidigJaarGegenereerd ? 'Download gereed' : huidigJaarBetaald ? 'Analyse bezig — circa 2 minuten' : 'Na betaling' },
   ]
@@ -873,16 +875,18 @@ async function zoekAdres(pc: string, hn: string) {
               <h2 style={{ fontWeight: '600', color: '#0f172a', fontSize: '1.12rem', marginBottom: '6px' }}>Kies het boekjaar</h2>
               <p style={{ color: '#475569', fontSize: '0.84rem', marginBottom: '18px' }}>Voor welk boekjaar wilt u een kascontrolerapport maken voor <strong>{geselecteerdeVereniging.naam}</strong>?</p>
               <div className="upload-grid" style={{ display: 'grid', gridTemplateColumns: 'minmax(180px, 260px) 1fr', gap: '16px', alignItems: 'stretch' }}>
-                <select value={rapportBoekjaar} onChange={e => { setRapportBoekjaar(e.target.value); setBoekjaar(e.target.value) }} style={{ ...inp, minHeight: '54px', fontSize: '0.84rem', fontWeight: '700', borderRadius: '14px', borderColor: '#93c5fd' }}>
+                <select value={rapportBoekjaar} onChange={e => { setRapportBoekjaar(e.target.value); if (e.target.value) setBoekjaar(e.target.value) }} style={{ ...inp, minHeight: '54px', fontSize: '0.84rem', fontWeight: '700', borderRadius: '14px', borderColor: '#93c5fd' }}>
+                  <option value="">Kies boekjaar</option>
                   {jaren.map(j => <option key={j} value={j}>Boekjaar {j}</option>)}
                 </select>
                 <div style={{ background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: '16px', padding: '14px 16px', color: '#475569', fontSize: '0.84rem', lineHeight: 1.6 }}>
-                  <strong style={{ color: '#0f172a' }}>Verplicht:</strong> upload bestanden van {rapportJaarNum}.<br />
-                  <strong style={{ color: '#0f172a' }}>Optioneel voor trendanalyse:</strong> upload ook {rapportJaarNum - 2}, {rapportJaarNum - 1} en {rapportJaarNum + 1}.
+                  <strong style={{ color: '#0f172a' }}>Verplicht:</strong> kies eerst bewust het boekjaar waarvoor u een rapport wilt maken.<br />
+                  <strong style={{ color: '#0f172a' }}>Tip:</strong> meestal is dat het laatst afgeronde jaar, bijvoorbeeld {standaardBoekjaar}.
                 </div>
               </div>
             </div>
 
+            {rapportBoekjaar && (
             <div style={{ background: '#ffffff', borderRadius: '16px', padding: '22px', border: '1px solid #e2e8f0', marginBottom: '26px', boxShadow: 'none' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', gap: '16px', alignItems: 'flex-start', flexWrap: 'wrap', marginBottom: '18px' }}>
                 <div>
@@ -961,6 +965,7 @@ async function zoekAdres(pc: string, hn: string) {
                 </div>
               )}
             </div>
+            )}
 
             {rapporten.filter(r => r.rapport_tekst && r.boekjaar !== rapportBoekjaar).length > 0 && (
               <div style={{ background: 'white', borderRadius: '20px', border: '1px solid #e2e8f0', overflow: 'hidden', marginBottom: '26px', boxShadow: '0 12px 32px rgba(15,23,42,0.04)' }}>
@@ -981,7 +986,7 @@ async function zoekAdres(pc: string, hn: string) {
               </div>
             )}
 
-            {!huidigJaarBetaald ? (
+            {rapportBoekjaar && (!huidigJaarBetaald ? (
               <div style={{ background: 'linear-gradient(135deg, #eff6ff 0%, #ffffff 100%)', borderRadius: '24px', padding: '26px 28px', border: '2px solid #bfdbfe', marginBottom: '26px', boxShadow: '0 18px 46px rgba(37,99,235,0.1)' }}>
                 <div style={{ color: '#2563EB', fontSize: '0.72rem', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '6px' }}>Stap 4</div>
                 <h2 style={{ fontWeight: '600', color: '#0f172a', fontSize: '1.12rem', marginBottom: '8px' }}>Betaal en ontvang het rapport</h2>
@@ -1012,9 +1017,9 @@ async function zoekAdres(pc: string, hn: string) {
                   </button>
                 </div>
               </div>
-            )}
+            ))}
 
-            {rapportError && <p style={{ color: '#ef4444', marginBottom: '16px', fontSize: '0.84rem', fontWeight: '700' }}>{rapportError}</p>}
+            {rapportBoekjaar && rapportError && <p style={{ color: '#ef4444', marginBottom: '16px', fontSize: '0.84rem', fontWeight: '700' }}>{rapportError}</p>}
             {error && <p style={{ color: '#ef4444', marginBottom: '16px', fontSize: '0.84rem', fontWeight: '700' }}>{error}</p>}
 
             <div style={{ background: '#fffbeb', borderRadius: '16px', padding: '16px 20px', border: '1px solid #fde68a', marginTop: '8px' }}>
