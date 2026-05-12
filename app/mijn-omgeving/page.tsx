@@ -94,7 +94,9 @@ export default function MijnOmgeving() {
     return match ? match[1] : ''
   }
   const [rapportBoekjaar, setRapportBoekjaar] = useState(standaardBoekjaar)
-  const jaren = [currentYear - 1, currentYear - 2, currentYear - 3, currentYear - 4, currentYear - 5, currentYear - 6]
+  const rapportJaren = [currentYear - 1, currentYear - 2]  // max 2 jaar selecteerbaar voor rapport
+  const uploadJaren = [currentYear - 1, currentYear - 2, currentYear - 3, currentYear - 4]  // max 4 jaar voor uploads/trendanalyse
+  const jaren = rapportJaren  // alias voor bestaande code
   const ADMIN_EMAIL = 'info@slimmekascontrole.nl'
 
   useEffect(() => {
@@ -777,6 +779,7 @@ async function zoekAdres(pc: string, hn: string) {
               <div style={{ fontSize: '0.75rem', color: '#64748b', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '4px' }}>Geselecteerd</div>
               <div style={{ color: '#0f172a', fontWeight: '700' }}>{geselecteerdeVereniging.naam}</div>
               <div style={{ color: '#64748b', fontSize: '0.85rem', marginTop: '2px' }}>Boekjaar {rapportBoekjaar}</div>
+              <button onClick={() => openVerenigingForm(geselecteerdeVereniging)} style={{ marginTop: '10px', background: '#eff6ff', border: '1px solid #bfdbfe', color: '#2563EB', cursor: 'pointer', fontSize: '0.75rem', padding: '5px 10px', borderRadius: '8px', fontWeight: '700', fontFamily: 'Outfit, sans-serif' }}>✏️ Bewerken</button>
             </div>
           )}
         </div>
@@ -826,34 +829,26 @@ async function zoekAdres(pc: string, hn: string) {
               </button>
             </div>
           ) : (
-            <div className="step-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(2, minmax(0, 1fr))', gap: '12px' }}>
-              {verenigingen.map(v => {
-                const actief = geselecteerdeVereniging?.id === v.id
-                return (
-                  <div key={v.id} style={{ background: actief ? '#eff6ff' : 'white', border: `1px solid ${actief ? '#bfdbfe' : '#e2e8f0'}`, borderRadius: '14px', padding: '14px', boxShadow: 'none' }}>
-                    <button onClick={() => handleWisselVereniging(v)} style={{ width: '100%', background: 'none', border: 'none', padding: 0, textAlign: 'left', cursor: 'pointer', fontFamily: 'Outfit, sans-serif' }}>
-                      <div style={{ display: 'flex', justifyContent: 'space-between', gap: '12px', alignItems: 'flex-start' }}>
-                        <div>
-                          <div style={{ fontSize: '0.84rem', fontWeight: '600', color: '#0f172a', marginBottom: '5px' }}>{v.naam}</div>
-                          {v.kvk && <div style={{ fontSize: '0.78rem', color: '#64748b', marginBottom: '4px' }}>KvK: {v.kvk}</div>}
-                          {v.adres && <div style={{ fontSize: '0.78rem', color: '#64748b' }}>📍 {v.adres}, {v.postcode} {v.plaats}</div>}
-                        </div>
-                        <span style={{ background: actief ? '#2563EB' : '#f1f5f9', color: actief ? 'white' : '#64748b', borderRadius: '999px', padding: '6px 10px', fontSize: '0.72rem', fontWeight: '700', whiteSpace: 'nowrap' }}>
-                          {actief ? 'Geselecteerd' : 'Kies'}
-                        </span>
-                      </div>
-                    </button>
-                    {actief && (
-                      <div style={{ display: 'flex', gap: '8px', marginTop: '14px' }}>
-                        <button onClick={() => openVerenigingForm(v)} style={{ background: '#eff6ff', border: '1px solid #bfdbfe', color: '#2563EB', cursor: 'pointer', fontSize: '0.78rem', padding: '7px 10px', borderRadius: '10px', fontWeight: '700' }}>✏️ Bewerken</button>
-                        {verenigingen.length > 1 && (
-                          <button onClick={() => handleDeleteVereniging(v)} style={{ background: '#fef2f2', border: '1px solid #fecaca', color: '#ef4444', cursor: 'pointer', fontSize: '0.78rem', padding: '7px 10px', borderRadius: '10px', fontWeight: '700' }}>🗑️ Verwijderen</button>
-                        )}
-                      </div>
-                    )}
-                  </div>
-                )
-              })}
+            <div style={{ display: 'flex', gap: '12px', alignItems: 'center', flexWrap: 'wrap' }}>
+              <select
+                value={geselecteerdeVereniging?.id || ''}
+                onChange={e => {
+                  const v = verenigingen.find(v => v.id === e.target.value)
+                  if (v) handleWisselVereniging(v)
+                }}
+                style={{ ...inp, minHeight: '54px', fontSize: '0.84rem', fontWeight: '700', borderRadius: '14px', borderColor: '#93c5fd', flex: '1', minWidth: '220px', maxWidth: '400px' }}
+              >
+                <option value="" disabled>Selecteer een VvE...</option>
+                {verenigingen.map(v => (
+                  <option key={v.id} value={v.id}>{v.naam}</option>
+                ))}
+              </select>
+              {geselecteerdeVereniging && (
+                <button onClick={() => openVerenigingForm(geselecteerdeVereniging)} style={{ background: '#eff6ff', border: '1px solid #bfdbfe', color: '#2563EB', cursor: 'pointer', fontSize: '0.84rem', padding: '12px 16px', borderRadius: '12px', fontWeight: '700', fontFamily: 'Outfit, sans-serif', whiteSpace: 'nowrap' }}>✏️ Bewerken</button>
+              )}
+              {geselecteerdeVereniging && verenigingen.length > 1 && (
+                <button onClick={() => handleDeleteVereniging(geselecteerdeVereniging)} style={{ background: '#fef2f2', border: '1px solid #fecaca', color: '#ef4444', cursor: 'pointer', fontSize: '0.84rem', padding: '12px 16px', borderRadius: '12px', fontWeight: '700', fontFamily: 'Outfit, sans-serif', whiteSpace: 'nowrap' }}>🗑️ Verwijderen</button>
+              )}
             </div>
           )}
         </div>
@@ -887,7 +882,7 @@ async function zoekAdres(pc: string, hn: string) {
               </div>
 
               <div style={{ background: '#eff6ff', borderRadius: '16px', padding: '14px 16px', marginBottom: '18px', fontSize: '0.84rem', color: '#1e3a8a', lineHeight: 1.65 }}>
-                Upload de bestanden van boekjaar <strong>{rapportBoekjaar}</strong>. Wilt u ook een trendanalyse? Upload dan extra jaren via het veld “Boekjaar van deze bestanden” — optioneel zijn {rapportJaarNum - 2}, {rapportJaarNum - 1} en {rapportJaarNum + 1}.<br />
+                Upload de bestanden van boekjaar <strong>{rapportBoekjaar}</strong>. Wilt u ook een trendanalyse? Upload dan per jaar de bestanden en druk elke keer op de uploadknop. Optioneel zijn {rapportJaarNum - 2}, {rapportJaarNum - 1} en {rapportJaarNum + 1}.<br />
                 <span style={{ color: '#64748b', fontSize: '0.88em' }}>Ondersteunde typen: PDF, Excel, CSV, Word, PNG, JPG, HEIC · Max 10MB per bestand</span>
               </div>
 
@@ -896,7 +891,7 @@ async function zoekAdres(pc: string, hn: string) {
                   <div>
                     <label style={{ display: 'block', fontWeight: '600', color: '#0f172a', marginBottom: '7px', fontSize: '0.84rem' }}>Boekjaar van deze bestanden</label>
                     <select value={boekjaar} onChange={e => setBoekjaar(e.target.value)} style={{ ...inp, minHeight: '52px', borderRadius: '14px' }}>
-                      {jaren.map(j => <option key={j} value={j}>{j}</option>)}
+                      {uploadJaren.map(j => <option key={j} value={j}>{j}</option>)}
                     </select>
                   </div>
                   <div>
@@ -984,23 +979,22 @@ async function zoekAdres(pc: string, hn: string) {
                 </button>
               </div>
             ) : (
-              <div style={{ background: huidigJaarGegenereerd ? '#f0fdf4' : '#eff6ff', borderRadius: '24px', padding: '26px 28px', border: `2px solid ${huidigJaarGegenereerd ? '#86efac' : '#bfdbfe'}`, marginBottom: '26px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '18px', boxShadow: huidigJaarGegenereerd ? '0 18px 46px rgba(22,163,74,0.1)' : '0 18px 46px rgba(37,99,235,0.1)' }}>
-                <div style={{ display: 'flex', gap: '14px', alignItems: 'flex-start' }}>
-                  <div style={{ width: '44px', height: '44px', borderRadius: '999px', background: huidigJaarGegenereerd ? '#16a34a' : '#2563EB', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: '900', fontSize: '1.2rem', flexShrink: 0 }}>{huidigJaarGegenereerd ? '✓' : '4'}</div>
+              <div style={{ background: huidigJaarGegenereerd ? '#f0fdf4' : '#eff6ff', borderRadius: '16px', padding: '22px', border: `1px solid ${huidigJaarGegenereerd ? '#bbf7d0' : '#bfdbfe'}`, marginBottom: '22px', boxShadow: 'none' }}>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '16px', flexWrap: 'wrap' }}>
                   <div>
-                    <div style={{ color: huidigJaarGegenereerd ? '#166534' : '#2563EB', fontSize: '0.72rem', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '4px' }}>Stap 4</div>
-                    <h2 style={{ fontWeight: '600', color: huidigJaarGegenereerd ? '#14532d' : '#1e3a8a', fontSize: '1.08rem', marginBottom: '4px' }}>{huidigJaarGegenereerd ? 'Rapport beschikbaar' : 'Rapport wordt gegenereerd'}</h2>
-                    <p style={{ color: huidigJaarGegenereerd ? '#166534' : '#1D4ED8', fontSize: '0.84rem', margin: 0 }}>{huidigJaarGegenereerd ? `Rapport gegenereerd op ${new Date(huidigRapport!.gegenereerd_op!).toLocaleDateString('nl-NL')}` : `Uw uploads worden geanalyseerd voor ${geselecteerdeVereniging.naam} boekjaar ${rapportBoekjaar}. Dit duurt meestal circa 2 minuten.`}</p>
+                    <div style={{ color: huidigJaarGegenereerd ? '#166534' : '#2563EB', fontSize: '0.72rem', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '6px' }}>Stap 4</div>
+                    <h2 style={{ fontSize: '1rem', fontWeight: '600', color: '#0f172a', margin: 0 }}>{huidigJaarGegenereerd ? 'Rapport beschikbaar' : 'Rapport wordt gegenereerd'}</h2>
+                    <p style={{ color: '#475569', margin: '6px 0 0', fontSize: '0.84rem' }}>{huidigJaarGegenereerd ? `Gegenereerd op ${new Date(huidigRapport!.gegenereerd_op!).toLocaleDateString('nl-NL')}` : `Analyse bezig voor ${geselecteerdeVereniging.naam} boekjaar ${rapportBoekjaar} — circa 2 minuten.`}</p>
                   </div>
-                </div>
-                <div className="card-actions" style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
-                  {huidigJaarGegenereerd && (
-                    <button onClick={() => setToonRapport(true)} style={{ background: 'white', color: '#166534', padding: '12px 20px', borderRadius: '12px', border: '1.5px solid #86efac', fontSize: '0.84rem', fontWeight: '700', cursor: 'pointer', fontFamily: 'Outfit, sans-serif' }}>📄 Bekijk rapport</button>
-                  )}
-                  <button onClick={() => setBevestigDeleteRapport({ boekjaar: rapportBoekjaar, vereniging_id: geselecteerdeVereniging?.id || null })} style={{ background: 'white', border: '1.5px solid #fecaca', color: '#ef4444', padding: '12px', borderRadius: '12px', cursor: 'pointer', fontSize: '0.85rem' }} title="Boekjaar verwijderen">🗑️</button>
-                  <button onClick={handleGenereerRapport} disabled={rapportLoading} style={{ background: '#16a34a', color: 'white', padding: '12px 24px', borderRadius: '12px', border: 'none', fontSize: '0.84rem', fontWeight: '700', cursor: rapportLoading ? 'not-allowed' : 'pointer', fontFamily: 'Outfit, sans-serif', boxShadow: '0 12px 24px rgba(22,163,74,0.18)' }}>
-                    {rapportLoading ? '⏳ Genereren...' : huidigJaarGegenereerd ? '🔄 Rapport vernieuwen' : '📊 Genereer rapport'}
-                  </button>
+                  <div style={{ display: 'flex', gap: '10px', alignItems: 'center', flexWrap: 'wrap' }}>
+                    {huidigJaarGegenereerd && (
+                      <button onClick={() => setToonRapport(true)} style={{ background: 'white', color: '#166534', padding: '10px 18px', borderRadius: '10px', border: '1.5px solid #86efac', fontSize: '0.84rem', fontWeight: '700', cursor: 'pointer', fontFamily: 'Outfit, sans-serif' }}>📄 Bekijk rapport</button>
+                    )}
+                    <button onClick={() => setBevestigDeleteRapport({ boekjaar: rapportBoekjaar, vereniging_id: geselecteerdeVereniging?.id || null })} style={{ background: 'white', border: '1.5px solid #fecaca', color: '#ef4444', padding: '10px 12px', borderRadius: '10px', cursor: 'pointer', fontSize: '0.85rem' }} title="Boekjaar verwijderen">🗑️</button>
+                    <button onClick={handleGenereerRapport} disabled={rapportLoading} style={{ background: '#16a34a', color: 'white', padding: '10px 20px', borderRadius: '10px', border: 'none', fontSize: '0.84rem', fontWeight: '700', cursor: rapportLoading ? 'not-allowed' : 'pointer', fontFamily: 'Outfit, sans-serif' }}>
+                      {rapportLoading ? '⏳ Genereren...' : huidigJaarGegenereerd ? '🔄 Vernieuwen' : '📊 Genereer rapport'}
+                    </button>
+                  </div>
                 </div>
               </div>
             )}
