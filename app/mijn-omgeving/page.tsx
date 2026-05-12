@@ -241,7 +241,7 @@ export default function MijnOmgeving() {
     const { boekjaar, vereniging_id } = info
     if (!confirm(`Rapport voor boekjaar ${boekjaar} verwijderen?`)) return
 
-    setVerborgenRapportJaren(prev => new Set(prev).add(rapportJaarKey(user?.id, boekjaar)))
+    setVerborgenRapportJaren(prev => new Set(prev).add(`${user?.id}_${boekjaar}`))
 
     try {
       let rapportQuery = supabase
@@ -256,7 +256,7 @@ export default function MijnOmgeving() {
 
       if (rapportError) {
         console.error('Delete rapport error:', rapportError)
-        setVerborgenRapportJaren(prev => { const next = new Set(prev); next.delete(rapportJaarKey(user?.id, boekjaar)); return next })
+        setVerborgenRapportJaren(prev => { const next = new Set(prev); next.delete(`${user?.id}_${boekjaar}`); return next })
         alert(`Verwijderen mislukt: ${rapportError.message} (code: ${rapportError.code})`)
         return
       }
@@ -274,10 +274,10 @@ export default function MijnOmgeving() {
       setRapporten(prev => prev.filter(r => !(r.user_id === user?.id && r.boekjaar === boekjaar)))
       setUploads(prev => prev.filter(u => !(u.user_id === user?.id && u.boekjaar === boekjaar)))
       setBevestigDeleteRapport(null)
-      await loadData()
+      if (user?.id && user?.email) await loadData(user.id, user.email)
     } catch (err) {
       console.error(err)
-      setVerborgenRapportJaren(prev => { const next = new Set(prev); next.delete(rapportJaarKey(user?.id, boekjaar)); return next })
+      setVerborgenRapportJaren(prev => { const next = new Set(prev); next.delete(`${user?.id}_${boekjaar}`); return next })
       alert('Verwijderen mislukt')
     }
   }
