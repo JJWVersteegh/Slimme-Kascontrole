@@ -94,8 +94,8 @@ export default function MijnOmgeving() {
     return match ? match[1] : ''
   }
   const [rapportBoekjaar, setRapportBoekjaar] = useState(standaardBoekjaar)
-  const rapportJaren = [currentYear - 1, currentYear - 2]  // max 2 jaar selecteerbaar voor rapport
-  const uploadJaren = [currentYear - 1, currentYear - 2, currentYear - 3, currentYear - 4]  // max 4 jaar voor uploads/trendanalyse
+  const rapportJaren = [currentYear - 1, currentYear]  // 2025, 2026
+  const uploadJaren = [currentYear - 3, currentYear - 2, currentYear - 1, currentYear]  // 2023, 2024, 2025, 2026
   const jaren = rapportJaren  // alias voor bestaande code
   const ADMIN_EMAIL = 'info@slimmekascontrole.nl'
 
