@@ -843,9 +843,6 @@ async function zoekAdres(pc: string, hn: string) {
                   <option key={v.id} value={v.id}>{v.naam}</option>
                 ))}
               </select>
-              {geselecteerdeVereniging && (
-                <button onClick={() => openVerenigingForm(geselecteerdeVereniging)} style={{ background: '#eff6ff', border: '1px solid #bfdbfe', color: '#2563EB', cursor: 'pointer', fontSize: '0.84rem', padding: '12px 16px', borderRadius: '12px', fontWeight: '700', fontFamily: 'Outfit, sans-serif', whiteSpace: 'nowrap' }}>✏️ Bewerken</button>
-              )}
               {geselecteerdeVereniging && verenigingen.length > 1 && (
                 <button onClick={() => handleDeleteVereniging(geselecteerdeVereniging)} style={{ background: '#fef2f2', border: '1px solid #fecaca', color: '#ef4444', cursor: 'pointer', fontSize: '0.84rem', padding: '12px 16px', borderRadius: '12px', fontWeight: '700', fontFamily: 'Outfit, sans-serif', whiteSpace: 'nowrap' }}>🗑️ Verwijderen</button>
               )}
