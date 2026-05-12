@@ -296,13 +296,20 @@ export async function POST(req: NextRequest) {
         }
       }
 
-      // Haal kortingscode op uit Stripe sessie
+      // Haal kortingscode op uit Stripe sessie — expand nodig want webhook bevat geen breakdown
       let kortingscode: string | undefined
       try {
-        if (session.total_details?.breakdown?.discounts?.length > 0) {
-          kortingscode = session.total_details.breakdown.discounts[0]?.discount?.promotion_code?.code
+        const expandedSession = await stripe.checkout.sessions.retrieve(session.id, {
+          expand: ['total_details.breakdown.discounts.discount.promotion_code'],
+        })
+        const discounts = expandedSession.total_details?.breakdown?.discounts
+        if (discounts && discounts.length > 0) {
+          const promoCode = (discounts[0]?.discount as any)?.promotion_code
+          kortingscode = typeof promoCode === 'object' ? promoCode?.code : undefined
         }
-      } catch {}
+      } catch (e) {
+        console.error('Kortingscode ophalen mislukt:', e)
+      }
 
       // Moneybird factuur
       try {

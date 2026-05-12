@@ -16,6 +16,12 @@ function formatCell(text: string): string {
   return formatted
 }
 
+function isNumericCell(text: string): boolean {
+  const t = text.replace(/\*\*/g, '').trim()
+  // Bedragen met €, percentages, of puur numerieke waarden (met punt/komma)
+  return /^[+\-−]?€/.test(t) || /^[+\-−]?\d[\d.,\s]*%?$/.test(t) || t === '–' || t === '-'
+}
+
 function parseTableRow(line: string): string[] {
   return line.split('|').filter((_, idx, arr) => idx > 0 && idx < arr.length - 1)
 }
@@ -56,7 +62,7 @@ export function RapportRenderer({ tekst }: { tekst: string }) {
           <thead>
             <tr style={{ background: '#1e3a8a' }}>
               {headers.map((h, j) => (
-                <th key={j} style={{ padding: '10px 14px', textAlign: 'left', fontWeight: '600', color: 'white', whiteSpace: 'normal', fontFamily: 'Outfit, sans-serif' }}
+                <th key={j} style={{ padding: '10px 14px', textAlign: isNumericCell(h.trim()) ? 'right' : 'left', fontWeight: '600', color: 'white', whiteSpace: 'normal', fontFamily: 'Outfit, sans-serif' }}
                   dangerouslySetInnerHTML={{ __html: formatInline(h.trim()) }} />
               ))}
             </tr>
@@ -65,7 +71,7 @@ export function RapportRenderer({ tekst }: { tekst: string }) {
             {dataRows.map((row, ri) => (
               <tr key={ri} style={{ background: ri % 2 === 0 ? 'white' : '#f8fafc', borderBottom: '1px solid #e2e8f0' }}>
                 {row.map((cell, ci) => (
-                  <td key={ci} style={{ padding: '9px 14px', color: '#0f172a', verticalAlign: 'top' }}
+                  <td key={ci} style={{ padding: '9px 14px', color: '#0f172a', verticalAlign: 'top', textAlign: isNumericCell(cell.trim()) ? 'right' : 'left' }}
                     dangerouslySetInnerHTML={{ __html: formatCell(cell.trim()) }} />
                 ))}
               </tr>
