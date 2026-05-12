@@ -94,7 +94,7 @@ export default function MijnOmgeving() {
     return match ? match[1] : ''
   }
   const [rapportBoekjaar, setRapportBoekjaar] = useState(standaardBoekjaar)
-  const jaren = [currentYear, currentYear - 1, currentYear - 2, currentYear - 3, currentYear - 4, currentYear - 5]
+  const jaren = [currentYear - 1, currentYear - 2, currentYear - 3, currentYear - 4, currentYear - 5, currentYear - 6]
   const ADMIN_EMAIL = 'info@slimmekascontrole.nl'
 
   useEffect(() => {
