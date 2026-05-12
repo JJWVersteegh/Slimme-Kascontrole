@@ -1,19 +1,24 @@
-import Navbar from '@/components/Navbar'
 export default function VoorbeeldRapportPage() {
   return (
-    <main style={{ minHeight: '100vh', paddingTop: '72px', background: '#f8fafc', fontFamily: 'Outfit, sans-serif' }}>
+    <main style={{ minHeight: '100vh', background: '#f8fafc', fontFamily: 'Outfit, sans-serif' }}>
       <style>{`
-        .site-nav { box-sizing: border-box; width: 100%; }
-        @media (max-width: 900px) {
-          .site-nav { padding: 0 20px !important; }
-        }
-        @media (max-width: 500px) {
-          .site-nav { padding: 0 16px !important; }
-        }
+        .mobile-only-back { display: none !important; }
+        @media (max-width: 767px) { .mobile-only-back { display: inline-flex !important; } }
       `}</style>
 
       {/* Nav - zelfde stijl als Twinq pagina */}
-      <Navbar links={[{ href: '/', label: '← Terug naar home' }]} />
+      <nav style={{ background: 'white', borderBottom: '1px solid #e2e8f0', padding: '0 48px', height: '72px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        <a href="/" style={{ display: 'flex', alignItems: 'center', gap: '10px', textDecoration: 'none' }}>
+          <div style={{ background: '#2563EB', width: '38px', height: '38px', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+            <svg width="20" height="20" viewBox="0 0 22 22" fill="none"><polyline points="3,12 9,18 19,6" stroke="white" strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round"/></svg>
+          </div>
+          <div style={{ lineHeight: 1.1 }}>
+            <div style={{ fontWeight: '700', fontSize: '1.05rem', color: '#1D4ED8' }}>slimme</div>
+            <div style={{ fontWeight: '500', fontSize: '1.05rem', color: '#3b82f6' }}>kascontrole</div>
+          </div>
+        </a>
+        <a className="mobile-only-back" href="/" style={{ color: '#475569', textDecoration: 'none', fontSize: '0.9rem', fontWeight: '500', display: 'flex', alignItems: 'center', gap: '6px', whiteSpace: 'nowrap' }}>← Terug</a>
+      </nav>
 
       <div style={{ maxWidth: '860px', margin: '0 auto', padding: '64px 24px' }}>
 

@@ -15,28 +15,17 @@ export default function Registreer() {
   const [huisnummer, setHuisnummer] = useState('')
   const [adres, setAdres] = useState('')
   const [plaats, setPlaats] = useState('')
-  const [vvePostcode, setVvePostcode] = useState('')
-  const [vveHuisnummer, setVveHuisnummer] = useState('')
-  const [vveAdres, setVveAdres] = useState('')
-  const [vvePlaats, setVvePlaats] = useState('')
   const [telefoon, setTelefoon] = useState('')
   const [adresLaden, setAdresLaden] = useState(false)
-  const [vveAdresLaden, setVveAdresLaden] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [succes, setSucces] = useState('')
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const router = useRouter()
 
-  async function zoekAdres(
-    pc: string,
-    hn: string,
-    setAdresFn: (waarde: string) => void,
-    setPlaatsFn: (waarde: string) => void,
-    setLadenFn: (waarde: boolean) => void
-  ) {
+  async function zoekAdres(pc: string, hn: string) {
     if (pc.length < 6 || !hn) return
-    setLadenFn(true)
+    setAdresLaden(true)
     try {
       const res = await fetch(`https://api.pdok.nl/bzk/locatieserver/search/v3_1/free?q=${pc.replace(' ','')}+${hn}&fq=type:adres&rows=1`)
       const data = await res.json()
@@ -44,11 +33,11 @@ export default function Registreer() {
         const doc = data.response.docs[0]
         const straat = doc.straatnaam || ''
         const woonplaats = doc.woonplaatsnaam || ''
-        setAdresFn(`${straat} ${hn}`)
-        setPlaatsFn(woonplaats)
+        setAdres(`${straat} ${hn}`)
+        setPlaats(woonplaats)
       }
     } catch {}
-    setLadenFn(false)
+    setAdresLaden(false)
   }
 
   async function handleRegistreer(e: React.FormEvent) {
@@ -83,9 +72,9 @@ export default function Registreer() {
           user_id: authData.user.id,
           naam: vereniging,
           kvk: kvk || null,
-          adres: vveAdres || null,
-          postcode: vvePostcode.toUpperCase().replace(' ', '') || null,
-          plaats: vvePlaats || null,
+          adres: adres || null,
+          postcode: postcode.toUpperCase().replace(' ', '') || null,
+          plaats: plaats || null,
         })
       }
     }
@@ -131,6 +120,10 @@ export default function Registreer() {
 
   return (
     <main style={{ minHeight: '100vh', background: '#f8fafc', fontFamily: 'Outfit, sans-serif' }}>
+      <style>{`
+        .mobile-only-back { display: none !important; }
+        @media (max-width: 767px) { .mobile-only-back { display: inline-flex !important; } }
+      `}</style>
 
       <style>{`
         @media (max-width: 768px) {
@@ -147,8 +140,8 @@ export default function Registreer() {
             <svg width="20" height="20" viewBox="0 0 22 22" fill="none"><polyline points="3,12 9,18 19,6" stroke="white" strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round" /></svg>
           </div>
           <div style={{ lineHeight: 1.1 }}>
-            <div style={{ fontWeight: '700', fontSize: '1rem', color: '#2563EB', fontFamily: 'Outfit, sans-serif' }}>slimme</div>
-            <div style={{ fontWeight: '500', fontSize: '1rem', color: '#3b82f6', fontFamily: 'Outfit, sans-serif' }}>kascontrole</div>
+            <div style={{ fontWeight: '700', fontSize: '1.05rem', color: '#1D4ED8', fontFamily: 'Outfit, sans-serif' }}>slimme</div>
+            <div style={{ fontWeight: '500', fontSize: '1.05rem', color: '#3b82f6', fontFamily: 'Outfit, sans-serif' }}>kascontrole</div>
           </div>
         </a>
         <ul className="nav-links-desktop" style={{ display: 'flex', gap: '28px', listStyle: 'none', alignItems: 'center', margin: 0, padding: 0 }}>
@@ -233,7 +226,7 @@ export default function Registreer() {
                 </button>
               ))}
             </div>
-            <button onClick={() => { setMode('keuze'); setError('') }} style={{ background: 'none', border: 'none', color: '#0f172a', fontSize: '1.05rem', fontWeight: 700, cursor: 'pointer', marginBottom: '24px', display: 'inline-flex', alignItems: 'center', gap: '8px', padding: 0, fontFamily: 'Outfit, sans-serif' }}>
+            <button className="mobile-only-back" onClick={() => { setMode('keuze'); setError('') }} style={{ background: 'none', border: 'none', color: '#64748b', fontSize: '0.82rem', cursor: 'pointer', marginBottom: '12px', display: 'flex', alignItems: 'center', gap: '4px', padding: 0 }}>
               ← Terug
             </button>
           </>
@@ -245,101 +238,57 @@ export default function Registreer() {
             {/* Registreer */}
             {mode === 'registreer' && (
               <form onSubmit={handleRegistreer}>
-                <div style={{ marginBottom: '24px', padding: '18px', border: '1px solid #bfdbfe', borderRadius: '14px', background: '#eff6ff' }}>
-                  <h3 style={{ margin: '0 0 6px', color: '#1e3a8a', fontSize: '1.05rem', fontWeight: 800 }}>
-                    1. Gegevens kascommissielid / contactpersoon
-                  </h3>
-                  <p style={{ margin: '0 0 18px', color: '#475569', fontSize: '0.88rem', lineHeight: 1.45 }}>
-                    Vul hier uw persoonlijke contactgegevens in. Dit hoeft niet hetzelfde adres te zijn als het adres van de VvE.
-                  </p>
-
-                  <div style={{ marginBottom: '16px' }}>
-                    <label style={lbl}>Uw naam <span style={{ fontWeight: '400', fontSize: '0.8rem', color: '#94a3b8' }}>(kascommissielid)</span></label>
-                    <input type="text" value={naam} onChange={e => setNaam(e.target.value)} style={inp} placeholder="Voor- en achternaam" required />
-                  </div>
-
-                  <div style={{ marginBottom: '16px' }}>
-                    <label style={lbl}>Uw persoonlijke adres</label>
-                    <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '8px', marginBottom: '8px' }}>
-                      <input type="text" value={postcode} onChange={e => { setPostcode(e.target.value); zoekAdres(e.target.value, huisnummer, setAdres, setPlaats, setAdresLaden) }}
-                        style={inp} placeholder="Postcode, bijv. 1234 AB" maxLength={7} />
-                      <input type="text" value={huisnummer} onChange={e => { setHuisnummer(e.target.value); zoekAdres(postcode, e.target.value, setAdres, setPlaats, setAdresLaden) }}
-                        style={inp} placeholder="Nr." />
-                    </div>
-                    {adresLaden && <p style={{ fontSize: '0.78rem', color: '#2563EB', margin: '0 0 6px' }}>🔍 Persoonlijk adres opzoeken...</p>}
-                    {adres && (
-                      <div style={{ background: '#f0fdf4', border: '1px solid #bbf7d0', borderRadius: '6px', padding: '8px 12px', fontSize: '0.83rem', color: '#166534' }}>
-                        ✓ {adres}, {postcode.toUpperCase()} {plaats}
-                      </div>
-                    )}
-                    {!adres && postcode.length >= 6 && huisnummer && !adresLaden && (
-                      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', marginTop: '8px' }}>
-                        <input type="text" value={adres} onChange={e => setAdres(e.target.value)} style={{ ...inp, fontSize: '0.88rem' }} placeholder="Straatnaam + nr" />
-                        <input type="text" value={plaats} onChange={e => setPlaats(e.target.value)} style={{ ...inp, fontSize: '0.88rem' }} placeholder="Plaats" />
-                      </div>
-                    )}
-                  </div>
-
-                  <div style={{ marginBottom: '16px' }}>
-                    <label style={lbl}>Telefoonnummer <span style={{ fontWeight: '400', color: '#94a3b8' }}>(optioneel)</span></label>
-                    <input type="tel" value={telefoon} onChange={e => setTelefoon(e.target.value)} style={inp} placeholder="bijv. 06-12345678" />
-                  </div>
-
-                  <div style={{ marginBottom: '16px' }}>
-                    <label style={lbl}>E-mailadres</label>
-                    <input type="email" value={email} onChange={e => setEmail(e.target.value)} style={inp} placeholder="uw@emailadres.nl" required />
-                  </div>
-
-                  <div style={{ marginBottom: '16px' }}>
-                    <label style={lbl}>Wachtwoord</label>
-                    <input type="password" value={wachtwoord} onChange={e => setWachtwoord(e.target.value)} style={inp} placeholder="Minimaal 6 tekens" required />
-                  </div>
-
-                  <div>
-                    <label style={lbl}>Wachtwoord bevestigen</label>
-                    <input type="password" value={wachtwoord2} onChange={e => setWachtwoord2(e.target.value)} style={inp} placeholder="Herhaal wachtwoord" required />
-                  </div>
+                <div style={{ marginBottom: '16px' }}>
+                  <label style={lbl}>Uw naam <span style={{ fontWeight: '400', fontSize: '0.8rem', color: '#94a3b8' }}>(kascommissielid)</span></label>
+                  <input type="text" value={naam} onChange={e => setNaam(e.target.value)} style={inp} placeholder="Voor- en achternaam" required />
                 </div>
 
-                <div style={{ marginBottom: '24px', padding: '18px', border: '1px solid #bbf7d0', borderRadius: '14px', background: '#f0fdf4' }}>
-                  <h3 style={{ margin: '0 0 6px', color: '#166534', fontSize: '1.05rem', fontWeight: 800 }}>
-                    2. Gegevens eerste VvE
-                  </h3>
-                  <p style={{ margin: '0 0 18px', color: '#475569', fontSize: '0.88rem', lineHeight: 1.45 }}>
-                    Vul hier de gegevens en het adres van uw vereniging in. Later kunt u in Mijn omgeving extra verenigingen toevoegen.
-                  </p>
-
-                  <div style={{ marginBottom: '16px' }}>
-                    <label style={lbl}>Naam vereniging / VvE</label>
-                    <input type="text" value={vereniging} onChange={e => setVereniging(e.target.value)} style={inp} placeholder="bijv. VvE De Goudstraat" required />
+                {/* Postcode + huisnummer met auto-lookup */}
+                <div style={{ marginBottom: '16px' }}>
+                  <label style={lbl}>Uw adres <span style={{ fontWeight: '400', fontSize: '0.8rem', color: '#94a3b8' }}>(van kascommissielid)</span></label>
+                  <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '8px', marginBottom: '8px' }}>
+                    <input type="text" value={postcode} onChange={e => { setPostcode(e.target.value); zoekAdres(e.target.value, huisnummer) }}
+                      style={inp} placeholder="1234 AB" maxLength={7} />
+                    <input type="text" value={huisnummer} onChange={e => { setHuisnummer(e.target.value); zoekAdres(postcode, e.target.value) }}
+                      style={inp} placeholder="12" />
                   </div>
-
-                  <div style={{ marginBottom: '16px' }}>
-                    <label style={lbl}>KvK-nummer vereniging <span style={{ fontWeight: '400', color: '#94a3b8' }}>(optioneel)</span></label>
-                    <input type="text" value={kvk} onChange={e => setKvk(e.target.value)} style={inp} placeholder="bijv. 12345678" />
-                  </div>
-
-                  <div>
-                    <label style={lbl}>Adres VvE</label>
-                    <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '8px', marginBottom: '8px' }}>
-                      <input type="text" value={vvePostcode} onChange={e => { setVvePostcode(e.target.value); zoekAdres(e.target.value, vveHuisnummer, setVveAdres, setVvePlaats, setVveAdresLaden) }}
-                        style={inp} placeholder="Postcode VvE" maxLength={7} required />
-                      <input type="text" value={vveHuisnummer} onChange={e => { setVveHuisnummer(e.target.value); zoekAdres(vvePostcode, e.target.value, setVveAdres, setVvePlaats, setVveAdresLaden) }}
-                        style={inp} placeholder="Nr." required />
+                  {adresLaden && <p style={{ fontSize: '0.78rem', color: '#2563EB', margin: '0 0 6px' }}>🔍 Adres opzoeken...</p>}
+                  {adres && (
+                    <div style={{ background: '#f0fdf4', border: '1px solid #bbf7d0', borderRadius: '6px', padding: '8px 12px', fontSize: '0.83rem', color: '#166534' }}>
+                      ✓ {adres}, {postcode.toUpperCase()} {plaats}
                     </div>
-                    {vveAdresLaden && <p style={{ fontSize: '0.78rem', color: '#2563EB', margin: '0 0 6px' }}>🔍 VvE-adres opzoeken...</p>}
-                    {vveAdres && (
-                      <div style={{ background: 'white', border: '1px solid #bbf7d0', borderRadius: '6px', padding: '8px 12px', fontSize: '0.83rem', color: '#166534' }}>
-                        ✓ {vveAdres}, {vvePostcode.toUpperCase()} {vvePlaats}
-                      </div>
-                    )}
-                    {!vveAdres && vvePostcode.length >= 6 && vveHuisnummer && !vveAdresLaden && (
-                      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', marginTop: '8px' }}>
-                        <input type="text" value={vveAdres} onChange={e => setVveAdres(e.target.value)} style={{ ...inp, fontSize: '0.88rem' }} placeholder="Straatnaam + nr VvE" />
-                        <input type="text" value={vvePlaats} onChange={e => setVvePlaats(e.target.value)} style={{ ...inp, fontSize: '0.88rem' }} placeholder="Plaats VvE" />
-                      </div>
-                    )}
-                  </div>
+                  )}
+                  {!adres && postcode.length >= 6 && huisnummer && !adresLaden && (
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', marginTop: '8px' }}>
+                      <input type="text" value={adres} onChange={e => setAdres(e.target.value)} style={{ ...inp, fontSize: '0.88rem' }} placeholder="Straatnaam + nr" />
+                      <input type="text" value={plaats} onChange={e => setPlaats(e.target.value)} style={{ ...inp, fontSize: '0.88rem' }} placeholder="Plaats" />
+                    </div>
+                  )}
+                </div>
+
+                <div style={{ marginBottom: '16px' }}>
+                  <label style={lbl}>Naam vereniging / VvE</label>
+                  <input type="text" value={vereniging} onChange={e => setVereniging(e.target.value)} style={inp} placeholder="bijv. VvE De Goudstraat" required />
+                </div>
+                <div style={{ marginBottom: '16px' }}>
+                  <label style={lbl}>KvK-nummer vereniging <span style={{ fontWeight: '400', color: '#94a3b8' }}>(optioneel)</span></label>
+                  <input type="text" value={kvk} onChange={e => setKvk(e.target.value)} style={inp} placeholder="bijv. 12345678" />
+                </div>
+                <div style={{ marginBottom: '16px' }}>
+                  <label style={lbl}>Telefoonnummer <span style={{ fontWeight: '400', color: '#94a3b8' }}>(optioneel)</span></label>
+                  <input type="tel" value={telefoon} onChange={e => setTelefoon(e.target.value)} style={inp} placeholder="bijv. 06-12345678" />
+                </div>
+                <div style={{ marginBottom: '16px' }}>
+                  <label style={lbl}>E-mailadres</label>
+                  <input type="email" value={email} onChange={e => setEmail(e.target.value)} style={inp} placeholder="uw@emailadres.nl" required />
+                </div>
+                <div style={{ marginBottom: '16px' }}>
+                  <label style={lbl}>Wachtwoord</label>
+                  <input type="password" value={wachtwoord} onChange={e => setWachtwoord(e.target.value)} style={inp} placeholder="Minimaal 6 tekens" required />
+                </div>
+                <div style={{ marginBottom: '24px' }}>
+                  <label style={lbl}>Wachtwoord bevestigen</label>
+                  <input type="password" value={wachtwoord2} onChange={e => setWachtwoord2(e.target.value)} style={inp} placeholder="Herhaal wachtwoord" required />
                 </div>
                 {error && <p style={{ color: '#d44', fontSize: '0.85rem', marginBottom: '12px' }}>{error}</p>}
                 <button type="submit" disabled={loading} style={{ width: '100%', padding: '14px', background: '#1e3a8a', color: 'white', border: 'none', borderRadius: '8px', fontSize: '1rem', fontWeight: '700', cursor: 'pointer' }}>
