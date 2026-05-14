@@ -3,6 +3,7 @@ import type { Metadata } from 'next'
 export const metadata: Metadata = {
   title: 'Kascommissie Rapport – Professioneel kascontrolerapport voor uw vereniging | €59',
   description: 'Professioneel kascommissie rapport voor uw vereniging of VvE. Volledig gecontroleerd in minuten. Eenmalig €59 incl. btw — klaar voor de ledenvergadering.',
+  alternates: { canonical: '/kascommissie-rapport' },
 }
 
 export default function KascommissieRapport() {

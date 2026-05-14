@@ -3,6 +3,7 @@ import type { Metadata } from 'next'
 export const metadata: Metadata = {
   title: 'VvE Kascommissie – Wat doet de kascommissie? | Slimme Kascontrole',
   description: 'Alles over de VvE kascommissie. Wat zijn de taken? Wie mag lid zijn? Hoe werkt de kascontrole? En hoe stelt Slimme Kascontrole uw rapport op voor €59.',
+  alternates: { canonical: '/vve-kascommissie' },
 }
 
 export default function VveKascommissie() {

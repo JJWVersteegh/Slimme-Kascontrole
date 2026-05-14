@@ -3,6 +3,7 @@ import type { Metadata } from 'next'
 export const metadata: Metadata = {
   title: 'Kascontrole Stichting – Professioneel rapport voor uw stichting | €59',
   description: 'Kascontrole voor uw stichting. Volledig gecontroleerd rapport in minuten. Eenmalig €59 incl. btw — geen abonnement. Klaar voor de bestuursvergadering.',
+  alternates: { canonical: '/stichting-kascontrole' },
 }
 
 export default function StichtingKascontrole() {

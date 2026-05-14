@@ -3,6 +3,7 @@ import type { Metadata } from 'next'
 export const metadata: Metadata = {
   title: 'Slimme Kascontrole – Kascontrole rapport voor VvE, sportvereniging & stichting',
   description: 'Volledig gecontroleerd kascontrole rapport voor uw VvE, sportvereniging of stichting. Kascommissie klaar in minuten. Eenmalig €59 incl. btw — geen abonnement.',
+  alternates: { canonical: '/' },
 }
 
 export default function Home() {

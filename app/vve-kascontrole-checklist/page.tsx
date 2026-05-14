@@ -3,6 +3,7 @@ import type { Metadata } from 'next'
 export const metadata: Metadata = {
   title: 'VvE Kascontrole Checklist – Alles wat u nodig heeft | Slimme Kascontrole',
   description: 'Volledige VvE kascontrole checklist. Welke documenten heeft u nodig? Wat moet er gecontroleerd worden? Download uw checklist of laat Slimme Kascontrole het voor u doen voor €59.',
+  alternates: { canonical: '/vve-kascontrole-checklist' },
 }
 
 export default function VveKascontroleChecklist() {

@@ -3,6 +3,7 @@ import type { Metadata } from 'next'
 export const metadata: Metadata = {
   title: 'Kascontrole Sportvereniging – Professioneel rapport voor uw club | €59',
   description: 'Kascontrole voor uw sportvereniging. Volledig gecontroleerd rapport in minuten. Eenmalig €59 incl. btw — geen abonnement. Klaar voor de ledenvergadering.',
+  alternates: { canonical: '/sportvereniging-kascontrole' },
 }
 
 export default function SportverenigingKascontrole() {

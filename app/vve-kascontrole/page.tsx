@@ -3,6 +3,7 @@ import type { Metadata } from 'next'
 export const metadata: Metadata = {
   title: 'VvE Kascontrole – Professioneel kascontrolerapport voor uw VvE | €59',
   description: 'Laat uw VvE kascontrole uitvoeren door Slimme Kascontrole. Volledig gecontroleerd rapport in minuten. Wettelijk verplicht, eenmalig €59 incl. btw. Geen abonnement.',
+  alternates: { canonical: '/vve-kascontrole' },
 }
 
 export default function VveKascontrole() {

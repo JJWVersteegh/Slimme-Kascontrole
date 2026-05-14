@@ -3,6 +3,7 @@ import type { Metadata } from 'next'
 export const metadata: Metadata = {
   title: 'Controle Jaarrekening VvE – Professioneel en volledig | Slimme Kascontrole',
   description: 'Laat de jaarrekening van uw VvE professioneel controleren. Volledig rapport in minuten. Eenmalig €59 incl. btw — geen abonnement. Klaar voor de ALV.',
+  alternates: { canonical: '/controle-jaarrekening-vve' },
 }
 
 export default function ControleJaarrekeningVve() {
