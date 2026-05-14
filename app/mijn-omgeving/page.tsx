@@ -784,28 +784,6 @@ async function zoekAdres(pc: string, hn: string) {
           )}
         </div>
 
-        <div className="workflow-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '12px', marginBottom: '28px' }}>
-          {workflowStappen.map((stap, index) => {
-            const klaar = stap.nr === 4 ? huidigJaarGegenereerd : huidigeStap > stap.nr
-            const bezig = stap.nr === 4 && huidigJaarBetaald && !huidigJaarGegenereerd
-            const actief = !klaar && huidigeStap === stap.nr && !bezig
-            return (
-              <div key={stap.nr} style={{ background: klaar ? '#f0fdf4' : (actief || bezig) ? '#eff6ff' : 'white', border: `1px solid ${klaar ? '#bbf7d0' : (actief || bezig) ? '#bfdbfe' : '#e2e8f0'}`, borderRadius: '14px', padding: '14px', boxShadow: 'none' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '10px' }}>
-                  <div style={{ width: '28px', height: '28px', borderRadius: '999px', display: 'flex', alignItems: 'center', justifyContent: 'center', background: klaar ? '#dcfce7' : (actief || bezig) ? '#2563EB' : '#f1f5f9', color: klaar ? '#166534' : (actief || bezig) ? 'white' : '#94a3b8', fontWeight: '700', fontSize: '0.84rem' }}>
-                    {klaar ? '✓' : stap.nr}
-                  </div>
-                  <div style={{ fontSize: '0.72rem', color: (actief || bezig) ? '#2563EB' : '#64748b', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
-                    Stap {index + 1}
-                  </div>
-                </div>
-                <div style={{ color: '#0f172a', fontWeight: '600', marginBottom: '4px' }}>{stap.titel}</div>
-                <div style={{ color: '#64748b', fontSize: '0.78rem' }}>{stap.tekst}</div>
-              </div>
-            )
-          })}
-        </div>
-
         <div style={{ background: 'white', border: '1px solid #e2e8f0', borderRadius: '16px', padding: '22px', marginBottom: '22px', boxShadow: 'none' }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '16px', marginBottom: '18px', flexWrap: 'wrap' }}>
             <div>
@@ -909,40 +887,42 @@ async function zoekAdres(pc: string, hn: string) {
                   {uploading ? 'Uploaden...' : '📤 Upload bestanden'}
                 </button>
               </form>
-            </div>
 
-            <div style={{ background: 'white', borderRadius: '20px', border: '1px solid #e2e8f0', overflow: 'hidden', marginBottom: '26px', boxShadow: '0 12px 32px rgba(15,23,42,0.04)' }}>
-              <div style={{ padding: '18px 24px', borderBottom: '1px solid #e2e8f0', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '12px', flexWrap: 'wrap' }}>
-                <div>
-                  <h2 style={{ fontSize: '0.84rem', fontWeight: '600', color: '#0f172a', margin: 0 }}>Geüploade jaren</h2>
-                  <p style={{ color: '#64748b', fontSize: '0.84rem', margin: '4px 0 0' }}>Controleer welke boekjaren al zijn aangeleverd.</p>
+              <div style={{ borderTop: '1px solid #e2e8f0', marginTop: '20px', paddingTop: '18px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '12px', flexWrap: 'wrap', marginBottom: '12px' }}>
+                  <div>
+                    <h2 style={{ fontSize: '0.84rem', fontWeight: '600', color: '#0f172a', margin: 0 }}>Geüploade bestanden</h2>
+                    <p style={{ color: '#64748b', fontSize: '0.84rem', margin: '4px 0 0' }}>Controleer welke boekjaren al zijn aangeleverd.</p>
+                  </div>
+                  {boekjaren.length > 0 && <span style={{ fontSize: '0.78rem', color: '#475569', background: '#f8fafc', padding: '7px 10px', borderRadius: '999px', fontWeight: '700', border: '1px solid #e2e8f0' }}>{uploads.length} upload(s) · {boekjaren.join(', ')}</span>}
                 </div>
-                {boekjaren.length > 0 && <span style={{ fontSize: '0.78rem', color: '#475569', background: '#f8fafc', padding: '7px 10px', borderRadius: '999px', fontWeight: '700' }}>{uploads.length} upload(s) · {boekjaren.join(', ')}</span>}
-              </div>
-              {uploads.length === 0 ? (
-                <div style={{ padding: '34px', textAlign: 'center' }}>
-                  <div style={{ fontSize: '2rem', marginBottom: '8px' }}>📂</div>
-                  <p style={{ color: '#475569', fontSize: '0.84rem' }}>Nog geen uploads voor {geselecteerdeVereniging.naam}.</p>
-                </div>
-              ) : (
-                <div>
-                  {uploads.map(upload => (
-                    <div key={upload.id} style={{ padding: '16px 24px', borderBottom: '1px solid #f1f5f9', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '12px' }}>
-                      <div>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '2px', flexWrap: 'wrap' }}>
-                          <span style={{ fontWeight: '600', color: '#0f172a' }}>Boekjaar {upload.boekjaar}</span>
-                          <span style={{ background: upload.boekjaar === rapportBoekjaar ? '#dbeafe' : '#f1f5f9', color: upload.boekjaar === rapportBoekjaar ? '#2563EB' : '#64748b', padding: '3px 9px', borderRadius: '20px', fontSize: '0.72rem', fontWeight: '700' }}>{upload.bestanden?.length || 0} bestand(en)</span>
-                        </div>
-                        <p style={{ fontSize: '0.8rem', color: '#94a3b8', margin: 0 }}>
-                          {new Date(upload.upload_datum).toLocaleDateString('nl-NL')}
-                          {upload.toelichting && ` · ${upload.toelichting.substring(0, 50)}`}
-                        </p>
-                      </div>
-                      <button onClick={() => setBevestigDelete(upload.id)} style={{ background: 'none', border: '1.5px solid #fecaca', color: '#ef4444', padding: '8px 12px', borderRadius: '10px', cursor: 'pointer', fontSize: '0.85rem' }}>🗑️</button>
+                <div style={{ borderRadius: '12px', border: '1px solid #e2e8f0', overflow: 'hidden' }}>
+                  {uploads.length === 0 ? (
+                    <div style={{ padding: '24px', textAlign: 'center' }}>
+                      <div style={{ fontSize: '2rem', marginBottom: '8px' }}>📂</div>
+                      <p style={{ color: '#475569', fontSize: '0.84rem', margin: 0 }}>Nog geen uploads voor {geselecteerdeVereniging.naam}.</p>
                     </div>
-                  ))}
+                  ) : (
+                    <div>
+                      {uploads.map(upload => (
+                        <div key={upload.id} style={{ padding: '14px 18px', borderBottom: '1px solid #f1f5f9', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '12px' }}>
+                          <div>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '2px', flexWrap: 'wrap' }}>
+                              <span style={{ fontWeight: '600', color: '#0f172a' }}>Boekjaar {upload.boekjaar}</span>
+                              <span style={{ background: upload.boekjaar === rapportBoekjaar ? '#dbeafe' : '#f1f5f9', color: upload.boekjaar === rapportBoekjaar ? '#2563EB' : '#64748b', padding: '3px 9px', borderRadius: '20px', fontSize: '0.72rem', fontWeight: '700' }}>{upload.bestanden?.length || 0} bestand(en)</span>
+                            </div>
+                            <p style={{ fontSize: '0.8rem', color: '#94a3b8', margin: 0 }}>
+                              {new Date(upload.upload_datum).toLocaleDateString('nl-NL')}
+                              {upload.toelichting && ` · ${upload.toelichting.substring(0, 50)}`}
+                            </p>
+                          </div>
+                          <button onClick={() => setBevestigDelete(upload.id)} style={{ background: 'none', border: '1.5px solid #fecaca', color: '#ef4444', padding: '8px 12px', borderRadius: '10px', cursor: 'pointer', fontSize: '0.85rem' }}>🗑️</button>
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
-              )}
+              </div>
             </div>
 
             {rapporten.filter(r => r.rapport_tekst && r.boekjaar !== rapportBoekjaar).length > 0 && (
