@@ -773,7 +773,7 @@ async function zoekAdres(pc: string, hn: string) {
           <div>
             <p style={{ fontSize: '0.7rem', fontWeight: '700', letterSpacing: '0.15em', textTransform: 'uppercase', color: '#2563EB', margin: '0 0 10px' }}>Mijn omgeving</p>
             <h1 style={{ fontSize: '1.4rem', fontWeight: '700', color: '#0f172a', margin: '0 0 6px', letterSpacing: '-0.02em' }}>Uw kascontrole dashboard</h1>
-            <p style={{ color: '#475569', fontSize: '0.92rem', margin: 0 }}>Volg de stappen en ontvang een professioneel kascontrolerapport.</p>
+            <p style={{ color: '#475569', fontSize: '0.92rem', margin: 0 }}>Volg 4 eenvoudige stappen en ontvang uw professioneel kascontrolerapport.</p>
           </div>
           {geselecteerdeVereniging && (
             <div style={{ background: 'white', border: '1px solid #e2e8f0', borderRadius: '16px', padding: '14px 16px', minWidth: '220px', boxShadow: '0 1px 2px rgba(15,23,42,0.04)' }}>
@@ -801,7 +801,7 @@ async function zoekAdres(pc: string, hn: string) {
                   <span style={{ background: '#dbeafe', color: '#1D4ED8', fontSize: '0.72rem', fontWeight: '700', padding: '3px 10px', borderRadius: '999px', whiteSpace: 'nowrap' }}>Aan de beurt</span>
                 </div>
               )}
-              <h2 style={{ fontSize: '1rem', fontWeight: '600', color: '#0f172a', margin: 0 }}>Kies de VvE</h2>
+              <h2 style={{ fontSize: '1.15rem', fontWeight: '700', color: '#0f172a', margin: 0 }}>Kies de VvE</h2>
               <p style={{ color: '#475569', margin: '6px 0 0', fontSize: '0.84rem' }}>Selecteer voor welke vereniging u wilt uploaden of rapporteren.</p>
             </div>
             {verenigingen.length < 10 && (
@@ -849,7 +849,7 @@ async function zoekAdres(pc: string, hn: string) {
                 <span style={{ color: '#166534', fontSize: '0.72rem', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.08em', whiteSpace: 'nowrap' }}>Stap 2 — Gereed</span>
                 <span className="stap-value-chip" style={{ background: '#f0fdf4', border: '1px solid #bbf7d0', color: '#166534', fontSize: '0.72rem', fontWeight: '600', padding: '2px 8px', borderRadius: '999px' }}>Boekjaar {rapportBoekjaar}</span>
               </div>
-              <h2 style={{ fontWeight: '600', color: '#0f172a', fontSize: '1.12rem', marginBottom: '6px' }}>Kies het boekjaar</h2>
+              <h2 style={{ fontWeight: '700', color: '#0f172a', fontSize: '1.15rem', marginBottom: '6px' }}>Kies het boekjaar</h2>
               <p style={{ color: '#475569', fontSize: '0.84rem', marginBottom: '18px' }}>Voor welk boekjaar wilt u een kascontrolerapport maken voor <strong>{geselecteerdeVereniging.naam}</strong>?</p>
               <div className="upload-grid" style={{ display: 'grid', gridTemplateColumns: 'minmax(180px, 260px) 1fr', gap: '16px', alignItems: 'stretch' }}>
                 <select value={rapportBoekjaar} onChange={e => { setRapportBoekjaar(e.target.value); setBoekjaar(e.target.value) }} style={{ ...inp, minHeight: '54px', fontSize: '0.84rem', fontWeight: '700', borderRadius: '14px', borderColor: '#93c5fd' }}>
@@ -877,7 +877,7 @@ async function zoekAdres(pc: string, hn: string) {
                       <span style={{ background: '#dbeafe', color: '#1D4ED8', fontSize: '0.72rem', fontWeight: '700', padding: '3px 10px', borderRadius: '999px', whiteSpace: 'nowrap' }}>Aan de beurt</span>
                     </div>
                   )}
-                  <h2 style={{ fontSize: '1rem', fontWeight: '600', color: '#0f172a', margin: 0 }}>Upload uw bestanden</h2>
+                  <h2 style={{ fontSize: '1.15rem', fontWeight: '700', color: '#0f172a', margin: 0 }}>Upload uw bestanden</h2>
                   <p style={{ color: '#475569', margin: '6px 0 0', fontSize: '0.84rem' }}>Voeg de financiële documenten toe voor {geselecteerdeVereniging.naam}.</p>
                 </div>
                 <div style={{ background: heeftUploadsVoorRapportjaar ? '#f0fdf4' : '#fffbeb', border: `1px solid ${heeftUploadsVoorRapportjaar ? '#bbf7d0' : '#fde68a'}`, color: heeftUploadsVoorRapportjaar ? '#166534' : '#92400e', padding: '9px 12px', borderRadius: '999px', fontSize: '0.78rem', fontWeight: '700' }}>
@@ -980,7 +980,7 @@ async function zoekAdres(pc: string, hn: string) {
                   <span style={{ color: heeftUploadsVoorRapportjaar ? '#2563EB' : '#94a3b8', fontSize: '0.72rem', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.08em' }}>Stap 4</span>
                   {heeftUploadsVoorRapportjaar && <span style={{ background: '#dbeafe', color: '#1D4ED8', fontSize: '0.72rem', fontWeight: '700', padding: '3px 10px', borderRadius: '999px' }}>Aan de beurt</span>}
                 </div>
-                <h2 style={{ fontWeight: '600', color: '#0f172a', fontSize: '1rem', marginBottom: '6px' }}>Betaal en ontvang het rapport</h2>
+                <h2 style={{ fontWeight: '700', color: '#0f172a', fontSize: '1.15rem', marginBottom: '6px' }}>Betaal en ontvang het rapport</h2>
                 <p style={{ color: '#475569', fontSize: '0.84rem', marginBottom: '16px', lineHeight: 1.6 }}>
                   Betaal éénmalig €59 via iDEAL voor <strong>{geselecteerdeVereniging.naam}</strong> boekjaar <strong>{rapportBoekjaar}</strong>. Daarna kunt u het rapport genereren.
                 </p>
@@ -1002,7 +1002,7 @@ async function zoekAdres(pc: string, hn: string) {
                         {huidigJaarGegenereerd && <span style={{ background: '#dcfce7', color: '#166534', fontSize: '0.72rem', fontWeight: '700', padding: '3px 10px', borderRadius: '999px', marginLeft: '8px' }}>Rapport klaar!</span>}
                       </div>
                     </div>
-                    <h2 style={{ fontWeight: '600', color: '#0f172a', fontSize: '1rem', margin: 0 }}>{huidigJaarGegenereerd ? 'Rapport beschikbaar' : 'Genereer uw rapport'}</h2>
+                    <h2 style={{ fontWeight: '700', color: '#0f172a', fontSize: '1.15rem', margin: 0 }}>{huidigJaarGegenereerd ? 'Rapport beschikbaar' : 'Genereer uw rapport'}</h2>
                     <p style={{ color: '#475569', margin: '6px 0 0', fontSize: '0.84rem' }}>{huidigJaarGegenereerd ? `Gegenereerd op ${new Date(huidigRapport!.gegenereerd_op!).toLocaleDateString('nl-NL')}` : `Uw bestanden staan klaar. Klik op "Genereer rapport" om te starten — dit duurt circa 2 minuten.`}</p>
                   </div>
                   <div style={{ display: 'flex', gap: '10px', alignItems: 'center', flexWrap: 'wrap' }}>
