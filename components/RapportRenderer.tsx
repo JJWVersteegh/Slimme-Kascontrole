@@ -33,7 +33,9 @@ function isSeparatorRow(line: string): boolean {
 export function RapportRenderer({ tekst }: { tekst: string }) {
   const printStyles = `@media print {
     @page { size: A4 portrait; margin: 10mm; }
-    body { font-size: 10pt; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    body { font-size: 10pt; line-height: 1.6; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    p { margin-bottom: 5pt !important; }
+    .rapport-li { margin: 4pt 0 !important; }
     .rapport-table-wrapper { overflow: visible !important; width: 100% !important; }
     .rapport-table { width: 100% !important; font-size: 8pt !important; table-layout: fixed !important; }
     .rapport-table th { white-space: normal !important; min-width: unset !important; word-break: break-word; padding: 4px 6px !important; font-size: 8pt !important; }
@@ -171,7 +173,7 @@ export function RapportRenderer({ tekst }: { tekst: string }) {
     // Bullet list
     if (trimmed.startsWith('- ') || trimmed.startsWith('* ')) {
       elements.push(
-        <div key={k()} style={{ display: 'flex', gap: '8px', margin: '3px 0', paddingLeft: '8px' }}>
+        <div key={k()} className="rapport-li" style={{ display: 'flex', gap: '8px', margin: '3px 0', paddingLeft: '8px' }}>
           <span style={{ color: '#2563EB', flexShrink: 0, fontWeight: '700' }}>•</span>
           <span dangerouslySetInnerHTML={{ __html: formatInline(trimmed.slice(2)) }} />
         </div>
@@ -183,7 +185,7 @@ export function RapportRenderer({ tekst }: { tekst: string }) {
     if (/^\d+\./.test(trimmed)) {
       const num = trimmed.match(/^\d+/)?.[0]
       elements.push(
-        <div key={k()} style={{ display: 'flex', gap: '8px', margin: '3px 0', paddingLeft: '8px' }}>
+        <div key={k()} className="rapport-li" style={{ display: 'flex', gap: '8px', margin: '3px 0', paddingLeft: '8px' }}>
           <span style={{ color: '#2563EB', fontWeight: '700', flexShrink: 0, minWidth: '20px' }}>{num}.</span>
           <span dangerouslySetInnerHTML={{ __html: formatInline(trimmed.replace(/^\d+\.\s/, '')) }} />
         </div>
