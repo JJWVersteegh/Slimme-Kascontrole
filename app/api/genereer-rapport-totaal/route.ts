@@ -252,6 +252,19 @@ RAPPORTSTRUCTUUR — GEBRUIK EXACT DEZE OPBOUW
 
 ---
 
+## INHOUDSOPGAVE
+1. Opdracht en werkzaamheden
+2. Samenvatting bevindingen
+3. Bevindingen boekjaar ${huidigJaar} (hoofdanalyse)
+   - 3.1 Balans en aansluiting banksaldi
+   - 3.2 Inkoopfacturen en uitgaven
+   - 3.3 Exploitatieresultaat
+   - 3.4 Openstaande posten en bijzonderheden
+${boekjaren.length > 1 ? `   - 3.5 Trendanalyse ${boekjaren.join(' – ')}` : ''}
+4. Advies aan de Algemene Ledenvergadering
+
+---
+
 ## 1. OPDRACHT EN WERKZAAMHEDEN
 Maximaal 3-4 zinnen: welke documenten zijn beoordeeld en wat is onderzocht.
 
