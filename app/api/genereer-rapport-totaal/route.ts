@@ -245,13 +245,6 @@ ${uploadsContent.join('\n\n')}
 RAPPORTSTRUCTUUR — GEBRUIK EXACT DEZE OPBOUW
 ═══════════════════════════════════════════
 
-# KASCOMMISSIE RAPPORT
-## ${verenigingNaam || 'Vereniging'} | Boekjaar ${huidigJaar} | Peildatum ${new Date().toLocaleDateString('nl-NL', { day: 'numeric', month: 'long', year: 'numeric' })}
-*Kascommissielid: ${naam || 'Onbekend'}${adres ? ` · ${adres}, ${postcode} ${plaats}` : ''}*
-*Opgesteld ten behoeve van de Algemene Ledenvergadering*
-
----
-
 ## INHOUDSOPGAVE
 1. Opdracht en werkzaamheden
 2. Samenvatting bevindingen
