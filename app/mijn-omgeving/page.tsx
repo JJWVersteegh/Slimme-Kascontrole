@@ -553,7 +553,7 @@ async function zoekAdres(pc: string, hn: string) {
 
   if (toonRapport && rapportTekstVoorWeergave) return (
     <main style={{ minHeight: '100vh', paddingTop: '72px', background: '#f8fafc', fontFamily: 'Outfit, sans-serif' }}>
-      <style>{`@media print { .no-print { display: none !important; } @page { size: A4 portrait; margin: 10mm; } html, body, main { background: white !important; overflow: visible !important; height: auto !important; } .rapport-outer { padding: 0 !important; margin: 0 !important; max-width: 100% !important; } .rapport-wrapper { box-shadow: none !important; border: none !important; border-radius: 0 !important; padding: 0 8mm !important; margin: 0 !important; max-width: 100% !important; } }`}</style>
+      <style>{`@media print { .no-print { display: none !important; } @page { size: A4 portrait; margin: 10mm; } html, body { background: white !important; overflow: visible !important; } main { background: white !important; overflow: visible !important; padding-top: 0 !important; min-height: 0 !important; } .rapport-outer { padding: 0 !important; margin: 0 !important; max-width: 100% !important; } .rapport-wrapper { box-shadow: none !important; border: none !important; border-radius: 0 !important; padding: 0 !important; margin: 0 !important; max-width: 100% !important; } }`}</style>
       <Navbar
         className="no-print"
         links={[{ href: '/', label: '← Terug naar home' }]}
