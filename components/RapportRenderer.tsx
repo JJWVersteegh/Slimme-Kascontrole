@@ -39,6 +39,7 @@ export function RapportRenderer({ tekst }: { tekst: string }) {
     .rapport-table th { white-space: normal !important; min-width: unset !important; word-break: break-word; padding: 4px 6px !important; font-size: 8pt !important; }
     .rapport-table td { white-space: normal !important; min-width: unset !important; word-break: break-word; padding: 4px 6px !important; font-size: 8pt !important; }
     h1, h2, h3 { page-break-after: avoid !important; break-after: avoid !important; }
+    h2.section-break { page-break-before: always !important; break-before: always !important; }
     h1 + *, h2 + *, h3 + * { page-break-before: avoid !important; break-before: avoid !important; }
     tr { page-break-inside: avoid; }
     .rapport-box { page-break-inside: avoid; }
@@ -150,7 +151,8 @@ export function RapportRenderer({ tekst }: { tekst: string }) {
 
     // H2
     if (trimmed.startsWith('## ')) {
-      elements.push(<h2 key={k()} style={{ fontFamily: 'Outfit, sans-serif', fontSize: '1.05rem', fontWeight: '700', color: '#1e3a8a', marginTop: '28px', marginBottom: '8px' }}>{trimmed.slice(3)}</h2>)
+      const isSectionHeading = /^\d+\./.test(trimmed.slice(3).trim())
+      elements.push(<h2 key={k()} className={isSectionHeading ? 'section-break' : ''} style={{ fontFamily: 'Outfit, sans-serif', fontSize: '1.05rem', fontWeight: '700', color: '#1e3a8a', marginTop: '28px', marginBottom: '8px' }}>{trimmed.slice(3)}</h2>)
       continue
     }
 
