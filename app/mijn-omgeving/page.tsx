@@ -784,15 +784,22 @@ async function zoekAdres(pc: string, hn: string) {
           )}
         </div>
 
-        <div style={{ background: geselecteerdeVereniging ? '#f0fdf4' : '#eff6ff', border: `1.5px solid ${geselecteerdeVereniging ? '#bbf7d0' : '#bfdbfe'}`, borderRadius: '16px', padding: '22px', marginBottom: '22px', boxShadow: 'none' }}>
+        <div style={{ background: geselecteerdeVereniging ? 'white' : '#eff6ff', border: '1px solid #e2e8f0', borderLeft: `4px solid ${geselecteerdeVereniging ? '#22c55e' : '#2563EB'}`, borderRadius: '16px', padding: '22px', marginBottom: '22px', boxShadow: geselecteerdeVereniging ? 'none' : '0 2px 12px rgba(37,99,235,0.08)' }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '16px', marginBottom: '18px', flexWrap: 'wrap' }}>
             <div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '8px' }}>
-                <div style={{ width: '28px', height: '28px', borderRadius: '999px', display: 'flex', alignItems: 'center', justifyContent: 'center', background: geselecteerdeVereniging ? '#dcfce7' : '#2563EB', color: geselecteerdeVereniging ? '#166534' : 'white', fontWeight: '700', fontSize: '0.84rem', flexShrink: 0 }}>
-                  {geselecteerdeVereniging ? '✓' : '1'}
+              {geselecteerdeVereniging ? (
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '10px' }}>
+                  <div style={{ width: '22px', height: '22px', borderRadius: '999px', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#dcfce7', color: '#166534', fontWeight: '700', fontSize: '0.75rem', flexShrink: 0 }}>✓</div>
+                  <span style={{ color: '#166534', fontSize: '0.72rem', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.08em' }}>Stap 1 — Gereed</span>
+                  <span style={{ background: '#f0fdf4', border: '1px solid #bbf7d0', color: '#166534', fontSize: '0.72rem', fontWeight: '600', padding: '2px 8px', borderRadius: '999px' }}>{geselecteerdeVereniging.naam}</span>
                 </div>
-                <div style={{ color: geselecteerdeVereniging ? '#166534' : '#2563EB', fontSize: '0.72rem', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.08em' }}>Stap 1</div>
-              </div>
+              ) : (
+                <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '10px' }}>
+                  <div style={{ width: '32px', height: '32px', borderRadius: '999px', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#2563EB', color: 'white', fontWeight: '700', fontSize: '0.95rem', flexShrink: 0 }}>1</div>
+                  <span style={{ color: '#2563EB', fontSize: '0.72rem', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.08em' }}>Stap 1</span>
+                  <span style={{ background: '#dbeafe', color: '#1D4ED8', fontSize: '0.72rem', fontWeight: '700', padding: '3px 10px', borderRadius: '999px' }}>Aan de beurt</span>
+                </div>
+              )}
               <h2 style={{ fontSize: '1rem', fontWeight: '600', color: '#0f172a', margin: 0 }}>Kies de VvE</h2>
               <p style={{ color: '#475569', margin: '6px 0 0', fontSize: '0.84rem' }}>Selecteer voor welke vereniging u wilt uploaden of rapporteren.</p>
             </div>
@@ -835,10 +842,11 @@ async function zoekAdres(pc: string, hn: string) {
 
         {geselecteerdeVereniging && (
           <>
-            <div style={{ background: '#f0fdf4', borderRadius: '16px', padding: '22px', border: '1.5px solid #bbf7d0', marginBottom: '26px', boxShadow: 'none' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '8px' }}>
-                <div style={{ width: '28px', height: '28px', borderRadius: '999px', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#dcfce7', color: '#166534', fontWeight: '700', fontSize: '0.84rem', flexShrink: 0 }}>✓</div>
-                <div style={{ color: '#166534', fontSize: '0.72rem', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.08em' }}>Stap 2</div>
+            <div style={{ background: 'white', borderRadius: '16px', padding: '22px', border: '1px solid #e2e8f0', borderLeft: '4px solid #22c55e', marginBottom: '26px', boxShadow: 'none' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '10px' }}>
+                <div style={{ width: '22px', height: '22px', borderRadius: '999px', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#dcfce7', color: '#166534', fontWeight: '700', fontSize: '0.75rem', flexShrink: 0 }}>✓</div>
+                <span style={{ color: '#166534', fontSize: '0.72rem', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.08em' }}>Stap 2 — Gereed</span>
+                <span style={{ background: '#f0fdf4', border: '1px solid #bbf7d0', color: '#166534', fontSize: '0.72rem', fontWeight: '600', padding: '2px 8px', borderRadius: '999px' }}>Boekjaar {rapportBoekjaar}</span>
               </div>
               <h2 style={{ fontWeight: '600', color: '#0f172a', fontSize: '1.12rem', marginBottom: '6px' }}>Kies het boekjaar</h2>
               <p style={{ color: '#475569', fontSize: '0.84rem', marginBottom: '18px' }}>Voor welk boekjaar wilt u een kascontrolerapport maken voor <strong>{geselecteerdeVereniging.naam}</strong>?</p>
@@ -852,15 +860,22 @@ async function zoekAdres(pc: string, hn: string) {
               </div>
             </div>
 
-            <div style={{ background: heeftUploadsVoorRapportjaar ? '#f0fdf4' : '#eff6ff', borderRadius: '16px', padding: '22px', border: `1.5px solid ${heeftUploadsVoorRapportjaar ? '#bbf7d0' : '#bfdbfe'}`, marginBottom: '26px', boxShadow: 'none' }}>
+            <div style={{ background: heeftUploadsVoorRapportjaar ? 'white' : '#eff6ff', borderRadius: '16px', padding: '22px', border: '1px solid #e2e8f0', borderLeft: `4px solid ${heeftUploadsVoorRapportjaar ? '#22c55e' : '#2563EB'}`, marginBottom: '26px', boxShadow: heeftUploadsVoorRapportjaar ? 'none' : '0 2px 12px rgba(37,99,235,0.08)' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', gap: '16px', alignItems: 'flex-start', flexWrap: 'wrap', marginBottom: '18px' }}>
                 <div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '8px' }}>
-                    <div style={{ width: '28px', height: '28px', borderRadius: '999px', display: 'flex', alignItems: 'center', justifyContent: 'center', background: heeftUploadsVoorRapportjaar ? '#dcfce7' : '#2563EB', color: heeftUploadsVoorRapportjaar ? '#166534' : 'white', fontWeight: '700', fontSize: '0.84rem', flexShrink: 0 }}>
-                      {heeftUploadsVoorRapportjaar ? '✓' : '3'}
+                  {heeftUploadsVoorRapportjaar ? (
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '10px' }}>
+                      <div style={{ width: '22px', height: '22px', borderRadius: '999px', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#dcfce7', color: '#166534', fontWeight: '700', fontSize: '0.75rem', flexShrink: 0 }}>✓</div>
+                      <span style={{ color: '#166534', fontSize: '0.72rem', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.08em' }}>Stap 3 — Gereed</span>
+                      <span style={{ background: '#f0fdf4', border: '1px solid #bbf7d0', color: '#166534', fontSize: '0.72rem', fontWeight: '600', padding: '2px 8px', borderRadius: '999px' }}>{uploadsVoorRapportjaar.length} bestand(en) geüpload</span>
                     </div>
-                    <div style={{ color: heeftUploadsVoorRapportjaar ? '#166534' : '#2563EB', fontSize: '0.72rem', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.08em' }}>Stap 3</div>
-                  </div>
+                  ) : (
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '10px' }}>
+                      <div style={{ width: '32px', height: '32px', borderRadius: '999px', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#2563EB', color: 'white', fontWeight: '700', fontSize: '0.95rem', flexShrink: 0 }}>3</div>
+                      <span style={{ color: '#2563EB', fontSize: '0.72rem', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.08em' }}>Stap 3</span>
+                      <span style={{ background: '#dbeafe', color: '#1D4ED8', fontSize: '0.72rem', fontWeight: '700', padding: '3px 10px', borderRadius: '999px' }}>Aan de beurt</span>
+                    </div>
+                  )}
                   <h2 style={{ fontSize: '1rem', fontWeight: '600', color: '#0f172a', margin: 0 }}>Upload uw bestanden</h2>
                   <p style={{ color: '#475569', margin: '6px 0 0', fontSize: '0.84rem' }}>Voeg de financiële documenten toe voor {geselecteerdeVereniging.naam}.</p>
                 </div>
@@ -958,11 +973,11 @@ async function zoekAdres(pc: string, hn: string) {
             )}
 
             {!huidigJaarBetaald ? (
-              <div style={{ background: heeftUploadsVoorRapportjaar ? '#eff6ff' : 'white', borderRadius: '16px', padding: '22px', border: `1.5px solid ${heeftUploadsVoorRapportjaar ? '#bfdbfe' : '#e2e8f0'}`, marginBottom: '22px', boxShadow: 'none' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '8px' }}>
-                  <div style={{ width: '28px', height: '28px', borderRadius: '999px', display: 'flex', alignItems: 'center', justifyContent: 'center', background: heeftUploadsVoorRapportjaar ? '#2563EB' : '#f1f5f9', color: heeftUploadsVoorRapportjaar ? 'white' : '#94a3b8', fontWeight: '700', fontSize: '0.84rem', flexShrink: 0 }}>4</div>
-                  <div style={{ color: heeftUploadsVoorRapportjaar ? '#2563EB' : '#94a3b8', fontSize: '0.72rem', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.08em' }}>Stap 4</div>
-                  {heeftUploadsVoorRapportjaar && <span style={{ background: '#dbeafe', color: '#1D4ED8', fontSize: '0.72rem', fontWeight: '700', padding: '3px 10px', borderRadius: '999px', marginLeft: '4px' }}>Actie vereist</span>}
+              <div style={{ background: heeftUploadsVoorRapportjaar ? '#eff6ff' : 'white', borderRadius: '16px', padding: '22px', border: '1px solid #e2e8f0', borderLeft: `4px solid ${heeftUploadsVoorRapportjaar ? '#2563EB' : '#cbd5e1'}`, marginBottom: '22px', boxShadow: heeftUploadsVoorRapportjaar ? '0 2px 12px rgba(37,99,235,0.08)' : 'none' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '10px' }}>
+                  <div style={{ width: heeftUploadsVoorRapportjaar ? '32px' : '26px', height: heeftUploadsVoorRapportjaar ? '32px' : '26px', borderRadius: '999px', display: 'flex', alignItems: 'center', justifyContent: 'center', background: heeftUploadsVoorRapportjaar ? '#2563EB' : '#f1f5f9', color: heeftUploadsVoorRapportjaar ? 'white' : '#94a3b8', fontWeight: '700', fontSize: heeftUploadsVoorRapportjaar ? '0.95rem' : '0.84rem', flexShrink: 0 }}>4</div>
+                  <span style={{ color: heeftUploadsVoorRapportjaar ? '#2563EB' : '#94a3b8', fontSize: '0.72rem', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.08em' }}>Stap 4</span>
+                  {heeftUploadsVoorRapportjaar && <span style={{ background: '#dbeafe', color: '#1D4ED8', fontSize: '0.72rem', fontWeight: '700', padding: '3px 10px', borderRadius: '999px' }}>Aan de beurt</span>}
                 </div>
                 <h2 style={{ fontWeight: '600', color: '#0f172a', fontSize: '1rem', marginBottom: '6px' }}>Betaal en ontvang het rapport</h2>
                 <p style={{ color: '#475569', fontSize: '0.84rem', marginBottom: '16px', lineHeight: 1.6 }}>
@@ -973,16 +988,18 @@ async function zoekAdres(pc: string, hn: string) {
                 </button>
               </div>
             ) : (
-              <div style={{ background: huidigJaarGegenereerd ? '#f0fdf4' : '#eff6ff', borderRadius: '16px', padding: '22px', border: `1.5px solid ${huidigJaarGegenereerd ? '#bbf7d0' : '#bfdbfe'}`, marginBottom: '22px', boxShadow: huidigJaarGegenereerd ? 'none' : '0 0 0 3px rgba(37,99,235,0.08)' }}>
+              <div style={{ background: huidigJaarGegenereerd ? '#f0fdf4' : '#eff6ff', borderRadius: '16px', padding: '22px', border: '1px solid #e2e8f0', borderLeft: `4px solid ${huidigJaarGegenereerd ? '#22c55e' : '#2563EB'}`, marginBottom: '22px', boxShadow: huidigJaarGegenereerd ? 'none' : '0 2px 12px rgba(37,99,235,0.08)' }}>
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '16px', flexWrap: 'wrap' }}>
                   <div>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '8px' }}>
-                      <div style={{ width: '28px', height: '28px', borderRadius: '999px', display: 'flex', alignItems: 'center', justifyContent: 'center', background: huidigJaarGegenereerd ? '#dcfce7' : '#2563EB', color: huidigJaarGegenereerd ? '#166534' : 'white', fontWeight: '700', fontSize: '0.84rem', flexShrink: 0 }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '10px' }}>
+                      <div style={{ width: '32px', height: '32px', borderRadius: '999px', display: 'flex', alignItems: 'center', justifyContent: 'center', background: huidigJaarGegenereerd ? '#16a34a' : '#2563EB', color: 'white', fontWeight: '700', fontSize: '0.95rem', flexShrink: 0 }}>
                         {huidigJaarGegenereerd ? '✓' : '4'}
                       </div>
-                      <div style={{ color: huidigJaarGegenereerd ? '#166534' : '#2563EB', fontSize: '0.72rem', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.08em' }}>Stap 4</div>
-                      {!huidigJaarGegenereerd && <span style={{ background: '#dbeafe', color: '#1D4ED8', fontSize: '0.72rem', fontWeight: '700', padding: '3px 10px', borderRadius: '999px', marginLeft: '4px' }}>Rapport genereren</span>}
-                      {huidigJaarGegenereerd && <span style={{ background: '#dcfce7', color: '#166534', fontSize: '0.72rem', fontWeight: '700', padding: '3px 10px', borderRadius: '999px', marginLeft: '4px' }}>Rapport klaar</span>}
+                      <div>
+                        <span style={{ color: huidigJaarGegenereerd ? '#166534' : '#2563EB', fontSize: '0.72rem', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.08em' }}>Stap 4</span>
+                        {!huidigJaarGegenereerd && <span style={{ background: '#dbeafe', color: '#1D4ED8', fontSize: '0.72rem', fontWeight: '700', padding: '3px 10px', borderRadius: '999px', marginLeft: '8px' }}>Aan de beurt</span>}
+                        {huidigJaarGegenereerd && <span style={{ background: '#dcfce7', color: '#166534', fontSize: '0.72rem', fontWeight: '700', padding: '3px 10px', borderRadius: '999px', marginLeft: '8px' }}>Rapport klaar!</span>}
+                      </div>
                     </div>
                     <h2 style={{ fontWeight: '600', color: '#0f172a', fontSize: '1rem', margin: 0 }}>{huidigJaarGegenereerd ? 'Rapport beschikbaar' : 'Genereer uw rapport'}</h2>
                     <p style={{ color: '#475569', margin: '6px 0 0', fontSize: '0.84rem' }}>{huidigJaarGegenereerd ? `Gegenereerd op ${new Date(huidigRapport!.gegenereerd_op!).toLocaleDateString('nl-NL')}` : `Uw bestanden staan klaar. Klik op "Genereer rapport" om te starten — dit duurt circa 2 minuten.`}</p>
