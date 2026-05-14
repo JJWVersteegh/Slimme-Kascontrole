@@ -24,6 +24,7 @@ interface NavbarProps {
 
 export default function Navbar({ links = publicLinks, rightContent, mobileExtra, className = '' }: NavbarProps) {
   const [open, setOpen] = useState(false)
+  const isSingleBackLink = links.length === 1
 
   return (
     <>
@@ -42,7 +43,8 @@ export default function Navbar({ links = publicLinks, rightContent, mobileExtra,
         .skc-mobile-menu a{display:block;padding:12px 16px;color:#0f172a;text-decoration:none;font-weight:500;border-radius:8px;font-size:0.95rem;transition:background 0.15s;font-family:Outfit,sans-serif}
         .skc-mobile-menu a:hover{background:#f8fafc}
         .skc-mobile-menu .skc-mobile-btn{background:#2563EB;color:white!important;text-align:center;margin-top:8px;font-weight:700}
-        @media(max-width:900px){.skc-nav{padding:0 20px}.skc-nav-links,.skc-nav-right{display:none!important}.skc-hamburger{display:flex!important}}
+        .skc-back-mobile{display:none;align-items:center;gap:6px;color:#2563EB;font-size:0.88rem;font-weight:600;text-decoration:none;font-family:Outfit,sans-serif;background:#eff6ff;border:1.5px solid #bfdbfe;padding:7px 14px;border-radius:8px;white-space:nowrap}
+        @media(max-width:900px){.skc-nav{padding:0 20px}.skc-nav-links,.skc-nav-right{display:none!important}.skc-hamburger{display:flex!important}.skc-back-mobile{display:flex!important}}
         @media(max-width:500px){.skc-nav{padding:0 16px!important}}
       `}</style>
 
@@ -69,11 +71,15 @@ export default function Navbar({ links = publicLinks, rightContent, mobileExtra,
           </ul>
         )}
 
-        <button className="skc-hamburger" onClick={() => setOpen(o => !o)} aria-label="Menu">
-          <span className="skc-ham-bar" style={{ transform: open ? 'rotate(45deg) translate(5px,5px)' : undefined }} />
-          <span className="skc-ham-bar" style={{ opacity: open ? 0 : 1 }} />
-          <span className="skc-ham-bar" style={{ transform: open ? 'rotate(-45deg) translate(5px,-5px)' : undefined }} />
-        </button>
+        {isSingleBackLink ? (
+          <a href={links[0].href} className="skc-back-mobile">← Terug</a>
+        ) : (
+          <button className="skc-hamburger" onClick={() => setOpen(o => !o)} aria-label="Menu">
+            <span className="skc-ham-bar" style={{ transform: open ? 'rotate(45deg) translate(5px,5px)' : undefined }} />
+            <span className="skc-ham-bar" style={{ opacity: open ? 0 : 1 }} />
+            <span className="skc-ham-bar" style={{ transform: open ? 'rotate(-45deg) translate(5px,-5px)' : undefined }} />
+          </button>
+        )}
       </nav>
 
       {open && (
