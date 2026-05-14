@@ -221,8 +221,15 @@ export default function MijnOmgeving() {
       if (data.success) {
         await loadUploadsEnRapporten(user.id, geselecteerdeVereniging.id)
         setToonRapport(true)
-      } else { setRapportError('Rapport genereren mislukt: ' + data.error) }
-    } catch { setRapportError('Er ging iets mis') }
+      } else {
+        const msg = data.error || ''
+        if (msg.includes('503') || msg.includes('529') || msg.includes('overload')) {
+          setRapportError('De AI-dienst is momenteel druk bezet. Probeer het over een minuut opnieuw.')
+        } else {
+          setRapportError('Rapport genereren mislukt. Probeer het opnieuw of neem contact op als het probleem aanhoudt.')
+        }
+      }
+    } catch { setRapportError('Er ging iets mis. Controleer uw internetverbinding en probeer opnieuw.') }
     setRapportLoading(false)
   }
 
@@ -1020,7 +1027,7 @@ async function zoekAdres(pc: string, hn: string) {
               </div>
             )}
 
-            {rapportError && <p style={{ color: '#ef4444', marginBottom: '16px', fontSize: '0.84rem', fontWeight: '700' }}>{rapportError}</p>}
+            {rapportError && <div style={{ background: '#fffbeb', border: '1px solid #fde68a', borderRadius: '10px', padding: '12px 16px', marginBottom: '16px', fontSize: '0.84rem', color: '#92400e', fontWeight: '600' }}>⚠️ {rapportError}</div>}
             {error && <p style={{ color: '#ef4444', marginBottom: '16px', fontSize: '0.84rem', fontWeight: '700' }}>{error}</p>}
 
             <div style={{ background: '#fffbeb', borderRadius: '16px', padding: '16px 20px', border: '1px solid #fde68a', marginTop: '8px' }}>
