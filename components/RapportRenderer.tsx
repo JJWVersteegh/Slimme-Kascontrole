@@ -11,15 +11,15 @@ function formatCell(text: string): string {
   const formatted = formatInline(text.trim())
   if (text.includes('✓') && !text.includes('✗')) return `<span style="color:#16a34a;font-weight:600">${formatted}</span>`
   if (text.includes('✗')) return `<span style="color:#dc2626;font-weight:600">${formatted}</span>`
-  if (/^[−-]€/.test(text.trim())) return `<span style="color:#dc2626">${formatted}</span>`
-  if (/^\+€/.test(text.trim())) return `<span style="color:#16a34a">${formatted}</span>`
+  if (/^[−\-]\s*€/.test(text.trim())) return `<span style="color:#dc2626">${formatted}</span>`
+  if (/^\+\s*€/.test(text.trim())) return `<span style="color:#16a34a">${formatted}</span>`
   return formatted
 }
 
 function isNumericCell(text: string): boolean {
   const t = text.replace(/\*\*/g, '').trim()
   // Bedragen met €, percentages, of puur numerieke waarden (met punt/komma)
-  return /^[+\-−]?€/.test(t) || /^[+\-−]?\d[\d.,\s]*%?$/.test(t) || t === '–' || t === '-'
+  return /^[+\-−]?\s*€/.test(t) || /^[+\-−]?\d[\d.,\s]*%?$/.test(t) || t === '–' || t === '-'
 }
 
 function parseTableRow(line: string): string[] {
@@ -36,8 +36,8 @@ export function RapportRenderer({ tekst }: { tekst: string }) {
     body { font-size: 10pt; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
     .rapport-table-wrapper { overflow: visible !important; width: 100% !important; }
     .rapport-table { font-size: 8pt !important; width: 100% !important; table-layout: fixed; }
-    .rapport-table th { padding: 4px 6px !important; white-space: normal !important; font-size: 8pt !important; }
-    .rapport-table td { padding: 4px 6px !important; white-space: normal !important; font-size: 8pt !important; word-break: break-word; background: white !important; }
+    .rapport-table th { padding: 4px 6px !important; white-space: normal !important; font-size: 8pt !important; min-width: unset !important; }
+    .rapport-table td { padding: 4px 6px !important; white-space: normal !important; font-size: 8pt !important; word-break: break-word; background: white !important; min-width: unset !important; }
     .rapport-table tr { background: white !important; border-bottom: 1px solid #e2e8f0 !important; }
     h1 { font-size: 11pt !important; margin-top: 16px !important; margin-bottom: 8px !important; page-break-after: avoid !important; }
     h2 { font-size: 10pt !important; margin-top: 12px !important; page-break-after: avoid !important; page-break-before: auto !important; }
@@ -63,7 +63,7 @@ export function RapportRenderer({ tekst }: { tekst: string }) {
           <thead>
             <tr style={{ background: '#1e3a8a' }}>
               {headers.map((h, j) => (
-                <th key={j} style={{ padding: '10px 14px', textAlign: isNumericCell(h.trim()) ? 'right' : 'left', fontWeight: '600', color: 'white', whiteSpace: isNumericCell(h.trim()) ? 'nowrap' : 'normal', fontFamily: 'Outfit, sans-serif' }}
+                <th key={j} style={{ padding: '10px 14px', textAlign: isNumericCell(h.trim()) ? 'right' : 'left', fontWeight: '600', color: 'white', whiteSpace: 'nowrap', minWidth: isNumericCell(h.trim()) ? '110px' : undefined, fontFamily: 'Outfit, sans-serif' }}
                   dangerouslySetInnerHTML={{ __html: formatInline(h.trim()) }} />
               ))}
             </tr>
@@ -72,7 +72,7 @@ export function RapportRenderer({ tekst }: { tekst: string }) {
             {dataRows.map((row, ri) => (
               <tr key={ri} style={{ background: ri % 2 === 0 ? 'white' : '#f8fafc', borderBottom: '1px solid #e2e8f0' }}>
                 {row.map((cell, ci) => (
-                  <td key={ci} style={{ padding: '9px 14px', color: '#0f172a', verticalAlign: 'top', textAlign: isNumericCell(cell.trim()) ? 'right' : 'left', whiteSpace: isNumericCell(cell.trim()) ? 'nowrap' : 'normal' }}
+                  <td key={ci} style={{ padding: '9px 14px', color: '#0f172a', verticalAlign: 'top', textAlign: isNumericCell(cell.trim()) ? 'right' : 'left', whiteSpace: isNumericCell(cell.trim()) ? 'nowrap' : 'normal', minWidth: isNumericCell(cell.trim()) ? '110px' : undefined }}
                     dangerouslySetInnerHTML={{ __html: formatCell(cell.trim()) }} />
                 ))}
               </tr>
