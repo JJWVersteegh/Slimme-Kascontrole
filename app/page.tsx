@@ -102,11 +102,11 @@ h2 em{font-style:italic;color:#2563EB}
 
 /* HOW */
 .how-bg{background:white}
-.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:32px;max-width:1100px;margin:0 auto}
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;max-width:1100px;margin:0 auto}
 .step{background:white;border-radius:16px;border:1px solid #e2e8f0;overflow:hidden;transition:transform 0.2s,box-shadow 0.2s}
 .step:hover{transform:translateY(-4px);box-shadow:0 16px 48px rgba(0,0,0,0.08)}
-.step-img{width:100%;height:200px;object-fit:cover;display:block}
-.step-body{padding:24px}
+.step-img{width:100%;height:160px;object-fit:cover;display:block}
+.step-body{padding:18px}
 .step-num{font-family:'Playfair Display',serif;font-size:2.5rem;font-weight:700;color:#eff6ff;line-height:1;margin-bottom:8px}
 .step h3{font-family:'Outfit',sans-serif;font-size:1rem;font-weight:700;color:#0f172a;margin-bottom:8px}
 .step p{font-size:0.85rem;color:#475569;line-height:1.7}
@@ -201,7 +201,7 @@ footer a:hover{color:#93c5fd}
   .nav-links{display:none!important}
   .hamburger{display:flex!important}
   section{padding:56px 20px}
-  .steps,.testi-grid{grid-template-columns:1fr}
+  .steps{grid-template-columns:repeat(2,1fr)}.testi-grid{grid-template-columns:1fr}
   .features-grid,.why-grid,.about-grid,.pricing-grid,.contact-grid{grid-template-columns:1fr}
   .sources-grid,.security-grid{grid-template-columns:1fr 1fr}
   .hero-wrapper{padding:12px 16px 16px!important;margin-top:72px!important}
@@ -379,7 +379,7 @@ footer a:hover{color:#93c5fd}
         </div>
       </div>
       <div class="step fade-in">
-        <img class="step-img" src="https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=600&q=80" alt="Veilig uploaden"/>
+        <img class="step-img" src="https://images.unsplash.com/photo-1488190211105-8b0e65b80b4e?w=600&q=80" alt="Veilig uploaden"/>
         <div class="step-body">
           <div class="step-num" style="color:#bfdbfe">03</div>
           <h3>Upload veilig uw bestanden</h3>
