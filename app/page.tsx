@@ -465,12 +465,14 @@ footer a:hover{color:#93c5fd}
 
 <!-- OVER ONS -->
 <section id="over-ons">
+  <div style="max-width:1100px;margin:0 auto;text-align:center;margin-bottom:40px">
+    <p class="section-label fade-in" style="text-align:center">Over ons</p>
+  </div>
   <div class="about-grid">
     <div class="about-img fade-in">
       <img src="https://images.unsplash.com/photo-1556761175-4b46a572b786?w=700&q=80" alt="Over Slimme Kascontrole"/>
     </div>
     <div class="fade-in">
-      <p class="section-label">Over ons</p>
       <h2>Ontstaan uit eigen <em>ervaring</em></h2>
       <p style="font-size:0.95rem;color:#475569;line-height:1.8;margin-bottom:16px">Slimme Kascontrole is ontstaan vanuit een persoonlijke ervaring. Als lid van de kascommissie van mijn eigen VvE deed ik de kascontrole zelf — en merkte al snel dat dit veel makkelijker, sneller en vollediger kon.</p>
       <p style="font-size:0.95rem;color:#475569;line-height:1.8;margin-bottom:20px">De traditionele kascontrole is vaak steekproefsgewijs: je controleert een paar facturen en hoopt dat de rest klopt. Met Slimme Kascontrole is het anders — <strong>elke factuur, elk saldo, elk boekjaar wordt volledig gecontroleerd</strong>. Zo sta je als kascommissie echt sterk op de ALV.</p>
