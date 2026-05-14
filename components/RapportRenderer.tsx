@@ -33,7 +33,7 @@ function isSeparatorRow(line: string): boolean {
 export function RapportRenderer({ tekst }: { tekst: string }) {
   const printStyles = `@media print {
     @page { size: A4 portrait; margin: 10mm; }
-    body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    body { font-size: 10pt; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
     .rapport-table-wrapper { overflow: visible !important; width: 100% !important; }
     .rapport-table { width: 100% !important; font-size: 8pt !important; table-layout: fixed !important; }
     .rapport-table th { white-space: normal !important; min-width: unset !important; word-break: break-word; padding: 4px 6px !important; font-size: 8pt !important; }

@@ -100,6 +100,10 @@ export default function MijnOmgeving() {
   const ADMIN_EMAIL = 'info@slimmekascontrole.nl'
 
   useEffect(() => {
+    if (toonRapport) window.scrollTo(0, 0)
+  }, [toonRapport])
+
+  useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (!session) { router.push('/registreer'); return }
       if (session.user.email === ADMIN_EMAIL) { router.push('/admin'); return }
@@ -220,7 +224,7 @@ export default function MijnOmgeving() {
       const data = await res.json()
       if (data.success) {
         await loadUploadsEnRapporten(user.id, geselecteerdeVereniging.id)
-        setToonRapport(true)
+        setToonRapport(true); window.scrollTo(0, 0)
       } else {
         const msg = data.error || ''
         if (msg.includes('503') || msg.includes('529') || msg.includes('overload')) {
@@ -974,7 +978,7 @@ async function zoekAdres(pc: string, hn: string) {
                       <span style={{ fontWeight: '600', color: '#0f172a' }}>Boekjaar {r.boekjaar}</span>
                       {r.gegenereerd_op && <span style={{ fontSize: '0.8rem', color: '#94a3b8', marginLeft: '12px' }}>Gegenereerd op {new Date(r.gegenereerd_op).toLocaleDateString('nl-NL')}</span>}
                     </div>
-                    <button onClick={() => { setRapportBoekjaar(r.boekjaar); setToonRapport(true) }} style={{ background: 'white', color: '#2563EB', padding: '9px 16px', borderRadius: '10px', border: '1.5px solid #2563EB', fontSize: '0.85rem', fontWeight: '700', cursor: 'pointer', fontFamily: 'Outfit, sans-serif' }}>
+                    <button onClick={() => { setRapportBoekjaar(r.boekjaar); setToonRapport(true); window.scrollTo(0, 0) }} style={{ background: 'white', color: '#2563EB', padding: '9px 16px', borderRadius: '10px', border: '1.5px solid #2563EB', fontSize: '0.85rem', fontWeight: '700', cursor: 'pointer', fontFamily: 'Outfit, sans-serif' }}>
                       📄 Bekijk
                     </button>
                   </div>
@@ -1016,7 +1020,7 @@ async function zoekAdres(pc: string, hn: string) {
                   </div>
                   <div style={{ display: 'flex', gap: '10px', alignItems: 'center', flexWrap: 'wrap' }}>
                     {huidigJaarGegenereerd && (
-                      <button onClick={() => setToonRapport(true)} style={{ background: 'white', color: '#166534', padding: '10px 18px', borderRadius: '10px', border: '1.5px solid #86efac', fontSize: '0.84rem', fontWeight: '700', cursor: 'pointer', fontFamily: 'Outfit, sans-serif' }}>📄 Bekijk rapport</button>
+                      <button onClick={() => { setToonRapport(true); window.scrollTo(0, 0) }} style={{ background: 'white', color: '#166534', padding: '10px 18px', borderRadius: '10px', border: '1.5px solid #86efac', fontSize: '0.84rem', fontWeight: '700', cursor: 'pointer', fontFamily: 'Outfit, sans-serif' }}>📄 Bekijk rapport</button>
                     )}
                     <button onClick={() => setBevestigDeleteRapport({ boekjaar: rapportBoekjaar, vereniging_id: geselecteerdeVereniging?.id || null })} style={{ background: 'white', border: '1.5px solid #fecaca', color: '#ef4444', padding: '10px 12px', borderRadius: '10px', cursor: 'pointer', fontSize: '0.85rem' }} title="Boekjaar verwijderen">🗑️</button>
                     <button onClick={handleGenereerRapport} disabled={rapportLoading} style={{ background: '#16a34a', color: 'white', padding: '10px 20px', borderRadius: '10px', border: 'none', fontSize: '0.84rem', fontWeight: '700', cursor: rapportLoading ? 'not-allowed' : 'pointer', fontFamily: 'Outfit, sans-serif' }}>
