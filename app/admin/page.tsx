@@ -956,15 +956,31 @@ export default function AdminPortal() {
             {/* Rapport modal */}
       {toonRapport && (
         <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)', zIndex: 999, display: 'flex', alignItems: 'flex-start', justifyContent: 'center', padding: '20px', overflowY: 'auto' }}>
-          <div style={{ background: 'white', borderRadius: '16px', width: '100%', maxWidth: '900px', maxHeight: '90vh', overflow: 'auto' }}>
-            <div style={{ padding: '20px 24px', borderBottom: '1px solid #e2e8f0', display: 'flex', justifyContent: 'space-between', alignItems: 'center', position: 'sticky', top: 0, background: 'white', zIndex: 1 }}>
+          <div style={{ background: '#f8fafc', borderRadius: '16px', width: '100%', maxWidth: '960px', overflow: 'hidden' }}>
+            <div style={{ padding: '16px 24px', borderBottom: '1px solid #e2e8f0', display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'white' }}>
               <h3 style={{ margin: 0, fontSize: '1rem', fontWeight: '700', color: '#0f172a' }}>
                 Rapport boekjaar {toonRapport.boekjaar} — {geselecteerdeKlant?.naam || geselecteerdeKlant?.email}
               </h3>
               <button onClick={() => setToonRapport(null)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#94a3b8', fontSize: '1.5rem', lineHeight: 1 }}>×</button>
             </div>
-            <div style={{ padding: '24px' }}>
-              {toonRapport.rapport_tekst && <RapportRenderer tekst={toonRapport.rapport_tekst} />}
+            <div style={{ padding: '32px 24px', maxHeight: 'calc(90vh - 60px)', overflowY: 'auto' }}>
+              <div style={{ maxWidth: '860px', margin: '0 auto' }}>
+                <div style={{ background: 'white', borderRadius: '16px', padding: '56px', border: '1px solid #e2e8f0', boxShadow: '0 4px 24px rgba(0,0,0,0.06)' }}>
+                  <div style={{ textAlign: 'center', borderBottom: '3px solid #2563EB', paddingBottom: '28px', marginBottom: '36px' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '12px', marginBottom: '16px' }}>
+                      <div style={{ background: '#2563EB', width: '44px', height: '44px', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        <svg width="24" height="24" viewBox="0 0 22 22" fill="none"><polyline points="3,12 9,18 19,6" stroke="white" strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round" /></svg>
+                      </div>
+                      <span style={{ fontWeight: '700', color: '#1D4ED8', fontSize: '1.1rem', fontFamily: 'Outfit, sans-serif' }}>slimmekascontrole.nl</span>
+                    </div>
+                    <h1 style={{ fontFamily: 'Outfit, sans-serif', fontSize: '1.6rem', fontWeight: '600', color: '#0f172a', margin: '0 0 8px' }}>KASCOMMISSIE RAPPORT</h1>
+                    <p style={{ color: '#475569', margin: 0, fontSize: '0.84rem' }}>
+                      {verenigingen.find(v => v.id === toonRapport.vereniging_id)?.naam || geselecteerdeKlant?.naam || geselecteerdeKlant?.email} · Boekjaar {toonRapport.boekjaar}
+                    </p>
+                  </div>
+                  {toonRapport.rapport_tekst && <RapportRenderer tekst={toonRapport.rapport_tekst} />}
+                </div>
+              </div>
             </div>
           </div>
         </div>

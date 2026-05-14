@@ -37,7 +37,8 @@ export function RapportRenderer({ tekst }: { tekst: string }) {
     .rapport-table-wrapper { overflow: visible !important; width: 100% !important; }
     .rapport-table { font-size: 8pt !important; width: 100% !important; table-layout: fixed; }
     .rapport-table th { padding: 4px 6px !important; white-space: normal !important; font-size: 8pt !important; }
-    .rapport-table td { padding: 4px 6px !important; white-space: normal !important; font-size: 8pt !important; word-break: break-word; }
+    .rapport-table td { padding: 4px 6px !important; white-space: normal !important; font-size: 8pt !important; word-break: break-word; background: white !important; }
+    .rapport-table tr { background: white !important; border-bottom: 1px solid #e2e8f0 !important; }
     h1 { font-size: 11pt !important; margin-top: 16px !important; margin-bottom: 8px !important; page-break-after: avoid !important; }
     h2 { font-size: 10pt !important; margin-top: 12px !important; page-break-after: avoid !important; page-break-before: auto !important; }
     h3 { font-size: 9pt !important; page-break-after: avoid !important; }
