@@ -336,9 +336,11 @@ footer a:hover{color:#93c5fd}
 
 <!-- WAAROM -->
 <section id="waarom">
+  <div style="max-width:1100px;margin:0 auto;text-align:center;margin-bottom:40px">
+    <p class="section-label fade-in" style="text-align:center">Waarom?</p>
+  </div>
   <div class="why-grid">
     <div class="why-text fade-in">
-      <p class="section-label">Waarom?</p>
       <h2>Elke vereniging is <em>wettelijk verplicht</em> tot kascontrole</h2>
       <p>Volgens de statuten van vrijwel elke vereniging en de Algemene Ledenvergadering (ALV) is het bestuur verplicht verantwoording af te leggen over het financiële beheer. Een kascommissie controleert of de penningmeester en beheerder alles correct hebben geboekt.</p>
       <div class="why-callout">
