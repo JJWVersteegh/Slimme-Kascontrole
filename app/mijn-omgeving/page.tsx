@@ -721,6 +721,9 @@ async function zoekAdres(pc: string, hn: string) {
           .step-grid { grid-template-columns: 1fr !important; }
           .upload-grid { grid-template-columns: 1fr !important; }
           .card-actions { flex-direction: column !important; align-items: stretch !important; }
+          .stap-badge-row { flex-wrap: wrap !important; row-gap: 6px !important; }
+          .stap-done-row { flex-wrap: wrap !important; row-gap: 4px !important; }
+          .stap-value-chip { max-width: 200px !important; overflow: hidden !important; text-overflow: ellipsis !important; white-space: nowrap !important; }
         }
       `}</style>
 
@@ -768,9 +771,7 @@ async function zoekAdres(pc: string, hn: string) {
       <div style={{ maxWidth: '1040px', margin: '0 auto', padding: '48px 24px' }}>
         <div style={{ marginBottom: '26px', display: 'flex', justifyContent: 'space-between', gap: '20px', alignItems: 'flex-end', flexWrap: 'wrap' }}>
           <div>
-            <span style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: '#dbeafe', color: '#1D4ED8', border: '1px solid #bfdbfe', padding: '6px 12px', borderRadius: '999px', fontSize: '0.72rem', fontWeight: '600', marginBottom: '12px' }}>
-              Mijn kascontrole
-            </span>
+            <p style={{ fontSize: '0.7rem', fontWeight: '700', letterSpacing: '0.15em', textTransform: 'uppercase', color: '#2563EB', marginBottom: '12px', margin: '0 0 12px' }}>Mijn kascontrole</p>
             <h1 style={{ fontSize: '1.65rem', fontWeight: '600', color: '#0f172a', marginBottom: '6px', letterSpacing: '-0.03em' }}>Mijn omgeving</h1>
             <p style={{ color: '#475569', fontSize: '0.92rem', margin: 0 }}>Volg de stappen en ontvang een professioneel kascontrolerapport.</p>
           </div>
@@ -788,16 +789,16 @@ async function zoekAdres(pc: string, hn: string) {
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '16px', marginBottom: '18px', flexWrap: 'wrap' }}>
             <div>
               {geselecteerdeVereniging ? (
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '10px' }}>
+                <div className="stap-done-row" style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '10px' }}>
                   <div style={{ width: '22px', height: '22px', borderRadius: '999px', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#dcfce7', color: '#166534', fontWeight: '700', fontSize: '0.75rem', flexShrink: 0 }}>✓</div>
-                  <span style={{ color: '#166534', fontSize: '0.72rem', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.08em' }}>Stap 1 — Gereed</span>
-                  <span style={{ background: '#f0fdf4', border: '1px solid #bbf7d0', color: '#166534', fontSize: '0.72rem', fontWeight: '600', padding: '2px 8px', borderRadius: '999px' }}>{geselecteerdeVereniging.naam}</span>
+                  <span style={{ color: '#166534', fontSize: '0.72rem', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.08em', whiteSpace: 'nowrap' }}>Stap 1 — Gereed</span>
+                  <span className="stap-value-chip" style={{ background: '#f0fdf4', border: '1px solid #bbf7d0', color: '#166534', fontSize: '0.72rem', fontWeight: '600', padding: '2px 8px', borderRadius: '999px' }}>{geselecteerdeVereniging.naam}</span>
                 </div>
               ) : (
                 <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '10px' }}>
                   <div style={{ width: '32px', height: '32px', borderRadius: '999px', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#2563EB', color: 'white', fontWeight: '700', fontSize: '0.95rem', flexShrink: 0 }}>1</div>
-                  <span style={{ color: '#2563EB', fontSize: '0.72rem', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.08em' }}>Stap 1</span>
-                  <span style={{ background: '#dbeafe', color: '#1D4ED8', fontSize: '0.72rem', fontWeight: '700', padding: '3px 10px', borderRadius: '999px' }}>Aan de beurt</span>
+                  <span style={{ color: '#2563EB', fontSize: '0.72rem', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.08em', whiteSpace: 'nowrap' }}>Stap 1</span>
+                  <span style={{ background: '#dbeafe', color: '#1D4ED8', fontSize: '0.72rem', fontWeight: '700', padding: '3px 10px', borderRadius: '999px', whiteSpace: 'nowrap' }}>Aan de beurt</span>
                 </div>
               )}
               <h2 style={{ fontSize: '1rem', fontWeight: '600', color: '#0f172a', margin: 0 }}>Kies de VvE</h2>
@@ -843,10 +844,10 @@ async function zoekAdres(pc: string, hn: string) {
         {geselecteerdeVereniging && (
           <>
             <div style={{ background: 'white', borderRadius: '16px', padding: '22px', border: '1px solid #e2e8f0', borderLeft: '4px solid #22c55e', marginBottom: '26px', boxShadow: 'none' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '10px' }}>
+              <div className="stap-done-row" style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '10px' }}>
                 <div style={{ width: '22px', height: '22px', borderRadius: '999px', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#dcfce7', color: '#166534', fontWeight: '700', fontSize: '0.75rem', flexShrink: 0 }}>✓</div>
-                <span style={{ color: '#166534', fontSize: '0.72rem', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.08em' }}>Stap 2 — Gereed</span>
-                <span style={{ background: '#f0fdf4', border: '1px solid #bbf7d0', color: '#166534', fontSize: '0.72rem', fontWeight: '600', padding: '2px 8px', borderRadius: '999px' }}>Boekjaar {rapportBoekjaar}</span>
+                <span style={{ color: '#166534', fontSize: '0.72rem', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.08em', whiteSpace: 'nowrap' }}>Stap 2 — Gereed</span>
+                <span className="stap-value-chip" style={{ background: '#f0fdf4', border: '1px solid #bbf7d0', color: '#166534', fontSize: '0.72rem', fontWeight: '600', padding: '2px 8px', borderRadius: '999px' }}>Boekjaar {rapportBoekjaar}</span>
               </div>
               <h2 style={{ fontWeight: '600', color: '#0f172a', fontSize: '1.12rem', marginBottom: '6px' }}>Kies het boekjaar</h2>
               <p style={{ color: '#475569', fontSize: '0.84rem', marginBottom: '18px' }}>Voor welk boekjaar wilt u een kascontrolerapport maken voor <strong>{geselecteerdeVereniging.naam}</strong>?</p>
@@ -864,16 +865,16 @@ async function zoekAdres(pc: string, hn: string) {
               <div style={{ display: 'flex', justifyContent: 'space-between', gap: '16px', alignItems: 'flex-start', flexWrap: 'wrap', marginBottom: '18px' }}>
                 <div>
                   {heeftUploadsVoorRapportjaar ? (
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '10px' }}>
+                    <div className="stap-done-row" style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '10px' }}>
                       <div style={{ width: '22px', height: '22px', borderRadius: '999px', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#dcfce7', color: '#166534', fontWeight: '700', fontSize: '0.75rem', flexShrink: 0 }}>✓</div>
-                      <span style={{ color: '#166534', fontSize: '0.72rem', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.08em' }}>Stap 3 — Gereed</span>
-                      <span style={{ background: '#f0fdf4', border: '1px solid #bbf7d0', color: '#166534', fontSize: '0.72rem', fontWeight: '600', padding: '2px 8px', borderRadius: '999px' }}>{uploadsVoorRapportjaar.length} bestand(en) geüpload</span>
+                      <span style={{ color: '#166534', fontSize: '0.72rem', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.08em', whiteSpace: 'nowrap' }}>Stap 3 — Gereed</span>
+                      <span className="stap-value-chip" style={{ background: '#f0fdf4', border: '1px solid #bbf7d0', color: '#166534', fontSize: '0.72rem', fontWeight: '600', padding: '2px 8px', borderRadius: '999px' }}>{uploadsVoorRapportjaar.length} bestand(en) geüpload</span>
                     </div>
                   ) : (
                     <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '10px' }}>
                       <div style={{ width: '32px', height: '32px', borderRadius: '999px', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#2563EB', color: 'white', fontWeight: '700', fontSize: '0.95rem', flexShrink: 0 }}>3</div>
-                      <span style={{ color: '#2563EB', fontSize: '0.72rem', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.08em' }}>Stap 3</span>
-                      <span style={{ background: '#dbeafe', color: '#1D4ED8', fontSize: '0.72rem', fontWeight: '700', padding: '3px 10px', borderRadius: '999px' }}>Aan de beurt</span>
+                      <span style={{ color: '#2563EB', fontSize: '0.72rem', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.08em', whiteSpace: 'nowrap' }}>Stap 3</span>
+                      <span style={{ background: '#dbeafe', color: '#1D4ED8', fontSize: '0.72rem', fontWeight: '700', padding: '3px 10px', borderRadius: '999px', whiteSpace: 'nowrap' }}>Aan de beurt</span>
                     </div>
                   )}
                   <h2 style={{ fontSize: '1rem', fontWeight: '600', color: '#0f172a', margin: 0 }}>Upload uw bestanden</h2>
