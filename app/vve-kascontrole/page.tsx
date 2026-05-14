@@ -168,23 +168,28 @@ footer a:hover{color:white}
 <section id="hoe-het-werkt" style="background:#f8fafc">
   <div class="container" style="text-align:center">
     <p class="section-label">Hoe het werkt</p>
-    <h2>VvE kascontrole in <em>drie stappen</em></h2>
+    <h2>VvE kascontrole in <em>vier stappen</em></h2>
     <p class="section-sub" style="margin:0 auto 48px">Geen boekhoudkundige kennis vereist. Upload uw stukken en ontvang uw rapport.</p>
     <div class="steps-grid">
       <div class="step-card">
         <div class="step-num">01</div>
-        <h3>Account aanmaken & bestanden uploaden</h3>
-        <p>Maak gratis een account aan en upload de financiële stukken van uw VvE — jaarrekening, bankafschriften of het overzicht van uw beheerder als PDF, Excel of CSV.</p>
+        <h3>Account aanmaken en VvE kiezen</h3>
+        <p>Maak gratis een account aan, voeg uw VvE toe en selecteer het boekjaar waarover u een kascontrolerapport wilt ontvangen.</p>
       </div>
       <div class="step-card">
         <div class="step-num">02</div>
-        <h3>Eenmalig betalen</h3>
-        <p>Betaal eenmalig €59 incl. btw via iDEAL of creditcard. Geen abonnement, geen verborgen kosten. Per boekjaar één betaling.</p>
+        <h3>Bestanden downloaden</h3>
+        <p>Download de jaarrekening of het financiële overzicht van uw VvE via uw beheerder of boekhoudprogramma als PDF, Excel of CSV.</p>
       </div>
       <div class="step-card">
         <div class="step-num">03</div>
-        <h3>Volledig rapport ontvangen</h3>
-        <p>Ontvang direct uw professionele kascontrolerapport met volledige controle van elke post — klaar voor de ALV van uw VvE.</p>
+        <h3>Bestanden uploaden</h3>
+        <p>Upload uw bestanden veilig via onze SSL-versleutelde omgeving. U kunt meerdere bestanden tegelijk selecteren.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-num">04</div>
+        <h3>Betaal en ontvang uw rapport</h3>
+        <p>Betaal eenmalig €59 via iDEAL en ontvang direct uw professionele kascontrolerapport — klaar voor de ALV van uw VvE.</p>
       </div>
     </div>
   </div>

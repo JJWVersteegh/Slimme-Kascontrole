@@ -359,31 +359,39 @@ footer a:hover{color:#93c5fd}
 <section class="how-bg" id="hoe-het-werkt" style="background:#f8fafc">
   <div style="max-width:1100px;margin:0 auto;text-align:center">
     <p class="section-label fade-in" style="text-align:center">Hoe het werkt</p>
-    <h2 class="fade-in" style="text-align:center">Drie stappen naar een <em>volledig rapport</em></h2>
+    <h2 class="fade-in" style="text-align:center">Vier stappen naar een <em>volledig rapport</em></h2>
     <p class="section-sub centered fade-in">Geen boekhoudkundige kennis vereist. Upload uw bestanden en ontvang uw rapport.</p>
     <div class="steps">
       <div class="step fade-in">
-        <img class="step-img" src="https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=600&q=80" alt="Documenten downloaden"/>
+        <img class="step-img" src="https://images.unsplash.com/photo-1560472355-536de3962603?w=600&q=80" alt="Account aanmaken"/>
         <div class="step-body">
           <div class="step-num" style="color:#bfdbfe">01</div>
+          <h3>Maak een account aan en kies uw vereniging</h3>
+          <p>Registreer gratis en voeg uw VvE, sportvereniging of stichting toe. Selecteer vervolgens het boekjaar waarover u een kascontrolerapport wilt ontvangen.</p>
+        </div>
+      </div>
+      <div class="step fade-in">
+        <img class="step-img" src="https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=600&q=80" alt="Documenten downloaden"/>
+        <div class="step-body">
+          <div class="step-num" style="color:#bfdbfe">02</div>
           <h3>Download uw verenigingsgegevens</h3>
-          <p>Download de jaarrekening of het financiële overzicht van uw VvE of vereniging via Twinq, Isabel, uw beheerder of boekhoudprogramma als PDF, Excel of CSV.</p>
+          <p>Download de jaarrekening of het financiële overzicht via Twinq, Isabel, uw beheerder of boekhoudprogramma als PDF, Excel of CSV.</p>
         </div>
       </div>
       <div class="step fade-in">
         <img class="step-img" src="https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=600&q=80" alt="Veilig uploaden"/>
         <div class="step-body">
-          <div class="step-num" style="color:#bfdbfe">02</div>
-          <h3>Upload veilig naar uw omgeving</h3>
-          <p>Maak een account aan en upload uw bestanden via onze SSL-versleutelde omgeving. Uw gegevens worden nooit gedeeld met derden en veilig opgeslagen binnen de EU.</p>
+          <div class="step-num" style="color:#bfdbfe">03</div>
+          <h3>Upload veilig uw bestanden</h3>
+          <p>Upload uw bestanden via onze SSL-versleutelde omgeving. U kunt meerdere bestanden tegelijk selecteren. Uw gegevens worden nooit gedeeld en veilig opgeslagen binnen de EU.</p>
         </div>
       </div>
       <div class="step fade-in">
         <img class="step-img" src="https://images.unsplash.com/photo-1586281380349-632531db7ed4?w=600&q=80" alt="Rapport ontvangen"/>
         <div class="step-body">
-          <div class="step-num" style="color:#bfdbfe">03</div>
-          <h3>Ontvang uw volledig rapport</h3>
-          <p>Na eenmalige betaling van €59 incl. btw stellen onze kascontroleurs uw rapport op. Direct als PDF, klaar voor presentatie op uw ALV.</p>
+          <div class="step-num" style="color:#bfdbfe">04</div>
+          <h3>Betaal en ontvang uw rapport</h3>
+          <p>Betaal éénmalig €59 via iDEAL en ontvang direct uw professioneel kascontrolerapport als PDF, klaar voor presentatie op uw ALV.</p>
         </div>
       </div>
     </div>

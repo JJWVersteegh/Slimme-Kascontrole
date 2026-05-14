@@ -140,23 +140,28 @@ footer a{color:rgba(255,255,255,0.6);text-decoration:none;font-size:0.85rem}
 <section id="hoe-het-werkt" style="background:#f8fafc">
   <div class="container" style="text-align:center">
     <p class="section-label">Hoe het werkt</p>
-    <h2>Kascontrole stichting in <em>drie stappen</em></h2>
+    <h2>Kascontrole stichting in <em>vier stappen</em></h2>
     <p class="section-sub" style="margin:0 auto 48px">Geen boekhoudkundige kennis vereist. Upload uw stukken en ontvang uw rapport.</p>
-    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px;max-width:1100px;margin:0 auto">
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:24px;max-width:1100px;margin:0 auto">
       <div style="background:white;border-radius:16px;border:1px solid #e2e8f0;padding:28px">
         <div style="font-size:2rem;font-weight:800;color:#bfdbfe;margin-bottom:12px">01</div>
-        <h3 style="font-size:1rem;font-weight:700;color:#0f172a;margin-bottom:8px">Account aanmaken & bestanden uploaden</h3>
-        <p style="font-size:0.85rem;color:#475569;line-height:1.6">Maak gratis een account aan en upload de financiële stukken van uw stichting als PDF, Excel of CSV.</p>
+        <h3 style="font-size:1rem;font-weight:700;color:#0f172a;margin-bottom:8px">Account aanmaken en stichting kiezen</h3>
+        <p style="font-size:0.85rem;color:#475569;line-height:1.6">Maak gratis een account aan, voeg uw stichting toe en selecteer het boekjaar.</p>
       </div>
       <div style="background:white;border-radius:16px;border:1px solid #e2e8f0;padding:28px">
         <div style="font-size:2rem;font-weight:800;color:#bfdbfe;margin-bottom:12px">02</div>
-        <h3 style="font-size:1rem;font-weight:700;color:#0f172a;margin-bottom:8px">Eenmalig betalen</h3>
-        <p style="font-size:0.85rem;color:#475569;line-height:1.6">Betaal eenmalig €59 incl. btw via iDEAL of creditcard. Geen abonnement, geen verborgen kosten.</p>
+        <h3 style="font-size:1rem;font-weight:700;color:#0f172a;margin-bottom:8px">Bestanden downloaden</h3>
+        <p style="font-size:0.85rem;color:#475569;line-height:1.6">Download de financiële stukken van uw stichting via uw boekhoudprogramma als PDF, Excel of CSV.</p>
       </div>
       <div style="background:white;border-radius:16px;border:1px solid #e2e8f0;padding:28px">
         <div style="font-size:2rem;font-weight:800;color:#bfdbfe;margin-bottom:12px">03</div>
-        <h3 style="font-size:1rem;font-weight:700;color:#0f172a;margin-bottom:8px">Volledig rapport ontvangen</h3>
-        <p style="font-size:0.85rem;color:#475569;line-height:1.6">Ontvang direct uw professionele kascontrolerapport — klaar voor de bestuursvergadering of subsidieaanvraag.</p>
+        <h3 style="font-size:1rem;font-weight:700;color:#0f172a;margin-bottom:8px">Bestanden uploaden</h3>
+        <p style="font-size:0.85rem;color:#475569;line-height:1.6">Upload uw bestanden veilig via onze SSL-versleutelde omgeving. Meerdere bestanden tegelijk mogelijk.</p>
+      </div>
+      <div style="background:white;border-radius:16px;border:1px solid #e2e8f0;padding:28px">
+        <div style="font-size:2rem;font-weight:800;color:#bfdbfe;margin-bottom:12px">04</div>
+        <h3 style="font-size:1rem;font-weight:700;color:#0f172a;margin-bottom:8px">Betaal en ontvang uw rapport</h3>
+        <p style="font-size:0.85rem;color:#475569;line-height:1.6">Betaal eenmalig €59 via iDEAL en ontvang direct uw rapport — klaar voor de bestuursvergadering of subsidieaanvraag.</p>
       </div>
     </div>
   </div>

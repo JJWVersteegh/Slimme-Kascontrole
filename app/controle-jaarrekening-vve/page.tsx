@@ -208,31 +208,39 @@ footer a:hover{color:#93c5fd}
 <section>
   <div class="container" style="text-align:center">
     <p class="section-label">Hoe het werkt</p>
-    <h2>Controle jaarrekening VvE in <em>drie stappen</em></h2>
+    <h2>Controle jaarrekening VvE in <em>vier stappen</em></h2>
     <p class="section-sub" style="margin:0 auto 48px">Geen boekhoudkundige kennis vereist.</p>
     <div class="stappenplan" style="text-align:left">
       <div class="stap">
         <div class="stap-lijn"></div>
         <div class="stap-num">1</div>
         <div class="stap-content">
-          <h3>Upload de jaarrekening van uw VvE</h3>
-          <p>Maak gratis een account aan en upload de financiële stukken van uw VvE — jaarrekening, bankafschriften en eventueel contracten. PDF, Excel of CSV worden allemaal geaccepteerd.</p>
+          <h3>Account aanmaken en VvE kiezen</h3>
+          <p>Maak gratis een account aan, voeg uw VvE toe en selecteer het boekjaar waarover u een kascontrolerapport wilt ontvangen.</p>
         </div>
       </div>
       <div class="stap">
         <div class="stap-lijn"></div>
         <div class="stap-num">2</div>
         <div class="stap-content">
-          <h3>Betaal eenmalig €59</h3>
-          <p>Betaal eenmalig €59 incl. btw via iDEAL of creditcard. Geen abonnement, geen verborgen kosten. Per boekjaar één betaling.</p>
+          <h3>Download de jaarrekening van uw VvE</h3>
+          <p>Download de financiële stukken van uw VvE via uw beheerder of boekhoudprogramma — jaarrekening, bankafschriften en contracten als PDF, Excel of CSV.</p>
         </div>
       </div>
       <div class="stap">
         <div class="stap-lijn"></div>
         <div class="stap-num">3</div>
         <div class="stap-content">
-          <h3>Ontvang uw volledig gecontroleerd rapport</h3>
-          <p>Direct na betaling ontvangt u uw professionele kascontrolerapport — inclusief controle van de jaarrekening, balans, resultatenrekening, contracten en advies aan de ALV.</p>
+          <h3>Upload uw bestanden</h3>
+          <p>Upload uw bestanden veilig via onze SSL-versleutelde omgeving. U kunt meerdere bestanden tegelijk selecteren. Uw gegevens worden opgeslagen binnen de EU.</p>
+        </div>
+      </div>
+      <div class="stap">
+        <div class="stap-lijn"></div>
+        <div class="stap-num">4</div>
+        <div class="stap-content">
+          <h3>Betaal en ontvang uw rapport</h3>
+          <p>Betaal eenmalig €59 via iDEAL en ontvang direct uw professionele kascontrolerapport — inclusief controle van de jaarrekening, balans, resultatenrekening en advies aan de ALV.</p>
         </div>
       </div>
     </div>
