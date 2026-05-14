@@ -9,7 +9,7 @@ export const metadata: Metadata = {
     default: "Slimme Kascontrole – Uw kascontrole klaar voor de ALV",
     template: "%s | Slimme Kascontrole",
   },
-  description: "Professioneel kascontrolerapport voor uw vereniging. Snel, betrouwbaar en voor slechts €59.",
+  description: "Professioneel kascontrolerapport voor uw VvE, sportvereniging of stichting. Volledig gecontroleerd, klaar voor de ALV. Eenmalig €59 incl. btw.",
   alternates: {
     canonical: "/",
   },
@@ -19,13 +19,13 @@ export const metadata: Metadata = {
     url: siteUrl,
     siteName: "Slimme Kascontrole",
     title: "Slimme Kascontrole – Uw kascontrole klaar voor de ALV",
-    description: "Professioneel kascontrolerapport voor uw VvE, sportvereniging of stichting. Eenmalig €59 incl. btw.",
+    description: "Professioneel kascontrolerapport voor uw VvE, sportvereniging of stichting. Volledig gecontroleerd, klaar voor de ALV. Eenmalig €59 incl. btw.",
     images: [{ url: "/og-image.jpg", width: 1200, height: 630, alt: "Slimme Kascontrole" }],
   },
   twitter: {
     card: "summary_large_image",
     title: "Slimme Kascontrole – Uw kascontrole klaar voor de ALV",
-    description: "Professioneel kascontrolerapport voor uw VvE, sportvereniging of stichting. Eenmalig €59 incl. btw.",
+    description: "Professioneel kascontrolerapport voor uw VvE, sportvereniging of stichting. Volledig gecontroleerd, klaar voor de ALV. Eenmalig €59 incl. btw.",
     images: ["/og-image.jpg"],
   },
 };
