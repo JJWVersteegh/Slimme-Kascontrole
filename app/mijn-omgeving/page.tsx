@@ -771,7 +771,8 @@ async function zoekAdres(pc: string, hn: string) {
       <div style={{ maxWidth: '1040px', margin: '0 auto', padding: '48px 24px' }}>
         <div style={{ marginBottom: '26px', display: 'flex', justifyContent: 'space-between', gap: '20px', alignItems: 'flex-end', flexWrap: 'wrap' }}>
           <div>
-            <p style={{ fontSize: '0.7rem', fontWeight: '700', letterSpacing: '0.15em', textTransform: 'uppercase', color: '#2563EB', margin: '0 0 12px' }}>Mijn omgeving</p>
+            <p style={{ fontSize: '0.7rem', fontWeight: '700', letterSpacing: '0.15em', textTransform: 'uppercase', color: '#2563EB', margin: '0 0 10px' }}>Mijn omgeving</p>
+            <h1 style={{ fontSize: '1.4rem', fontWeight: '700', color: '#0f172a', margin: '0 0 6px', letterSpacing: '-0.02em' }}>Uw kascontrole dashboard</h1>
             <p style={{ color: '#475569', fontSize: '0.92rem', margin: 0 }}>Volg de stappen en ontvang een professioneel kascontrolerapport.</p>
           </div>
           {geselecteerdeVereniging && (
