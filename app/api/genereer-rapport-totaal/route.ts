@@ -180,7 +180,7 @@ Het volledige rapport beslaat MAXIMAAL 6 tot 8 A4-pagina's. Dit is een kascommis
 WERKWIJZE — VOLG DEZE VOLGORDE STRIKT
 ═══════════════════════════════════════════
 1. Lees ALLE geüploade gegevens volledig door.
-2. Schrijf EERST de volledige detailanalyse (secties 3.1 t/m 3.5).
+2. Schrijf EERST de volledige detailanalyse (secties 3.1 t/m 3.6).
 3. Schrijf DAARNA pas de Samenvatting bevindingen (sectie 2) — GEBASEERD OP WAT JE IN DE DETAILANALYSE HEBT GEVONDEN.
 4. De samenvatting moet 100% consistent zijn met de detailanalyse. Nooit tegenstrijdige conclusies.
 
@@ -253,7 +253,8 @@ RAPPORTSTRUCTUUR — GEBRUIK EXACT DEZE OPBOUW
    - 3.2 Inkoopfacturen en uitgaven
    - 3.3 Exploitatieresultaat
    - 3.4 Openstaande posten en bijzonderheden
-${boekjaren.length > 1 ? `   - 3.5 Trendanalyse ${boekjaren.join(' – ')}` : ''}
+   - 3.5 Contracten en abonnementen
+${boekjaren.length > 1 ? `   - 3.6 Trendanalyse ${boekjaren.join(' – ')}` : ''}
 4. Advies aan de Algemene Ledenvergadering
 
 ---
@@ -290,9 +291,16 @@ Tabel inkomsten en uitgaven (werkelijk, begroot, afwijking). Bespreek het result
 [Vul alleen echte bedragen in]
 
 ### 3.4 Openstaande posten en bijzonderheden
-Combineer: openstaande debiteuren/crediteuren én overige bijzonderheden (geannuleerde facturen, ontbrekende stukken, etc.). Maximaal 1 alinea per punt. Laat weg als er niets is.
+Openstaande debiteuren/crediteuren én overige bijzonderheden (geannuleerde facturen, ontbrekende stukken, etc.). Maximaal 1 alinea per punt. Laat weg als er niets is.
 
-${boekjaren.length > 1 ? `### 3.5 Trendanalyse ${boekjaren.join(' – ')}
+### 3.5 Contracten en abonnementen
+Overzicht van lopende contracten met leverancier, jaarlijkse kosten en beoordeling. Alleen opnemen als er contractgegevens in de uploads staan. Maximaal 1 alinea toelichting.
+
+| Contract | Leverancier | Jaarlijkse kosten | Beoordeling |
+| --- | --- | --- | --- |
+[Vul alleen echte gegevens in]
+
+${boekjaren.length > 1 ? `### 3.6 Trendanalyse ${boekjaren.join(' – ')}
 Tabel met de belangrijkste posten over de beschikbare jaren. Maximaal 1 alinea conclusie.
 
 | Post | ${boekjaren.join(' | ')} | Trend |
