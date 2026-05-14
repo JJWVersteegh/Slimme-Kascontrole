@@ -5,8 +5,8 @@ import { ReactNode, useState } from 'react'
 type NavLink = { href: string; label: string; primary?: boolean; active?: boolean }
 
 const publicLinks: NavLink[] = [
-  { href: '/#waarom', label: 'Waarom' },
   { href: '/#hoe-het-werkt', label: 'Hoe het werkt' },
+  { href: '/#waarom', label: 'Waarom' },
   { href: '/#handleidingen', label: 'Handleidingen' },
   { href: '/#over-ons', label: 'Over ons' },
   { href: '/#tarieven', label: 'Tarieven' },

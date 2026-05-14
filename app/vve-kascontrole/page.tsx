@@ -115,8 +115,8 @@ footer a:hover{color:white}
     </div>
   </a>
   <ul class="nav-links">
-    <li><a href="/#waarom">Waarom</a></li>
     <li><a href="/#hoe-het-werkt">Hoe het werkt</a></li>
+    <li><a href="/#waarom">Waarom</a></li>
     <li><a href="/#tarieven">Tarieven</a></li>
     <li><a href="/mijn-omgeving">Mijn omgeving</a></li>
     <li><a href="/registreer" class="btn-nav">Account aanmaken</a></li>
@@ -126,8 +126,8 @@ footer a:hover{color:white}
   </button>
 </nav>
 <div class="mobile-menu" id="mob">
-  <a href="/#waarom">Waarom kascontrole?</a>
   <a href="/#hoe-het-werkt">Hoe het werkt</a>
+  <a href="/#waarom">Waarom kascontrole?</a>
   <a href="/#tarieven">Tarieven</a>
   <a href="/mijn-omgeving">Mijn omgeving</a>
   <a href="/registreer" class="mobile-btn">Account aanmaken</a>

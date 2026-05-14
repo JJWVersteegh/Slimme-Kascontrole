@@ -152,8 +152,8 @@ export default function Registreer() {
           </div>
         </a>
         <ul className="nav-links-desktop" style={{ display: 'flex', gap: '28px', listStyle: 'none', alignItems: 'center', margin: 0, padding: 0 }}>
-          <li><a href="/#waarom" style={{ fontSize: '0.88rem', fontWeight: '500', color: '#475569', textDecoration: 'none' }}>Waarom</a></li>
           <li><a href="/#hoe-het-werkt" style={{ fontSize: '0.88rem', fontWeight: '500', color: '#475569', textDecoration: 'none' }}>Hoe het werkt</a></li>
+          <li><a href="/#waarom" style={{ fontSize: '0.88rem', fontWeight: '500', color: '#475569', textDecoration: 'none' }}>Waarom</a></li>
           <li><a href="/#handleidingen" style={{ fontSize: '0.88rem', fontWeight: '500', color: '#475569', textDecoration: 'none' }}>Handleidingen</a></li>
           <li><a href="/#over-ons" style={{ fontSize: '0.88rem', fontWeight: '500', color: '#475569', textDecoration: 'none' }}>Over ons</a></li>
           <li><a href="/#tarieven" style={{ fontSize: '0.88rem', fontWeight: '500', color: '#475569', textDecoration: 'none' }}>Tarieven</a></li>
@@ -169,8 +169,8 @@ export default function Registreer() {
       </nav>
       {mobileMenuOpen && (
         <div className="nav-mobile-menu" style={{ position: 'fixed', top: '72px', left: 0, right: 0, background: 'white', borderBottom: '1px solid #e2e8f0', zIndex: 199, padding: '12px 20px 20px', boxShadow: '0 8px 24px rgba(0,0,0,0.1)' }}>
-          <a href="/#waarom" onClick={() => setMobileMenuOpen(false)}>Waarom</a>
           <a href="/#hoe-het-werkt" onClick={() => setMobileMenuOpen(false)}>Hoe het werkt</a>
+          <a href="/#waarom" onClick={() => setMobileMenuOpen(false)}>Waarom</a>
           <a href="/#handleidingen" onClick={() => setMobileMenuOpen(false)}>Handleidingen</a>
           <a href="/#over-ons" onClick={() => setMobileMenuOpen(false)}>Over ons</a>
           <a href="/#tarieven" onClick={() => setMobileMenuOpen(false)}>Tarieven</a>

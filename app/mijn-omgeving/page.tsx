@@ -736,8 +736,8 @@ async function zoekAdres(pc: string, hn: string) {
 
       <Navbar
         links={[
-          { href: '/#waarom', label: 'Waarom' },
           { href: '/#hoe-het-werkt', label: 'Hoe het werkt' },
+          { href: '/#waarom', label: 'Waarom' },
           { href: '/#handleidingen', label: 'Handleidingen' },
           { href: '/#over-ons', label: 'Over ons' },
           { href: '/#tarieven', label: 'Tarieven' },
@@ -747,8 +747,8 @@ async function zoekAdres(pc: string, hn: string) {
         rightContent={(
           <>
             <ul className="skc-nav-links" style={{ display: 'flex', gap: '22px', listStyle: 'none', alignItems: 'center', margin: 0, padding: 0 }}>
-              <li><a href="/#waarom">Waarom</a></li>
               <li><a href="/#hoe-het-werkt">Hoe het werkt</a></li>
+              <li><a href="/#waarom">Waarom</a></li>
               <li><a href="/#handleidingen">Handleidingen</a></li>
               <li><a href="/#over-ons">Over ons</a></li>
               <li><a href="/#tarieven">Tarieven</a></li>
