@@ -165,22 +165,31 @@ export async function POST(req: NextRequest) {
     const volgendeJaren = alleBoekjaren.filter(j => j > huidigJaar)
     const boekjaren = alleBoekjaren.filter(j => j <= huidigJaar)
 
-    const prompt = `Je bent een ervaren kascontroleur voor Nederlandse verenigingen, VvE's en stichtingen. Je schrijft rapporten in begrijpelijke, gewone taal — alsof je het uitlegt aan een vrijwilliger zonder financiële achtergrond. Geen vakjargon, geen ingewikkelde zinnen. Wel volledig, scherp en professioneel.
+    const prompt = `Je bent een ervaren kascontroleur voor Nederlandse verenigingen, VvE's en stichtingen. Je schrijft rapporten in begrijpelijke, gewone taal — geen vakjargon, geen overbodige uitleg. Bondig, scherp en professioneel.
+
+═══════════════════════════════════════════
+LENGTE — STRIKT MAXIMUM
+═══════════════════════════════════════════
+Het volledige rapport beslaat MAXIMAAL 6 tot 8 A4-pagina's. Dit is een kascommissie rapport, geen jaarverslag.
+- Schrijf per subsectie maximaal 1 alinea toelichting, tenzij er echt bijzonderheden zijn.
+- Geen lange inleidingen of herhalingen van wat al in een tabel staat.
+- Facturen: GEEN analyse per individuele leverancier. Alleen opvallende posten benoemen.
+- Als een sectie niets bijzonders toevoegt: maak hem kort of laat hem weg.
 
 ═══════════════════════════════════════════
 WERKWIJZE — VOLG DEZE VOLGORDE STRIKT
 ═══════════════════════════════════════════
 1. Lees ALLE geüploade gegevens volledig door.
-2. Schrijf EERST de volledige detailanalyse (secties 3.1 t/m 3.6).
+2. Schrijf EERST de volledige detailanalyse (secties 3.1 t/m 3.5).
 3. Schrijf DAARNA pas de Samenvatting bevindingen (sectie 2) — GEBASEERD OP WAT JE IN DE DETAILANALYSE HEBT GEVONDEN.
-4. De samenvatting moet 100% consistent zijn met de detailanalyse. Wat in de samenvatting staat, moet kloppen met de cijfers in de detailsecties. Nooit tegenstrijdige conclusies.
+4. De samenvatting moet 100% consistent zijn met de detailanalyse. Nooit tegenstrijdige conclusies.
 
 ═══════════════════════════════════════════
 TAAL EN OPMAAK
 ═══════════════════════════════════════════
 - Het gehele rapport is in het Nederlands. Nooit Engelse woorden.
 - Gebruik "Mutatie/Verschil" (niet "Change"), "Rekening" (niet "Account"), "Begroting" (niet "Budget").
-- Alle geldbedragen met exact 2 decimalen en komma als decimaalteken: € 1.350,00. Nooit € 1350 of € 1.350.
+- Alle geldbedragen met exact 2 decimalen en komma als decimaalteken: € 1.350,00.
 - Gebruik een punt als duizendtalscheidingsteken: € 10.000,00.
 
 ═══════════════════════════════════════════
@@ -188,7 +197,7 @@ TWEE SOORTEN INHOUD
 ═══════════════════════════════════════════
 1. CIJFERS & FEITEN → Nooit verzinnen. Gebruik ALLEEN bedragen, namen, datums en rekeningen die letterlijk in de uploads staan. Als een cijfer niet beschikbaar is: schrijf "–". Maak geen tabel als je geen enkele rij kunt invullen met echte data.
 
-2. ANALYSE & UITLEG → Schrijf altijd volledig en scherp. Beschrijf wat je ziet, wat opvalt, wat goed gaat en wat aandacht verdient. Elke sectie verdient een inhoudelijke toelichting. "Geen gegevens beschikbaar" is ALLEEN acceptabel als er echt niets over die sectie in de uploads staat.
+2. ANALYSE & UITLEG → Bondig en scherp. Beschrijf wat opvalt, wat goed gaat en wat aandacht verdient. Geen overbodige opsommingen van wat al in de tabel staat.
 
 ═══════════════════════════════════════════
 AFWIJKINGEN — ALTIJD SIGNALEREN
@@ -243,80 +252,49 @@ RAPPORTSTRUCTUUR — GEBRUIK EXACT DEZE OPBOUW
 
 ---
 
-## INHOUDSOPGAVE
-1. Opdracht en werkzaamheden
-2. Samenvatting bevindingen
-3. Bevindingen boekjaar ${huidigJaar} (hoofdanalyse)
-   - 3.1 Balans en aansluiting banksaldi
-   - 3.2 Inkoopfacturen en uitgaven
-   - 3.3 Exploitatieresultaat
-   - 3.4 Openstaande posten
-   - 3.5 Contracten en abonnementen
-   - 3.6 Bijzonderheden
-${boekjaren.length > 1 ? `4. Trendanalyse ${boekjaren.join(' – ')}\n5. Advies aan de Algemene Ledenvergadering` : '4. Advies aan de Algemene Ledenvergadering'}
-
----
-
 ## 1. OPDRACHT EN WERKZAAMHEDEN
-Beschrijf welke documenten zijn beoordeeld (met namen van bestanden en boekjaren) en welke werkzaamheden zijn verricht. Benoem expliciet dat de kascommissie heeft onderzocht of: banksaldi aansluiten, inkomsten en uitgaven correct zijn verantwoord, exploitatieresultaat juist is berekend, en openstaande posten verantwoord zijn.
+Maximaal 3-4 zinnen: welke documenten zijn beoordeeld en wat is onderzocht.
 
 ## 2. SAMENVATTING BEVINDINGEN
-⚠️ SCHRIJF DEZE SECTIE PAS NA DE VOLLEDIGE DETAILANALYSE. Elke punt hier moet overeenkomen met wat je in secties 3.1–3.6 hebt gevonden. Gebruik concrete bedragen.
+*(Opgesteld na de volledige detailanalyse in sectie 3.)*
 
-**KRITISCH — vereist actie vóór goedkeuring**
-[Beschrijf alleen echte kritische bevindingen met concrete bedragen. Als er geen zijn: "Geen kritieke bevindingen aangetroffen. De financiële administratie is in orde."]
-
-**AANDACHT — ter bespreking in de vergadering**
-[Beschrijf hier ALLE posten die meer dan 30% afwijken van begroting of vorig jaar, met de juiste richting (hoger/lager) en concrete bedragen. Voorbeeld: "Schoonmaakkosten sterk gedaald: werkelijk € 387,20 vs. € 5.840,67 in vorig jaar (daling 93%) — vraagt om verklaring." Nooit een onjuiste richting aangeven.]
-
-**AKKOORD — geen actie vereist**
-[Beschrijf wat er goed gaat, met concrete cijfers waar relevant.]
+[KRITISCH] of [AKKOORD] of [AANDACHTSPUNT: ...] — gebruik de juiste tags op basis van bevindingen. Gebruik concrete bedragen. Maximaal 5-8 bullet points totaal.
 
 ## 3. BEVINDINGEN BOEKJAAR ${huidigJaar} — HOOFDANALYSE
 
 ### 3.1 Balans en aansluiting banksaldi
-Maak een tabel van alle bankrekeningen met begin- en eindsaldo en mutatie. Analyseer de toe- of afname van de kasstand en verklaar dit in relatie tot het exploitatieresultaat. Benoem of de saldi aansluiten met het grootboek.
+Tabel van bankrekeningen met begin- en eindsaldo en mutatie. Daarna maximaal 1 alinea analyse.
 
-| Bankrekening | Beginsaldo 1 jan ${huidigJaar} | Eindsaldo 31 dec ${huidigJaar} | Mutatie |
-| --- | --- | --- | --- |
+| Bankrekening | Type | Beginsaldo 1 jan ${huidigJaar} | Eindsaldo 31 dec ${huidigJaar} | Mutatie |
+| --- | --- | --- | --- | --- |
 [Vul alleen echte bedragen in]
 
 ### 3.2 Inkoopfacturen en uitgaven
-Maak een overzichtstabel van alle leveranciers met aantal facturen, totaalbedrag en categorie. Schrijf daarna een gedetailleerde analyse per leverancier. Vergelijk elke post met de begroting én met vorig jaar. Benoem alle afwijkingen >30% expliciet met richting en bedrag.
+Overzichtstabel leveranciers (naam, totaalbedrag, categorie). Daarna: bespreek ALLEEN de opvallende posten (afwijkingen >30%, ongebruikelijke betalingen, ontbrekende facturen). Geen beschrijving per individuele leverancier als er niets bijzonders is.
 
-| Leverancier | Aantal facturen | Totaalbedrag | Categorie |
-| --- | --- | --- | --- |
+| Leverancier | Totaalbedrag | Categorie |
+| --- | --- | --- |
 [Vul alleen echte bedragen in]
 
 ### 3.3 Exploitatieresultaat
-Maak een tabel van alle inkomsten en uitgaven met werkelijk, begroot en afwijking. Analyseer het resultaat. Bespreek ELKE post met een afwijking >30% t.o.v. begroting of vorig jaar — altijd met de juiste richting (hoger/lager).
+Tabel inkomsten en uitgaven (werkelijk, begroot, afwijking). Bespreek het resultaat en alle posten met afwijking >30% — altijd met de juiste richting (hoger/lager).
 
-| Post | Werkelijk ${huidigJaar} | Begroting ${huidigJaar} | Afwijking | ${vorigeJaren.length > 0 ? `Werkelijk ${vorigeJaren[vorigeJaren.length - 1]} | Verschil vorig jaar` : ''} |
+| Post | Werkelijk ${huidigJaar} | Begroting ${huidigJaar} | Afwijking | ${vorigeJaren.length > 0 ? `Werkelijk ${vorigeJaren[vorigeJaren.length - 1]} | Verschil` : ''} |
 | --- | --- | --- | --- | ${vorigeJaren.length > 0 ? '--- | --- |' : ''} |
 [Vul alleen echte bedragen in]
 
-### 3.4 Openstaande posten
-Analyseer alle debiteuren (wat eigenaren/leden schuldig zijn) en crediteuren (wat de vereniging schuldig is aan leveranciers). Maak tabellen van openstaande posten. Benoem betalingsachterstanden en beoordeel het incassobeleid. Als alles betaald is: benoem dit als positieve bevinding.
+### 3.4 Openstaande posten en bijzonderheden
+Combineer: openstaande debiteuren/crediteuren én overige bijzonderheden (geannuleerde facturen, ontbrekende stukken, etc.). Maximaal 1 alinea per punt. Laat weg als er niets is.
 
-### 3.5 Contracten en abonnementen
-Geef een overzicht van alle lopende contracten met leverancier, jaarlijkse kosten, looptijd en beoordeling. Beoordeel of contracten doelmatig zijn en of er besparingsmogelijkheden zijn.
-
-| Contract | Leverancier | Jaarlijkse kosten | Vervaldatum | Beoordeling |
-| --- | --- | --- | --- | --- |
-[Vul alleen echte gegevens in]
-
-### 3.6 Bijzonderheden boekjaar ${huidigJaar}
-Beschrijf alle overige bijzonderheden die niet in de vorige secties zijn besproken maar wel relevant zijn voor de ALV.
-
-${boekjaren.length > 1 ? `## 4. TRENDANALYSE ${boekjaren.join(' – ')}
-Vergelijk de belangrijkste financiële posten over de beschikbare jaren. Maak een trendtabel ALLEEN met bedragen die daadwerkelijk in de uploads staan. Benoem trends: stijgend, dalend, stabiel. Geef een oordeel over de financiële ontwikkeling.
+${boekjaren.length > 1 ? `### 3.5 Trendanalyse ${boekjaren.join(' – ')}
+Tabel met de belangrijkste posten over de beschikbare jaren. Maximaal 1 alinea conclusie.
 
 | Post | ${boekjaren.join(' | ')} | Trend |
 | --- | ${boekjaren.map(() => '---').join(' | ')} | --- |
 [Vul alleen echte bedragen in — geen schattingen]` : ''}
 
-## ${boekjaren.length > 1 ? '5' : '4'}. ADVIES AAN DE ALGEMENE LEDENVERGADERING
-Geef een concreet, onderbouwd advies. Beschrijf of de kascommissie de jaarrekening goedkeurt, met eventuele voorbehouden. Geef specifieke aanbevelingen op basis van de bevindingen. Sluit af met een formele verklaring.
+## 4. ADVIES AAN DE ALGEMENE LEDENVERGADERING
+Maximaal 3-5 zinnen: goedkeuring ja/nee/voorwaardelijk, concrete aanbevelingen, formele verklaring.
 
 *De kascommissie*
 *${verenigingNaam || 'Uw vereniging'}, ${new Date().toLocaleDateString('nl-NL', { month: 'long', year: 'numeric' })}*
@@ -336,7 +314,7 @@ Geef een concreet, onderbouwd advies. Beschrijf of de kascommissie de jaarrekeni
       },
       body: JSON.stringify({
         model: 'claude-sonnet-4-6',
-        max_tokens: 16000,
+        max_tokens: 10000,
         messages: [{ role: 'user', content: prompt }],
       }),
     })
