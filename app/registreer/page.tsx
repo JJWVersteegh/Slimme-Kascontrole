@@ -186,6 +186,7 @@ export default function Registreer() {
         {/* KEUZE SCHERM */}
         {mode === 'keuze' && (
           <div style={{ background: 'white', borderRadius: '16px', padding: '40px 32px', boxShadow: '0 4px 24px rgba(13,61,46,0.08)' }}>
+            <p style={{ fontSize: '0.7rem', fontWeight: '700', letterSpacing: '0.15em', textTransform: 'uppercase', color: '#2563EB', margin: '0 0 12px', textAlign: 'center' }}>Slimme Kascontrole</p>
             <h1 style={{ fontSize: '1.5rem', fontWeight: '700', color: '#1e3a8a', marginBottom: '8px', textAlign: 'center' }}>Welkom</h1>
             <p style={{ color: '#475569', fontSize: '0.9rem', textAlign: 'center', marginBottom: '32px', lineHeight: 1.6 }}>
               Upload uw financiële bestanden en ontvang een volledig gecontroleerd kascontrolerapport. Veilig, betrouwbaar en AVG-conform.
