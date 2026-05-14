@@ -888,7 +888,7 @@ async function zoekAdres(pc: string, hn: string) {
               </div>
 
               <div style={{ background: '#eff6ff', borderRadius: '16px', padding: '14px 16px', marginBottom: '18px', fontSize: '0.84rem', color: '#1e3a8a', lineHeight: 1.65 }}>
-                Upload de bestanden van boekjaar <strong>{rapportBoekjaar}</strong>. Wilt u ook een trendanalyse? Upload dan per jaar de bestanden en druk elke keer op de uploadknop. Optioneel zijn {rapportJaarNum - 2}, {rapportJaarNum - 1} en {rapportJaarNum + 1}.<br />
+                Upload de bestanden van boekjaar <strong>{rapportBoekjaar}</strong>. U kunt <strong>meerdere bestanden tegelijk selecteren</strong> — houd Ctrl (Windows) of ⌘ (Mac) ingedrukt bij het selecteren. Wilt u ook een trendanalyse? Upload dan per jaar de bestanden en druk elke keer op de uploadknop. Optioneel zijn {rapportJaarNum - 2}, {rapportJaarNum - 1} en {rapportJaarNum + 1}.<br />
                 <span style={{ color: '#64748b', fontSize: '0.88em' }}>Ondersteunde typen: PDF, Excel, CSV, Word, PNG, JPG, HEIC · Max 10MB per bestand</span>
               </div>
 
@@ -903,7 +903,7 @@ async function zoekAdres(pc: string, hn: string) {
                   <div>
                     <label style={{ display: 'block', fontWeight: '600', color: '#0f172a', marginBottom: '7px', fontSize: '0.84rem' }}>Bestanden</label>
                     <div onClick={() => document.getElementById('fileInput')?.click()} style={{ border: '2px dashed #60a5fa', borderRadius: '16px', padding: '18px 20px', minHeight: '52px', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', background: files ? '#f0fdf4' : '#f8fafc', fontSize: '0.84rem', color: files ? '#166534' : '#475569', fontWeight: '700' }}>
-                      {files ? `✓ ${files.length} bestand(en) geselecteerd` : '📎 Klik om bestanden te selecteren'}
+                      {files ? `✓ ${files.length} bestand(en) geselecteerd` : '📎 Klik om bestanden te selecteren (meerdere tegelijk mogelijk)'}
                     </div>
                     <input id="fileInput" type="file" multiple accept=".pdf,.xlsx,.xls,.csv,.txt,.ods,.docx,.doc,.png,.jpg,.jpeg,.heic" style={{ display: 'none' }} onChange={e => setFiles(e.target.files)} />
                   </div>
