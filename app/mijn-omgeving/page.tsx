@@ -785,6 +785,8 @@ async function zoekAdres(pc: string, hn: string) {
           )}
         </div>
 
+        <p style={{ color: '#64748b', fontSize: '0.88rem', margin: '0 0 18px', lineHeight: 1.6 }}>Doorloop onderstaande stappen om uw kascontrolerapport te ontvangen. De actieve stap is blauw gemarkeerd.</p>
+
         <div style={{ background: geselecteerdeVereniging ? 'white' : '#eff6ff', border: '1px solid #e2e8f0', borderLeft: `4px solid ${geselecteerdeVereniging ? '#22c55e' : '#2563EB'}`, borderRadius: '16px', padding: '22px', marginBottom: '22px', boxShadow: geselecteerdeVereniging ? 'none' : '0 2px 12px rgba(37,99,235,0.08)' }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '16px', marginBottom: '18px', flexWrap: 'wrap' }}>
             <div>
