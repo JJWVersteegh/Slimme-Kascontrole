@@ -553,7 +553,7 @@ async function zoekAdres(pc: string, hn: string) {
 
   if (toonRapport && rapportTekstVoorWeergave) return (
     <main style={{ minHeight: '100vh', paddingTop: '72px', background: '#f8fafc', fontFamily: 'Outfit, sans-serif' }}>
-      <style>{`@media print { .no-print { display: none !important; } @page { size: A4 portrait; margin: 12mm 14mm; } html, body, main { background: white !important; overflow: visible !important; height: auto !important; } .rapport-wrapper { box-shadow: none !important; border: none !important; border-radius: 0 !important; padding: 8mm !important; margin: 0 !important; max-width: 100% !important; } .rapport-table { font-size: 8pt !important; width: 100% !important; } .rapport-table th, .rapport-table td { padding: 4px 6px !important; font-size: 8pt !important; } h1 { font-size: 12pt !important; } h2 { font-size: 10pt !important; } h3 { font-size: 9.5pt !important; } p, div, span { font-size: 9.5pt !important; } }`}</style>
+      <style>{`@media print { .no-print { display: none !important; } @page { size: A4 portrait; margin: 10mm; } html, body, main { background: white !important; overflow: visible !important; height: auto !important; } .rapport-outer { padding: 0 !important; margin: 0 !important; max-width: 100% !important; } .rapport-wrapper { box-shadow: none !important; border: none !important; border-radius: 0 !important; padding: 0 !important; margin: 0 !important; max-width: 100% !important; } .rapport-table { font-size: 8pt !important; width: 100% !important; } .rapport-table th, .rapport-table td { padding: 4px 6px !important; font-size: 8pt !important; } h1 { font-size: 12pt !important; } h2 { font-size: 10pt !important; } h3 { font-size: 9.5pt !important; } p, div, span { font-size: 9.5pt !important; } }`}</style>
       <Navbar
         className="no-print"
         links={[{ href: '/', label: '← Terug naar home' }]}
@@ -570,7 +570,7 @@ async function zoekAdres(pc: string, hn: string) {
           </div>
         )}
       />
-      <div style={{ maxWidth: '860px', margin: '0 auto', padding: '48px 24px' }}>
+      <div className="rapport-outer" style={{ maxWidth: '860px', margin: '0 auto', padding: '48px 24px' }}>
         <div className="rapport-wrapper" style={{ background: 'white', borderRadius: '16px', padding: '56px', border: '1px solid #e2e8f0', boxShadow: '0 4px 24px rgba(0,0,0,0.06)' }}>
           <div style={{ textAlign: 'center', borderBottom: '3px solid #2563EB', paddingBottom: '28px', marginBottom: '36px' }}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '12px', marginBottom: '16px' }}>
