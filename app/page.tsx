@@ -393,7 +393,7 @@ footer a:hover{color:#93c5fd}
             <button onclick="document.getElementById('video-modal').style.display='none';document.getElementById('instructie-video').pause()" style="position:absolute;top:-44px;right:0;background:none;border:none;color:white;font-size:1.8rem;cursor:pointer;line-height:1">✕</button>
             <div style="border-radius:16px;overflow:hidden;box-shadow:0 24px 64px rgba(0,0,0,0.4)">
               <video id="instructie-video" controls style="width:100%;display:block;background:#0f172a" preload="metadata">
-                <source src="/instructiefilm.MP4" type="video/mp4"/>
+                <source src="/instructiefilm.mp4" type="video/mp4"/>
               </video>
             </div>
           </div>
