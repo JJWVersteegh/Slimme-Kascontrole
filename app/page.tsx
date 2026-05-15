@@ -378,11 +378,24 @@ footer a:hover{color:#93c5fd}
   </div>
 
         <div style="margin-top:48px;text-align:center">
-          <p style="font-size:0.82rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:#2563EB;margin-bottom:12px">Bekijk hoe het werkt</p>
-          <div style="max-width:780px;margin:0 auto;border-radius:16px;overflow:hidden;box-shadow:0 8px 32px rgba(0,0,0,0.10);border:1px solid #e2e8f0">
-            <video controls style="width:100%;display:block;background:#0f172a" preload="metadata">
-              <source src="/instructiefilm.MP4" type="video/mp4"/>
-            </video>
+          <p style="font-size:0.82rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:#2563EB;margin-bottom:16px">Bekijk hoe het werkt</p>
+          <button onclick="document.getElementById('video-modal').style.display='flex'" style="display:inline-flex;align-items:center;gap:14px;background:#0f172a;color:white;border:none;border-radius:14px;padding:18px 28px;cursor:pointer;font-family:'Outfit',sans-serif;font-size:1rem;font-weight:600;box-shadow:0 8px 24px rgba(0,0,0,0.18);transition:transform 0.2s" onmouseover="this.style.transform='scale(1.03)'" onmouseout="this.style.transform='scale(1)'">
+            <span style="width:44px;height:44px;background:#2563EB;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><polygon points="5,3 19,12 5,21"/></svg>
+            </span>
+            Bekijk de instructievideo
+          </button>
+        </div>
+
+        <!-- Video modal -->
+        <div id="video-modal" onclick="if(event.target===this){this.style.display='none';document.getElementById('instructie-video').pause()}" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:999;align-items:center;justify-content:center;padding:20px">
+          <div style="width:100%;max-width:860px;position:relative">
+            <button onclick="document.getElementById('video-modal').style.display='none';document.getElementById('instructie-video').pause()" style="position:absolute;top:-44px;right:0;background:none;border:none;color:white;font-size:1.8rem;cursor:pointer;line-height:1">✕</button>
+            <div style="border-radius:16px;overflow:hidden;box-shadow:0 24px 64px rgba(0,0,0,0.4)">
+              <video id="instructie-video" controls style="width:100%;display:block;background:#0f172a" preload="metadata">
+                <source src="/instructiefilm.MP4" type="video/mp4"/>
+              </video>
+            </div>
           </div>
         </div>
 

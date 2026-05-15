@@ -251,7 +251,7 @@ export default function Registreer() {
                     1. Gegevens kascommissielid / contactpersoon
                   </h3>
                   <p style={{ margin: '0 0 18px', color: '#475569', fontSize: '0.88rem', lineHeight: 1.45 }}>
-                    Vul hier uw persoonlijke contactgegevens in. Dit hoeft niet hetzelfde adres te zijn als het adres van de VvE.
+                    Vul hier uw persoonlijke contactgegevens in. Dit hoeft niet hetzelfde adres te zijn als het adres van de vereniging.
                   </p>
 
                   <div style={{ marginBottom: '16px' }}>
@@ -304,15 +304,15 @@ export default function Registreer() {
 
                 <div style={{ marginBottom: '24px', padding: '18px', border: '1px solid #bbf7d0', borderRadius: '14px', background: '#f0fdf4' }}>
                   <h3 style={{ margin: '0 0 6px', color: '#166534', fontSize: '1.05rem', fontWeight: 800 }}>
-                    2. Gegevens eerste VvE
+                    2. Gegevens uw vereniging
                   </h3>
                   <p style={{ margin: '0 0 18px', color: '#475569', fontSize: '0.88rem', lineHeight: 1.45 }}>
                     Vul hier de gegevens en het adres van uw vereniging in. Later kunt u in Mijn omgeving extra verenigingen toevoegen.
                   </p>
 
                   <div style={{ marginBottom: '16px' }}>
-                    <label style={lbl}>Naam vereniging / VvE</label>
-                    <input type="text" value={vereniging} onChange={e => setVereniging(e.target.value)} style={inp} placeholder="bijv. VvE De Goudstraat" required />
+                    <label style={lbl}>Naam vereniging</label>
+                    <input type="text" value={vereniging} onChange={e => setVereniging(e.target.value)} style={inp} placeholder="bijv. VvE De Goudstraat of Sportclub De Eendracht" required />
                   </div>
 
                   <div style={{ marginBottom: '16px' }}>
@@ -321,14 +321,14 @@ export default function Registreer() {
                   </div>
 
                   <div>
-                    <label style={lbl}>Adres VvE</label>
+                    <label style={lbl}>Adres vereniging</label>
                     <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '8px', marginBottom: '8px' }}>
                       <input type="text" value={vvePostcode} onChange={e => { setVvePostcode(e.target.value); zoekAdres(e.target.value, vveHuisnummer, setVveAdres, setVvePlaats, setVveAdresLaden) }}
-                        style={inp} placeholder="Postcode VvE" maxLength={7} required />
+                        style={inp} placeholder="Postcode vereniging" maxLength={7} required />
                       <input type="text" value={vveHuisnummer} onChange={e => { setVveHuisnummer(e.target.value); zoekAdres(vvePostcode, e.target.value, setVveAdres, setVvePlaats, setVveAdresLaden) }}
                         style={inp} placeholder="Nr." required />
                     </div>
-                    {vveAdresLaden && <p style={{ fontSize: '0.78rem', color: '#2563EB', margin: '0 0 6px' }}>🔍 VvE-adres opzoeken...</p>}
+                    {vveAdresLaden && <p style={{ fontSize: '0.78rem', color: '#2563EB', margin: '0 0 6px' }}>🔍 Adres opzoeken...</p>}
                     {vveAdres && (
                       <div style={{ background: 'white', border: '1px solid #bbf7d0', borderRadius: '6px', padding: '8px 12px', fontSize: '0.83rem', color: '#166534' }}>
                         ✓ {vveAdres}, {vvePostcode.toUpperCase()} {vvePlaats}
@@ -336,8 +336,8 @@ export default function Registreer() {
                     )}
                     {!vveAdres && vvePostcode.length >= 6 && vveHuisnummer && !vveAdresLaden && (
                       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', marginTop: '8px' }}>
-                        <input type="text" value={vveAdres} onChange={e => setVveAdres(e.target.value)} style={{ ...inp, fontSize: '0.88rem' }} placeholder="Straatnaam + nr VvE" />
-                        <input type="text" value={vvePlaats} onChange={e => setVvePlaats(e.target.value)} style={{ ...inp, fontSize: '0.88rem' }} placeholder="Plaats VvE" />
+                        <input type="text" value={vveAdres} onChange={e => setVveAdres(e.target.value)} style={{ ...inp, fontSize: '0.88rem' }} placeholder="Straatnaam + nr" />
+                        <input type="text" value={vvePlaats} onChange={e => setVvePlaats(e.target.value)} style={{ ...inp, fontSize: '0.88rem' }} placeholder="Plaats" />
                       </div>
                     )}
                   </div>
