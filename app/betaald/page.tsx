@@ -41,7 +41,7 @@ function BetaaldContent() {
           </p>
         </div>
 
-        <a href="/mijn-omgeving" style={{ background: '#2563EB', color: 'white', padding: '14px 32px', borderRadius: '8px', textDecoration: 'none', fontWeight: '700', fontSize: '1rem', display: 'inline-block' }}>
+        <a href="/mijn-omgeving?betaald=true" style={{ background: '#2563EB', color: 'white', padding: '14px 32px', borderRadius: '8px', textDecoration: 'none', fontWeight: '700', fontSize: '1rem', display: 'inline-block' }}>
           Ga naar mijn omgeving →
         </a>
       </div>

@@ -377,6 +377,15 @@ footer a:hover{color:#93c5fd}
     </div>
   </div>
 
+        <div style="margin-top:48px;text-align:center">
+          <p style="font-size:0.82rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:#2563EB;margin-bottom:12px">Bekijk hoe het werkt</p>
+          <div style="max-width:780px;margin:0 auto;border-radius:16px;overflow:hidden;box-shadow:0 8px 32px rgba(0,0,0,0.10);border:1px solid #e2e8f0">
+            <video controls style="width:100%;display:block;background:#0f172a" preload="metadata">
+              <source src="/instructiefilm.MP4" type="video/mp4"/>
+            </video>
+          </div>
+        </div>
+
         <div style="margin-top:32px;text-align:center">
           <a
             href="/voorbeeld-rapport"

@@ -104,6 +104,15 @@ export default function MijnOmgeving() {
   }, [toonRapport])
 
   useEffect(() => {
+    const params = new URLSearchParams(window.location.search)
+    if (params.get('betaald') === 'true') {
+      setTimeout(() => {
+        document.getElementById('stap4')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      }, 800)
+    }
+  }, [])
+
+  useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (!session) { router.push('/registreer'); return }
       if (session.user.email === ADMIN_EMAIL) { router.push('/admin'); return }
@@ -1002,7 +1011,7 @@ async function zoekAdres(pc: string, hn: string) {
                 </button>
               </div>
             ) : (
-              <div style={{ background: huidigJaarGegenereerd ? '#f0fdf4' : '#eff6ff', borderRadius: '16px', padding: '22px', border: '1px solid #e2e8f0', borderLeft: `4px solid ${huidigJaarGegenereerd ? '#22c55e' : '#2563EB'}`, marginBottom: '22px', boxShadow: huidigJaarGegenereerd ? 'none' : '0 2px 12px rgba(37,99,235,0.08)' }}>
+              <div id="stap4" style={{ background: huidigJaarGegenereerd ? '#f0fdf4' : '#eff6ff', borderRadius: '16px', padding: '22px', border: '1px solid #e2e8f0', borderLeft: `4px solid ${huidigJaarGegenereerd ? '#22c55e' : '#2563EB'}`, marginBottom: '22px', boxShadow: huidigJaarGegenereerd ? 'none' : '0 2px 12px rgba(37,99,235,0.08)' }}>
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '16px', flexWrap: 'wrap' }}>
                   <div>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '10px' }}>
