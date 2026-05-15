@@ -105,12 +105,12 @@ export default function MijnOmgeving() {
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search)
-    if (params.get('betaald') === 'true') {
+    if (params.get('betaald') === 'true' && !loading) {
       setTimeout(() => {
         document.getElementById('stap4')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
-      }, 800)
+      }, 300)
     }
-  }, [])
+  }, [loading])
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -996,7 +996,7 @@ async function zoekAdres(pc: string, hn: string) {
             )}
 
             {!huidigJaarBetaald ? (
-              <div style={{ background: heeftUploadsVoorRapportjaar ? '#eff6ff' : 'white', borderRadius: '16px', padding: '22px', border: '1px solid #e2e8f0', borderLeft: `4px solid ${heeftUploadsVoorRapportjaar ? '#2563EB' : '#cbd5e1'}`, marginBottom: '22px', boxShadow: heeftUploadsVoorRapportjaar ? '0 2px 12px rgba(37,99,235,0.08)' : 'none' }}>
+              <div id="stap4" style={{ background: heeftUploadsVoorRapportjaar ? '#eff6ff' : 'white', borderRadius: '16px', padding: '22px', border: '1px solid #e2e8f0', borderLeft: `4px solid ${heeftUploadsVoorRapportjaar ? '#2563EB' : '#cbd5e1'}`, marginBottom: '22px', boxShadow: heeftUploadsVoorRapportjaar ? '0 2px 12px rgba(37,99,235,0.08)' : 'none' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '10px' }}>
                   <div style={{ width: heeftUploadsVoorRapportjaar ? '32px' : '26px', height: heeftUploadsVoorRapportjaar ? '32px' : '26px', borderRadius: '999px', display: 'flex', alignItems: 'center', justifyContent: 'center', background: heeftUploadsVoorRapportjaar ? '#2563EB' : '#f1f5f9', color: heeftUploadsVoorRapportjaar ? 'white' : '#94a3b8', fontWeight: '700', fontSize: heeftUploadsVoorRapportjaar ? '0.95rem' : '0.84rem', flexShrink: 0 }}>4</div>
                   <span style={{ color: heeftUploadsVoorRapportjaar ? '#2563EB' : '#94a3b8', fontSize: '0.82rem', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.08em' }}>Stap 4</span>
