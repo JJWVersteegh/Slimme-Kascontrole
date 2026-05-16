@@ -21,7 +21,7 @@ export default function Privacyverklaring() {
           },
           {
             t: '2. Welke gegevens verwerken wij',
-            c: 'Wij verwerken de volgende persoonsgegevens: naam en contactgegevens (e-mailadres, telefoonnummer, adres), gegevens van uw vereniging of VvE (naam, KvK-nummer, adres), financiële bestanden die u uploadt (bankafschriften, jaarrekeningen, kasboeken), en betalingsgegevens (verwerkt via Mollie, wij slaan geen betaalgegevens op).'
+            c: 'Wij verwerken de volgende persoonsgegevens: naam en contactgegevens (e-mailadres, telefoonnummer, adres), gegevens van uw vereniging of VvE (naam, KvK-nummer, adres), financiële bestanden die u uploadt (bankafschriften, jaarrekeningen, kasboeken), en betalingsgegevens (verwerkt via Stripe, wij slaan geen betaalgegevens op).'
           },
           {
             t: '3. Waarom verwerken wij uw gegevens',
