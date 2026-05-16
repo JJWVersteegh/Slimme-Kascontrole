@@ -207,14 +207,16 @@ export default function MijnOmgeving() {
     if (!geselecteerdeVereniging) return
     setBetaalLoading(true)
     try {
+      const { data: { session } } = await supabase.auth.getSession()
       const res = await fetch('/api/checkout', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${session?.access_token}` },
         body: JSON.stringify({ email: user.email, user_id: user.id, boekjaar: rapportBoekjaar, vereniging_id: geselecteerdeVereniging.id }),
       })
       const data = await res.json()
       if (data.url) window.location.href = data.url
-    } catch { }
+      else setError(data.error || 'Betalen mislukt')
+    } catch { setError('Betalen mislukt') }
     setBetaalLoading(false)
   }
 
