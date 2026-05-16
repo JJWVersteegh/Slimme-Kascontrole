@@ -27,6 +27,7 @@ export default function Registreer() {
   const [error, setError] = useState('')
   const [succes, setSucces] = useState('')
   const [herkomst, setHerkomst] = useState('')
+  const [herkomstAnders, setHerkomstAnders] = useState('')
   const [beheerderSlug, setBeheerderSlug] = useState('')
   const [beheerders, setBeheerders] = useState<{ id: string; naam: string; slug: string }[]>([])
   const router = useRouter()
@@ -102,7 +103,7 @@ export default function Registreer() {
         postcode: postcode.toUpperCase().replace(' ', ''),
         plaats,
         telefoon,
-        herkomst: herkomst || null,
+        herkomst: herkomst === 'anders' && herkomstAnders ? `anders: ${herkomstAnders}` : herkomst || null,
         beheerder_id: beheerder?.id || null,
         beheerder_naam: beheerder?.naam || null,
       })
@@ -290,7 +291,7 @@ export default function Registreer() {
                 {/* Herkomst */}
                 <div style={{ marginBottom: '24px', padding: '18px', border: '1px solid #e2e8f0', borderRadius: '14px', background: '#f8fafc' }}>
                   <h3 style={{ margin: '0 0 14px', color: '#0f172a', fontSize: '0.95rem', fontWeight: 700 }}>3. Hoe heeft u ons gevonden? <span style={{ fontWeight: 400, color: '#94a3b8', fontSize: '0.82rem' }}>(optioneel)</span></h3>
-                  <select value={herkomst} onChange={e => { setHerkomst(e.target.value); if (e.target.value !== 'beheerder') setBeheerderSlug('') }} style={{ ...inp, marginBottom: herkomst === 'beheerder' ? '12px' : '0' }}>
+                  <select value={herkomst} onChange={e => { setHerkomst(e.target.value); if (e.target.value !== 'beheerder') setBeheerderSlug(''); if (e.target.value !== 'anders') setHerkomstAnders('') }} style={{ ...inp, marginBottom: (herkomst === 'beheerder' || herkomst === 'anders') ? '12px' : '0' }}>
                     <option value="">Selecteer een optie...</option>
                     <option value="google">Google / zoekmachine</option>
                     <option value="social">Via social media</option>
@@ -305,6 +306,9 @@ export default function Registreer() {
                         <option key={b.id} value={b.slug}>{b.naam}</option>
                       ))}
                     </select>
+                  )}
+                  {herkomst === 'anders' && (
+                    <input value={herkomstAnders} onChange={e => setHerkomstAnders(e.target.value)} placeholder="Namelijk..." style={inp} />
                   )}
                 </div>
 
