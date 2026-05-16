@@ -44,6 +44,7 @@ nav.scrolled{box-shadow:0 4px 24px rgba(0,0,0,0.08)}
 .mobile-menu a{display:block;padding:12px 16px;color:#0f172a;text-decoration:none;font-weight:500;border-radius:8px;font-size:0.95rem;transition:background 0.15s}
 .mobile-menu a:hover{background:#f8fafc}
 .mobile-menu .mobile-btn{background:#2563EB;color:white!important;text-align:center;margin-top:8px;font-weight:700}
+.mobile-menu .mobile-btn-outline{background:white;color:#1e3a8a!important;text-align:center;margin-top:8px;font-weight:700;border:2px solid #bfdbfe}
 
 /* HERO */
 .hero-wrapper{background:#f8fafc;padding:24px 48px 48px;margin-top:72px}
@@ -291,7 +292,7 @@ footer a:hover{color:#93c5fd}
   <a href="#tarieven" onclick="closeMenu()">Tarieven</a>
   <a href="#contact" onclick="closeMenu()">Contact</a>
   <a href="/mijn-omgeving" onclick="closeMenu()">Mijn omgeving</a>
-  <a href="/registreer?mode=login" onclick="closeMenu()">Inloggen</a>
+  <a href="/registreer?mode=login" onclick="closeMenu()" class="mobile-btn-outline">Inloggen</a>
   <a href="/registreer" class="mobile-btn">Account aanmaken</a>
 </div>
 

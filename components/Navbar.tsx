@@ -2,7 +2,7 @@
 
 import { ReactNode, useState } from 'react'
 
-type NavLink = { href: string; label: string; primary?: boolean; active?: boolean }
+type NavLink = { href: string; label: string; primary?: boolean; outline?: boolean; active?: boolean }
 
 const publicLinks: NavLink[] = [
   { href: '/#hoe-het-werkt', label: 'Hoe het werkt' },
@@ -12,7 +12,7 @@ const publicLinks: NavLink[] = [
   { href: '/#tarieven', label: 'Tarieven' },
   { href: '/#contact', label: 'Contact' },
   { href: '/mijn-omgeving', label: 'Mijn omgeving' },
-  { href: '/registreer?mode=login', label: 'Inloggen' },
+  { href: '/registreer?mode=login', label: 'Inloggen', outline: true },
   { href: '/registreer', label: 'Account aanmaken', primary: true },
 ]
 
@@ -44,6 +44,7 @@ export default function Navbar({ links = publicLinks, rightContent, mobileExtra,
         .skc-mobile-menu a{display:block;padding:12px 16px;color:#0f172a;text-decoration:none;font-weight:500;border-radius:8px;font-size:0.95rem;transition:background 0.15s;font-family:Outfit,sans-serif}
         .skc-mobile-menu a:hover{background:#f8fafc}
         .skc-mobile-menu .skc-mobile-btn{background:#2563EB;color:white!important;text-align:center;margin-top:8px;font-weight:700}
+        .skc-mobile-menu .skc-mobile-btn-outline{background:white;color:#1e3a8a!important;text-align:center;margin-top:8px;font-weight:700;border:2px solid #bfdbfe}
         .skc-back-mobile{display:none;align-items:center;gap:6px;color:#2563EB;font-size:0.88rem;font-weight:600;text-decoration:none;font-family:Outfit,sans-serif;background:#eff6ff;border:1.5px solid #bfdbfe;padding:7px 14px;border-radius:8px;white-space:nowrap}
         @media(max-width:900px){.skc-nav{padding:0 20px}.skc-nav-links,.skc-nav-right{display:none!important}.skc-hamburger{display:flex!important}.skc-back-mobile{display:flex!important}}
         @media(max-width:500px){.skc-nav{padding:0 16px!important}}
@@ -86,7 +87,7 @@ export default function Navbar({ links = publicLinks, rightContent, mobileExtra,
       {open && (
         <div className="skc-mobile-menu">
           {links.map(link => (
-            <a key={`${link.href}-${link.label}`} href={link.href} onClick={() => setOpen(false)} className={link.primary ? 'skc-mobile-btn' : undefined} style={link.active ? { color: '#2563EB' } : undefined}>{link.label}</a>
+            <a key={`${link.href}-${link.label}`} href={link.href} onClick={() => setOpen(false)} className={link.primary ? 'skc-mobile-btn' : link.outline ? 'skc-mobile-btn-outline' : undefined} style={link.active ? { color: '#2563EB' } : undefined}>{link.label}</a>
           ))}
           {mobileExtra}
         </div>
