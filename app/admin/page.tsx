@@ -82,7 +82,7 @@ export default function AdminPortal() {
   const [zoekterm, setZoekterm] = useState('')
   const [filter, setFilter] = useState<'alle' | 'betaald' | 'onbetaald' | 'rapport_klaar'>('alle')
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-  const [activeTab, setActiveTab] = useState<'klanten' | 'kortingscodes'>('klanten')
+  const [activeTab, setActiveTab] = useState<'klanten' | 'kortingscodes' | 'beheerders'>('klanten')
 
   // Kortingscodes state
   const [coupons, setCoupons] = useState<Coupon[]>([])
@@ -93,6 +93,12 @@ export default function AdminPortal() {
   const [nieuwVerloopt, setNieuwVerloopt] = useState('')
   const [aanmakenLoading, setAanmakenLoading] = useState(false)
   const [aanmakenFout, setAanmakenFout] = useState('')
+  // Beheerders state
+  const [beheerders, setBeheerders] = useState<{ id: string; naam: string; slug: string; fee_bedrag: number; actief: boolean }[]>([])
+  const [beheerderForm, setBeheerderForm] = useState({ naam: '', slug: '', fee_bedrag: '15' })
+  const [beheerderSaving, setBeheerderSaving] = useState(false)
+  const [bewerkBeheerder, setBewerkBeheerder] = useState<string | null>(null)
+
   const [bewerkKlant, setBewerkKlant] = useState<Klant | null>(null)
   const [bewerkData, setBewerkData] = useState<Partial<Klant>>({})
   const [bewerkVerenigingData, setBewerkVerenigingData] = useState<Partial<Vereniging>>({})
@@ -173,8 +179,34 @@ export default function AdminPortal() {
     setCouponsLoading(false)
   }
 
+  async function loadBeheerders() {
+    const { data } = await supabase.from('beheerders').select('*').order('naam')
+    if (data) setBeheerders(data)
+  }
+
+  async function handleSaveBeheerder() {
+    if (!beheerderForm.naam || !beheerderForm.slug) return
+    setBeheerderSaving(true)
+    const slug = beheerderForm.slug.toLowerCase().replace(/[^a-z0-9-]/g, '-')
+    if (bewerkBeheerder) {
+      await supabase.from('beheerders').update({ naam: beheerderForm.naam, slug, fee_bedrag: parseInt(beheerderForm.fee_bedrag) || 15 }).eq('id', bewerkBeheerder)
+    } else {
+      await supabase.from('beheerders').insert({ naam: beheerderForm.naam, slug, fee_bedrag: parseInt(beheerderForm.fee_bedrag) || 15 })
+    }
+    setBeheerderForm({ naam: '', slug: '', fee_bedrag: '15' })
+    setBewerkBeheerder(null)
+    await loadBeheerders()
+    setBeheerderSaving(false)
+  }
+
+  async function handleToggleBeheerder(id: string, actief: boolean) {
+    await supabase.from('beheerders').update({ actief: !actief }).eq('id', id)
+    await loadBeheerders()
+  }
+
   useEffect(() => {
     if (activeTab === 'kortingscodes') loadCoupons()
+    if (activeTab === 'beheerders') loadBeheerders()
   }, [activeTab])
 
   async function handleAanmaken() {
@@ -498,6 +530,7 @@ export default function AdminPortal() {
         <div style={{ display: 'flex', gap: '10px', marginBottom: '24px' }}>
           <button className={`tab-btn${activeTab === 'klanten' ? ' actief' : ''}`} onClick={() => setActiveTab('klanten')}>👥 Klanten</button>
           <button className={`tab-btn${activeTab === 'kortingscodes' ? ' actief' : ''}`} onClick={() => setActiveTab('kortingscodes')}>🎁 Kortingscodes</button>
+          <button className={`tab-btn${activeTab === 'beheerders' ? ' actief' : ''}`} onClick={() => setActiveTab('beheerders')}>🤝 Beheerders</button>
         </div>
 
         {/* Klanten tab */}
@@ -784,6 +817,98 @@ export default function AdminPortal() {
                   </div>
                 )}
               </div>
+            </div>
+          </div>
+        )}
+        {/* Beheerders tab */}
+        {activeTab === 'beheerders' && (
+          <div style={{ display: 'flex', gap: '24px', alignItems: 'flex-start', flexWrap: 'wrap' }}>
+
+            {/* Formulier */}
+            <div style={{ flex: '0 0 320px', background: 'white', borderRadius: '16px', border: '1px solid #e2e8f0', padding: '24px' }}>
+              <h2 style={{ fontSize: '1rem', fontWeight: '700', color: '#0f172a', margin: '0 0 20px' }}>
+                {bewerkBeheerder ? '✏️ Beheerder bewerken' : '➕ Beheerder toevoegen'}
+              </h2>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                <div>
+                  <label style={{ fontSize: '0.78rem', fontWeight: '600', color: '#64748b', display: 'block', marginBottom: '4px' }}>Naam *</label>
+                  <input value={beheerderForm.naam} onChange={e => setBeheerderForm(f => ({ ...f, naam: e.target.value, slug: bewerkBeheerder ? f.slug : e.target.value.toLowerCase().replace(/[^a-z0-9]/g, '-') }))} placeholder="bijv. Janssen Beheer" style={{ width: '100%', padding: '9px 14px', border: '1.5px solid #e2e8f0', borderRadius: '8px', fontSize: '0.88rem', fontFamily: 'Outfit, sans-serif', outline: 'none', boxSizing: 'border-box' }} />
+                </div>
+                <div>
+                  <label style={{ fontSize: '0.78rem', fontWeight: '600', color: '#64748b', display: 'block', marginBottom: '4px' }}>Slug (URL) *</label>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px', background: '#f8fafc', border: '1.5px solid #e2e8f0', borderRadius: '8px', padding: '9px 14px' }}>
+                    <span style={{ fontSize: '0.78rem', color: '#94a3b8', whiteSpace: 'nowrap' }}>slimmekascontrole.nl/via/</span>
+                    <input value={beheerderForm.slug} onChange={e => setBeheerderForm(f => ({ ...f, slug: e.target.value.toLowerCase().replace(/[^a-z0-9-]/g, '-') }))} placeholder="janssen-beheer" style={{ flex: 1, border: 'none', outline: 'none', fontSize: '0.88rem', fontFamily: 'Outfit, sans-serif', background: 'transparent', minWidth: 0 }} />
+                  </div>
+                </div>
+                <div>
+                  <label style={{ fontSize: '0.78rem', fontWeight: '600', color: '#64748b', display: 'block', marginBottom: '4px' }}>Fee per verkoop (€)</label>
+                  <input type="number" value={beheerderForm.fee_bedrag} onChange={e => setBeheerderForm(f => ({ ...f, fee_bedrag: e.target.value }))} placeholder="15" style={{ width: '100%', padding: '9px 14px', border: '1.5px solid #e2e8f0', borderRadius: '8px', fontSize: '0.88rem', fontFamily: 'Outfit, sans-serif', outline: 'none', boxSizing: 'border-box' }} />
+                </div>
+                <button onClick={handleSaveBeheerder} disabled={beheerderSaving} style={{ background: '#2563EB', color: 'white', border: 'none', padding: '10px 16px', borderRadius: '8px', cursor: 'pointer', fontSize: '0.88rem', fontWeight: '700', fontFamily: 'Outfit, sans-serif' }}>
+                  {beheerderSaving ? 'Opslaan...' : bewerkBeheerder ? 'Opslaan' : '+ Toevoegen'}
+                </button>
+                {bewerkBeheerder && (
+                  <button onClick={() => { setBewerkBeheerder(null); setBeheerderForm({ naam: '', slug: '', fee_bedrag: '15' }) }} style={{ background: '#f1f5f9', color: '#475569', border: 'none', padding: '10px 16px', borderRadius: '8px', cursor: 'pointer', fontSize: '0.88rem', fontFamily: 'Outfit, sans-serif' }}>
+                    Annuleren
+                  </button>
+                )}
+              </div>
+            </div>
+
+            {/* Overzicht */}
+            <div style={{ flex: 1, minWidth: '300px', background: 'white', borderRadius: '16px', border: '1px solid #e2e8f0', overflow: 'hidden' }}>
+              <div style={{ padding: '20px 24px', borderBottom: '1px solid #e2e8f0' }}>
+                <h2 style={{ fontSize: '1rem', fontWeight: '700', color: '#0f172a', margin: 0 }}>Beheerders ({beheerders.length})</h2>
+              </div>
+              {beheerders.length === 0 ? (
+                <div style={{ padding: '40px', textAlign: 'center', color: '#94a3b8', fontSize: '0.9rem' }}>Nog geen beheerders toegevoegd</div>
+              ) : (
+                <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+                  <thead>
+                    <tr style={{ background: '#f8fafc' }}>
+                      <th style={{ padding: '10px 16px', textAlign: 'left', fontSize: '0.72rem', fontWeight: '700', color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Naam</th>
+                      <th style={{ padding: '10px 16px', textAlign: 'left', fontSize: '0.72rem', fontWeight: '700', color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Unieke link</th>
+                      <th style={{ padding: '10px 16px', textAlign: 'center', fontSize: '0.72rem', fontWeight: '700', color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Klanten</th>
+                      <th style={{ padding: '10px 16px', textAlign: 'center', fontSize: '0.72rem', fontWeight: '700', color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Betaald</th>
+                      <th style={{ padding: '10px 16px', textAlign: 'center', fontSize: '0.72rem', fontWeight: '700', color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Fee</th>
+                      <th style={{ padding: '10px 16px', textAlign: 'center', fontSize: '0.72rem', fontWeight: '700', color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Status</th>
+                      <th style={{ padding: '10px 16px' }}></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {beheerders.map(b => {
+                      const klanten_via = klanten.filter((k: any) => k.beheerder_id === b.id)
+                      const betaald_via = klanten_via.filter(k => heeftBetaald(k.user_id))
+                      const fee_totaal = betaald_via.length * b.fee_bedrag
+                      return (
+                        <tr key={b.id} style={{ borderTop: '1px solid #f1f5f9' }}>
+                          <td style={{ padding: '12px 16px', fontWeight: '600', color: '#0f172a', fontSize: '0.88rem' }}>{b.naam}</td>
+                          <td style={{ padding: '12px 16px' }}>
+                            <code style={{ fontSize: '0.75rem', color: '#2563EB', background: '#eff6ff', padding: '2px 8px', borderRadius: '4px' }}>/via/{b.slug}</code>
+                          </td>
+                          <td style={{ padding: '12px 16px', textAlign: 'center', fontWeight: '700', color: '#0f172a' }}>{klanten_via.length}</td>
+                          <td style={{ padding: '12px 16px', textAlign: 'center', fontWeight: '700', color: '#16a34a' }}>{betaald_via.length}</td>
+                          <td style={{ padding: '12px 16px', textAlign: 'center', fontWeight: '700', color: '#2563EB' }}>€{fee_totaal}</td>
+                          <td style={{ padding: '12px 16px', textAlign: 'center' }}>
+                            <span style={{ background: b.actief ? '#dcfce7' : '#f1f5f9', color: b.actief ? '#166534' : '#64748b', padding: '3px 10px', borderRadius: '999px', fontSize: '0.72rem', fontWeight: '700' }}>
+                              {b.actief ? 'Actief' : 'Inactief'}
+                            </span>
+                          </td>
+                          <td style={{ padding: '12px 16px', textAlign: 'right' }}>
+                            <div style={{ display: 'flex', gap: '6px', justifyContent: 'flex-end' }}>
+                              <button onClick={() => { setBewerkBeheerder(b.id); setBeheerderForm({ naam: b.naam, slug: b.slug, fee_bedrag: String(b.fee_bedrag) }) }} style={{ background: '#eff6ff', color: '#2563EB', border: 'none', padding: '5px 10px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.78rem', fontWeight: '600', fontFamily: 'Outfit, sans-serif' }}>✏️</button>
+                              <button onClick={() => handleToggleBeheerder(b.id, b.actief)} style={{ background: b.actief ? '#fef9c3' : '#f0fdf4', color: b.actief ? '#854d0e' : '#166534', border: 'none', padding: '5px 10px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.78rem', fontWeight: '600', fontFamily: 'Outfit, sans-serif' }}>
+                                {b.actief ? 'Deactiveer' : 'Activeer'}
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      )
+                    })}
+                  </tbody>
+                </table>
+              )}
             </div>
           </div>
         )}

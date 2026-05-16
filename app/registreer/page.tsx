@@ -26,6 +26,9 @@ export default function Registreer() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [succes, setSucces] = useState('')
+  const [herkomst, setHerkomst] = useState('')
+  const [beheerderSlug, setBeheerderSlug] = useState('')
+  const [beheerders, setBeheerders] = useState<{ id: string; naam: string; slug: string }[]>([])
   const router = useRouter()
   const adresDebounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const vveAdresDebounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
@@ -33,6 +36,16 @@ export default function Registreer() {
   useEffect(() => {
     const params = new URLSearchParams(window.location.search)
     if (params.get('mode') === 'login') setMode('login')
+    if (params.get('ref')) {
+      setHerkomst('beheerder')
+      setBeheerderSlug(params.get('ref')!)
+    }
+  }, [])
+
+  useEffect(() => {
+    supabase.from('beheerders').select('id, naam, slug').eq('actief', true).order('naam').then(({ data }) => {
+      if (data) setBeheerders(data)
+    })
   }, [])
 
   useEffect(() => {
@@ -78,6 +91,7 @@ export default function Registreer() {
     }
     // Sla gegevens op in klanten tabel
     if (authData.user) {
+      const beheerder = beheerders.find(b => b.slug === beheerderSlug)
       await supabase.from('klanten').upsert({
         user_id: authData.user.id,
         email,
@@ -88,6 +102,9 @@ export default function Registreer() {
         postcode: postcode.toUpperCase().replace(' ', ''),
         plaats,
         telefoon,
+        herkomst: herkomst || null,
+        beheerder_id: beheerder?.id || null,
+        beheerder_naam: beheerder?.naam || null,
       })
 
       // Sla ook op in verenigingen tabel
@@ -270,6 +287,26 @@ export default function Registreer() {
                     )}
                   </div>
                 </div>
+                {/* Herkomst */}
+                <div style={{ marginBottom: '24px', padding: '18px', border: '1px solid #e2e8f0', borderRadius: '14px', background: '#f8fafc' }}>
+                  <h3 style={{ margin: '0 0 14px', color: '#0f172a', fontSize: '0.95rem', fontWeight: 700 }}>3. Hoe heeft u ons gevonden? <span style={{ fontWeight: 400, color: '#94a3b8', fontSize: '0.82rem' }}>(optioneel)</span></h3>
+                  <select value={herkomst} onChange={e => { setHerkomst(e.target.value); if (e.target.value !== 'beheerder') setBeheerderSlug('') }} style={{ ...inp, marginBottom: herkomst === 'beheerder' ? '12px' : '0' }}>
+                    <option value="">Selecteer een optie...</option>
+                    <option value="google">Google</option>
+                    <option value="kennis">Via een kennis</option>
+                    <option value="beheerder">Via een beheerder</option>
+                    <option value="anders">Anders</option>
+                  </select>
+                  {herkomst === 'beheerder' && (
+                    <select value={beheerderSlug} onChange={e => setBeheerderSlug(e.target.value)} style={inp}>
+                      <option value="">Selecteer uw beheerder...</option>
+                      {beheerders.map(b => (
+                        <option key={b.id} value={b.slug}>{b.naam}</option>
+                      ))}
+                    </select>
+                  )}
+                </div>
+
                 {error && <p style={{ color: '#d44', fontSize: '0.85rem', marginBottom: '12px' }}>{error}</p>}
                 <button type="submit" disabled={loading} style={{ width: '100%', padding: '14px', background: '#1e3a8a', color: 'white', border: 'none', borderRadius: '8px', fontSize: '1rem', fontWeight: '700', cursor: 'pointer' }}>
                   {loading ? 'Bezig...' : 'Account aanmaken'}
