@@ -308,8 +308,8 @@ footer a:hover{color:#93c5fd}
         </a>
 
         <div class="hero-secondary-links">
-          <a href="#hoe-het-werkt">
-            Bekijk hoe het werkt →
+          <a href="#" onclick="event.preventDefault();document.getElementById('video-modal').style.display='flex'">
+            ▶ Bekijk instructievideo
           </a>
 
           <a href="/voorbeeld-rapport">

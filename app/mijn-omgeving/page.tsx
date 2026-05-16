@@ -823,7 +823,7 @@ async function zoekAdres(pc: string, hn: string) {
                   <span style={{ background: '#dbeafe', color: '#1D4ED8', fontSize: '0.72rem', fontWeight: '700', padding: '3px 10px', borderRadius: '999px', whiteSpace: 'nowrap' }}>Aan de beurt</span>
                 </div>
               )}
-              <h2 style={{ fontSize: '1.15rem', fontWeight: '700', color: '#0f172a', margin: 0 }}>Kies de VvE</h2>
+              <h2 style={{ fontSize: '1.15rem', fontWeight: '700', color: '#0f172a', margin: 0 }}>Kies de vereniging</h2>
               <p style={{ color: '#475569', margin: '6px 0 0', fontSize: '0.84rem' }}>Selecteer voor welke vereniging u wilt uploaden of rapporteren.</p>
             </div>
             {verenigingen.length < 10 && (
@@ -838,7 +838,7 @@ async function zoekAdres(pc: string, hn: string) {
               <div style={{ fontSize: '2.2rem', marginBottom: '8px' }}>🏢</div>
               <p style={{ marginTop: 0 }}>Nog geen verenigingen. Voeg uw eerste vereniging toe.</p>
               <button onClick={() => openVerenigingForm()} style={{ background: '#2563EB', color: 'white', border: 'none', padding: '12px 22px', borderRadius: '12px', cursor: 'pointer', fontWeight: '700', fontFamily: 'Outfit, sans-serif', marginTop: '8px' }}>
-                + Eerste vereniging toevoegen
+                + Vereniging toevoegen
               </button>
             </div>
           ) : (
@@ -851,7 +851,7 @@ async function zoekAdres(pc: string, hn: string) {
                 }}
                 style={{ ...inp, minHeight: '54px', fontSize: '0.84rem', fontWeight: '700', borderRadius: '14px', borderColor: '#93c5fd', flex: '1', minWidth: '220px', maxWidth: '400px' }}
               >
-                <option value="" disabled>Selecteer een VvE...</option>
+                <option value="" disabled>Selecteer een vereniging...</option>
                 {verenigingen.map(v => (
                   <option key={v.id} value={v.id}>{v.naam}</option>
                 ))}
