@@ -27,13 +27,13 @@ export async function POST(req: NextRequest) {
     const user_id = sessionUser.id
 
     // Controleer of betaald voor dit boekjaar + vereniging
-    const rapportQuery = supabase
+    let rapportQuery = supabase
       .from('rapporten')
       .select('betaald')
       .eq('user_id', user_id)
       .eq('boekjaar', rapport_boekjaar)
 
-    if (vereniging_id) rapportQuery.eq('vereniging_id', vereniging_id)
+    if (vereniging_id) rapportQuery = rapportQuery.eq('vereniging_id', vereniging_id)
 
     const { data: rapportRecord } = await rapportQuery.single()
 
@@ -42,13 +42,13 @@ export async function POST(req: NextRequest) {
     }
 
     // Haal uploads op gefilterd op vereniging
-    const uploadsQuery = supabase
+    let uploadsQuery = supabase
       .from('uploads')
       .select('*')
       .eq('user_id', user_id)
       .order('boekjaar', { ascending: true })
 
-    if (vereniging_id) uploadsQuery.eq('vereniging_id', vereniging_id)
+    if (vereniging_id) uploadsQuery = uploadsQuery.eq('vereniging_id', vereniging_id)
 
     const { data: uploads } = await uploadsQuery
 
