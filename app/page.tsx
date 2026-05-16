@@ -271,6 +271,7 @@ footer a:hover{color:#93c5fd}
     <li><a href="#tarieven">Tarieven</a></li>
     <li><a href="#contact">Contact</a></li>
     <li><a href="/mijn-omgeving">Mijn omgeving</a></li>
+    <li><a href="/registreer?mode=login">Inloggen</a></li>
     <li><a href="/registreer" class="btn-nav">Account aanmaken</a></li>
   </ul>
   <button class="hamburger" id="hamburger" onclick="toggleMenu()" aria-label="Menu">
@@ -289,6 +290,7 @@ footer a:hover{color:#93c5fd}
   <a href="#tarieven" onclick="closeMenu()">Tarieven</a>
   <a href="#contact" onclick="closeMenu()">Contact</a>
   <a href="/mijn-omgeving" onclick="closeMenu()">Mijn omgeving</a>
+  <a href="/registreer?mode=login" onclick="closeMenu()">Inloggen</a>
   <a href="/registreer" class="mobile-btn">Account aanmaken</a>
 </div>
 
@@ -314,6 +316,10 @@ footer a:hover{color:#93c5fd}
 
           <a href="/voorbeeld-rapport">
             Bekijk voorbeeldrapport →
+          </a>
+
+          <a href="/registreer?mode=login" style="color:#64748b;font-weight:500;">
+            Al een account? Inloggen →
           </a>
         </div>
       </div>

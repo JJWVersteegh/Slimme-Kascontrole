@@ -147,6 +147,25 @@ export default function Registreer() {
             {/* Registreer */}
             {mode === 'registreer' && (
               <form onSubmit={handleRegistreer}>
+                {/* Intro */}
+                <div style={{ textAlign: 'center', marginBottom: '28px' }}>
+                  <p style={{ fontSize: '0.7rem', fontWeight: '700', letterSpacing: '0.15em', textTransform: 'uppercase', color: '#2563EB', margin: '0 0 8px' }}>Slimme Kascontrole</p>
+                  <h1 style={{ fontSize: '1.4rem', fontWeight: '700', color: '#1e3a8a', margin: '0 0 8px' }}>Account aanmaken</h1>
+                  <p style={{ color: '#475569', fontSize: '0.88rem', lineHeight: 1.6, margin: 0 }}>Vul uw gegevens in en ontvang uw kascontrolerapport. Eenmalig €59 — geen abonnement.</p>
+                </div>
+                {/* Privacy blokje */}
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '7px', marginBottom: '24px', padding: '14px 16px', background: '#f8fafc', borderRadius: '10px', border: '1px solid #e2e8f0' }}>
+                  {[
+                    { icon: '🔒', tekst: 'Bestanden versleuteld opgeslagen in Europese datacenters' },
+                    { icon: '🇳🇱', tekst: 'AVG-conform — uw data wordt nooit gedeeld met derden' },
+                    { icon: '📄', tekst: 'Alleen gebruikt voor uw kascontrolerapport' },
+                  ].map((item, i) => (
+                    <div key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: '8px', fontSize: '0.8rem', color: '#475569' }}>
+                      <span style={{ flexShrink: 0 }}>{item.icon}</span>
+                      <span>{item.tekst}</span>
+                    </div>
+                  ))}
+                </div>
                 <div style={{ marginBottom: '24px', padding: '18px', border: '1px solid #bfdbfe', borderRadius: '14px', background: '#eff6ff' }}>
                   <h3 style={{ margin: '0 0 6px', color: '#1e3a8a', fontSize: '1.05rem', fontWeight: 800 }}>
                     1. Gegevens kascommissielid / contactpersoon
@@ -247,13 +266,10 @@ export default function Registreer() {
                 <button type="submit" disabled={loading} style={{ width: '100%', padding: '14px', background: '#1e3a8a', color: 'white', border: 'none', borderRadius: '8px', fontSize: '1rem', fontWeight: '700', cursor: 'pointer' }}>
                   {loading ? 'Bezig...' : 'Account aanmaken'}
                 </button>
-                <p style={{ textAlign: 'center', marginTop: '16px', fontSize: '0.87rem', color: '#475569' }}>
-                  Al een account?{' '}
-                  <button type="button" onClick={() => { setMode('login'); setError('') }}
-                    style={{ background: 'none', border: 'none', color: '#2563EB', fontSize: '0.87rem', fontWeight: '600', cursor: 'pointer', textDecoration: 'underline', fontFamily: 'Outfit, sans-serif' }}>
-                    Inloggen →
-                  </button>
-                </p>
+                <button type="button" onClick={() => { setMode('login'); setError('') }}
+                  style={{ width: '100%', marginTop: '12px', padding: '13px', background: 'white', border: '2px solid #bfdbfe', color: '#1e3a8a', borderRadius: '8px', fontSize: '0.95rem', fontWeight: '700', cursor: 'pointer', fontFamily: 'Outfit, sans-serif' }}>
+                  Al een account? Inloggen →
+                </button>
               </form>
             )}
 
@@ -278,13 +294,10 @@ export default function Registreer() {
                 <button type="submit" disabled={loading} style={{ width: '100%', padding: '14px', background: '#1e3a8a', color: 'white', border: 'none', borderRadius: '8px', fontSize: '1rem', fontWeight: '700', cursor: 'pointer' }}>
                   {loading ? 'Bezig...' : 'Inloggen'}
                 </button>
-                <p style={{ textAlign: 'center', marginTop: '16px', fontSize: '0.87rem', color: '#475569' }}>
-                  Nog geen account?{' '}
-                  <button type="button" onClick={() => { setMode('registreer'); setError('') }}
-                    style={{ background: 'none', border: 'none', color: '#2563EB', fontSize: '0.87rem', fontWeight: '600', cursor: 'pointer', textDecoration: 'underline', fontFamily: 'Outfit, sans-serif' }}>
-                    Maak er een aan →
-                  </button>
-                </p>
+                <button type="button" onClick={() => { setMode('registreer'); setError('') }}
+                  style={{ width: '100%', marginTop: '12px', padding: '13px', background: 'white', border: '2px solid #bfdbfe', color: '#1e3a8a', borderRadius: '8px', fontSize: '0.95rem', fontWeight: '700', cursor: 'pointer', fontFamily: 'Outfit, sans-serif' }}>
+                  Nog geen account? Registreer →
+                </button>
               </form>
             )}
 
