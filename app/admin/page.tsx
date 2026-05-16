@@ -100,6 +100,7 @@ export default function AdminPortal() {
   const [beheerderForm, setBeheerderForm] = useState({ naam: '', slug: '', fee_bedrag: '15' })
   const [beheerderSaving, setBeheerderSaving] = useState(false)
   const [bewerkBeheerder, setBewerkBeheerder] = useState<string | null>(null)
+  const [deleteBeheerderConfirm, setDeleteBeheerderConfirm] = useState<string | null>(null)
 
   const [bewerkKlant, setBewerkKlant] = useState<Klant | null>(null)
   const [bewerkData, setBewerkData] = useState<Partial<Klant>>({})
@@ -206,9 +207,9 @@ export default function AdminPortal() {
     await loadBeheerders()
   }
 
-  async function handleDeleteBeheerder(id: string, naam: string) {
-    if (!confirm(`Beheerder "${naam}" definitief verwijderen?`)) return
+  async function handleDeleteBeheerder(id: string) {
     await supabase.from('beheerders').delete().eq('id', id)
+    setDeleteBeheerderConfirm(null)
     await loadBeheerders()
   }
 
@@ -916,7 +917,14 @@ export default function AdminPortal() {
                               <button onClick={() => handleToggleBeheerder(b.id, b.actief)} style={{ background: b.actief ? '#fef9c3' : '#f0fdf4', color: b.actief ? '#854d0e' : '#166534', border: 'none', padding: '5px 10px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.78rem', fontWeight: '600', fontFamily: 'Outfit, sans-serif' }}>
                                 {b.actief ? 'Deactiveer' : 'Activeer'}
                               </button>
-                              <button onClick={() => handleDeleteBeheerder(b.id, b.naam)} style={{ background: '#fee2e2', color: '#991b1b', border: 'none', padding: '5px 10px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.78rem', fontWeight: '600', fontFamily: 'Outfit, sans-serif' }}>🗑️</button>
+                              {deleteBeheerderConfirm === b.id ? (
+                                <span style={{ display: 'inline-flex', gap: '4px', alignItems: 'center' }}>
+                                  <button onClick={() => handleDeleteBeheerder(b.id)} style={{ background: '#dc2626', color: 'white', border: 'none', padding: '5px 10px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.78rem', fontWeight: '600', fontFamily: 'Outfit, sans-serif' }}>Ja, verwijder</button>
+                                  <button onClick={() => setDeleteBeheerderConfirm(null)} style={{ background: '#f1f5f9', color: '#475569', border: 'none', padding: '5px 10px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.78rem', fontFamily: 'Outfit, sans-serif' }}>Annuleer</button>
+                                </span>
+                              ) : (
+                                <button onClick={() => setDeleteBeheerderConfirm(b.id)} style={{ background: '#fee2e2', color: '#991b1b', border: 'none', padding: '5px 10px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.78rem', fontWeight: '600', fontFamily: 'Outfit, sans-serif' }}>🗑️</button>
+                              )}
                             </div>
                           </td>
                         </tr>
