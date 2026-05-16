@@ -68,7 +68,6 @@ export default function MijnOmgeving() {
   const [bevestigDelete, setBevestigDelete] = useState<string | null>(null)
   const [bevestigDeleteRapport, setBevestigDeleteRapport] = useState<{ boekjaar: string, vereniging_id: string | null } | null>(null)
   const [deleteRapportLoading, setDeleteRapportLoading] = useState(false)
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
   // Profiel bewerken (persoonlijk)
   const [toonProfiel, setToonProfiel] = useState(false)
