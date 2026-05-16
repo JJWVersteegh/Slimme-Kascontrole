@@ -252,6 +252,26 @@ footer a:hover{color:#93c5fd}
   color:#2563eb;
 }
 
+.hero-btn-row{
+  display:flex;
+  gap:12px;
+  flex-wrap:wrap;
+  align-items:center;
+}
+
+@media(max-width:500px){
+  .hero-btn-row{
+    flex-direction:column;
+    align-items:stretch;
+    width:100%;
+  }
+  .hero-btn-row a{
+    text-align:center;
+    width:100%;
+    box-sizing:border-box;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -307,9 +327,9 @@ footer a:hover{color:#93c5fd}
       <h1>Kascontrole voor uw VvE of vereniging. <em>€59. Klaar in minuten.</em></h1>
       <p class="hero-sub">Upload uw financiële bestanden en ontvang binnen minuten een volledig gecontroleerd kascontrolerapport. Eenmalig €59 incl. btw — geen abonnement.</p>
       <div class="hero-ctas-vertical">
-        <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center;width:100%;">
-          <a href="/registreer" class="btn-primary" style="flex:1;text-align:center;">Account aanmaken</a>
-          <a href="/registreer?mode=login" style="flex:1;text-align:center;padding:14px 24px;border-radius:8px;border:2px solid #2563EB;color:#2563EB;font-size:0.95rem;font-weight:700;text-decoration:none;font-family:'Outfit',sans-serif;background:white;">Inloggen</a>
+        <div class="hero-btn-row">
+          <a href="/registreer" class="btn-primary">Account aanmaken</a>
+          <a href="/registreer?mode=login" style="padding:14px 24px;border-radius:8px;border:2px solid #2563EB;color:#2563EB;font-size:0.95rem;font-weight:700;text-decoration:none;font-family:'Outfit',sans-serif;background:white;white-space:nowrap;display:inline-block;">Inloggen</a>
         </div>
 
         <div class="hero-secondary-links">
