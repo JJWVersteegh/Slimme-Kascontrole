@@ -14,11 +14,12 @@ const html = `<!DOCTYPE html>
 <html lang="nl">
 <head>
 <meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet"/>
 <style>
+:root{--cream:#f8fafc;--border:#e2e8f0;--ink:#0f172a;--ink-soft:#475569;--blue:#2563EB}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{overflow-x:hidden;width:100%}
 body{overflow-x:hidden;width:100%;max-width:100vw}
@@ -608,31 +609,31 @@ footer a:hover{color:#93c5fd}
       <div style="display:flex;flex-direction:column;gap:16px">
         <h2 style="font-weight:700;color:var(--ink);font-size:1.1rem;margin-bottom:4px" class="fade-in">Veelgestelde vragen</h2>
         <div style="background:white;border-radius:12px;padding:20px;border:1px solid var(--border)" class="fade-in">
-          <h4 style="font-weight:700;color:var(--ink);font-size:0.9rem;margin-bottom:8px">❓ Hoe snel ontvang ik mijn rapport?</h4>
+          <h3 style="font-weight:700;color:var(--ink);font-size:0.9rem;margin-bottom:8px">❓ Hoe snel ontvang ik mijn rapport?</h3>
           <p style="font-size:0.85rem;color:var(--ink-soft);line-height:1.6">Direct na betaling kunt u op "Genereer rapport" klikken. Het rapport wordt automatisch gegenereerd op basis van uw geüploade bestanden.</p>
         </div>
         <div style="background:white;border-radius:12px;padding:20px;border:1px solid var(--border)" class="fade-in">
-          <h4 style="font-weight:700;color:var(--ink);font-size:0.9rem;margin-bottom:8px">❓ Welke bestanden kan ik uploaden?</h4>
+          <h3 style="font-weight:700;color:var(--ink);font-size:0.9rem;margin-bottom:8px">❓ Welke bestanden kan ik uploaden?</h3>
           <p style="font-size:0.85rem;color:var(--ink-soft);line-height:1.6">PDF, Excel (.xlsx, .xls) en CSV. Exporteer vanuit Twinq, Isabel, Yuki of uw eigen kasboek.</p>
         </div>
         <div style="background:white;border-radius:12px;padding:20px;border:1px solid var(--border)" class="fade-in">
-          <h4 style="font-weight:700;color:var(--ink);font-size:0.9rem;margin-bottom:8px">❓ Is mijn financiële data veilig?</h4>
+          <h3 style="font-weight:700;color:var(--ink);font-size:0.9rem;margin-bottom:8px">❓ Is mijn financiële data veilig?</h3>
           <p style="font-size:0.85rem;color:var(--ink-soft);line-height:1.6">Ja. Al uw bestanden worden versleuteld opgeslagen op servers binnen de Europese Unie. Wij delen nooit gegevens met derden.</p>
         </div>
         <div style="background:white;border-radius:12px;padding:20px;border:1px solid var(--border)" class="fade-in">
-          <h4 style="font-weight:700;color:var(--ink);font-size:0.9rem;margin-bottom:8px">❓ Kan ik rapporten van meerdere jaren opslaan?</h4>
+          <h3 style="font-weight:700;color:var(--ink);font-size:0.9rem;margin-bottom:8px">❓ Kan ik rapporten van meerdere jaren opslaan?</h3>
           <p style="font-size:0.85rem;color:var(--ink-soft);line-height:1.6">Ja, uw omgeving bewaart alle uploads en rapporten. Zo kunt u eenvoudig vergelijken over de jaren heen.</p>
         </div>
         <div style="background:white;border-radius:12px;padding:20px;border:1px solid var(--border)" class="fade-in">
-          <h4 style="font-weight:700;color:var(--ink);font-size:0.9rem;margin-bottom:8px">❓ Wat als ik hulp nodig heb?</h4>
+          <h3 style="font-weight:700;color:var(--ink);font-size:0.9rem;margin-bottom:8px">❓ Wat als ik hulp nodig heb?</h3>
           <p style="font-size:0.85rem;color:var(--ink-soft);line-height:1.6">Bel of mail ons gerust. Wij helpen u door het proces en zorgen dat uw rapport er professioneel uitziet.</p>
         </div>
         <div style="background:white;border-radius:12px;padding:20px;border:1px solid var(--border)" class="fade-in">
-          <h4 style="font-weight:700;color:var(--ink);font-size:0.9rem;margin-bottom:8px">❓ Werkt Slimme Kascontrole ook voor sportverenigingen?</h4>
+          <h3 style="font-weight:700;color:var(--ink);font-size:0.9rem;margin-bottom:8px">❓ Werkt Slimme Kascontrole ook voor sportverenigingen?</h3>
           <p style="font-size:0.85rem;color:var(--ink-soft);line-height:1.6">Ja! Slimme Kascontrole is geschikt voor alle Nederlandse verenigingen — VvE's, sportverenigingen, buurtverenigingen en stichtingen. Elke organisatie met een kascommissie kan ons rapport gebruiken voor de ALV.</p>
         </div>
         <div style="background:white;border-radius:12px;padding:20px;border:1px solid var(--border)" class="fade-in">
-          <h4 style="font-weight:700;color:var(--ink);font-size:0.9rem;margin-bottom:8px">❓ Is kascontrole verplicht voor mijn vereniging?</h4>
+          <h3 style="font-weight:700;color:var(--ink);font-size:0.9rem;margin-bottom:8px">❓ Is kascontrole verplicht voor mijn vereniging?</h3>
           <p style="font-size:0.85rem;color:var(--ink-soft);line-height:1.6">Voor VvE's is kascontrole wettelijk verplicht (artikel 2:48 BW). Voor sportverenigingen en stichtingen is het vaak vastgelegd in de statuten. In alle gevallen helpt een professioneel kascontrolerapport uw kascommissie sterk op de ALV te staan.</p>
         </div>
       </div>
@@ -665,6 +666,7 @@ footer a:hover{color:#93c5fd}
   <span>© 2026 Slimme Kascontrole · Een dienst van Vertras B.V.</span>
   <div class="footer-links">
     <a href="/voorwaarden">Voorwaarden</a>
+    <a href="/privacyverklaring">Privacyverklaring</a>
     <a href="#contact">Contact</a>
     <a href="/mijn-omgeving">Mijn omgeving</a>
     <a href="/registreer">Account aanmaken</a>
@@ -701,6 +703,16 @@ document.addEventListener('click',function(e){
   const menu=document.getElementById('mobile-menu')
   const ham=document.getElementById('hamburger')
   if(menu&&menu.style.display==='block'&&!menu.contains(e.target)&&!ham.contains(e.target))closeMenu()
+})
+document.addEventListener('keydown',function(e){
+  if(e.key==='Escape'){
+    const modal=document.getElementById('video-modal')
+    if(modal&&modal.style.display==='flex'){
+      modal.style.display='none'
+      const video=document.getElementById('instructie-video')
+      if(video)video.pause()
+    }
+  }
 })
 </script>
 </body>

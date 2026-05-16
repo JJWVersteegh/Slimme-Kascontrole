@@ -4,6 +4,8 @@ export const metadata: Metadata = {
   title: 'Kascontrole Sportvereniging – Professioneel rapport voor uw club | €59',
   description: 'Kascontrole voor uw sportvereniging. Volledig gecontroleerd rapport in minuten. Eenmalig €59 incl. btw — geen abonnement. Klaar voor de ledenvergadering.',
   alternates: { canonical: '/sportvereniging-kascontrole' },
+  openGraph: { title: 'Kascontrole Sportvereniging – Professioneel rapport voor uw club | €59', description: 'Kascontrole voor uw sportvereniging. Volledig gecontroleerd rapport in minuten. Eenmalig €59 incl. btw.', url: 'https://www.slimmekascontrole.nl/sportvereniging-kascontrole', images: [{ url: '/og-image.jpg', width: 1200, height: 630 }] },
+  twitter: { card: 'summary_large_image', title: 'Kascontrole Sportvereniging – Professioneel rapport voor uw club | €59', images: ['/og-image.jpg'] },
 }
 
 export default function SportverenigingKascontrole() {

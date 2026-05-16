@@ -36,7 +36,7 @@ const jsonLd = {
   "name": "Slimme Kascontrole",
   "description": "Professioneel kascontrolerapport voor VvE's, sportverenigingen en stichtingen.",
   "url": siteUrl,
-  "logo": `${siteUrl}/logo.png`,
+  "logo": `${siteUrl}/og-image.jpg`,
   "telephone": "06-24235829",
   "email": "info@slimmekascontrole.nl",
   "address": {

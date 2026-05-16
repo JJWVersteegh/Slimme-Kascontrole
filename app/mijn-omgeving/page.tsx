@@ -7,6 +7,7 @@ import Navbar from '@/components/Navbar'
 
 interface Upload {
   id: string
+  user_id?: string
   boekjaar: string
   status: string
   upload_datum: string
@@ -36,6 +37,7 @@ interface Vereniging {
 }
 
 interface Rapport {
+  user_id?: string
   boekjaar: string
   betaald: boolean
   rapport_tekst?: string
@@ -64,7 +66,6 @@ export default function MijnOmgeving() {
   const [uploadError, setUploadError] = useState('')
   const [rapportError, setRapportError] = useState('')
   const [toonRapport, setToonRapport] = useState(false)
-  const [verborgenRapportJaren, setVerborgenRapportJaren] = useState<Set<string>>(new Set())
   const [bevestigDelete, setBevestigDelete] = useState<string | null>(null)
   const [bevestigDeleteRapport, setBevestigDeleteRapport] = useState<{ boekjaar: string, vereniging_id: string | null } | null>(null)
   const [deleteRapportLoading, setDeleteRapportLoading] = useState(false)
@@ -262,7 +263,7 @@ export default function MijnOmgeving() {
     const { boekjaar, vereniging_id } = info
     if (!confirm(`Rapport voor boekjaar ${boekjaar} verwijderen?`)) return
 
-    setVerborgenRapportJaren(prev => new Set(prev).add(`${user?.id}_${boekjaar}`))
+    setDeleteRapportLoading(true)
 
     try {
       let rapportQuery = supabase
@@ -277,7 +278,7 @@ export default function MijnOmgeving() {
 
       if (rapportError) {
         console.error('Delete rapport error:', rapportError)
-        setVerborgenRapportJaren(prev => { const next = new Set(prev); next.delete(`${user?.id}_${boekjaar}`); return next })
+        setDeleteRapportLoading(false)
         alert(`Verwijderen mislukt: ${rapportError.message} (code: ${rapportError.code})`)
         return
       }
@@ -298,8 +299,9 @@ export default function MijnOmgeving() {
       if (user?.id && user?.email) await loadData(user.id, user.email)
     } catch (err) {
       console.error(err)
-      setVerborgenRapportJaren(prev => { const next = new Set(prev); next.delete(`${user?.id}_${boekjaar}`); return next })
       alert('Verwijderen mislukt')
+    } finally {
+      setDeleteRapportLoading(false)
     }
   }
 

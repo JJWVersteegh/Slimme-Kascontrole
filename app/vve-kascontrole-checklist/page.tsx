@@ -4,6 +4,8 @@ export const metadata: Metadata = {
   title: 'VvE Kascontrole Checklist – Alles wat u nodig heeft | Slimme Kascontrole',
   description: 'Volledige VvE kascontrole checklist. Welke documenten heeft u nodig? Wat moet er gecontroleerd worden? Download uw checklist of laat Slimme Kascontrole het voor u doen voor €59.',
   alternates: { canonical: '/vve-kascontrole-checklist' },
+  openGraph: { title: 'VvE Kascontrole Checklist – Alles wat u nodig heeft | Slimme Kascontrole', description: 'Volledige VvE kascontrole checklist. Of laat Slimme Kascontrole het voor u doen voor €59.', url: 'https://www.slimmekascontrole.nl/vve-kascontrole-checklist', images: [{ url: '/og-image.jpg', width: 1200, height: 630 }] },
+  twitter: { card: 'summary_large_image', title: 'VvE Kascontrole Checklist – Alles wat u nodig heeft | Slimme Kascontrole', images: ['/og-image.jpg'] },
 }
 
 export default function VveKascontroleChecklist() {

@@ -4,6 +4,8 @@ export const metadata: Metadata = {
   title: 'Kascommissie Rapport – Professioneel kascontrolerapport voor uw vereniging | €59',
   description: 'Professioneel kascommissie rapport voor uw vereniging of VvE. Volledig gecontroleerd in minuten. Eenmalig €59 incl. btw — klaar voor de ledenvergadering.',
   alternates: { canonical: '/kascommissie-rapport' },
+  openGraph: { title: 'Kascommissie Rapport – Professioneel kascontrolerapport voor uw vereniging | €59', description: 'Professioneel kascommissie rapport voor uw vereniging of VvE. Volledig gecontroleerd in minuten. Eenmalig €59.', url: 'https://www.slimmekascontrole.nl/kascommissie-rapport', images: [{ url: '/og-image.jpg', width: 1200, height: 630 }] },
+  twitter: { card: 'summary_large_image', title: 'Kascommissie Rapport – Professioneel kascontrolerapport voor uw vereniging | €59', images: ['/og-image.jpg'] },
 }
 
 export default function KascommissieRapport() {

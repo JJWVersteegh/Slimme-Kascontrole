@@ -4,6 +4,8 @@ export const metadata: Metadata = {
   title: 'VvE Kascontrole – Professioneel kascontrolerapport voor uw VvE | €59',
   description: 'Laat uw VvE kascontrole uitvoeren door Slimme Kascontrole. Volledig gecontroleerd rapport in minuten. Wettelijk verplicht, eenmalig €59 incl. btw. Geen abonnement.',
   alternates: { canonical: '/vve-kascontrole' },
+  openGraph: { title: 'VvE Kascontrole – Professioneel kascontrolerapport voor uw VvE | €59', description: 'Volledig gecontroleerd kascontrolerapport voor uw VvE. Wettelijk verplicht. Eenmalig €59 incl. btw.', url: 'https://www.slimmekascontrole.nl/vve-kascontrole', images: [{ url: '/og-image.jpg', width: 1200, height: 630 }] },
+  twitter: { card: 'summary_large_image', title: 'VvE Kascontrole – Professioneel kascontrolerapport voor uw VvE | €59', images: ['/og-image.jpg'] },
 }
 
 export default function VveKascontrole() {

@@ -4,6 +4,8 @@ export const metadata: Metadata = {
   title: 'VvE Kascommissie – Wat doet de kascommissie? | Slimme Kascontrole',
   description: 'Alles over de VvE kascommissie. Wat zijn de taken? Wie mag lid zijn? Hoe werkt de kascontrole? En hoe stelt Slimme Kascontrole uw rapport op voor €59.',
   alternates: { canonical: '/vve-kascommissie' },
+  openGraph: { title: 'VvE Kascommissie – Wat doet de kascommissie? | Slimme Kascontrole', description: 'Alles over de VvE kascommissie. Taken, samenstelling en hoe Slimme Kascontrole uw rapport opstelt voor €59.', url: 'https://www.slimmekascontrole.nl/vve-kascommissie', images: [{ url: '/og-image.jpg', width: 1200, height: 630 }] },
+  twitter: { card: 'summary_large_image', title: 'VvE Kascommissie – Wat doet de kascommissie? | Slimme Kascontrole', images: ['/og-image.jpg'] },
 }
 
 export default function VveKascommissie() {

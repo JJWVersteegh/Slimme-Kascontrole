@@ -1,5 +1,5 @@
 'use client'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { supabase } from '@/lib/supabase'
 import { useRouter } from 'next/navigation'
 import Navbar from '@/components/Navbar'
@@ -27,6 +27,8 @@ export default function Registreer() {
   const [error, setError] = useState('')
   const [succes, setSucces] = useState('')
   const router = useRouter()
+  const adresDebounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const vveAdresDebounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search)
@@ -182,9 +184,9 @@ export default function Registreer() {
                   <div style={{ marginBottom: '16px' }}>
                     <label style={lbl}>Uw persoonlijke adres</label>
                     <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '8px', marginBottom: '8px' }}>
-                      <input type="text" value={postcode} onChange={e => { setPostcode(e.target.value); zoekAdres(e.target.value, huisnummer, setAdres, setPlaats, setAdresLaden) }}
+                      <input type="text" value={postcode} onChange={e => { setPostcode(e.target.value); if (adresDebounceRef.current) clearTimeout(adresDebounceRef.current); adresDebounceRef.current = setTimeout(() => zoekAdres(e.target.value, huisnummer, setAdres, setPlaats, setAdresLaden), 600) }}
                         style={inp} placeholder="Postcode, bijv. 1234 AB" maxLength={7} />
-                      <input type="text" value={huisnummer} onChange={e => { setHuisnummer(e.target.value); zoekAdres(postcode, e.target.value, setAdres, setPlaats, setAdresLaden) }}
+                      <input type="text" value={huisnummer} onChange={e => { setHuisnummer(e.target.value); if (adresDebounceRef.current) clearTimeout(adresDebounceRef.current); adresDebounceRef.current = setTimeout(() => zoekAdres(postcode, e.target.value, setAdres, setPlaats, setAdresLaden), 600) }}
                         style={inp} placeholder="Nr." />
                     </div>
                     {adresLaden && <p style={{ fontSize: '0.78rem', color: '#2563EB', margin: '0 0 6px' }}>🔍 Persoonlijk adres opzoeken...</p>}
@@ -243,9 +245,9 @@ export default function Registreer() {
                   <div>
                     <label style={lbl}>Adres vereniging</label>
                     <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '8px', marginBottom: '8px' }}>
-                      <input type="text" value={vvePostcode} onChange={e => { setVvePostcode(e.target.value); zoekAdres(e.target.value, vveHuisnummer, setVveAdres, setVvePlaats, setVveAdresLaden) }}
+                      <input type="text" value={vvePostcode} onChange={e => { setVvePostcode(e.target.value); if (vveAdresDebounceRef.current) clearTimeout(vveAdresDebounceRef.current); vveAdresDebounceRef.current = setTimeout(() => zoekAdres(e.target.value, vveHuisnummer, setVveAdres, setVvePlaats, setVveAdresLaden), 600) }}
                         style={inp} placeholder="Postcode vereniging" maxLength={7} required />
-                      <input type="text" value={vveHuisnummer} onChange={e => { setVveHuisnummer(e.target.value); zoekAdres(vvePostcode, e.target.value, setVveAdres, setVvePlaats, setVveAdresLaden) }}
+                      <input type="text" value={vveHuisnummer} onChange={e => { setVveHuisnummer(e.target.value); if (vveAdresDebounceRef.current) clearTimeout(vveAdresDebounceRef.current); vveAdresDebounceRef.current = setTimeout(() => zoekAdres(vvePostcode, e.target.value, setVveAdres, setVvePlaats, setVveAdresLaden), 600) }}
                         style={inp} placeholder="Nr." required />
                     </div>
                     {vveAdresLaden && <p style={{ fontSize: '0.78rem', color: '#2563EB', margin: '0 0 6px' }}>🔍 Adres opzoeken...</p>}
@@ -276,6 +278,10 @@ export default function Registreer() {
             {/* Login */}
             {mode === 'login' && (
               <form onSubmit={handleLogin}>
+                <div style={{ textAlign: 'center', marginBottom: '24px' }}>
+                  <p style={{ fontSize: '0.7rem', fontWeight: '700', letterSpacing: '0.15em', textTransform: 'uppercase', color: '#2563EB', margin: '0 0 8px' }}>Slimme Kascontrole</p>
+                  <h1 style={{ fontSize: '1.4rem', fontWeight: '700', color: '#1e3a8a', margin: 0 }}>Inloggen</h1>
+                </div>
                 <div style={{ marginBottom: '16px' }}>
                   <label style={lbl}>E-mailadres</label>
                   <input type="email" value={email} onChange={e => setEmail(e.target.value)} style={inp} placeholder="uw@emailadres.nl" required />
