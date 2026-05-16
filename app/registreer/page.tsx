@@ -94,6 +94,7 @@ export default function Registreer() {
     // Sla gegevens op in klanten tabel
     if (authData.user) {
       const beheerder = beheerders.find(b => b.slug === beheerderSlug)
+      const beheerderVrijTekst = herkomst === 'beheerder' && !beheerder && beheerderSlug ? beheerderSlug : null
       await supabase.from('klanten').upsert({
         user_id: authData.user.id,
         email,
@@ -106,7 +107,7 @@ export default function Registreer() {
         telefoon,
         herkomst: herkomst === 'anders' && herkomstAnders ? `anders: ${herkomstAnders}` : herkomst || null,
         beheerder_id: beheerder?.id || null,
-        beheerder_naam: beheerder?.naam || null,
+        beheerder_naam: beheerder?.naam || beheerderVrijTekst || null,
       })
 
       // Sla ook op in verenigingen tabel
@@ -298,16 +299,19 @@ export default function Registreer() {
                     <option value="google">Google / zoekmachine</option>
                     <option value="social">Via social media</option>
                     <option value="beheerder">Via een relatie</option>
-                    <option value="mond-tot-mond">Via een bekende / mond-tot-mond</option>
                     <option value="anders">Anders</option>
                   </select>
                   {herkomst === 'beheerder' && (
-                    <select value={beheerderSlug} onChange={e => setBeheerderSlug(e.target.value)} style={inp}>
-                      <option value="">Selecteer uw relatie...</option>
-                      {beheerders.map(b => (
-                        <option key={b.id} value={b.slug}>{b.naam}</option>
-                      ))}
-                    </select>
+                    beheerders.length > 0 ? (
+                      <select value={beheerderSlug} onChange={e => setBeheerderSlug(e.target.value)} style={inp}>
+                        <option value="">Selecteer uw relatie...</option>
+                        {beheerders.map(b => (
+                          <option key={b.id} value={b.slug}>{b.naam}</option>
+                        ))}
+                      </select>
+                    ) : (
+                      <input value={beheerderSlug} onChange={e => setBeheerderSlug(e.target.value)} placeholder="Via wie heeft u ons gevonden?" style={inp} />
+                    )
                   )}
                   {herkomst === 'anders' && (
                     <input value={herkomstAnders} onChange={e => setHerkomstAnders(e.target.value)} placeholder="Namelijk..." style={inp} />
