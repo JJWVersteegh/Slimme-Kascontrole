@@ -69,7 +69,6 @@ export default function MijnOmgeving() {
   const [bevestigDelete, setBevestigDelete] = useState<string | null>(null)
   const [bevestigDeleteRapport, setBevestigDeleteRapport] = useState<{ boekjaar: string, vereniging_id: string | null } | null>(null)
   const [deleteRapportLoading, setDeleteRapportLoading] = useState(false)
-  const [deleteVerenigingConfirm, setDeleteVerenigingConfirm] = useState<string | null>(null)
 
   // Profiel bewerken (persoonlijk)
   const [toonProfiel, setToonProfiel] = useState(false)
@@ -468,7 +467,6 @@ async function zoekAdres(pc: string, hn: string) {
 
   async function handleDeleteVereniging(v: Vereniging) {
     if (!user) return
-    setDeleteVerenigingConfirm(null)
     setError('')
 
     try {
@@ -854,14 +852,7 @@ async function zoekAdres(pc: string, hn: string) {
                 ))}
               </select>
               {geselecteerdeVereniging && verenigingen.length > 1 && (
-                deleteVerenigingConfirm === geselecteerdeVereniging.id ? (
-                  <span style={{ display: 'inline-flex', gap: '6px', alignItems: 'center' }}>
-                    <button onClick={() => handleDeleteVereniging(geselecteerdeVereniging)} style={{ background: '#dc2626', color: 'white', border: 'none', padding: '12px 16px', borderRadius: '12px', cursor: 'pointer', fontSize: '0.84rem', fontWeight: '700', fontFamily: 'Outfit, sans-serif', whiteSpace: 'nowrap' }}>Ja, verwijder</button>
-                    <button onClick={() => setDeleteVerenigingConfirm(null)} style={{ background: '#f1f5f9', color: '#475569', border: 'none', padding: '12px 16px', borderRadius: '12px', cursor: 'pointer', fontSize: '0.84rem', fontFamily: 'Outfit, sans-serif', whiteSpace: 'nowrap' }}>Annuleer</button>
-                  </span>
-                ) : (
-                  <button onClick={() => setDeleteVerenigingConfirm(geselecteerdeVereniging.id)} style={{ background: '#fef2f2', border: '1px solid #fecaca', color: '#ef4444', cursor: 'pointer', fontSize: '0.84rem', padding: '12px 16px', borderRadius: '12px', fontWeight: '700', fontFamily: 'Outfit, sans-serif', whiteSpace: 'nowrap' }}>🗑️ Verwijderen</button>
-                )
+                <button onClick={() => handleDeleteVereniging(geselecteerdeVereniging)} style={{ background: '#fef2f2', border: '1px solid #fecaca', color: '#ef4444', cursor: 'pointer', fontSize: '0.84rem', padding: '12px 16px', borderRadius: '12px', fontWeight: '700', fontFamily: 'Outfit, sans-serif', whiteSpace: 'nowrap' }}>🗑️ Verwijderen</button>
               )}
             </div>
           )}
