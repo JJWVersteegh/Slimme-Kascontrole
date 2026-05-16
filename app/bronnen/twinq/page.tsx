@@ -53,6 +53,17 @@ export default function TwinqBron() {
           </div>
         </div>
 
+        {/* Screenshot Twinq menu */}
+        <div style={{ marginBottom: '40px' }}>
+          <p style={{ fontSize: '0.82rem', fontWeight: '600', color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '10px' }}>📸 Zo ziet het Financiën-menu eruit in Twinq</p>
+          <img
+            src="/twinq-financien-menu.png"
+            alt="Twinq Financiën menu met exportmogelijkheden"
+            style={{ width: '100%', borderRadius: '12px', border: '1px solid #e2e8f0', boxShadow: '0 4px 16px rgba(0,0,0,0.08)' }}
+          />
+          <p style={{ fontSize: '0.82rem', color: '#94a3b8', marginTop: '8px' }}>Via het menu <strong style={{ color: '#475569' }}>Financiën</strong> in Twinq vindt u alle benodigde exports voor de kascontrole.</p>
+        </div>
+
         {/* Stappen */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
 
