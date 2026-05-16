@@ -1,4 +1,5 @@
 import Navbar from '@/components/Navbar'
+import Footer from '@/components/Footer'
 export default function VoorbeeldRapportPage() {
   return (
     <main style={{ minHeight: '100vh', paddingTop: '72px', background: '#f8fafc', fontFamily: 'Outfit, sans-serif' }}>
@@ -95,5 +96,6 @@ export default function VoorbeeldRapportPage() {
         </div>
       </div>
     </main>
+    <Footer />
   )
 }

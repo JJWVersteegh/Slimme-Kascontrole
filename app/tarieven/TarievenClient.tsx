@@ -1,6 +1,7 @@
 'use client'
 import { useState } from 'react'
 import Navbar from '@/components/Navbar'
+import Footer from '@/components/Footer'
 
 export default function TarievenClient() {
   const standaardBoekjaar = (new Date().getFullYear() - 1).toString()
@@ -114,6 +115,7 @@ export default function TarievenClient() {
         </p>
       </div>
     </main>
+    <Footer />
   )
 }
 
