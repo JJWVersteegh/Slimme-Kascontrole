@@ -1,11 +1,11 @@
 'use client'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { supabase } from '@/lib/supabase'
 import { useRouter } from 'next/navigation'
 import Navbar from '@/components/Navbar'
 
 export default function Registreer() {
-  const [mode, setMode] = useState<'keuze' | 'registreer' | 'login' | 'reset'>('keuze')
+  const [mode, setMode] = useState<'registreer' | 'login' | 'reset'>('registreer')
   const [email, setEmail] = useState('')
   const [wachtwoord, setWachtwoord] = useState('')
   const [wachtwoord2, setWachtwoord2] = useState('')
@@ -27,6 +27,11 @@ export default function Registreer() {
   const [error, setError] = useState('')
   const [succes, setSucces] = useState('')
   const router = useRouter()
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search)
+    if (params.get('mode') === 'login') setMode('login')
+  }, [])
 
   async function zoekAdres(
     pc: string,
@@ -132,55 +137,12 @@ export default function Registreer() {
   return (
     <main style={{ minHeight: '100vh', background: '#f8fafc', fontFamily: 'Outfit, sans-serif' }}>
 
-      <Navbar links={[{ href: '/', label: '← Terug naar home' }]} />
+      <Navbar />
 
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '40px 20px', paddingTop: '96px' }}>
       <div style={{ width: '100%', maxWidth: '420px' }}>
 
-        {/* KEUZE SCHERM */}
-        {mode === 'keuze' && (
-          <div style={{ background: 'white', borderRadius: '16px', padding: '40px 32px', boxShadow: '0 4px 24px rgba(13,61,46,0.08)' }}>
-            <p style={{ fontSize: '0.7rem', fontWeight: '700', letterSpacing: '0.15em', textTransform: 'uppercase', color: '#2563EB', margin: '0 0 12px', textAlign: 'center' }}>Slimme Kascontrole</p>
-            <h1 style={{ fontSize: '1.5rem', fontWeight: '700', color: '#1e3a8a', marginBottom: '8px', textAlign: 'center' }}>Welkom</h1>
-            <p style={{ color: '#475569', fontSize: '0.9rem', textAlign: 'center', marginBottom: '32px', lineHeight: 1.6 }}>
-              Upload uw financiële bestanden en ontvang een volledig gecontroleerd kascontrolerapport. Veilig, betrouwbaar en AVG-conform.
-            </p>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '14px', marginBottom: '32px' }}>
-              <button onClick={() => setMode('registreer')} style={{ width: '100%', padding: '16px', background: '#1e3a8a', color: 'white', border: 'none', borderRadius: '10px', fontSize: '1rem', fontWeight: '700', cursor: 'pointer', fontFamily: 'Outfit, sans-serif', textAlign: 'left', display: 'flex', alignItems: 'center', gap: '14px' }}>
-                <span style={{ fontSize: '1.4rem' }}>✨</span>
-                <div>
-                  <div>Nieuw account aanmaken</div>
-                  <div style={{ fontWeight: '400', fontSize: '0.82rem', color: 'rgba(255,255,255,0.75)', marginTop: '2px' }}>Eerste keer hier? Start hier</div>
-                </div>
-              </button>
-              <button onClick={() => setMode('login')} style={{ width: '100%', padding: '16px', background: 'white', color: '#1e3a8a', border: '2px solid #bfdbfe', borderRadius: '10px', fontSize: '1rem', fontWeight: '700', cursor: 'pointer', fontFamily: 'Outfit, sans-serif', textAlign: 'left', display: 'flex', alignItems: 'center', gap: '14px' }}>
-                <span style={{ fontSize: '1.4rem' }}>🔑</span>
-                <div>
-                  <div>Inloggen</div>
-                  <div style={{ fontWeight: '400', fontSize: '0.82rem', color: '#64748b', marginTop: '2px' }}>Al een account? Log hier in</div>
-                </div>
-              </button>
-            </div>
-            <div style={{ borderTop: '1px solid #e2e8f0', paddingTop: '20px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
-              <p style={{ fontSize: '0.75rem', fontWeight: '700', color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '4px' }}>Wat wij met uw gegevens doen</p>
-              {[
-                { icon: '🔒', tekst: 'Bestanden worden versleuteld opgeslagen in Europese datacenters' },
-                { icon: '🇳🇱', tekst: 'AVG-conform — uw data wordt nooit gedeeld met derden' },
-                { icon: '🗑️', tekst: 'U kunt uw bestanden op elk moment permanent verwijderen' },
-                { icon: '📄', tekst: 'Alleen gebruikt voor het opstellen van uw kascontrolerapport' },
-              ].map((item, i) => (
-                <div key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: '10px', fontSize: '0.82rem', color: '#475569', lineHeight: 1.5 }}>
-                  <span style={{ flexShrink: 0 }}>{item.icon}</span>
-                  <span>{item.tekst}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-
-
-        {mode !== 'keuze' && (
-          <div style={{ background: 'white', borderRadius: '16px', padding: '32px', boxShadow: '0 4px 24px rgba(13,61,46,0.08)' }}>
+        <div style={{ background: 'white', borderRadius: '16px', padding: '32px', boxShadow: '0 4px 24px rgba(13,61,46,0.08)' }}>
 
             {/* Registreer */}
             {mode === 'registreer' && (
