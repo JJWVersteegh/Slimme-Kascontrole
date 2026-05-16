@@ -65,9 +65,9 @@ export default function TwinqBron() {
           <div style={{ background: '#f0fdf4', border: '1px solid #bbf7d0', borderRadius: '10px', padding: '16px 20px', marginTop: '16px' }}>
             <p style={{ fontSize: '0.88rem', color: '#166534', margin: '0 0 8px', fontWeight: '700' }}>💡 Zo werkt het:</p>
             <ol style={{ margin: 0, paddingLeft: '20px', display: 'flex', flexDirection: 'column', gap: '6px' }}>
-              <li style={{ fontSize: '0.88rem', color: '#166534', lineHeight: 1.6 }}>Stel bovenaan de periode in op het juiste boekjaar (bijv. <strong>jan-2024 – dec-2024</strong>)</li>
+              <li style={{ fontSize: '0.88rem', color: '#166534', lineHeight: 1.6 }}>Stel bovenaan de periode in op het juiste boekjaar (bijv. <strong>jan-2025 – dec-2025</strong>)</li>
               <li style={{ fontSize: '0.88rem', color: '#166534', lineHeight: 1.6 }}>Klik op <strong>Gegevens Downloaden</strong> om het bestand op te slaan</li>
-              <li style={{ fontSize: '0.88rem', color: '#166534', lineHeight: 1.6 }}>Sla elk bestand op in een aparte map per boekjaar op uw computer (bijv. <strong>📁 Kascontrole 2024</strong>)</li>
+              <li style={{ fontSize: '0.88rem', color: '#166534', lineHeight: 1.6 }}>Sla elk bestand op in een aparte map per boekjaar op uw computer (bijv. <strong>📁 Kascontrole 2025</strong>)</li>
               <li style={{ fontSize: '0.88rem', color: '#166534', lineHeight: 1.6 }}>Herhaal dit voor elk bestand uit het lijstje hieronder</li>
             </ol>
             <p style={{ fontSize: '0.88rem', color: '#166534', margin: '12px 0 0', lineHeight: 1.6, borderTop: '1px solid #bbf7d0', paddingTop: '12px' }}>
