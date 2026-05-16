@@ -1,5 +1,6 @@
 import { redirect } from 'next/navigation'
 
-export default function ViaPage({ params }: { params: { slug: string } }) {
-  redirect(`/registreer?ref=${params.slug}`)
+export default async function ViaPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params
+  redirect(`/registreer?ref=${slug}`)
 }
