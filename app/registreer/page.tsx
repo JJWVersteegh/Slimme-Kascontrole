@@ -178,18 +178,6 @@ export default function Registreer() {
           </div>
         )}
 
-        {mode !== 'keuze' && mode !== 'reset' && (
-          <>
-            <div style={{ display: 'flex', background: '#eff6ff', borderRadius: '10px', padding: '4px', marginBottom: '24px' }}>
-              {(['registreer', 'login'] as const).map(m => (
-                <button key={m} onClick={() => { setMode(m); setError('') }}
-                  style={{ flex: 1, padding: '10px', borderRadius: '8px', border: 'none', fontFamily: 'Outfit, sans-serif', fontSize: '0.9rem', fontWeight: '600', cursor: 'pointer', background: mode === m ? 'white' : 'transparent', color: mode === m ? '#1e3a8a' : '#475569', boxShadow: mode === m ? '0 2px 8px rgba(0,0,0,0.08)' : 'none', transition: 'all 0.2s' }}>
-                  {m === 'registreer' ? 'Nieuw account' : 'Inloggen'}
-                </button>
-              ))}
-            </div>
-          </>
-        )}
 
         {mode !== 'keuze' && (
           <div style={{ background: 'white', borderRadius: '16px', padding: '32px', boxShadow: '0 4px 24px rgba(13,61,46,0.08)' }}>
@@ -297,6 +285,13 @@ export default function Registreer() {
                 <button type="submit" disabled={loading} style={{ width: '100%', padding: '14px', background: '#1e3a8a', color: 'white', border: 'none', borderRadius: '8px', fontSize: '1rem', fontWeight: '700', cursor: 'pointer' }}>
                   {loading ? 'Bezig...' : 'Account aanmaken'}
                 </button>
+                <p style={{ textAlign: 'center', marginTop: '16px', fontSize: '0.87rem', color: '#475569' }}>
+                  Al een account?{' '}
+                  <button type="button" onClick={() => { setMode('login'); setError('') }}
+                    style={{ background: 'none', border: 'none', color: '#2563EB', fontSize: '0.87rem', fontWeight: '600', cursor: 'pointer', textDecoration: 'underline', fontFamily: 'Outfit, sans-serif' }}>
+                    Inloggen →
+                  </button>
+                </p>
               </form>
             )}
 
@@ -321,6 +316,13 @@ export default function Registreer() {
                 <button type="submit" disabled={loading} style={{ width: '100%', padding: '14px', background: '#1e3a8a', color: 'white', border: 'none', borderRadius: '8px', fontSize: '1rem', fontWeight: '700', cursor: 'pointer' }}>
                   {loading ? 'Bezig...' : 'Inloggen'}
                 </button>
+                <p style={{ textAlign: 'center', marginTop: '16px', fontSize: '0.87rem', color: '#475569' }}>
+                  Nog geen account?{' '}
+                  <button type="button" onClick={() => { setMode('registreer'); setError('') }}
+                    style={{ background: 'none', border: 'none', color: '#2563EB', fontSize: '0.87rem', fontWeight: '600', cursor: 'pointer', textDecoration: 'underline', fontFamily: 'Outfit, sans-serif' }}>
+                    Maak er een aan →
+                  </button>
+                </p>
               </form>
             )}
 
