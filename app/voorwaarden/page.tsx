@@ -10,6 +10,7 @@ export const metadata: Metadata = {
 
 export default function Voorwaarden() {
   return (
+    <>
     <main style={{ minHeight: '100vh', paddingTop: '72px', background: '#f8fafc', fontFamily: 'Outfit, sans-serif' }}>
       <style>{`
         .site-nav { box-sizing: border-box; width: 100%; }
@@ -47,5 +48,6 @@ export default function Voorwaarden() {
       </div>
     </main>
     <Footer />
+    </>
   )
 }

@@ -10,6 +10,7 @@ export const metadata: Metadata = {
 
 export default function Privacyverklaring() {
   return (
+    <>
     <main style={{ minHeight: '100vh', paddingTop: '72px', background: '#f8fafc', fontFamily: 'Outfit, sans-serif' }}>
       <Navbar links={[{ href: '/', label: '← Terug naar home' }]} />
       <div style={{ maxWidth: '720px', margin: '0 auto', padding: '64px 24px' }}>
@@ -71,5 +72,6 @@ export default function Privacyverklaring() {
       </div>
     </main>
     <Footer />
+    </>
   )
 }

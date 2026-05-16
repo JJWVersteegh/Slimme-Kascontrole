@@ -67,6 +67,7 @@ export default function TarievenClient() {
   }
 
   return (
+    <>
     <main style={{ minHeight: '100vh', paddingTop: '72px', background: '#f8fafc', fontFamily: 'Inter, sans-serif' }}>
       <Navbar links={[{ href: '/mijn-omgeving', label: 'Mijn omgeving →' }]} />
 
@@ -116,6 +117,7 @@ export default function TarievenClient() {
       </div>
     </main>
     <Footer />
+    </>
   )
 }
 
