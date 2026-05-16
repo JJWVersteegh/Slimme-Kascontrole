@@ -295,14 +295,14 @@ export default function Registreer() {
                     <option value="">Selecteer een optie...</option>
                     <option value="google">Google / zoekmachine</option>
                     <option value="social">Via social media</option>
-                    <option value="beheerder">Via een VvE-beheerder</option>
+                    <option value="beheerder">Via een relatie</option>
                     <option value="mond-tot-mond">Via een bekende / mond-tot-mond</option>
                     <option value="bvnl">BVNL Vastgoed Chat</option>
                     <option value="anders">Anders</option>
                   </select>
                   {herkomst === 'beheerder' && (
                     <select value={beheerderSlug} onChange={e => setBeheerderSlug(e.target.value)} style={inp}>
-                      <option value="">Selecteer uw beheerder...</option>
+                      <option value="">Selecteer uw relatie...</option>
                       {beheerders.map(b => (
                         <option key={b.id} value={b.slug}>{b.naam}</option>
                       ))}
