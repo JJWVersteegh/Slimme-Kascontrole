@@ -62,6 +62,15 @@ export default function TwinqBron() {
             style={{ width: '100%', borderRadius: '12px', border: '1px solid #e2e8f0', boxShadow: '0 4px 16px rgba(0,0,0,0.08)' }}
           />
           <p style={{ fontSize: '0.82rem', color: '#94a3b8', marginTop: '8px' }}>Via het menu <strong style={{ color: '#475569' }}>Financiën</strong> in Twinq vindt u alle benodigde exports voor de kascontrole.</p>
+          <div style={{ background: '#f0fdf4', border: '1px solid #bbf7d0', borderRadius: '10px', padding: '16px 20px', marginTop: '16px' }}>
+            <p style={{ fontSize: '0.88rem', color: '#166534', margin: '0 0 8px', fontWeight: '700' }}>💡 Zo werkt het:</p>
+            <ol style={{ margin: 0, paddingLeft: '20px', display: 'flex', flexDirection: 'column', gap: '6px' }}>
+              <li style={{ fontSize: '0.88rem', color: '#166534', lineHeight: 1.6 }}>Stel bovenaan de periode in op het juiste boekjaar (bijv. <strong>jan-2024 – dec-2024</strong>)</li>
+              <li style={{ fontSize: '0.88rem', color: '#166534', lineHeight: 1.6 }}>Klik op <strong>Gegevens Downloaden</strong> om het bestand op te slaan</li>
+              <li style={{ fontSize: '0.88rem', color: '#166534', lineHeight: 1.6 }}>Sla elk bestand op in een aparte map per boekjaar op uw computer (bijv. <strong>📁 Kascontrole 2024</strong>)</li>
+              <li style={{ fontSize: '0.88rem', color: '#166534', lineHeight: 1.6 }}>Herhaal dit voor elk bestand uit het lijstje hieronder</li>
+            </ol>
+          </div>
         </div>
 
         {/* Stappen */}
