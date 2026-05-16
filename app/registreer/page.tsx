@@ -134,7 +134,7 @@ export default function Registreer() {
 
       <Navbar links={[{ href: '/', label: '← Terug naar home' }]} />
 
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '80px 20px', paddingTop: '48px' }}>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '40px 20px', paddingTop: '96px' }}>
       <div style={{ width: '100%', maxWidth: '420px' }}>
 
         {/* KEUZE SCHERM */}
