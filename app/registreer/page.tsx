@@ -94,7 +94,7 @@ export default function Registreer() {
     // Sla gegevens op in klanten tabel
     if (authData.user) {
       const beheerder = beheerders.find(b => b.slug === beheerderSlug)
-      const beheerderVrijTekst = herkomst === 'beheerder' && !beheerder && beheerderSlug ? beheerderSlug : null
+      const beheerderVrijTekst = herkomst === 'beheerder' && (!beheerder || beheerderSlug === '_anders') && herkomstAnders ? herkomstAnders : herkomst === 'beheerder' && !beheerder && beheerderSlug && beheerderSlug !== '_anders' ? beheerderSlug : null
       await supabase.from('klanten').upsert({
         user_id: authData.user.id,
         email,
@@ -303,12 +303,18 @@ export default function Registreer() {
                   </select>
                   {herkomst === 'beheerder' && (
                     beheerders.length > 0 ? (
-                      <select value={beheerderSlug} onChange={e => setBeheerderSlug(e.target.value)} style={inp}>
-                        <option value="">Selecteer uw relatie...</option>
-                        {beheerders.map(b => (
-                          <option key={b.id} value={b.slug}>{b.naam}</option>
-                        ))}
-                      </select>
+                      <>
+                        <select value={beheerderSlug} onChange={e => setBeheerderSlug(e.target.value)} style={{ ...inp, marginBottom: beheerderSlug === '_anders' ? '12px' : '0' }}>
+                          <option value="">Selecteer uw relatie...</option>
+                          {beheerders.map(b => (
+                            <option key={b.id} value={b.slug}>{b.naam}</option>
+                          ))}
+                          <option value="_anders">Anders, namelijk...</option>
+                        </select>
+                        {beheerderSlug === '_anders' && (
+                          <input value={herkomstAnders} onChange={e => setHerkomstAnders(e.target.value)} placeholder="Via wie heeft u ons gevonden?" style={inp} />
+                        )}
+                      </>
                     ) : (
                       <input value={beheerderSlug} onChange={e => setBeheerderSlug(e.target.value)} placeholder="Via wie heeft u ons gevonden?" style={inp} />
                     )
