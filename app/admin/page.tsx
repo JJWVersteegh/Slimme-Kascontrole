@@ -84,7 +84,9 @@ export default function AdminPortal() {
   const [zoekterm, setZoekterm] = useState('')
   const [filter, setFilter] = useState<'alle' | 'betaald' | 'onbetaald' | 'rapport_klaar'>('alle')
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-  const [activeTab, setActiveTab] = useState<'klanten' | 'kortingscodes' | 'beheerders'>('klanten')
+  const [activeTab, setActiveTab] = useState<'klanten' | 'kortingscodes' | 'beheerders' | 'opruimen'>('klanten')
+  const [orphans, setOrphans] = useState<{ id: string; email: string; created_at: string }[]>([])
+  const [orphansLoading, setOrphansLoading] = useState(false)
 
   // Kortingscodes state
   const [coupons, setCoupons] = useState<Coupon[]>([])
@@ -215,7 +217,29 @@ export default function AdminPortal() {
   useEffect(() => {
     if (activeTab === 'kortingscodes') loadCoupons()
     if (activeTab === 'beheerders') loadBeheerders()
+    if (activeTab === 'opruimen') loadOrphans()
   }, [activeTab])
+
+  async function loadOrphans() {
+    setOrphansLoading(true)
+    const { data: { session } } = await supabase.auth.getSession()
+    const res = await fetch('/api/admin-orphan-users', {
+      headers: { Authorization: `Bearer ${session?.access_token}` }
+    })
+    const data = await res.json()
+    if (data.orphans) setOrphans(data.orphans)
+    setOrphansLoading(false)
+  }
+
+  async function handleDeleteOrphan(id: string) {
+    const { data: { session } } = await supabase.auth.getSession()
+    await fetch('/api/admin-orphan-users', {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${session?.access_token}` },
+      body: JSON.stringify({ user_id: id })
+    })
+    setOrphans(prev => prev.filter(o => o.id !== id))
+  }
 
   async function handleAanmaken() {
     if (!nieuwNaam || !nieuwBedrag || !nieuwCode) {
@@ -536,6 +560,7 @@ export default function AdminPortal() {
           <button className={`tab-btn${activeTab === 'klanten' ? ' actief' : ''}`} onClick={() => setActiveTab('klanten')}>👥 Klanten</button>
           <button className={`tab-btn${activeTab === 'kortingscodes' ? ' actief' : ''}`} onClick={() => setActiveTab('kortingscodes')}>🎁 Kortingscodes</button>
           <button className={`tab-btn${activeTab === 'beheerders' ? ' actief' : ''}`} onClick={() => setActiveTab('beheerders')}>🤝 Beheerders</button>
+          <button className={`tab-btn${activeTab === 'opruimen' ? ' actief' : ''}`} onClick={() => setActiveTab('opruimen')}>🧹 Opruimen</button>
         </div>
 
         {/* Klanten tab */}
@@ -922,6 +947,43 @@ export default function AdminPortal() {
           </div>
         )}
       </div>
+
+        {/* Opruimen tab */}
+        {activeTab === 'opruimen' && (
+          <div style={{ maxWidth: '600px' }}>
+            <div style={{ background: 'white', borderRadius: '16px', border: '1px solid #e2e8f0', padding: '24px' }}>
+              <h2 style={{ fontSize: '1rem', fontWeight: '700', color: '#0f172a', margin: '0 0 6px' }}>🧹 Losse gebruikers</h2>
+              <p style={{ fontSize: '0.84rem', color: '#64748b', margin: '0 0 20px' }}>Accounts die in Supabase staan maar geen klantprofiel hebben — registratie is niet voltooid.</p>
+              {orphansLoading ? (
+                <p style={{ fontSize: '0.84rem', color: '#94a3b8' }}>Laden...</p>
+              ) : orphans.length === 0 ? (
+                <div style={{ background: '#f0fdf4', border: '1px solid #bbf7d0', borderRadius: '10px', padding: '16px', color: '#166534', fontSize: '0.88rem', fontWeight: '600' }}>✅ Alles schoon — geen losse gebruikers gevonden</div>
+              ) : (
+                <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.84rem' }}>
+                  <thead>
+                    <tr style={{ borderBottom: '2px solid #e2e8f0' }}>
+                      <th style={{ textAlign: 'left', padding: '8px 12px', color: '#64748b', fontWeight: '600', fontSize: '0.75rem', textTransform: 'uppercase' }}>E-mail</th>
+                      <th style={{ textAlign: 'left', padding: '8px 12px', color: '#64748b', fontWeight: '600', fontSize: '0.75rem', textTransform: 'uppercase' }}>Aangemaakt op</th>
+                      <th style={{ padding: '8px 12px' }}></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {orphans.map(o => (
+                      <tr key={o.id} style={{ borderBottom: '1px solid #f1f5f9' }}>
+                        <td style={{ padding: '10px 12px', color: '#0f172a' }}>{o.email}</td>
+                        <td style={{ padding: '10px 12px', color: '#64748b' }}>{new Date(o.created_at).toLocaleDateString('nl-NL')}</td>
+                        <td style={{ padding: '10px 12px' }}>
+                          <button onClick={() => handleDeleteOrphan(o.id)} style={{ background: '#fee2e2', color: '#991b1b', border: 'none', padding: '5px 10px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.78rem', fontWeight: '600', fontFamily: 'Outfit, sans-serif' }}>🗑️ Verwijder</button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              )}
+              <button onClick={loadOrphans} style={{ marginTop: '16px', background: '#f1f5f9', color: '#475569', border: 'none', padding: '8px 16px', borderRadius: '8px', cursor: 'pointer', fontSize: '0.84rem', fontFamily: 'Outfit, sans-serif' }}>🔄 Vernieuwen</button>
+            </div>
+          </div>
+        )}
 
       {/* Bewerk klant modal - alleen persoonsgegevens */}
       {bewerkKlant && (
