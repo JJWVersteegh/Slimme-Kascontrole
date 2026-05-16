@@ -151,7 +151,7 @@ export default function Registreer() {
                 <div style={{ textAlign: 'center', marginBottom: '28px' }}>
                   <p style={{ fontSize: '0.7rem', fontWeight: '700', letterSpacing: '0.15em', textTransform: 'uppercase', color: '#2563EB', margin: '0 0 8px' }}>Slimme Kascontrole</p>
                   <h1 style={{ fontSize: '1.4rem', fontWeight: '700', color: '#1e3a8a', margin: '0 0 8px' }}>Account aanmaken</h1>
-                  <p style={{ color: '#475569', fontSize: '0.88rem', lineHeight: 1.6, margin: 0 }}>Vul uw gegevens in en ontvang uw kascontrolerapport. Eenmalig €59 — geen abonnement.</p>
+                  <p style={{ color: '#475569', fontSize: '0.88rem', lineHeight: 1.6, margin: 0 }}>Vul uw persoonlijke gegevens in en de gegevens van uw vereniging.</p>
                 </div>
                 {/* Privacy blokje */}
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '7px', marginBottom: '24px', padding: '14px 16px', background: '#f8fafc', borderRadius: '10px', border: '1px solid #e2e8f0' }}>
