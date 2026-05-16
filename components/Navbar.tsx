@@ -11,7 +11,6 @@ const publicLinks: NavLink[] = [
   { href: '/#over-ons', label: 'Over ons' },
   { href: '/#tarieven', label: 'Tarieven' },
   { href: '/#contact', label: 'Contact' },
-  { href: '/mijn-omgeving', label: 'Mijn omgeving' },
   { href: '/registreer?mode=login', label: 'Inloggen', outline: true },
   { href: '/registreer', label: 'Account aanmaken', primary: true },
 ]

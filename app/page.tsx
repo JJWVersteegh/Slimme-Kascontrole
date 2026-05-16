@@ -274,7 +274,6 @@ footer a:hover{color:#93c5fd}
     <li><a href="#over-ons">Over ons</a></li>
     <li><a href="#tarieven">Tarieven</a></li>
     <li><a href="#contact">Contact</a></li>
-    <li><a href="/mijn-omgeving">Mijn omgeving</a></li>
     <li><a href="/registreer?mode=login" class="btn-nav-outline">Inloggen</a></li>
     <li><a href="/registreer" class="btn-nav">Account aanmaken</a></li>
   </ul>
@@ -293,7 +292,6 @@ footer a:hover{color:#93c5fd}
   <a href="#over-ons" onclick="closeMenu()">Over ons</a>
   <a href="#tarieven" onclick="closeMenu()">Tarieven</a>
   <a href="#contact" onclick="closeMenu()">Contact</a>
-  <a href="/mijn-omgeving" onclick="closeMenu()">Mijn omgeving</a>
   <a href="/registreer?mode=login" onclick="closeMenu()" class="mobile-btn-outline">Inloggen</a>
   <a href="/registreer" class="mobile-btn">Account aanmaken</a>
 </div>
