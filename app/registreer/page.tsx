@@ -270,7 +270,7 @@ export default function Registreer() {
                 </button>
                 <button type="button" onClick={() => { setMode('login'); setError('') }}
                   style={{ width: '100%', marginTop: '12px', padding: '13px', background: 'white', border: '2px solid #bfdbfe', color: '#1e3a8a', borderRadius: '8px', fontSize: '0.95rem', fontWeight: '700', cursor: 'pointer', fontFamily: 'Outfit, sans-serif' }}>
-                  Al een account? Inloggen →
+                  Inloggen →
                 </button>
               </form>
             )}

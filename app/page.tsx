@@ -311,7 +311,7 @@ footer a:hover{color:#93c5fd}
       <div class="hero-ctas-vertical">
         <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center;width:100%;">
           <a href="/registreer" class="btn-primary" style="flex:1;text-align:center;">Account aanmaken</a>
-          <a href="/registreer?mode=login" style="flex:1;text-align:center;padding:14px 24px;border-radius:8px;border:2px solid #2563EB;color:#2563EB;font-size:0.95rem;font-weight:700;text-decoration:none;font-family:'Outfit',sans-serif;background:white;">Al een account? Inloggen</a>
+          <a href="/registreer?mode=login" style="flex:1;text-align:center;padding:14px 24px;border-radius:8px;border:2px solid #2563EB;color:#2563EB;font-size:0.95rem;font-weight:700;text-decoration:none;font-family:'Outfit',sans-serif;background:white;">Inloggen</a>
         </div>
 
         <div class="hero-secondary-links">
