@@ -38,6 +38,8 @@ nav.scrolled{box-shadow:0 4px 24px rgba(0,0,0,0.08)}
 .nav-links a:hover{color:#2563EB}
 .btn-nav{background:#2563EB;color:white!important;padding:9px 20px;border-radius:6px;font-weight:600;transition:background 0.2s!important}
 .btn-nav:hover{background:#1D4ED8!important}
+.btn-nav-outline{background:white;color:#1e3a8a!important;padding:9px 20px;border-radius:6px;font-weight:600;border:2px solid #bfdbfe;transition:all 0.2s!important}
+.btn-nav-outline:hover{background:#eff6ff!important;border-color:#93c5fd!important}
 .hamburger{display:none;background:none;border:1.5px solid #e2e8f0;border-radius:6px;cursor:pointer;padding:7px;flex-direction:column;gap:4px;align-items:center;justify-content:center}
 .ham-bar{display:block;width:20px;height:2px;background:#0f172a;border-radius:2px;transition:all 0.3s}
 .mobile-menu{display:none;position:fixed;top:72px;left:0;right:0;background:white;border-bottom:1px solid #e2e8f0;z-index:199;padding:12px 20px 20px;box-shadow:0 8px 24px rgba(0,0,0,0.1)}
@@ -273,7 +275,7 @@ footer a:hover{color:#93c5fd}
     <li><a href="#tarieven">Tarieven</a></li>
     <li><a href="#contact">Contact</a></li>
     <li><a href="/mijn-omgeving">Mijn omgeving</a></li>
-    <li><a href="/registreer?mode=login">Inloggen</a></li>
+    <li><a href="/registreer?mode=login" class="btn-nav-outline">Inloggen</a></li>
     <li><a href="/registreer" class="btn-nav">Account aanmaken</a></li>
   </ul>
   <button class="hamburger" id="hamburger" onclick="toggleMenu()" aria-label="Menu">

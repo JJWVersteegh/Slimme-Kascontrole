@@ -38,6 +38,8 @@ export default function Navbar({ links = publicLinks, rightContent, mobileExtra,
         .skc-nav-links a:hover{color:#2563EB}
         .skc-btn-nav{background:#2563EB;color:white!important;padding:9px 20px;border-radius:6px;font-weight:600;transition:background 0.2s!important}
         .skc-btn-nav:hover{background:#1D4ED8!important}
+        .skc-btn-nav-outline{background:white;color:#1e3a8a!important;padding:9px 20px;border-radius:6px;font-weight:600;border:2px solid #bfdbfe;transition:all 0.2s!important}
+        .skc-btn-nav-outline:hover{background:#eff6ff!important;border-color:#93c5fd!important}
         .skc-hamburger{display:none;background:none;border:1.5px solid #e2e8f0;border-radius:6px;cursor:pointer;padding:7px;flex-direction:column;gap:4px;align-items:center;justify-content:center}
         .skc-ham-bar{display:block;width:20px;height:2px;background:#0f172a;border-radius:2px;transition:all 0.3s}
         .skc-mobile-menu{position:fixed;top:72px;left:0;right:0;background:white;border-bottom:1px solid #e2e8f0;z-index:199;padding:12px 20px 20px;box-shadow:0 8px 24px rgba(0,0,0,0.1);box-sizing:border-box}
@@ -67,7 +69,7 @@ export default function Navbar({ links = publicLinks, rightContent, mobileExtra,
           <ul className="skc-nav-links">
             {links.map(link => (
               <li key={`${link.href}-${link.label}`}>
-                <a href={link.href} className={link.primary ? 'skc-btn-nav' : undefined} style={link.active ? { color: '#2563EB' } : undefined}>{link.label}</a>
+                <a href={link.href} className={link.primary ? 'skc-btn-nav' : link.outline ? 'skc-btn-nav-outline' : undefined} style={link.active ? { color: '#2563EB' } : undefined}>{link.label}</a>
               </li>
             ))}
           </ul>
