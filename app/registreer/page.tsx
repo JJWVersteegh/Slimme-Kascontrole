@@ -292,9 +292,10 @@ export default function Registreer() {
                   <h3 style={{ margin: '0 0 14px', color: '#0f172a', fontSize: '0.95rem', fontWeight: 700 }}>3. Hoe heeft u ons gevonden? <span style={{ fontWeight: 400, color: '#94a3b8', fontSize: '0.82rem' }}>(optioneel)</span></h3>
                   <select value={herkomst} onChange={e => { setHerkomst(e.target.value); if (e.target.value !== 'beheerder') setBeheerderSlug('') }} style={{ ...inp, marginBottom: herkomst === 'beheerder' ? '12px' : '0' }}>
                     <option value="">Selecteer een optie...</option>
-                    <option value="google">Google</option>
-                    <option value="kennis">Via een kennis</option>
-                    <option value="beheerder">Via een beheerder</option>
+                    <option value="google">Google / zoekmachine</option>
+                    <option value="social">Via social media</option>
+                    <option value="beheerder">Via een VvE-beheerder</option>
+                    <option value="mond-tot-mond">Via een bekende / mond-tot-mond</option>
                     <option value="anders">Anders</option>
                   </select>
                   {herkomst === 'beheerder' && (
