@@ -66,11 +66,18 @@ export default function Navbar({ links = publicLinks, rightContent, mobileExtra,
           <div className="skc-nav-right" style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>{rightContent}</div>
         ) : (
           <ul className="skc-nav-links">
-            {links.map(link => (
+            {links.filter(link => !link.primary && !link.outline).map(link => (
               <li key={`${link.href}-${link.label}`}>
-                <a href={link.href} className={link.primary ? 'skc-btn-nav' : link.outline ? 'skc-btn-nav-outline' : undefined} style={link.active ? { color: '#2563EB' } : undefined}>{link.label}</a>
+                <a href={link.href} style={link.active ? { color: '#2563EB' } : undefined}>{link.label}</a>
               </li>
             ))}
+            {links.some(link => link.primary || link.outline) && (
+              <li style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                {links.filter(link => link.primary || link.outline).map(link => (
+                  <a key={`${link.href}-${link.label}`} href={link.href} className={link.primary ? 'skc-btn-nav' : 'skc-btn-nav-outline'} style={link.active ? { color: '#2563EB' } : undefined}>{link.label}</a>
+                ))}
+              </li>
+            )}
           </ul>
         )}
 

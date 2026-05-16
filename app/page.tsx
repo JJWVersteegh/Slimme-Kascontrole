@@ -294,8 +294,10 @@ footer a:hover{color:#93c5fd}
     <li><a href="#over-ons">Over ons</a></li>
     <li><a href="#tarieven">Tarieven</a></li>
     <li><a href="#contact">Contact</a></li>
-    <li><a href="/registreer?mode=login" class="btn-nav-outline">Inloggen</a></li>
-    <li><a href="/registreer" class="btn-nav">Account aanmaken</a></li>
+    <li style="display:flex;gap:8px;align-items:center;">
+      <a href="/registreer?mode=login" class="btn-nav-outline">Inloggen</a>
+      <a href="/registreer" class="btn-nav">Account aanmaken</a>
+    </li>
   </ul>
   <button class="hamburger" id="hamburger" onclick="toggleMenu()" aria-label="Menu">
     <span class="ham-bar" id="bar1"></span>
