@@ -70,6 +70,9 @@ export default function TwinqBron() {
               <li style={{ fontSize: '0.88rem', color: '#166534', lineHeight: 1.6 }}>Sla elk bestand op in een aparte map per boekjaar op uw computer (bijv. <strong>📁 Kascontrole 2024</strong>)</li>
               <li style={{ fontSize: '0.88rem', color: '#166534', lineHeight: 1.6 }}>Herhaal dit voor elk bestand uit het lijstje hieronder</li>
             </ol>
+            <p style={{ fontSize: '0.88rem', color: '#166534', margin: '12px 0 0', lineHeight: 1.6, borderTop: '1px solid #bbf7d0', paddingTop: '12px' }}>
+              <strong>📎 Tip: lever zo veel mogelijk bestanden aan.</strong> Hoe meer u aanlevert, hoe vollediger en beter uw kascontrolerapport wordt. Denk naast de exports ook aan relevante documenten zoals PDF's van grote facturen, e-mails over betalingen, contracten, offertes of screenshots — alles wat context geeft bij de financiën van uw vereniging.
+            </p>
           </div>
         </div>
 
