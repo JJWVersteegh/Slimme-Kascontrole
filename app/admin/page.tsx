@@ -17,6 +17,8 @@ interface Klant {
   plaats?: string
   plan: string
   rapport_beschikbaar: boolean
+  herkomst?: string
+  beheerder_naam?: string
 }
 
 interface Vereniging {
@@ -579,6 +581,13 @@ export default function AdminPortal() {
                             <div style={{ fontSize: '0.72rem', color: '#94a3b8', marginTop: '2px' }}>
                               {lastLogins[k.user_id] ? `Ingelogd: ${new Date(lastLogins[k.user_id]).toLocaleDateString('nl-NL', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' })}` : 'Nog niet ingelogd'}
                             </div>
+                            {k.herkomst && (
+                              <div style={{ marginTop: '4px' }}>
+                                <span style={{ background: '#f0fdf4', color: '#166534', fontSize: '0.7rem', fontWeight: '600', padding: '2px 7px', borderRadius: '999px', border: '1px solid #bbf7d0' }}>
+                                  {k.herkomst === 'google' ? '🔍 Google' : k.herkomst === 'social' ? '📱 Social media' : k.herkomst === 'beheerder' ? `🤝 ${k.beheerder_naam || 'VvE-beheerder'}` : k.herkomst === 'mond-tot-mond' ? '👥 Mond-tot-mond' : `💬 ${k.herkomst}`}
+                                </span>
+                              </div>
+                            )}
                           </td>
                           <td style={{ padding: '12px 16px', fontSize: '0.85rem', color: '#475569' }}>{k.email}</td>
                           <td style={{ padding: '12px 16px' }}>
