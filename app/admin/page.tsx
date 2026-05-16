@@ -587,7 +587,7 @@ export default function AdminPortal() {
                             {k.herkomst && (
                               <div style={{ marginTop: '4px' }}>
                                 <span style={{ background: '#f0fdf4', color: '#166534', fontSize: '0.7rem', fontWeight: '600', padding: '2px 7px', borderRadius: '999px', border: '1px solid #bbf7d0' }}>
-                                  {k.herkomst === 'google' ? '🔍 Google' : k.herkomst === 'social' ? '📱 Social media' : k.herkomst === 'beheerder' ? `🤝 ${k.beheerder_naam || 'VvE-beheerder'}` : k.herkomst === 'mond-tot-mond' ? '👥 Mond-tot-mond' : `💬 ${k.herkomst}`}
+                                  {k.herkomst === 'google' ? '🔍 Google' : k.herkomst === 'social' ? '📱 Social media' : k.herkomst === 'beheerder' ? `🤝 ${k.beheerder_naam || 'VvE-beheerder'}` : k.herkomst === 'mond-tot-mond' ? '👥 Mond-tot-mond' : k.herkomst === 'bvnl' ? '🏠 BVNL Vastgoed Chat' : `💬 ${k.herkomst}`}
                                 </span>
                               </div>
                             )}

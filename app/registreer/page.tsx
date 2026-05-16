@@ -297,6 +297,7 @@ export default function Registreer() {
                     <option value="social">Via social media</option>
                     <option value="beheerder">Via een VvE-beheerder</option>
                     <option value="mond-tot-mond">Via een bekende / mond-tot-mond</option>
+                    <option value="bvnl">BVNL Vastgoed Chat</option>
                     <option value="anders">Anders</option>
                   </select>
                   {herkomst === 'beheerder' && (
