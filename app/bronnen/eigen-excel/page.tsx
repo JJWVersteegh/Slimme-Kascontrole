@@ -1,4 +1,12 @@
+import type { Metadata } from 'next'
 import Navbar from '@/components/Navbar'
+
+export const metadata: Metadata = {
+  title: 'Eigen Excel kasboek gebruiken | Slimme Kascontrole',
+  description: 'Gebruik uw eigen Excel-kasboek voor uw kascontrolerapport. Download de template en upload uw bestanden.',
+  alternates: { canonical: '/bronnen/eigen-excel' },
+}
+
 export default function EigenExcelBron() {
   return (
     <main style={{ minHeight: '100vh', paddingTop: '72px', background: '#f8fafc', fontFamily: 'Outfit, sans-serif' }}>

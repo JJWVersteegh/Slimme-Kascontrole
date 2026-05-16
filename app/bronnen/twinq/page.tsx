@@ -1,4 +1,12 @@
+import type { Metadata } from 'next'
 import Navbar from '@/components/Navbar'
+
+export const metadata: Metadata = {
+  title: 'Twinq exporteren voor kascontrole | Slimme Kascontrole',
+  description: 'Exporteer uw Twinq-bestanden en upload ze voor uw kascontrolerapport. Stap-voor-stap uitleg.',
+  alternates: { canonical: '/bronnen/twinq' },
+}
+
 export default function TwinqBron() {
   return (
     <main style={{ minHeight: '100vh', paddingTop: '72px', background: '#f8fafc', fontFamily: 'Outfit, sans-serif' }}>

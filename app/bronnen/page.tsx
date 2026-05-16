@@ -1,5 +1,11 @@
-'use client'
+import type { Metadata } from 'next'
 import Navbar from '@/components/Navbar'
+
+export const metadata: Metadata = {
+  title: 'Bronnen & Koppelingen | Slimme Kascontrole',
+  description: 'Exporteer uw financiële bestanden vanuit Twinq, Isabel, Yuki of eigen Excel voor uw kascontrolerapport.',
+  alternates: { canonical: '/bronnen' },
+}
 
 export default function BronnenOverzicht() {
   return (

@@ -1,4 +1,12 @@
+import type { Metadata } from 'next'
 import Navbar from '@/components/Navbar'
+
+export const metadata: Metadata = {
+  title: 'Algemene Voorwaarden | Slimme Kascontrole',
+  description: 'Lees de algemene voorwaarden van Slimme Kascontrole, een dienst van Vertras B.V.',
+  alternates: { canonical: '/voorwaarden' },
+}
+
 export default function Voorwaarden() {
   return (
     <main style={{ minHeight: '100vh', paddingTop: '72px', background: '#f8fafc', fontFamily: 'Outfit, sans-serif' }}>

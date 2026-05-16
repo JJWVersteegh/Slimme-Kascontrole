@@ -1,4 +1,12 @@
+import type { Metadata } from 'next'
 import Navbar from '@/components/Navbar'
+
+export const metadata: Metadata = {
+  title: 'Isabel & Yuki exporteren voor kascontrole | Slimme Kascontrole',
+  description: 'Exporteer uw Isabel of Yuki-bestanden en upload ze voor uw kascontrolerapport. Stap-voor-stap uitleg.',
+  alternates: { canonical: '/bronnen/isabel-yuki' },
+}
+
 export default function IsabelYukiBron() {
   return (
     <main style={{ minHeight: '100vh', paddingTop: '72px', background: '#f8fafc', fontFamily: 'Outfit, sans-serif' }}>
