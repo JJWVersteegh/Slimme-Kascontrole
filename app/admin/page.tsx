@@ -212,6 +212,8 @@ export default function AdminPortal() {
   }
 
   async function handleDeleteBeheerder(id: string) {
+    // First unlink any klanten referencing this beheerder
+    await supabase.from('klanten').update({ beheerder_id: null, beheerder_naam: null }).eq('beheerder_id', id)
     await supabase.from('beheerders').delete().eq('id', id)
     setDeleteBeheerderConfirm(null)
     await loadBeheerders()
