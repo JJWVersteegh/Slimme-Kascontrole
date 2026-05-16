@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import Footer from '@/components/Footer'
 
 export const metadata: Metadata = {
   title: 'VvE Kascontrole – Professioneel kascontrolerapport voor uw VvE | €59',
@@ -9,7 +10,12 @@ export const metadata: Metadata = {
 }
 
 export default function VveKascontrole() {
-  return <div dangerouslySetInnerHTML={{ __html: html }} />
+  return (
+    <>
+      <div dangerouslySetInnerHTML={{ __html: html }} />
+      <Footer />
+    </>
+  )
 }
 
 const html = `<!DOCTYPE html>
@@ -286,26 +292,6 @@ footer a:hover{color:white}
     </div>
   </div>
 </section>
-
-<!-- FOOTER -->
-<footer>
-  <a href="/" class="nav-logo" style="filter:brightness(0) invert(1);opacity:0.7">
-    <div style="background:#2563EB;width:32px;height:32px;border-radius:6px;display:flex;align-items:center;justify-content:center">
-      <svg width="16" height="16" viewBox="0 0 22 22" fill="none"><polyline points="3,12 9,18 19,6" stroke="white" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    </div>
-    <div style="line-height:1.1">
-      <div style="font-weight:700;font-size:0.9rem;color:rgba(255,255,255,0.7)">slimme</div>
-      <div style="font-weight:500;font-size:0.9rem;color:rgba(255,255,255,0.5)">kascontrole</div>
-    </div>
-  </a>
-  <div class="footer-links">
-    <a href="/vve-kascontrole">VvE Kascontrole</a>
-    <a href="/sportvereniging-kascontrole">Sportvereniging</a>
-    <a href="/kascommissie-rapport">Kascommissie rapport</a>
-    <a href="/#contact">Contact</a>
-  </div>
-  <p style="font-size:0.82rem">© 2026 Slimme Kascontrole</p>
-</footer>
 
 </body>
 </html>`

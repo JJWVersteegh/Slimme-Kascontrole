@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import Navbar from '@/components/Navbar'
+import Footer from '@/components/Footer'
 
 export const metadata: Metadata = {
   title: 'Bronnen & Koppelingen | Slimme Kascontrole',
@@ -70,14 +71,7 @@ export default function BronnenOverzicht() {
         </div>
       </div>
 
-      <footer style={{ background: '#0f172a', color: 'rgba(255,255,255,0.5)', padding: '32px 48px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px', fontSize: '0.83rem', marginTop: '64px' }}>
-        <span>© 2025 SlimmeKascontrole.nl — Een dienst van Vertras B.V.</span>
-        <div style={{ display: 'flex', gap: '24px' }}>
-          <a href="/" style={{ color: 'rgba(255,255,255,0.5)', textDecoration: 'none' }}>Home</a>
-          <a href="/registreer" style={{ color: 'rgba(255,255,255,0.5)', textDecoration: 'none' }}>Account aanmaken</a>
-          <a href="/mijn-omgeving" style={{ color: 'rgba(255,255,255,0.5)', textDecoration: 'none' }}>Mijn omgeving</a>
-        </div>
-      </footer>
+      <Footer />
     </main>
   )
 }
