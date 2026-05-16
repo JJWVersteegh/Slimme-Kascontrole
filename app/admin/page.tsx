@@ -206,6 +206,12 @@ export default function AdminPortal() {
     await loadBeheerders()
   }
 
+  async function handleDeleteBeheerder(id: string, naam: string) {
+    if (!confirm(`Beheerder "${naam}" definitief verwijderen?`)) return
+    await supabase.from('beheerders').delete().eq('id', id)
+    await loadBeheerders()
+  }
+
   useEffect(() => {
     if (activeTab === 'kortingscodes') loadCoupons()
     if (activeTab === 'beheerders') loadBeheerders()
@@ -910,6 +916,7 @@ export default function AdminPortal() {
                               <button onClick={() => handleToggleBeheerder(b.id, b.actief)} style={{ background: b.actief ? '#fef9c3' : '#f0fdf4', color: b.actief ? '#854d0e' : '#166534', border: 'none', padding: '5px 10px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.78rem', fontWeight: '600', fontFamily: 'Outfit, sans-serif' }}>
                                 {b.actief ? 'Deactiveer' : 'Activeer'}
                               </button>
+                              <button onClick={() => handleDeleteBeheerder(b.id, b.naam)} style={{ background: '#fee2e2', color: '#991b1b', border: 'none', padding: '5px 10px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.78rem', fontWeight: '600', fontFamily: 'Outfit, sans-serif' }}>🗑️</button>
                             </div>
                           </td>
                         </tr>
