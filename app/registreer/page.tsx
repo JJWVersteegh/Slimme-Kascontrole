@@ -307,7 +307,6 @@ export default function Registreer() {
               </form>
             )}
           </div>
-        )}
       </div>
       </div>
     </main>
