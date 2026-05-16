@@ -37,9 +37,10 @@ export default function Registreer() {
   useEffect(() => {
     const params = new URLSearchParams(window.location.search)
     if (params.get('mode') === 'login') setMode('login')
-    if (params.get('ref')) {
+    const ref = params.get('ref') || localStorage.getItem('skc_ref')
+    if (ref) {
       setHerkomst('beheerder')
-      setBeheerderSlug(params.get('ref')!)
+      setBeheerderSlug(ref)
     }
   }, [])
 
@@ -120,6 +121,7 @@ export default function Registreer() {
         })
       }
     }
+    localStorage.removeItem('skc_ref')
     router.push('/mijn-omgeving')
     setLoading(false)
   }
