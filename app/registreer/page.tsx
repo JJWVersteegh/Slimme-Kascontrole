@@ -35,6 +35,12 @@ export default function Registreer() {
     if (params.get('mode') === 'login') setMode('login')
   }, [])
 
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (session) router.replace('/mijn-omgeving')
+    })
+  }, [])
+
   async function zoekAdres(
     pc: string,
     hn: string,
