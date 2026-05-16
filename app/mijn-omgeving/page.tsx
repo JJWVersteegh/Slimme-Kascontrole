@@ -756,7 +756,6 @@ async function zoekAdres(pc: string, hn: string) {
           { href: '/#over-ons', label: 'Over ons' },
           { href: '/#tarieven', label: 'Tarieven' },
           { href: '/#contact', label: 'Contact' },
-          { href: '/mijn-omgeving', label: 'Mijn omgeving', active: true },
         ]}
         rightContent={(
           <>
@@ -767,7 +766,6 @@ async function zoekAdres(pc: string, hn: string) {
               <li><a href="/#over-ons">Over ons</a></li>
               <li><a href="/#tarieven">Tarieven</a></li>
               <li><a href="/#contact">Contact</a></li>
-              <li><a href="/mijn-omgeving" style={{ color: '#2563EB' }}>Mijn omgeving</a></li>
             </ul>
             <span style={{ fontSize: '0.78rem', color: '#475569', display: 'flex', flexDirection: 'column', alignItems: 'flex-end', lineHeight: 1.3 }}>
               <span style={{ fontWeight: '600', color: '#0f172a' }}>{klant?.naam || ''}</span>
