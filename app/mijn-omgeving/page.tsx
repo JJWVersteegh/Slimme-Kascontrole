@@ -281,6 +281,24 @@ export default function MijnOmgeving() {
         return
       }
 
+      // Haal uploads op om storage bestanden te verwijderen
+      let uploadsSelectQuery = supabase
+        .from('uploads')
+        .select('bestanden')
+        .eq('user_id', user?.id)
+        .eq('boekjaar', boekjaar)
+
+      if (vereniging_id) uploadsSelectQuery = uploadsSelectQuery.eq('vereniging_id', vereniging_id)
+
+      const { data: teVerwijderenUploads } = await uploadsSelectQuery
+      if (teVerwijderenUploads?.length) {
+        const alleBestanden = teVerwijderenUploads.flatMap(u => u.bestanden || [])
+        if (alleBestanden.length) {
+          await supabase.storage.from('kascontrole-bestanden').remove(alleBestanden)
+        }
+      }
+
+      // Verwijder upload DB-rijen
       let uploadsQuery = supabase
         .from('uploads')
         .delete()

@@ -1,13 +1,31 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { createClient } from '@supabase/supabase-js'
 
 export const dynamic = 'force-dynamic'
 
 export async function POST(req: NextRequest) {
   try {
+    // Auth check
+    const authHeader = req.headers.get('Authorization') || ''
+    const anonClient = createClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+      { global: { headers: { Authorization: authHeader } } }
+    )
+    const { data: { user: sessionUser } } = await anonClient.auth.getUser()
+    if (!sessionUser) {
+      return NextResponse.json({ error: 'Niet ingelogd' }, { status: 401 })
+    }
+
     const Stripe = (await import('stripe')).default
     const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, { apiVersion: '2025-01-27.acacia' as any })
 
     const { email, user_id, boekjaar, vereniging_id, naam, vereniging, adres, postcode, plaats } = await req.json()
+
+    // Verifieer dat user_id overeenkomt met ingelogde gebruiker
+    if (user_id && user_id !== sessionUser.id) {
+      return NextResponse.json({ error: 'Niet toegestaan' }, { status: 403 })
+    }
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://www.slimmekascontrole.nl'
 
     const session = await stripe.checkout.sessions.create({
