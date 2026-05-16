@@ -737,6 +737,21 @@ document.addEventListener('keydown',function(e){
     }
   }
 })
+;(function(){
+  try{
+    const authKey=Object.keys(localStorage).find(k=>k.startsWith('sb-')&&k.endsWith('-auth-token'))
+    if(authKey){
+      const d=JSON.parse(localStorage.getItem(authKey)||'{}')
+      if(d.access_token){
+        document.querySelectorAll('a[href="/registreer?mode=login"]').forEach(function(el){
+          el.textContent='Mijn omgeving'
+          el.href='/mijn-omgeving'
+          el.className='btn-nav'
+        })
+      }
+    }
+  }catch(e){}
+})()
 </script>
 </body>
 </html>`

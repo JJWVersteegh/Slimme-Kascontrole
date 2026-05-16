@@ -1,6 +1,6 @@
 'use client'
 
-import { ReactNode, useState } from 'react'
+import { ReactNode, useState, useEffect } from 'react'
 
 type NavLink = { href: string; label: string; primary?: boolean; outline?: boolean; active?: boolean }
 
@@ -24,7 +24,18 @@ interface NavbarProps {
 
 export default function Navbar({ links = publicLinks, rightContent, mobileExtra, className = '' }: NavbarProps) {
   const [open, setOpen] = useState(false)
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
   const isSingleBackLink = links.length === 1
+
+  useEffect(() => {
+    try {
+      const authKey = Object.keys(localStorage).find(k => k.startsWith('sb-') && k.endsWith('-auth-token'))
+      if (authKey) {
+        const d = JSON.parse(localStorage.getItem(authKey) || '{}')
+        if (d.access_token) setIsLoggedIn(true)
+      }
+    } catch {}
+  }, [])
 
   return (
     <>
@@ -73,9 +84,13 @@ export default function Navbar({ links = publicLinks, rightContent, mobileExtra,
             ))}
             {links.some(link => link.primary || link.outline) && (
               <li style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-                {links.filter(link => link.primary || link.outline).map(link => (
-                  <a key={`${link.href}-${link.label}`} href={link.href} className={link.primary ? 'skc-btn-nav' : 'skc-btn-nav-outline'} style={link.active ? { color: '#2563EB' } : undefined}>{link.label}</a>
-                ))}
+                {isLoggedIn ? (
+                  <a href="/mijn-omgeving" className="skc-btn-nav">Mijn omgeving</a>
+                ) : (
+                  links.filter(link => link.primary || link.outline).map(link => (
+                    <a key={`${link.href}-${link.label}`} href={link.href} className={link.primary ? 'skc-btn-nav' : 'skc-btn-nav-outline'} style={link.active ? { color: '#2563EB' } : undefined}>{link.label}</a>
+                  ))
+                )}
               </li>
             )}
           </ul>
@@ -94,9 +109,18 @@ export default function Navbar({ links = publicLinks, rightContent, mobileExtra,
 
       {open && (
         <div className="skc-mobile-menu">
-          {links.map(link => (
-            <a key={`${link.href}-${link.label}`} href={link.href} onClick={() => setOpen(false)} className={link.primary ? 'skc-mobile-btn' : link.outline ? 'skc-mobile-btn-outline' : undefined} style={link.active ? { color: '#2563EB' } : undefined}>{link.label}</a>
+          {links.filter(link => !link.primary && !link.outline).map(link => (
+            <a key={`${link.href}-${link.label}`} href={link.href} onClick={() => setOpen(false)} style={link.active ? { color: '#2563EB' } : undefined}>{link.label}</a>
           ))}
+          {links.some(link => link.primary || link.outline) && (
+            isLoggedIn ? (
+              <a href="/mijn-omgeving" onClick={() => setOpen(false)} className="skc-mobile-btn">Mijn omgeving</a>
+            ) : (
+              links.filter(link => link.primary || link.outline).map(link => (
+                <a key={`${link.href}-${link.label}`} href={link.href} onClick={() => setOpen(false)} className={link.primary ? 'skc-mobile-btn' : 'skc-mobile-btn-outline'} style={link.active ? { color: '#2563EB' } : undefined}>{link.label}</a>
+              ))
+            )
+          )}
           {mobileExtra}
         </div>
       )}
