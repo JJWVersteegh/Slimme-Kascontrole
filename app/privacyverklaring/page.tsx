@@ -37,7 +37,7 @@ export default function Privacyverklaring() {
           },
           {
             t: '6. Delen met derden',
-            c: 'Wij delen uw persoonsgegevens nooit met derden voor commerciële doeleinden. Wij maken gebruik van de volgende verwerkers: Supabase (opslag van gegevens, EU), Mollie (betalingsverwerking), Anthropic (AI-verwerking van uw financiële bestanden voor het rapport). Met alle verwerkers hebben wij verwerkersovereenkomsten gesloten.'
+            c: 'Wij delen uw persoonsgegevens nooit met derden voor commerciële doeleinden. Wij maken gebruik van de volgende verwerkers: Supabase (opslag van gegevens, EU), Stripe (betalingsverwerking), Anthropic (AI-verwerking van uw financiële bestanden voor het rapport). Met alle verwerkers hebben wij verwerkersovereenkomsten gesloten.'
           },
           {
             t: '7. Uw rechten',
