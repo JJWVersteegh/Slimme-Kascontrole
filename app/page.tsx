@@ -746,7 +746,6 @@ document.addEventListener('keydown',function(e){
         document.querySelectorAll('a[href="/registreer?mode=login"]').forEach(function(el){
           el.textContent='Mijn omgeving'
           el.href='/mijn-omgeving'
-          el.className='btn-nav'
         })
       }
     }

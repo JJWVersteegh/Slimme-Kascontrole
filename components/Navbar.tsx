@@ -85,7 +85,7 @@ export default function Navbar({ links = publicLinks, rightContent, mobileExtra,
             {links.some(link => link.primary || link.outline) && (
               <li style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
                 {isLoggedIn ? (
-                  <a href="/mijn-omgeving" className="skc-btn-nav">Mijn omgeving</a>
+                  <a href="/mijn-omgeving" className="skc-btn-nav-outline">Mijn omgeving</a>
                 ) : (
                   links.filter(link => link.primary || link.outline).map(link => (
                     <a key={`${link.href}-${link.label}`} href={link.href} className={link.primary ? 'skc-btn-nav' : 'skc-btn-nav-outline'} style={link.active ? { color: '#2563EB' } : undefined}>{link.label}</a>
@@ -114,7 +114,7 @@ export default function Navbar({ links = publicLinks, rightContent, mobileExtra,
           ))}
           {links.some(link => link.primary || link.outline) && (
             isLoggedIn ? (
-              <a href="/mijn-omgeving" onClick={() => setOpen(false)} className="skc-mobile-btn">Mijn omgeving</a>
+              <a href="/mijn-omgeving" onClick={() => setOpen(false)} className="skc-mobile-btn-outline">Mijn omgeving</a>
             ) : (
               links.filter(link => link.primary || link.outline).map(link => (
                 <a key={`${link.href}-${link.label}`} href={link.href} onClick={() => setOpen(false)} className={link.primary ? 'skc-mobile-btn' : 'skc-mobile-btn-outline'} style={link.active ? { color: '#2563EB' } : undefined}>{link.label}</a>
