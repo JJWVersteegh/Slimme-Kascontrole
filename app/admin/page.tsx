@@ -101,6 +101,10 @@ export default function AdminPortal() {
   const [beheerderSaving, setBeheerderSaving] = useState(false)
   const [bewerkBeheerder, setBewerkBeheerder] = useState<string | null>(null)
   const [deleteBeheerderConfirm, setDeleteBeheerderConfirm] = useState<string | null>(null)
+  const [deleteKlantConfirm, setDeleteKlantConfirm] = useState<string | null>(null)
+  const [deleteRapportConfirm, setDeleteRapportConfirm] = useState<string | null>(null)
+  const [deleteVerenigingConfirm, setDeleteVerenigingConfirm] = useState<string | null>(null)
+  const [deactiveerConfirm, setDeactiveerConfirm] = useState<string | null>(null)
 
   const [bewerkKlant, setBewerkKlant] = useState<Klant | null>(null)
   const [bewerkData, setBewerkData] = useState<Partial<Klant>>({})
@@ -248,7 +252,7 @@ export default function AdminPortal() {
   }
 
   async function handleDeactiveer(promoCodeId: string) {
-    if (!confirm('Code deactiveren?')) return
+    setDeactiveerConfirm(null)
     const { data: { session: delSession } } = await supabase.auth.getSession()
     await fetch('/api/coupons', {
       method: 'DELETE',
@@ -296,7 +300,7 @@ export default function AdminPortal() {
   }
 
   async function handleDeleteKlant(klant: Klant) {
-    if (!confirm(`Klant "${klant.naam || klant.email}" en alle bijbehorende data verwijderen? Dit kan niet ongedaan worden gemaakt.`)) return
+    setDeleteKlantConfirm(null)
     try {
       const { data: { session } } = await supabase.auth.getSession()
       const res = await fetch("/api/delete-user", {
@@ -422,7 +426,7 @@ export default function AdminPortal() {
   }
 
   async function handleDeleteRapport(userId: string, boekjaar: string, verenigingId?: string | null) {
-    if (!confirm(`Rapport voor boekjaar ${boekjaar} verwijderen?`)) return
+    setDeleteRapportConfirm(null)
     const { data: { session } } = await supabase.auth.getSession()
     const res = await fetch('/api/admin-delete-vereniging', {
       method: 'DELETE',
@@ -628,7 +632,14 @@ export default function AdminPortal() {
                     </div>
                     <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
                       <button onClick={() => { setBewerkKlant(geselecteerdeKlant); setBewerkData({ naam: geselecteerdeKlant!.naam, telefoon: geselecteerdeKlant!.telefoon, adres: (geselecteerdeKlant as any).adres || '', postcode: (geselecteerdeKlant as any).postcode || '', plaats: (geselecteerdeKlant as any).plaats || '' }); setAdminProfielHuisnummer(haalHuisnummerUitAdres((geselecteerdeKlant as any).adres)) }} style={{ background: '#eff6ff', color: '#2563EB', border: '1px solid #bfdbfe', padding: '5px 10px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.78rem', fontWeight: '600', fontFamily: 'Outfit, sans-serif' }}>✏️ Bewerken</button>
-                      <button onClick={() => handleDeleteKlant(geselecteerdeKlant!)} style={{ background: '#fee2e2', color: '#dc2626', border: '1px solid #fca5a5', padding: '5px 10px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.78rem', fontWeight: '600', fontFamily: 'Outfit, sans-serif' }}>🗑️ Verwijderen</button>
+                      {deleteKlantConfirm === geselecteerdeKlant!.user_id ? (
+                        <span style={{ display: 'inline-flex', gap: '4px', alignItems: 'center' }}>
+                          <button onClick={() => handleDeleteKlant(geselecteerdeKlant!)} style={{ background: '#dc2626', color: 'white', border: 'none', padding: '5px 10px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.78rem', fontWeight: '600', fontFamily: 'Outfit, sans-serif' }}>Ja, verwijder</button>
+                          <button onClick={() => setDeleteKlantConfirm(null)} style={{ background: '#f1f5f9', color: '#475569', border: 'none', padding: '5px 10px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.78rem', fontFamily: 'Outfit, sans-serif' }}>Annuleer</button>
+                        </span>
+                      ) : (
+                        <button onClick={() => setDeleteKlantConfirm(geselecteerdeKlant!.user_id)} style={{ background: '#fee2e2', color: '#dc2626', border: '1px solid #fca5a5', padding: '5px 10px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.78rem', fontWeight: '600', fontFamily: 'Outfit, sans-serif' }}>🗑️ Verwijderen</button>
+                      )}
                     </div>
                   </div>
                   <div style={{ padding: '20px 24px' }}>
@@ -672,23 +683,27 @@ export default function AdminPortal() {
                                   onClick={() => { setBewerkVve(v); setBewerkVveData({ naam: v.naam, kvk: v.kvk, adres: v.adres, postcode: v.postcode, plaats: v.plaats }); setBewerkVveHuisnummer(haalHuisnummerUitAdres(v.adres)) }}
                                   style={{ background: '#eff6ff', border: '1px solid #bfdbfe', color: '#2563EB', padding: '3px 8px', borderRadius: '4px', cursor: 'pointer', fontSize: '0.72rem', fontFamily: 'Outfit, sans-serif', fontWeight: '600' }}
                                 >✏️ Bewerken</button>
-                                <button
-                                  onClick={async () => {
-                                    if (!confirm(`Vereniging "${v.naam}" verwijderen?`)) return
-                                    const { data: { session } } = await supabase.auth.getSession()
-                                    const res = await fetch('/api/admin-delete-vereniging', {
-                                      method: 'DELETE',
-                                      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${session?.access_token}` },
-                                      body: JSON.stringify({ vereniging_id: v.id })
-                                    })
-                                    if (res.ok) {
-                                      setVerenigingen(prev => prev.filter(x => x.id !== v.id))
-                                    } else {
-                                      alert('Verwijderen mislukt')
-                                    }
-                                  }}
-                                  style={{ background: 'none', border: '1px solid #fecaca', color: '#ef4444', padding: '3px 8px', borderRadius: '4px', cursor: 'pointer', fontSize: '0.72rem', fontFamily: 'Outfit, sans-serif' }}
-                                >🗑️ Verwijderen</button>
+                                {deleteVerenigingConfirm === v.id ? (
+                                  <span style={{ display: 'inline-flex', gap: '4px', alignItems: 'center' }}>
+                                    <button onClick={async () => {
+                                      setDeleteVerenigingConfirm(null)
+                                      const { data: { session } } = await supabase.auth.getSession()
+                                      const res = await fetch('/api/admin-delete-vereniging', {
+                                        method: 'DELETE',
+                                        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${session?.access_token}` },
+                                        body: JSON.stringify({ vereniging_id: v.id })
+                                      })
+                                      if (res.ok) {
+                                        setVerenigingen(prev => prev.filter(x => x.id !== v.id))
+                                      } else {
+                                        alert('Verwijderen mislukt')
+                                      }
+                                    }} style={{ background: '#dc2626', color: 'white', border: 'none', padding: '3px 8px', borderRadius: '4px', cursor: 'pointer', fontSize: '0.72rem', fontWeight: '600', fontFamily: 'Outfit, sans-serif' }}>Ja, verwijder</button>
+                                    <button onClick={() => setDeleteVerenigingConfirm(null)} style={{ background: '#f1f5f9', color: '#475569', border: 'none', padding: '3px 8px', borderRadius: '4px', cursor: 'pointer', fontSize: '0.72rem', fontFamily: 'Outfit, sans-serif' }}>Annuleer</button>
+                                  </span>
+                                ) : (
+                                  <button onClick={() => setDeleteVerenigingConfirm(v.id)} style={{ background: 'none', border: '1px solid #fecaca', color: '#ef4444', padding: '3px 8px', borderRadius: '4px', cursor: 'pointer', fontSize: '0.72rem', fontFamily: 'Outfit, sans-serif' }}>🗑️ Verwijderen</button>
+                                )}
                               </div>
 
                               <div style={{ borderTop: '1px solid #e2e8f0', paddingTop: '10px' }}>
@@ -701,7 +716,14 @@ export default function AdminPortal() {
                                         <span style={{ fontWeight: '700', fontSize: '0.86rem', color: '#0f172a' }}>Boekjaar {r.boekjaar}</span>
                                         <div style={{ display: 'flex', gap: '6px', alignItems: 'center' }}>
                                           <span style={{ background: r.betaald ? '#dcfce7' : '#fef3c7', color: r.betaald ? '#166534' : '#92400e', padding: '2px 8px', borderRadius: '12px', fontSize: '0.72rem', fontWeight: '600' }}>{r.betaald ? '✓ Betaald' : '⏳ Onbetaald'}</span>
-                                          <button onClick={() => handleDeleteRapport(r.user_id, r.boekjaar, r.vereniging_id)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#ef4444', fontSize: '0.8rem', padding: '2px' }} title="Rapport verwijderen">🗑️</button>
+                                          {deleteRapportConfirm === `${r.user_id}-${r.boekjaar}` ? (
+                                            <span style={{ display: 'inline-flex', gap: '4px', alignItems: 'center' }}>
+                                              <button onClick={() => handleDeleteRapport(r.user_id, r.boekjaar, r.vereniging_id)} style={{ background: '#dc2626', color: 'white', border: 'none', padding: '3px 8px', borderRadius: '5px', cursor: 'pointer', fontSize: '0.72rem', fontWeight: '600', fontFamily: 'Outfit, sans-serif' }}>Ja</button>
+                                              <button onClick={() => setDeleteRapportConfirm(null)} style={{ background: '#f1f5f9', color: '#475569', border: 'none', padding: '3px 8px', borderRadius: '5px', cursor: 'pointer', fontSize: '0.72rem', fontFamily: 'Outfit, sans-serif' }}>Nee</button>
+                                            </span>
+                                          ) : (
+                                            <button onClick={() => setDeleteRapportConfirm(`${r.user_id}-${r.boekjaar}`)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#ef4444', fontSize: '0.8rem', padding: '2px' }} title="Rapport verwijderen">🗑️</button>
+                                          )}
                                         </div>
                                       </div>
                                       {r.rapport_tekst ? (
@@ -820,9 +842,16 @@ export default function AdminPortal() {
                                   {p.expires_at && <span style={{ fontSize: '0.75rem', color: '#94a3b8' }}>vervalt {new Date(p.expires_at * 1000).toLocaleDateString('nl-NL')}</span>}
                                 </div>
                                 {p.active && (
-                                  <button onClick={() => handleDeactiveer(p.id)} style={{ background: '#fee2e2', color: '#991b1b', border: 'none', padding: '4px 10px', borderRadius: '5px', cursor: 'pointer', fontSize: '0.75rem', fontWeight: '600', fontFamily: 'Outfit, sans-serif' }}>
-                                    Deactiveren
-                                  </button>
+                                  deactiveerConfirm === p.id ? (
+                                    <span style={{ display: 'inline-flex', gap: '4px', alignItems: 'center' }}>
+                                      <button onClick={() => handleDeactiveer(p.id)} style={{ background: '#dc2626', color: 'white', border: 'none', padding: '4px 10px', borderRadius: '5px', cursor: 'pointer', fontSize: '0.75rem', fontWeight: '600', fontFamily: 'Outfit, sans-serif' }}>Ja, deactiveer</button>
+                                      <button onClick={() => setDeactiveerConfirm(null)} style={{ background: '#f1f5f9', color: '#475569', border: 'none', padding: '4px 10px', borderRadius: '5px', cursor: 'pointer', fontSize: '0.75rem', fontFamily: 'Outfit, sans-serif' }}>Annuleer</button>
+                                    </span>
+                                  ) : (
+                                    <button onClick={() => setDeactiveerConfirm(p.id)} style={{ background: '#fee2e2', color: '#991b1b', border: 'none', padding: '4px 10px', borderRadius: '5px', cursor: 'pointer', fontSize: '0.75rem', fontWeight: '600', fontFamily: 'Outfit, sans-serif' }}>
+                                      Deactiveren
+                                    </button>
+                                  )
                                 )}
                               </div>
                             ))}
