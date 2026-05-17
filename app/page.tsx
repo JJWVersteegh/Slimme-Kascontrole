@@ -494,19 +494,16 @@ footer a:hover{color:#93c5fd}
     <div class="feature-visual fade-in">
       <p class="fv-title">Wat controleren wij?</p>
       <ul class="check-list">
-        <li>Klopt het begin- en eindsaldo met de bankafschriften?</li>
+        <li>Kloppen begin- en eindsaldo met de bankafschriften?</li>
         <li>Zijn alle inkomsten volledig verantwoord?</li>
         <li>Kloppen de totalen per categorie?</li>
         <li>Zijn er ongebruikelijke of dubbele posten?</li>
         <li>Is de boekhouding intern consistent?</li>
-        <li>Ontbreken er bewijsstukken of toelichting?</li>
         <li>Voldoet het rapport aan de eisen voor de ALV?</li>
-        <li>Heeft de beheerder alles correct afgehandeld?</li>
+        <li>Wijken kosten meer dan 30% af van de begroting?</li>
+        <li>Zijn er significante afwijkingen ten opzichte van vorig jaar?</li>
+        <li>Zijn er openstaande debiteuren of crediteuren?</li>
         <li>Zijn alle lopende contracten nog actueel?</li>
-        <li>Verlopen er contracten of abonnementen binnenkort?</li>
-        <li>Worden alle abonnementen nog actief gebruikt?</li>
-        <li>Zijn de verzekeringen nog voldoende gedekt?</li>
-        <li>Zijn onderhoudscontracten conform vergaderbesluiten?</li>
       </ul>
     </div>
   </div>
