@@ -479,9 +479,22 @@ export default function AdminPortal() {
         @media (max-width: 768px) {
           .nav-links-desktop { display: none !important; }
           .nav-hamburger { display: flex !important; }
-          .nav-padding { padding: 0 20px !important; }
+          .nav-padding { padding: 0 16px !important; }
+          .admin-main-padding { padding: 16px !important; }
           .admin-layout { flex-direction: column !important; }
           .admin-sidebar { width: 100% !important; min-width: unset !important; max-width: unset !important; }
+          .admin-sidebar-inner { position: static !important; max-height: none !important; }
+          .tab-row { flex-wrap: wrap !important; }
+          .tab-btn { flex: 1 1 auto !important; min-width: 120px !important; text-align: center; }
+          .table-scroll { overflow-x: auto !important; -webkit-overflow-scrolling: touch; }
+          .col-email { display: none !important; }
+          .col-uploads { display: none !important; }
+          .col-beheerder-link { display: none !important; }
+          .col-beheerder-klanten { display: none !important; }
+          .col-beheerder-betaald { display: none !important; }
+          .col-beheerder-fee { display: none !important; }
+          .kortingscode-form { flex: 1 1 100% !important; min-width: unset !important; }
+          .beheerder-form { flex: 1 1 100% !important; min-width: unset !important; }
         }
         .klant-rij:hover { background: #f8fafc !important; cursor: pointer; }
         .stat-card { background: white; border-radius: 12px; padding: 20px 24px; border: 1px solid #e2e8f0; }
@@ -529,7 +542,7 @@ export default function AdminPortal() {
         </div>
       )}
 
-      <div style={{ maxWidth: '1400px', margin: '0 auto', padding: '32px 24px' }}>
+      <div className="admin-main-padding" style={{ maxWidth: '1400px', margin: '0 auto', padding: '32px 24px' }}>
 
         {/* Stats */}
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '16px', marginBottom: '32px' }}>
@@ -556,7 +569,7 @@ export default function AdminPortal() {
         </div>
 
         {/* Tabs */}
-        <div style={{ display: 'flex', gap: '10px', marginBottom: '24px' }}>
+        <div className="tab-row" style={{ display: 'flex', gap: '10px', marginBottom: '24px', flexWrap: 'wrap' }}>
           <button className={`tab-btn${activeTab === 'klanten' ? ' actief' : ''}`} onClick={() => setActiveTab('klanten')}>👥 Klanten</button>
           <button className={`tab-btn${activeTab === 'kortingscodes' ? ' actief' : ''}`} onClick={() => setActiveTab('kortingscodes')}>🎁 Kortingscodes</button>
           <button className={`tab-btn${activeTab === 'beheerders' ? ' actief' : ''}`} onClick={() => setActiveTab('beheerders')}>🤝 Beheerders</button>
@@ -589,13 +602,14 @@ export default function AdminPortal() {
                 {gefilterd.length === 0 ? (
                   <div style={{ padding: '40px', textAlign: 'center', color: '#94a3b8', fontSize: '0.9rem' }}>Geen klanten gevonden</div>
                 ) : (
+                  <div className="table-scroll">
                   <table style={{ width: '100%', borderCollapse: 'collapse' }}>
                     <thead>
                       <tr style={{ background: '#f8fafc' }}>
                         <th style={{ padding: '10px 16px', textAlign: 'left', fontSize: '0.75rem', fontWeight: '600', color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Naam / Vereniging</th>
-                        <th style={{ padding: '10px 16px', textAlign: 'left', fontSize: '0.75rem', fontWeight: '600', color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em' }}>E-mail</th>
+                        <th className="col-email" style={{ padding: '10px 16px', textAlign: 'left', fontSize: '0.75rem', fontWeight: '600', color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em' }}>E-mail</th>
                         <th style={{ padding: '10px 16px', textAlign: 'left', fontSize: '0.75rem', fontWeight: '600', color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Status</th>
-                        <th style={{ padding: '10px 16px', textAlign: 'left', fontSize: '0.75rem', fontWeight: '600', color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Uploads</th>
+                        <th className="col-uploads" style={{ padding: '10px 16px', textAlign: 'left', fontSize: '0.75rem', fontWeight: '600', color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Uploads</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -617,7 +631,7 @@ export default function AdminPortal() {
                               </div>
                             )}
                           </td>
-                          <td style={{ padding: '12px 16px', fontSize: '0.85rem', color: '#475569' }}>{k.email}</td>
+                          <td className="col-email" style={{ padding: '12px 16px', fontSize: '0.85rem', color: '#475569' }}>{k.email}</td>
                           <td style={{ padding: '12px 16px' }}>
                             <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
                               {heeftBetaald(k.user_id)
@@ -628,20 +642,21 @@ export default function AdminPortal() {
                                 : <span className="badge badge-grijs">Geen rapport</span>}
                             </div>
                           </td>
-                          <td style={{ padding: '12px 16px', fontSize: '0.85rem', color: '#475569' }}>
+                          <td className="col-uploads" style={{ padding: '12px 16px', fontSize: '0.85rem', color: '#475569' }}>
                             {getUploadsVoorKlant(k.user_id).length} bestand(en)
                           </td>
                         </tr>
                       ))}
                     </tbody>
                   </table>
+                  </div>
                 )}
               </div>
             </div>
 
             {geselecteerdeKlant && (
-              <div style={{ width: '380px', minWidth: '340px', flexShrink: 0 }}>
-                <div style={{ background: 'white', borderRadius: '16px', border: '1px solid #e2e8f0', position: 'sticky', top: '88px', maxHeight: 'calc(100vh - 120px)', overflowY: 'auto' }}>
+              <div className="admin-sidebar" style={{ width: '380px', minWidth: '340px', flexShrink: 0 }}>
+                <div className="admin-sidebar-inner" style={{ background: 'white', borderRadius: '16px', border: '1px solid #e2e8f0', position: 'sticky', top: '88px', maxHeight: 'calc(100vh - 120px)', overflowY: 'auto' }}>
                   <div style={{ padding: '16px 20px', borderBottom: '1px solid #e2e8f0' }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
                       <h3 style={{ fontSize: '1rem', fontWeight: '700', color: '#0f172a', margin: 0 }}>Klantdetails</h3>
@@ -773,7 +788,7 @@ export default function AdminPortal() {
           <div style={{ display: 'flex', gap: '24px', alignItems: 'flex-start', flexWrap: 'wrap' }}>
 
             {/* Nieuwe code aanmaken */}
-            <div style={{ flex: '0 0 340px', background: 'white', borderRadius: '16px', border: '1px solid #e2e8f0', padding: '24px' }}>
+            <div className="kortingscode-form" style={{ flex: '0 0 340px', background: 'white', borderRadius: '16px', border: '1px solid #e2e8f0', padding: '24px' }}>
               <h2 style={{ fontSize: '1rem', fontWeight: '700', color: '#0f172a', margin: '0 0 20px' }}>🎁 Nieuwe kortingscode</h2>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
                 <div>
@@ -858,7 +873,7 @@ export default function AdminPortal() {
           <div style={{ display: 'flex', gap: '24px', alignItems: 'flex-start', flexWrap: 'wrap' }}>
 
             {/* Formulier */}
-            <div style={{ flex: '0 0 320px', background: 'white', borderRadius: '16px', border: '1px solid #e2e8f0', padding: '24px' }}>
+            <div className="beheerder-form" style={{ flex: '0 0 320px', background: 'white', borderRadius: '16px', border: '1px solid #e2e8f0', padding: '24px' }}>
               <h2 style={{ fontSize: '1rem', fontWeight: '700', color: '#0f172a', margin: '0 0 20px' }}>
                 {bewerkBeheerder ? '✏️ Beheerder bewerken' : '➕ Beheerder toevoegen'}
               </h2>
@@ -897,14 +912,15 @@ export default function AdminPortal() {
               {beheerders.length === 0 ? (
                 <div style={{ padding: '40px', textAlign: 'center', color: '#94a3b8', fontSize: '0.9rem' }}>Nog geen beheerders toegevoegd</div>
               ) : (
+                <div className="table-scroll">
                 <table style={{ width: '100%', borderCollapse: 'collapse' }}>
                   <thead>
                     <tr style={{ background: '#f8fafc' }}>
                       <th style={{ padding: '10px 16px', textAlign: 'left', fontSize: '0.72rem', fontWeight: '700', color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Naam</th>
-                      <th style={{ padding: '10px 16px', textAlign: 'left', fontSize: '0.72rem', fontWeight: '700', color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Unieke link</th>
-                      <th style={{ padding: '10px 16px', textAlign: 'center', fontSize: '0.72rem', fontWeight: '700', color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Klanten</th>
-                      <th style={{ padding: '10px 16px', textAlign: 'center', fontSize: '0.72rem', fontWeight: '700', color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Betaald</th>
-                      <th style={{ padding: '10px 16px', textAlign: 'center', fontSize: '0.72rem', fontWeight: '700', color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Fee</th>
+                      <th className="col-beheerder-link" style={{ padding: '10px 16px', textAlign: 'left', fontSize: '0.72rem', fontWeight: '700', color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Unieke link</th>
+                      <th className="col-beheerder-klanten" style={{ padding: '10px 16px', textAlign: 'center', fontSize: '0.72rem', fontWeight: '700', color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Klanten</th>
+                      <th className="col-beheerder-betaald" style={{ padding: '10px 16px', textAlign: 'center', fontSize: '0.72rem', fontWeight: '700', color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Betaald</th>
+                      <th className="col-beheerder-fee" style={{ padding: '10px 16px', textAlign: 'center', fontSize: '0.72rem', fontWeight: '700', color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Fee</th>
                       <th style={{ padding: '10px 16px', textAlign: 'center', fontSize: '0.72rem', fontWeight: '700', color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Status</th>
                       <th style={{ padding: '10px 16px' }}></th>
                     </tr>
@@ -917,12 +933,12 @@ export default function AdminPortal() {
                       return (
                         <tr key={b.id} style={{ borderTop: '1px solid #f1f5f9' }}>
                           <td style={{ padding: '12px 16px', fontWeight: '600', color: '#0f172a', fontSize: '0.88rem' }}>{b.naam}</td>
-                          <td style={{ padding: '12px 16px' }}>
+                          <td className="col-beheerder-link" style={{ padding: '12px 16px' }}>
                             <code style={{ fontSize: '0.75rem', color: '#2563EB', background: '#eff6ff', padding: '2px 8px', borderRadius: '4px' }}>/via/{b.slug}</code>
                           </td>
-                          <td style={{ padding: '12px 16px', textAlign: 'center', fontWeight: '700', color: '#0f172a' }}>{klanten_via.length}</td>
-                          <td style={{ padding: '12px 16px', textAlign: 'center', fontWeight: '700', color: '#16a34a' }}>{betaald_via.length}</td>
-                          <td style={{ padding: '12px 16px', textAlign: 'center', fontWeight: '700', color: '#2563EB' }}>€{fee_totaal}</td>
+                          <td className="col-beheerder-klanten" style={{ padding: '12px 16px', textAlign: 'center', fontWeight: '700', color: '#0f172a' }}>{klanten_via.length}</td>
+                          <td className="col-beheerder-betaald" style={{ padding: '12px 16px', textAlign: 'center', fontWeight: '700', color: '#16a34a' }}>{betaald_via.length}</td>
+                          <td className="col-beheerder-fee" style={{ padding: '12px 16px', textAlign: 'center', fontWeight: '700', color: '#2563EB' }}>€{fee_totaal}</td>
                           <td style={{ padding: '12px 16px', textAlign: 'center' }}>
                             <span style={{ background: b.actief ? '#dcfce7' : '#f1f5f9', color: b.actief ? '#166534' : '#64748b', padding: '3px 10px', borderRadius: '999px', fontSize: '0.72rem', fontWeight: '700' }}>
                               {b.actief ? 'Actief' : 'Inactief'}
@@ -942,6 +958,7 @@ export default function AdminPortal() {
                     })}
                   </tbody>
                 </table>
+                </div>
               )}
             </div>
           </div>
@@ -959,6 +976,7 @@ export default function AdminPortal() {
               ) : orphans.length === 0 ? (
                 <div style={{ background: '#f0fdf4', border: '1px solid #bbf7d0', borderRadius: '10px', padding: '16px', color: '#166534', fontSize: '0.88rem', fontWeight: '600' }}>✅ Alles schoon — geen losse gebruikers gevonden</div>
               ) : (
+                <div className="table-scroll">
                 <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.84rem' }}>
                   <thead>
                     <tr style={{ borderBottom: '2px solid #e2e8f0' }}>
@@ -979,6 +997,7 @@ export default function AdminPortal() {
                     ))}
                   </tbody>
                 </table>
+                </div>
               )}
               <button onClick={loadOrphans} style={{ marginTop: '16px', background: '#f1f5f9', color: '#475569', border: 'none', padding: '8px 16px', borderRadius: '8px', cursor: 'pointer', fontSize: '0.84rem', fontFamily: 'Outfit, sans-serif' }}>🔄 Vernieuwen</button>
             </div>
