@@ -664,7 +664,7 @@ export default function AdminPortal() {
                     </div>
                     <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
                       <button onClick={() => { setBewerkKlant(geselecteerdeKlant); setBewerkData({ naam: geselecteerdeKlant!.naam, telefoon: geselecteerdeKlant!.telefoon, adres: (geselecteerdeKlant as any).adres || '', postcode: (geselecteerdeKlant as any).postcode || '', plaats: (geselecteerdeKlant as any).plaats || '' }); setAdminProfielHuisnummer(haalHuisnummerUitAdres((geselecteerdeKlant as any).adres)) }} style={{ background: '#eff6ff', color: '#2563EB', border: '1px solid #bfdbfe', padding: '5px 10px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.78rem', fontWeight: '600', fontFamily: 'Outfit, sans-serif' }}>✏️ Bewerken</button>
-                      <button onClick={() => handleDeleteKlant(geselecteerdeKlant!)} style={{ background: '#fee2e2', color: '#991b1b', border: 'none', padding: '5px 10px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.78rem', fontWeight: '600', fontFamily: 'Outfit, sans-serif' }}>🗑️ Verwijderen</button>
+                      <button onClick={() => handleDeleteKlant(geselecteerdeKlant!)} style={{ background: '#fee2e2', color: '#991b1b', border: 'none', padding: '5px 10px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.78rem', fontWeight: '600', fontFamily: 'Outfit, sans-serif' }}>🗑️</button>
                     </div>
                   </div>
                   <div style={{ padding: '20px 24px' }}>
@@ -720,7 +720,7 @@ export default function AdminPortal() {
                                   } else {
                                     alert('Verwijderen mislukt')
                                   }
-                                }} style={{ background: '#fee2e2', color: '#991b1b', border: 'none', padding: '5px 10px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.78rem', fontWeight: '600', fontFamily: 'Outfit, sans-serif' }}>🗑️ Verwijderen</button>
+                                }} style={{ background: '#fee2e2', color: '#991b1b', border: 'none', padding: '5px 10px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.78rem', fontWeight: '600', fontFamily: 'Outfit, sans-serif' }}>🗑️</button>
                               </div>
 
                               <div style={{ borderTop: '1px solid #e2e8f0', paddingTop: '10px' }}>
@@ -950,7 +950,7 @@ export default function AdminPortal() {
                               <button onClick={() => handleToggleBeheerder(b.id, b.actief)} style={{ background: b.actief ? '#fef9c3' : '#f0fdf4', color: b.actief ? '#854d0e' : '#166534', border: 'none', padding: '5px 10px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.78rem', fontWeight: '600', fontFamily: 'Outfit, sans-serif' }}>
                                 {b.actief ? 'Deactiveer' : 'Activeer'}
                               </button>
-                              <button onClick={() => handleDeleteBeheerder(b.id)} style={{ background: '#fee2e2', color: '#991b1b', border: 'none', padding: '5px 10px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.78rem', fontWeight: '600', fontFamily: 'Outfit, sans-serif' }}>🗑️ Verwijderen</button>
+                              <button onClick={() => handleDeleteBeheerder(b.id)} style={{ background: '#fee2e2', color: '#991b1b', border: 'none', padding: '5px 10px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.78rem', fontWeight: '600', fontFamily: 'Outfit, sans-serif' }}>🗑️</button>
                             </div>
                           </td>
                         </tr>
@@ -991,7 +991,7 @@ export default function AdminPortal() {
                         <td style={{ padding: '10px 12px', color: '#0f172a' }}>{o.email}</td>
                         <td style={{ padding: '10px 12px', color: '#64748b' }}>{new Date(o.created_at).toLocaleDateString('nl-NL')}</td>
                         <td style={{ padding: '10px 12px' }}>
-                          <button onClick={() => handleDeleteOrphan(o.id)} style={{ background: '#fee2e2', color: '#991b1b', border: 'none', padding: '5px 10px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.78rem', fontWeight: '600', fontFamily: 'Outfit, sans-serif' }}>🗑️ Verwijderen</button>
+                          <button onClick={() => handleDeleteOrphan(o.id)} style={{ background: '#fee2e2', color: '#991b1b', border: 'none', padding: '5px 10px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.78rem', fontWeight: '600', fontFamily: 'Outfit, sans-serif' }}>🗑️</button>
                         </td>
                       </tr>
                     ))}
