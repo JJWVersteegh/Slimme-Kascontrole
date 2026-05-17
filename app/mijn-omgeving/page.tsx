@@ -872,7 +872,7 @@ async function zoekAdres(pc: string, hn: string) {
                 ))}
               </select>
               {geselecteerdeVereniging && verenigingen.length > 1 && (
-                <button onClick={() => handleDeleteVereniging(geselecteerdeVereniging)} style={{ background: '#fef2f2', border: '1px solid #fecaca', color: '#ef4444', cursor: 'pointer', fontSize: '0.84rem', padding: '12px 16px', borderRadius: '12px', fontWeight: '700', fontFamily: 'Outfit, sans-serif', whiteSpace: 'nowrap' }}>🗑️ Verwijderen</button>
+                <button onClick={() => handleDeleteVereniging(geselecteerdeVereniging)} style={{ background: '#fef2f2', border: '1px solid #fecaca', color: '#ef4444', cursor: 'pointer', fontSize: '0.84rem', padding: '12px 16px', borderRadius: '12px', fontWeight: '700', fontFamily: 'Outfit, sans-serif', whiteSpace: 'nowrap' }}>🗑️</button>
               )}
             </div>
           )}
