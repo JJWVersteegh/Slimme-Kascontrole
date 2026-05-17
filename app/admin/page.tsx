@@ -664,7 +664,7 @@ export default function AdminPortal() {
                     </div>
                     <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
                       <button onClick={() => { setBewerkKlant(geselecteerdeKlant); setBewerkData({ naam: geselecteerdeKlant!.naam, telefoon: geselecteerdeKlant!.telefoon, adres: (geselecteerdeKlant as any).adres || '', postcode: (geselecteerdeKlant as any).postcode || '', plaats: (geselecteerdeKlant as any).plaats || '' }); setAdminProfielHuisnummer(haalHuisnummerUitAdres((geselecteerdeKlant as any).adres)) }} style={{ background: '#eff6ff', color: '#2563EB', border: '1px solid #bfdbfe', padding: '5px 10px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.78rem', fontWeight: '600', fontFamily: 'Outfit, sans-serif' }}>✏️ Bewerken</button>
-                      <button onClick={() => handleDeleteKlant(geselecteerdeKlant!)} style={{ background: '#fee2e2', color: '#dc2626', border: '1px solid #fca5a5', padding: '5px 10px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.78rem', fontWeight: '600', fontFamily: 'Outfit, sans-serif' }}>🗑️ Verwijderen</button>
+                      <button onClick={() => handleDeleteKlant(geselecteerdeKlant!)} style={{ background: '#fee2e2', color: '#991b1b', border: 'none', padding: '5px 10px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.78rem', fontWeight: '600', fontFamily: 'Outfit, sans-serif' }}>🗑️ Verwijderen</button>
                     </div>
                   </div>
                   <div style={{ padding: '20px 24px' }}>
@@ -720,7 +720,7 @@ export default function AdminPortal() {
                                   } else {
                                     alert('Verwijderen mislukt')
                                   }
-                                }} style={{ background: 'none', border: '1px solid #fecaca', color: '#ef4444', padding: '3px 8px', borderRadius: '4px', cursor: 'pointer', fontSize: '0.72rem', fontFamily: 'Outfit, sans-serif' }}>🗑️ Verwijderen</button>
+                                }} style={{ background: '#fee2e2', color: '#991b1b', border: 'none', padding: '5px 10px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.78rem', fontWeight: '600', fontFamily: 'Outfit, sans-serif' }}>🗑️ Verwijderen</button>
                               </div>
 
                               <div style={{ borderTop: '1px solid #e2e8f0', paddingTop: '10px' }}>
@@ -733,7 +733,7 @@ export default function AdminPortal() {
                                         <span style={{ fontWeight: '700', fontSize: '0.86rem', color: '#0f172a' }}>Boekjaar {r.boekjaar}</span>
                                         <div style={{ display: 'flex', gap: '6px', alignItems: 'center' }}>
                                           <span style={{ background: r.betaald ? '#dcfce7' : '#fef3c7', color: r.betaald ? '#166534' : '#92400e', padding: '2px 8px', borderRadius: '12px', fontSize: '0.72rem', fontWeight: '600' }}>{r.betaald ? '✓ Betaald' : '⏳ Onbetaald'}</span>
-                                          <button onClick={() => handleDeleteRapport(r.user_id, r.boekjaar, r.vereniging_id)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#ef4444', fontSize: '0.8rem', padding: '2px' }} title="Rapport verwijderen">🗑️</button>
+                                          <button onClick={() => handleDeleteRapport(r.user_id, r.boekjaar, r.vereniging_id)} style={{ background: '#fee2e2', color: '#991b1b', border: 'none', padding: '3px 7px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.75rem', fontWeight: '600', fontFamily: 'Outfit, sans-serif' }} title="Rapport verwijderen">🗑️</button>
                                         </div>
                                       </div>
                                       {r.rapport_tekst ? (
@@ -950,7 +950,7 @@ export default function AdminPortal() {
                               <button onClick={() => handleToggleBeheerder(b.id, b.actief)} style={{ background: b.actief ? '#fef9c3' : '#f0fdf4', color: b.actief ? '#854d0e' : '#166534', border: 'none', padding: '5px 10px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.78rem', fontWeight: '600', fontFamily: 'Outfit, sans-serif' }}>
                                 {b.actief ? 'Deactiveer' : 'Activeer'}
                               </button>
-                              <button onClick={() => handleDeleteBeheerder(b.id)} style={{ background: '#fee2e2', color: '#991b1b', border: 'none', padding: '5px 10px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.78rem', fontWeight: '600', fontFamily: 'Outfit, sans-serif' }}>🗑️</button>
+                              <button onClick={() => handleDeleteBeheerder(b.id)} style={{ background: '#fee2e2', color: '#991b1b', border: 'none', padding: '5px 10px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.78rem', fontWeight: '600', fontFamily: 'Outfit, sans-serif' }}>🗑️ Verwijderen</button>
                             </div>
                           </td>
                         </tr>
@@ -991,7 +991,7 @@ export default function AdminPortal() {
                         <td style={{ padding: '10px 12px', color: '#0f172a' }}>{o.email}</td>
                         <td style={{ padding: '10px 12px', color: '#64748b' }}>{new Date(o.created_at).toLocaleDateString('nl-NL')}</td>
                         <td style={{ padding: '10px 12px' }}>
-                          <button onClick={() => handleDeleteOrphan(o.id)} style={{ background: '#fee2e2', color: '#991b1b', border: 'none', padding: '5px 10px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.78rem', fontWeight: '600', fontFamily: 'Outfit, sans-serif' }}>🗑️ Verwijder</button>
+                          <button onClick={() => handleDeleteOrphan(o.id)} style={{ background: '#fee2e2', color: '#991b1b', border: 'none', padding: '5px 10px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.78rem', fontWeight: '600', fontFamily: 'Outfit, sans-serif' }}>🗑️ Verwijderen</button>
                         </td>
                       </tr>
                     ))}
