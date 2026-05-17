@@ -493,8 +493,12 @@ export default function AdminPortal() {
           .col-beheerder-klanten { display: none !important; }
           .col-beheerder-betaald { display: none !important; }
           .col-beheerder-fee { display: none !important; }
-          .kortingscode-form { flex: 1 1 100% !important; min-width: unset !important; }
-          .beheerder-form { flex: 1 1 100% !important; min-width: unset !important; }
+          .kortingscode-form { flex: 1 1 100% !important; min-width: unset !important; max-width: 100% !important; }
+          .beheerder-form { flex: 1 1 100% !important; min-width: unset !important; max-width: 100% !important; }
+          .promo-code-row { flex-wrap: wrap !important; gap: 6px !important; }
+          .modal-inner-padding { padding: 20px !important; }
+          .modal-address-grid { grid-template-columns: 1fr !important; }
+          .rapport-content-padding { padding: 20px !important; }
         }
         .klant-rij:hover { background: #f8fafc !important; cursor: pointer; }
         .stat-card { background: white; border-radius: 12px; padding: 20px 24px; border: 1px solid #e2e8f0; }
@@ -844,8 +848,8 @@ export default function AdminPortal() {
                         {coupon.promoCodes.length > 0 && (
                           <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
                             {coupon.promoCodes.map(p => (
-                              <div key={p.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: '#f8fafc', padding: '8px 12px', borderRadius: '6px' }}>
-                                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                              <div key={p.id} className="promo-code-row" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: '#f8fafc', padding: '8px 12px', borderRadius: '6px', flexWrap: 'wrap', gap: '6px' }}>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
                                   <code style={{ fontWeight: '700', fontSize: '0.88rem', color: '#0f172a', background: '#e2e8f0', padding: '2px 8px', borderRadius: '4px' }}>{p.code}</code>
                                   <span className={`badge ${p.active ? 'badge-groen' : 'badge-rood'}`}>{p.active ? 'Actief' : 'Inactief'}</span>
                                   <span style={{ fontSize: '0.75rem', color: '#94a3b8' }}>{p.times_redeemed}× gebruikt</span>
@@ -1007,7 +1011,7 @@ export default function AdminPortal() {
       {/* Bewerk klant modal - alleen persoonsgegevens */}
       {bewerkKlant && (
         <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)', zIndex: 1000, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px', overflowY: 'auto' }}>
-          <div style={{ background: 'white', borderRadius: '16px', width: '100%', maxWidth: '480px', padding: '28px', margin: 'auto' }}>
+          <div className="modal-inner-padding" style={{ background: 'white', borderRadius: '16px', width: '100%', maxWidth: '480px', padding: '28px', margin: 'auto' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
               <h3 style={{ margin: 0, fontSize: '1rem', fontWeight: '700', color: '#0f172a' }}>✏️ Persoonsgegevens bewerken</h3>
               <button onClick={() => setBewerkKlant(null)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#94a3b8', fontSize: '1.2rem' }}>×</button>
@@ -1046,7 +1050,7 @@ export default function AdminPortal() {
                       ✓ {(bewerkData as any)['adres']}, {(bewerkData as any)['postcode']} {(bewerkData as any)['plaats']}
                     </div>
                   )}
-                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
+                  <div className="modal-address-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
                     <input value={(bewerkData as any)['adres'] || ''} onChange={e => setBewerkData(d => ({ ...d, adres: e.target.value }))} placeholder="Straat + huisnummer" style={{ padding: '9px 14px', border: '1.5px solid #e2e8f0', borderRadius: '8px', fontSize: '0.85rem', fontFamily: 'Outfit, sans-serif', outline: 'none', boxSizing: 'border-box', width: '100%', maxWidth: '100%', minWidth: 0 }} />
                     <input value={(bewerkData as any)['plaats'] || ''} onChange={e => setBewerkData(d => ({ ...d, plaats: e.target.value }))} placeholder="Plaats" style={{ padding: '9px 14px', border: '1.5px solid #e2e8f0', borderRadius: '8px', fontSize: '0.85rem', fontFamily: 'Outfit, sans-serif', outline: 'none', boxSizing: 'border-box', width: '100%', maxWidth: '100%', minWidth: 0 }} />
                   </div>
@@ -1068,7 +1072,7 @@ export default function AdminPortal() {
       {/* Bewerk VvE modal - apart per vereniging */}
       {bewerkVve && (
         <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)', zIndex: 1000, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px', overflowY: 'auto' }}>
-          <div style={{ background: 'white', borderRadius: '16px', width: '100%', maxWidth: '480px', padding: '28px', margin: 'auto' }}>
+          <div className="modal-inner-padding" style={{ background: 'white', borderRadius: '16px', width: '100%', maxWidth: '480px', padding: '28px', margin: 'auto' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
               <h3 style={{ margin: 0, fontSize: '1rem', fontWeight: '700', color: '#0f172a' }}>🏢 VvE bewerken: {bewerkVve.naam}</h3>
               <button onClick={() => setBewerkVve(null)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#94a3b8', fontSize: '1.2rem' }}>×</button>
@@ -1110,7 +1114,7 @@ export default function AdminPortal() {
                       ✓ {bewerkVveData.adres}, {bewerkVveData.postcode} {bewerkVveData.plaats}
                     </div>
                   )}
-                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
+                  <div className="modal-address-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
                     <input value={bewerkVveData.adres || ''} onChange={e => setBewerkVveData(d => ({ ...d, adres: e.target.value }))} placeholder="Straat + huisnummer" style={{ padding: '9px 14px', border: '1.5px solid #e2e8f0', borderRadius: '8px', fontSize: '0.85rem', fontFamily: 'Outfit, sans-serif', outline: 'none', boxSizing: 'border-box', width: '100%', maxWidth: '100%', minWidth: 0 }} />
                     <input value={bewerkVveData.plaats || ''} onChange={e => setBewerkVveData(d => ({ ...d, plaats: e.target.value }))} placeholder="Plaats" style={{ padding: '9px 14px', border: '1.5px solid #e2e8f0', borderRadius: '8px', fontSize: '0.85rem', fontFamily: 'Outfit, sans-serif', outline: 'none', boxSizing: 'border-box', width: '100%', maxWidth: '100%', minWidth: 0 }} />
                   </div>
@@ -1180,7 +1184,7 @@ export default function AdminPortal() {
             </div>
             <div style={{ padding: '32px 24px', maxHeight: 'calc(90vh - 60px)', overflowY: 'auto' }}>
               <div style={{ maxWidth: '860px', margin: '0 auto' }}>
-                <div style={{ background: 'white', borderRadius: '16px', padding: '56px', border: '1px solid #e2e8f0', boxShadow: '0 4px 24px rgba(0,0,0,0.06)' }}>
+                <div className="rapport-content-padding" style={{ background: 'white', borderRadius: '16px', padding: '56px', border: '1px solid #e2e8f0', boxShadow: '0 4px 24px rgba(0,0,0,0.06)' }}>
                   <div style={{ textAlign: 'center', borderBottom: '3px solid #2563EB', paddingBottom: '28px', marginBottom: '36px' }}>
                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '12px', marginBottom: '16px' }}>
                       <div style={{ background: '#2563EB', width: '44px', height: '44px', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
