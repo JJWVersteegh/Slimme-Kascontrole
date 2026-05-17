@@ -819,9 +819,9 @@ export default function AdminPortal() {
             </div>
 
             {/* Overzicht codes */}
-            <div style={{ flex: 1, minWidth: '300px' }}>
+            <div style={{ flex: 1, minWidth: 0 }}>
               <div style={{ background: 'white', borderRadius: '16px', border: '1px solid #e2e8f0', overflow: 'hidden' }}>
-                <div style={{ padding: '20px 24px', borderBottom: '1px solid #e2e8f0', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <div style={{ padding: '20px 24px', borderBottom: '1px solid #e2e8f0', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '8px' }}>
                   <h2 style={{ fontSize: '1rem', fontWeight: '700', color: '#0f172a', margin: 0 }}>Bestaande codes</h2>
                   <button onClick={loadCoupons} style={{ background: '#f1f5f9', border: 'none', padding: '6px 12px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.8rem', fontFamily: 'Outfit, sans-serif', color: '#475569' }}>↻ Vernieuwen</button>
                 </div>
@@ -833,9 +833,9 @@ export default function AdminPortal() {
                   <div style={{ padding: '16px 24px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
                     {coupons.map(coupon => (
                       <div key={coupon.id} style={{ border: '1px solid #e2e8f0', borderRadius: '10px', padding: '14px 16px' }}>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
-                          <div>
-                            <span style={{ fontWeight: '700', fontSize: '0.92rem', color: '#0f172a' }}>{coupon.name}</span>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '6px', marginBottom: '8px' }}>
+                          <div style={{ minWidth: 0 }}>
+                            <span style={{ fontWeight: '700', fontSize: '0.92rem', color: '#0f172a', wordBreak: 'break-word' }}>{coupon.name}</span>
                             <span style={{ marginLeft: '10px', fontSize: '0.8rem', color: '#2563EB', fontWeight: '600' }}>
                               {coupon.amount_off ? `€${(coupon.amount_off / 100).toFixed(0)} korting` : `${coupon.percent_off}% korting`}
                             </span>
