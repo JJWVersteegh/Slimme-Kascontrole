@@ -873,7 +873,7 @@ export default function AdminPortal() {
           <div style={{ display: 'flex', gap: '24px', alignItems: 'flex-start', flexWrap: 'wrap' }}>
 
             {/* Formulier */}
-            <div className="beheerder-form" style={{ flex: '0 0 320px', background: 'white', borderRadius: '16px', border: '1px solid #e2e8f0', padding: '24px' }}>
+            <div className="beheerder-form" style={{ flex: '0 0 320px', maxWidth: '100%', boxSizing: 'border-box', background: 'white', borderRadius: '16px', border: '1px solid #e2e8f0', padding: '24px' }}>
               <h2 style={{ fontSize: '1rem', fontWeight: '700', color: '#0f172a', margin: '0 0 20px' }}>
                 {bewerkBeheerder ? '✏️ Beheerder bewerken' : '➕ Beheerder toevoegen'}
               </h2>
@@ -885,7 +885,7 @@ export default function AdminPortal() {
                 <div>
                   <label style={{ fontSize: '0.78rem', fontWeight: '600', color: '#64748b', display: 'block', marginBottom: '4px' }}>Slug (URL) *</label>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '6px', background: '#f8fafc', border: '1.5px solid #e2e8f0', borderRadius: '8px', padding: '9px 14px' }}>
-                    <span style={{ fontSize: '0.78rem', color: '#94a3b8', whiteSpace: 'nowrap' }}>slimmekascontrole.nl/via/</span>
+                    <span style={{ fontSize: '0.78rem', color: '#94a3b8', whiteSpace: 'nowrap', flexShrink: 1, overflow: 'hidden', textOverflow: 'ellipsis' }}>slimmekascontrole.nl/via/</span>
                     <input value={beheerderForm.slug} onChange={e => setBeheerderForm(f => ({ ...f, slug: e.target.value.toLowerCase().replace(/[^a-z0-9-]/g, '-') }))} placeholder="janssen-beheer" style={{ flex: 1, border: 'none', outline: 'none', fontSize: '0.88rem', fontFamily: 'Outfit, sans-serif', background: 'transparent', minWidth: 0 }} />
                   </div>
                 </div>
