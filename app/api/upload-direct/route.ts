@@ -151,9 +151,16 @@ export async function POST(req: NextRequest) {
       // Samenvoegen op bestandsnaam: nieuwe file met zelfde naam overschrijft de oude, nieuwe naam wordt toegevoegd
       const bestaandeBestanden: string[] = bestaande.flatMap((u: any) => u.bestanden || [])
 
-      const nieuweNamen = new Set(uploadedFiles.map(p => p.split('/').pop()))
-      const teVerwijderen = bestaandeBestanden.filter(p => nieuweNamen.has(p.split('/').pop()))
-      const behouden = bestaandeBestanden.filter(p => !nieuweNamen.has(p.split('/').pop()))
+      // Strip timestamp-prefix uit storage pad: "1747123456789-balans.xlsx" → "balans.xlsx"
+      const origNaam = (pad: string) => {
+        const bestand = pad.split('/').pop() || ''
+        const match = bestand.match(/^\d+-(.+)$/)
+        return match ? match[1] : bestand
+      }
+
+      const nieuweNamen = new Set(uploadedFiles.map(origNaam))
+      const teVerwijderen = bestaandeBestanden.filter(p => nieuweNamen.has(origNaam(p)))
+      const behouden = bestaandeBestanden.filter(p => !nieuweNamen.has(origNaam(p)))
 
       if (teVerwijderen.length > 0) {
         await supabase.storage.from('kascontrole-bestanden').remove(teVerwijderen)
