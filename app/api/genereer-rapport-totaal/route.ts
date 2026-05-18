@@ -147,8 +147,7 @@ export async function POST(req: NextRequest) {
             const base64 = Buffer.from(buffer).toString('base64')
             binaryBlocks.push({
               type: 'document',
-              source: { type: 'base64', media_type: 'application/pdf', data: base64 },
-              title: `${bestandsnaam} (boekjaar ${upload.boekjaar})`
+              source: { type: 'base64', media_type: 'application/pdf', data: base64 }
             })
             bestandenVanUpload.push(`  [${bestandsnaam} — PDF, bijgevoegd als document]`)
           } else if (['png', 'jpg', 'jpeg'].includes(extensie)) {
@@ -377,7 +376,9 @@ Maximaal 3-5 zinnen: goedkeuring ja/nee/voorwaardelijk, concrete aanbevelingen, 
     })
 
     if (!response.ok) {
-      return NextResponse.json({ error: `API fout: ${response.status}` }, { status: 500 })
+      const errBody = await response.json().catch(() => ({}))
+      console.error('Claude API fout:', response.status, JSON.stringify(errBody))
+      return NextResponse.json({ error: `API fout: ${response.status} — ${errBody?.error?.message || 'onbekend'}` }, { status: 500 })
     }
 
     const aiData = await response.json()
