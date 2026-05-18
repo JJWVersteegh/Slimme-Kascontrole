@@ -106,6 +106,8 @@ export async function POST(req: NextRequest) {
 
     // Bestanden inlezen
     const uploadsContent: string[] = []
+    const binaryBlocks: any[] = []  // PDF- en afbeeldingsblokken voor de Claude API
+
     for (const upload of uploads) {
       const bestandenVanUpload: string[] = []
       for (const bestandspad of (upload.bestanden || [])) {
@@ -120,19 +122,15 @@ export async function POST(req: NextRequest) {
             const tekst = await data.text()
             bestandenVanUpload.push(`  [${bestandsnaam}]\n${tekst.substring(0, 8000)}`)
           } else if (['xlsx', 'xls', 'xlsm', 'ods'].includes(extensie)) {
-            // Excel bestanden uitlezen en omzetten naar tekst voor de AI
             const XLSX = await import('xlsx')
             const buffer = await data.arrayBuffer()
             const workbook = XLSX.read(buffer, { type: 'array', cellDates: true })
             const sheetsText: string[] = []
             for (const sheetName of workbook.SheetNames) {
               const ws = workbook.Sheets[sheetName]
-              // Zet sheet om naar array van rijen
               const rows: any[][] = XLSX.utils.sheet_to_json(ws, { header: 1, defval: '' })
-              // Filter lege rijen eruit
               const gevuldeRijen = rows.filter((r: any[]) => r.some((cel: any) => cel !== '' && cel !== null && cel !== undefined))
               if (gevuldeRijen.length === 0) continue
-              // Formatteer als leesbare tekst (max 300 rijen per sheet)
               const rijen = gevuldeRijen.slice(0, 300).map((rij: any[]) =>
                 rij.map((cel: any) => {
                   if (cel === '' || cel === null || cel === undefined) return ''
@@ -144,6 +142,36 @@ export async function POST(req: NextRequest) {
               sheetsText.push(`  --- Tabblad: ${sheetName} ---\n${rijen}`)
             }
             bestandenVanUpload.push(`  [${bestandsnaam} — Excel]\n${sheetsText.join('\n\n').substring(0, 12000)}`)
+          } else if (extensie === 'pdf') {
+            const buffer = await data.arrayBuffer()
+            const base64 = Buffer.from(buffer).toString('base64')
+            binaryBlocks.push({
+              type: 'document',
+              source: { type: 'base64', media_type: 'application/pdf', data: base64 },
+              title: `${bestandsnaam} (boekjaar ${upload.boekjaar})`
+            })
+            bestandenVanUpload.push(`  [${bestandsnaam} — PDF, bijgevoegd als document]`)
+          } else if (['png', 'jpg', 'jpeg'].includes(extensie)) {
+            const buffer = await data.arrayBuffer()
+            const base64 = Buffer.from(buffer).toString('base64')
+            const mimeType = extensie === 'png' ? 'image/png' : 'image/jpeg'
+            binaryBlocks.push({
+              type: 'image',
+              source: { type: 'base64', media_type: mimeType, data: base64 }
+            })
+            bestandenVanUpload.push(`  [${bestandsnaam} — afbeelding, bijgevoegd]`)
+          } else if (['docx', 'doc'].includes(extensie)) {
+            const mammoth = await import('mammoth')
+            const buffer = await data.arrayBuffer()
+            const result = await mammoth.extractRawText({ arrayBuffer: buffer })
+            const tekst = result.value.trim().substring(0, 8000)
+            if (tekst) {
+              bestandenVanUpload.push(`  [${bestandsnaam} — Word document]\n${tekst}`)
+            } else {
+              bestandenVanUpload.push(`  [${bestandsnaam} — Word document, geen tekst uitgelezen]`)
+            }
+          } else if (extensie === 'heic') {
+            bestandenVanUpload.push(`  [${bestandsnaam} — HEIC afbeelding, niet ondersteund — converteer naar JPG of PNG]`)
           } else {
             const buffer = await data.arrayBuffer()
             bestandenVanUpload.push(`  [${bestandsnaam} — ${extensie.toUpperCase()}, ${Math.round(buffer.byteLength / 1024)}KB — formaat niet ondersteund]`)
@@ -338,7 +366,13 @@ Maximaal 3-5 zinnen: goedkeuring ja/nee/voorwaardelijk, concrete aanbevelingen, 
       body: JSON.stringify({
         model: 'claude-sonnet-4-6',
         max_tokens: 10000,
-        messages: [{ role: 'user', content: prompt }],
+        messages: [{
+          role: 'user',
+          content: [
+            { type: 'text', text: prompt },
+            ...binaryBlocks
+          ]
+        }],
       }),
     })
 

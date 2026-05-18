@@ -63,6 +63,7 @@ export default function MijnOmgeving() {
   const [boekjaar, setBoekjaar] = useState(standaardBoekjaar)
   const [toelichting, setToelichting] = useState('')
   const [uploadSuccess, setUploadSuccess] = useState(false)
+  const [uploadWaarschuwingen, setUploadWaarschuwingen] = useState<{ bestand: string; melding: string }[]>([])
   const [error, setError] = useState('')
   const [uploadError, setUploadError] = useState('')
   const [rapportError, setRapportError] = useState('')
@@ -225,12 +226,13 @@ export default function MijnOmgeving() {
       const data = await res.json()
       if (data.success) {
         setUploadSuccess(true)
+        setUploadWaarschuwingen(data.waarschuwingen || [])
         setFiles(null)
         setToelichting('')
         const fileInput = document.getElementById('fileInput') as HTMLInputElement
         if (fileInput) fileInput.value = ''
         await loadUploadsEnRapporten(user.id, geselecteerdeVereniging.id)
-        setTimeout(() => setUploadSuccess(false), 4000)
+        if (!data.waarschuwingen?.length) setTimeout(() => setUploadSuccess(false), 4000)
       } else { setUploadError(data.error || 'Er ging iets mis') }
     } catch { setUploadError('Er ging iets mis') }
     setUploading(false)
@@ -986,6 +988,19 @@ async function zoekAdres(pc: string, hn: string) {
                   <textarea value={toelichting} onChange={e => setToelichting(e.target.value)} placeholder="Bijzonderheden voor dit boekjaar..." rows={2} style={{ ...inp, resize: 'vertical', borderRadius: '14px' }} />
                 </div>
                 {uploadSuccess && <p style={{ color: '#16a34a', fontSize: '0.84rem', marginBottom: '12px', fontWeight: '700' }}>✓ Bestanden geüpload!</p>}
+                {uploadWaarschuwingen.length > 0 && (
+                  <div style={{ background: '#fffbeb', border: '1px solid #fde68a', borderRadius: '12px', padding: '14px 16px', marginBottom: '12px' }}>
+                    <div style={{ fontWeight: '700', color: '#92400e', fontSize: '0.84rem', marginBottom: '8px' }}>⚠️ Let op: mogelijke problemen met uw bestanden</div>
+                    {uploadWaarschuwingen.map((w, i) => (
+                      <div key={i} style={{ fontSize: '0.82rem', color: '#78350f', marginBottom: '4px' }}>
+                        <strong>{w.bestand}:</strong> {w.melding}
+                      </div>
+                    ))}
+                    <div style={{ fontSize: '0.78rem', color: '#92400e', marginTop: '10px', lineHeight: 1.5 }}>
+                      Verwijder het bestand en upload een correcte versie voordat u gaat betalen.
+                    </div>
+                  </div>
+                )}
                 {uploadError && <p style={{ color: '#ef4444', fontSize: '0.84rem', marginBottom: '12px', fontWeight: '700' }}>{uploadError}</p>}
                 <button type="submit" disabled={uploading} style={{ background: '#0f172a', color: 'white', padding: '14px 26px', borderRadius: '14px', border: 'none', fontSize: '0.84rem', fontWeight: '700', cursor: uploading ? 'not-allowed' : 'pointer', fontFamily: 'Outfit, sans-serif', boxShadow: '0 12px 24px rgba(15,23,42,0.18)' }}>
                   {uploading ? 'Uploaden...' : '📤 Upload bestanden'}
