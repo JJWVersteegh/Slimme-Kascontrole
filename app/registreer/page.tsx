@@ -7,6 +7,7 @@ import Navbar from '@/components/Navbar'
 export default function Registreer() {
   const [mode, setMode] = useState<'registreer' | 'login' | 'reset'>('registreer')
   const [email, setEmail] = useState('')
+  const [email2, setEmail2] = useState('')
   const [wachtwoord, setWachtwoord] = useState('')
   const [wachtwoord2, setWachtwoord2] = useState('')
   const [naam, setNaam] = useState('')
@@ -81,6 +82,7 @@ export default function Registreer() {
 
   async function handleRegistreer(e: React.FormEvent) {
     e.preventDefault()
+    if (email !== email2) { setError('E-mailadressen komen niet overeen'); return }
     if (wachtwoord !== wachtwoord2) { setError('Wachtwoorden komen niet overeen'); return }
     if (wachtwoord.length < 6) { setError('Wachtwoord moet minimaal 6 tekens zijn'); return }
     setLoading(true); setError('')
@@ -238,6 +240,12 @@ export default function Registreer() {
                   <div style={{ marginBottom: '16px' }}>
                     <label style={lbl}>E-mailadres</label>
                     <input type="email" value={email} onChange={e => setEmail(e.target.value)} style={inp} placeholder="uw@emailadres.nl" required />
+                  </div>
+
+                  <div style={{ marginBottom: '16px' }}>
+                    <label style={lbl}>E-mailadres bevestigen</label>
+                    <input type="email" value={email2} onChange={e => setEmail2(e.target.value)} style={email2 && email2 !== email ? { ...inp, borderColor: '#ef4444' } : email2 && email2 === email ? { ...inp, borderColor: '#22c55e' } : inp} placeholder="Herhaal uw e-mailadres" required />
+                    {email2 && email2 !== email && <p style={{ color: '#ef4444', fontSize: '0.78rem', marginTop: '4px' }}>E-mailadressen komen niet overeen</p>}
                   </div>
 
                   <div style={{ marginBottom: '16px' }}>
