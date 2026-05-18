@@ -273,7 +273,9 @@ export default function MijnOmgeving() {
         setToonRapport(true); window.scrollTo(0, 0)
       } else {
         const msg = data.error || ''
-        if (msg.includes('503') || msg.includes('529') || msg.includes('overload')) {
+        if (msg.includes('429') || msg.includes('rate limit')) {
+          setRapportError('Te veel verzoeken tegelijk. Wacht 1-2 minuten en probeer opnieuw.')
+        } else if (msg.includes('503') || msg.includes('529') || msg.includes('overload')) {
           setRapportError('De AI-dienst is momenteel druk bezet. Probeer het over een minuut opnieuw.')
         } else {
           setRapportError(`Rapport genereren mislukt: ${msg || 'onbekende fout'}`)
