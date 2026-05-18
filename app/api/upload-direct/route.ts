@@ -139,11 +139,38 @@ export async function POST(req: NextRequest) {
       if (!error) uploadedFiles.push(fileName)
     }
 
+    // Kijk of er al een upload bestaat voor dit boekjaar + vereniging
+    let bestaandeQuery = supabase.from('uploads').select('id, bestanden').eq('user_id', userId).eq('boekjaar', boekjaar)
+    if (verenigingId) bestaandeQuery = bestaandeQuery.eq('vereniging_id', verenigingId)
+    else bestaandeQuery = bestaandeQuery.is('vereniging_id', null)
+    const { data: bestaande } = await bestaandeQuery
+
+    let bestandenLijst: string[] = uploadedFiles
+
+    if (bestaande && bestaande.length > 0) {
+      // Samenvoegen op bestandsnaam: nieuwe file met zelfde naam overschrijft de oude, nieuwe naam wordt toegevoegd
+      const bestaandeBestanden: string[] = bestaande.flatMap((u: any) => u.bestanden || [])
+
+      const nieuweNamen = new Set(uploadedFiles.map(p => p.split('/').pop()))
+      const teVerwijderen = bestaandeBestanden.filter(p => nieuweNamen.has(p.split('/').pop()))
+      const behouden = bestaandeBestanden.filter(p => !nieuweNamen.has(p.split('/').pop()))
+
+      if (teVerwijderen.length > 0) {
+        await supabase.storage.from('kascontrole-bestanden').remove(teVerwijderen)
+      }
+
+      bestandenLijst = [...behouden, ...uploadedFiles]
+
+      // Verwijder alle oude records (worden hieronder vervangen door 1 samengevoegd record)
+      const oudeIds = bestaande.map((u: any) => u.id)
+      await supabase.from('uploads').delete().in('id', oudeIds)
+    }
+
     await supabase.from('uploads').insert({
       user_id: userId,
       boekjaar,
-      toelichting,
-      bestanden: uploadedFiles,
+      toelichting: toelichting || (bestaande?.[0] as any)?.toelichting || '',
+      bestanden: bestandenLijst,
       status: 'ontvangen',
       rapport_beschikbaar: false,
       upload_datum: new Date().toISOString(),
