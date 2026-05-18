@@ -362,14 +362,19 @@ async function zoekAdres(pc: string, hn: string) {
     if (pc.replace(' ', '').length < 6 || !hn) return
     setVerenigingHuisnummer(hn)
     setAdresLaden(true)
+    setVerenigingForm(p => ({ ...p, adres: '', plaats: '' }))
     try {
       const res = await fetch(`https://api.pdok.nl/bzk/locatieserver/search/v3_1/free?q=${pc.replace(' ', '')}+${hn}&fq=type:adres&rows=1`)
       const data = await res.json()
       if (data.response?.docs?.[0]) {
         const doc = data.response.docs[0]
         setVerenigingForm(p => ({ ...p, adres: `${doc.straatnaam || ''} ${hn}`, plaats: doc.woonplaatsnaam || '' }))
+      } else {
+        setVerenigingForm(p => ({ ...p, adres: 'niet gevonden', plaats: '' }))
       }
-    } catch { }
+    } catch {
+      setVerenigingForm(p => ({ ...p, adres: 'niet gevonden', plaats: '' }))
+    }
     setAdresLaden(false)
   }
 
@@ -377,14 +382,19 @@ async function zoekAdres(pc: string, hn: string) {
     if (pc.replace(' ', '').length < 6 || !hn) return
     setProfielHuisnummer(hn)
     setProfielAdresLaden(true)
+    setProfielForm(p => ({ ...p, adres: '', plaats: '' }))
     try {
       const res = await fetch(`https://api.pdok.nl/bzk/locatieserver/search/v3_1/free?q=${pc.replace(' ', '')}+${hn}&fq=type:adres&rows=1`)
       const data = await res.json()
       if (data.response?.docs?.[0]) {
         const doc = data.response.docs[0]
         setProfielForm(p => ({ ...p, postcode: pc, adres: `${doc.straatnaam || ''} ${hn}`, plaats: doc.woonplaatsnaam || '' }))
+      } else {
+        setProfielForm(p => ({ ...p, adres: 'niet gevonden', plaats: '' }))
       }
-    } catch {}
+    } catch {
+      setProfielForm(p => ({ ...p, adres: 'niet gevonden', plaats: '' }))
+    }
     setProfielAdresLaden(false)
   }
 
@@ -706,8 +716,13 @@ async function zoekAdres(pc: string, hn: string) {
                   <input value={profielForm.postcode} onChange={e => setProfielForm(p => ({ ...p, postcode: e.target.value }))} onKeyDown={e => e.key === 'Enter' && e.preventDefault()} placeholder="1234 AB" style={inp} />
                   <input value={profielHuisnummer} onChange={e => setProfielHuisnummer(e.target.value)} onBlur={e => zoekAdresProfiel(profielForm.postcode, e.target.value)} onKeyDown={e => e.key === 'Enter' && e.preventDefault()} placeholder="Nr" style={inp} />
                 </div>
-                {profielAdresLaden && <p style={{ fontSize: '0.78rem', color: '#2563EB', margin: '0 0 6px' }}>🔍 Adres opzoeken...</p>}
-                {profielForm.adres && profielForm.plaats && (
+                <button type="button" onClick={() => zoekAdresProfiel(profielForm.postcode, profielHuisnummer)} style={{ background: 'none', border: 'none', color: '#2563EB', fontSize: '0.78rem', cursor: 'pointer', padding: '0 0 6px', fontFamily: 'Outfit, sans-serif' }}>
+                  🔍 {profielAdresLaden ? 'Adres opzoeken...' : 'Adres opzoeken'}
+                </button>
+                {!profielAdresLaden && profielForm.adres === 'niet gevonden' && (
+                  <p style={{ fontSize: '0.78rem', color: '#ef4444', margin: '0 0 6px' }}>Adres niet gevonden — vul straat en plaats handmatig in.</p>
+                )}
+                {profielForm.adres && profielForm.adres !== 'niet gevonden' && profielForm.plaats && (
                   <div style={{ background: '#f0fdf4', border: '1px solid #bbf7d0', borderRadius: '6px', padding: '8px 12px', fontSize: '0.83rem', color: '#166534', marginBottom: '6px' }}>
                     ✓ {profielForm.adres}, {profielForm.postcode} {profielForm.plaats}
                   </div>
@@ -755,8 +770,13 @@ async function zoekAdres(pc: string, hn: string) {
                   <input value={verenigingForm.postcode} onChange={e => setVerenigingForm(p => ({ ...p, postcode: e.target.value }))} onKeyDown={e => e.key === 'Enter' && e.preventDefault()} placeholder="1234 AB" style={inp} />
                   <input value={verenigingHuisnummer} onChange={e => setVerenigingHuisnummer(e.target.value)} onBlur={e => zoekAdres(verenigingForm.postcode, e.target.value)} onKeyDown={e => e.key === 'Enter' && e.preventDefault()} placeholder="Nr" style={inp} />
                 </div>
-                {adresLaden && <p style={{ fontSize: '0.78rem', color: '#2563EB', margin: '0 0 6px' }}>🔍 Adres opzoeken...</p>}
-                {verenigingForm.adres && verenigingForm.plaats && (
+                <button type="button" onClick={() => zoekAdres(verenigingForm.postcode, verenigingHuisnummer)} style={{ background: 'none', border: 'none', color: '#2563EB', fontSize: '0.78rem', cursor: 'pointer', padding: '0 0 6px', fontFamily: 'Outfit, sans-serif' }}>
+                  🔍 {adresLaden ? 'Adres opzoeken...' : 'Adres opzoeken'}
+                </button>
+                {!adresLaden && verenigingForm.adres === 'niet gevonden' && (
+                  <p style={{ fontSize: '0.78rem', color: '#ef4444', margin: '0 0 6px' }}>Adres niet gevonden — vul straat en plaats handmatig in.</p>
+                )}
+                {verenigingForm.adres && verenigingForm.adres !== 'niet gevonden' && verenigingForm.plaats && (
                   <div style={{ background: '#f0fdf4', border: '1px solid #bbf7d0', borderRadius: '6px', padding: '8px 12px', fontSize: '0.83rem', color: '#166534', marginBottom: '6px' }}>
                     ✓ {verenigingForm.adres}, {verenigingForm.postcode} {verenigingForm.plaats}
                   </div>
