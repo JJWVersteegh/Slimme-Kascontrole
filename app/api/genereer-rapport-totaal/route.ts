@@ -107,8 +107,8 @@ export async function POST(req: NextRequest) {
     // Bestanden inlezen
     const uploadsContent: string[] = []
     const binaryBlocks: any[] = []  // PDF- en afbeeldingsblokken voor de Claude API
-    // Max ~2.5MB aan base64 om binnen de 1M token limiet te blijven (1 byte base64 ≈ 0.25 token)
-    const MAX_BINARY_BYTES = 2.5 * 1024 * 1024
+    // Max 800KB aan originele binaire data — PDFs/afbeeldingen tellen zwaar in tokens
+    const MAX_BINARY_BYTES = 800 * 1024
     let totalBinaryBytes = 0
 
     for (const upload of uploads) {
@@ -144,7 +144,7 @@ export async function POST(req: NextRequest) {
               ).join('\n')
               sheetsText.push(`  --- Tabblad: ${sheetName} ---\n${rijen}`)
             }
-            bestandenVanUpload.push(`  [${bestandsnaam} — Excel]\n${sheetsText.join('\n\n').substring(0, 12000)}`)
+            bestandenVanUpload.push(`  [${bestandsnaam} — Excel]\n${sheetsText.join('\n\n').substring(0, 8000)}`)
           } else if (extensie === 'pdf') {
             const buffer = await data.arrayBuffer()
             if (totalBinaryBytes + buffer.byteLength <= MAX_BINARY_BYTES) {
