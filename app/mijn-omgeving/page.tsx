@@ -52,6 +52,7 @@ export default function MijnOmgeving() {
   const [geselecteerdeVereniging, setGeselecteerdeVereniging] = useState<Vereniging | null>(null)
   const [uploads, setUploads] = useState<Upload[]>([])
   const [rapporten, setRapporten] = useState<Rapport[]>([])
+  const [alleRapporten, setAlleRapporten] = useState<Rapport[]>([])
   const [loading, setLoading] = useState(true)
   const [uploading, setUploading] = useState(false)
   const [betaalLoading, setBetaalLoading] = useState(false)
@@ -138,8 +139,34 @@ export default function MijnOmgeving() {
     setVerenigingen(vList)
 
     if (vList.length > 0) {
-      setGeselecteerdeVereniging(vList[0])
-      await loadUploadsEnRapporten(userId, vList[0].id)
+      // Laad alle rapporten over alle VvE's om de meest urgente te selecteren
+      const { data: alleRapportenData } = await supabase.from('rapporten').select('*').eq('user_id', userId)
+      setAlleRapporten(alleRapportenData || [])
+
+      // Selecteer de VvE die het meest aandacht nodig heeft:
+      // Prioriteit: betaald maar geen rapport > geen klaar rapport > klaar
+      const huidigBoekjaar = (new Date().getFullYear() - 1).toString()
+      let priorityVve = vList[0]
+      let bestPriority = 99
+
+      for (const v of vList) {
+        const vRaps = (alleRapportenData || []).filter(r => r.vereniging_id === v.id)
+        const heeftGenereren = vRaps.some(r => r.betaald && !r.rapport_tekst)
+        const heeftKlaar = vRaps.some(r => r.betaald && r.rapport_tekst && r.boekjaar === huidigBoekjaar)
+
+        let priority: number
+        if (heeftGenereren) priority = 1       // betaald maar rapport nog niet gegenereerd
+        else if (!heeftKlaar) priority = 2     // nieuw of nog niet klaar
+        else priority = 3                      // volledig klaar
+
+        if (priority < bestPriority) {
+          bestPriority = priority
+          priorityVve = v
+        }
+      }
+
+      setGeselecteerdeVereniging(priorityVve)
+      await loadUploadsEnRapporten(userId, priorityVve.id)
     }
 
     setLoading(false)
@@ -152,6 +179,12 @@ export default function MijnOmgeving() {
     setUploads(uploadsData || [])
     const rapportenLijst = rapportenData || []
     setRapporten(rapportenLijst)
+
+    // Werk alleRapporten bij zodat de dropdown-labels actueel blijven
+    setAlleRapporten(prev => {
+      const zonder = prev.filter(r => r.vereniging_id !== verenigingId)
+      return [...zonder, ...rapportenLijst]
+    })
 
     const betaaldeZonderRapport = rapportenLijst.filter(r => r.betaald && !r.rapport_tekst).sort((a, b) => b.boekjaar.localeCompare(a.boekjaar))
     const betaaldeMetRapport = rapportenLijst.filter(r => r.betaald && r.rapport_tekst).sort((a, b) => b.boekjaar.localeCompare(a.boekjaar))
@@ -867,9 +900,14 @@ async function zoekAdres(pc: string, hn: string) {
                 style={{ ...inp, minHeight: '54px', fontSize: '0.84rem', fontWeight: '700', borderRadius: '14px', borderColor: '#93c5fd', flex: '1', minWidth: '220px', maxWidth: '400px' }}
               >
                 <option value="" disabled>Selecteer een vereniging...</option>
-                {verenigingen.map(v => (
-                  <option key={v.id} value={v.id}>{v.naam}</option>
-                ))}
+                {verenigingen.map(v => {
+                  const huidigBoekjaar = (new Date().getFullYear() - 1).toString()
+                  const vRaps = alleRapporten.filter(r => r.vereniging_id === v.id)
+                  const heeftGenereren = vRaps.some(r => r.betaald && !r.rapport_tekst)
+                  const heeftKlaar = vRaps.some(r => r.betaald && r.rapport_tekst && r.boekjaar === huidigBoekjaar)
+                  const status = heeftGenereren ? ' ⚡ Genereren' : heeftKlaar ? ' ✓ Klaar' : ' ◦ Nieuw'
+                  return <option key={v.id} value={v.id}>{v.naam}{status}</option>
+                })}
               </select>
               {geselecteerdeVereniging && verenigingen.length > 1 && (
                 <button onClick={() => handleDeleteVereniging(geselecteerdeVereniging)} style={{ background: '#fef2f2', border: '1px solid #fecaca', color: '#ef4444', cursor: 'pointer', fontSize: '0.84rem', padding: '12px 16px', borderRadius: '12px', fontWeight: '700', fontFamily: 'Outfit, sans-serif', whiteSpace: 'nowrap' }}>🗑️</button>
