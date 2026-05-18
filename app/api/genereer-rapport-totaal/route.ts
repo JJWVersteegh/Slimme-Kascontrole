@@ -107,6 +107,9 @@ export async function POST(req: NextRequest) {
     // Bestanden inlezen
     const uploadsContent: string[] = []
     const binaryBlocks: any[] = []  // PDF- en afbeeldingsblokken voor de Claude API
+    // Max ~2.5MB aan base64 om binnen de 1M token limiet te blijven (1 byte base64 ≈ 0.25 token)
+    const MAX_BINARY_BYTES = 2.5 * 1024 * 1024
+    let totalBinaryBytes = 0
 
     for (const upload of uploads) {
       const bestandenVanUpload: string[] = []
@@ -144,21 +147,25 @@ export async function POST(req: NextRequest) {
             bestandenVanUpload.push(`  [${bestandsnaam} — Excel]\n${sheetsText.join('\n\n').substring(0, 12000)}`)
           } else if (extensie === 'pdf') {
             const buffer = await data.arrayBuffer()
-            const base64 = Buffer.from(buffer).toString('base64')
-            binaryBlocks.push({
-              type: 'document',
-              source: { type: 'base64', media_type: 'application/pdf', data: base64 }
-            })
-            bestandenVanUpload.push(`  [${bestandsnaam} — PDF, bijgevoegd als document]`)
+            if (totalBinaryBytes + buffer.byteLength <= MAX_BINARY_BYTES) {
+              const base64 = Buffer.from(buffer).toString('base64')
+              binaryBlocks.push({ type: 'document', source: { type: 'base64', media_type: 'application/pdf', data: base64 } })
+              totalBinaryBytes += buffer.byteLength
+              bestandenVanUpload.push(`  [${bestandsnaam} — PDF, bijgevoegd als document]`)
+            } else {
+              bestandenVanUpload.push(`  [${bestandsnaam} — PDF, ${Math.round(buffer.byteLength / 1024)}KB — te groot om bij te voegen, overgeslagen]`)
+            }
           } else if (['png', 'jpg', 'jpeg'].includes(extensie)) {
             const buffer = await data.arrayBuffer()
-            const base64 = Buffer.from(buffer).toString('base64')
-            const mimeType = extensie === 'png' ? 'image/png' : 'image/jpeg'
-            binaryBlocks.push({
-              type: 'image',
-              source: { type: 'base64', media_type: mimeType, data: base64 }
-            })
-            bestandenVanUpload.push(`  [${bestandsnaam} — afbeelding, bijgevoegd]`)
+            if (totalBinaryBytes + buffer.byteLength <= MAX_BINARY_BYTES) {
+              const base64 = Buffer.from(buffer).toString('base64')
+              const mimeType = extensie === 'png' ? 'image/png' : 'image/jpeg'
+              binaryBlocks.push({ type: 'image', source: { type: 'base64', media_type: mimeType, data: base64 } })
+              totalBinaryBytes += buffer.byteLength
+              bestandenVanUpload.push(`  [${bestandsnaam} — afbeelding, bijgevoegd]`)
+            } else {
+              bestandenVanUpload.push(`  [${bestandsnaam} — afbeelding, ${Math.round(buffer.byteLength / 1024)}KB — te groot om bij te voegen, overgeslagen]`)
+            }
           } else if (['docx', 'doc'].includes(extensie)) {
             const mammoth = await import('mammoth')
             const buffer = await data.arrayBuffer()
