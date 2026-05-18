@@ -276,7 +276,7 @@ export default function MijnOmgeving() {
         if (msg.includes('503') || msg.includes('529') || msg.includes('overload')) {
           setRapportError('De AI-dienst is momenteel druk bezet. Probeer het over een minuut opnieuw.')
         } else {
-          setRapportError('Rapport genereren mislukt. Probeer het opnieuw of neem contact op als het probleem aanhoudt.')
+          setRapportError(`Rapport genereren mislukt: ${msg || 'onbekende fout'}`)
         }
       }
     } catch { setRapportError('Er ging iets mis. Controleer uw internetverbinding en probeer opnieuw.') }
