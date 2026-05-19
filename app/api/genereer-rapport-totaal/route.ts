@@ -227,20 +227,29 @@ TAAL EN OPMAAK
 - Gebruik een punt als duizendtalscheidingsteken: € 10.000,00.
 
 ═══════════════════════════════════════════
-AANNAMES — STRIKT VERBOD, TENZIJ EXPLICIET VERMELD
+ABSOLUTE REGEL: GEEN VERZONNEN DATA
 ═══════════════════════════════════════════
-Maak GEEN aannames. Als gegevens ontbreken of onduidelijk zijn:
-- Schrijf "–" of "Niet beschikbaar uit de aangeleverde stukken" in tabellen.
-- Als je onvermijdelijk een interpretatie moet maken (bijv. onduidelijke kolomnaam of onvolledige data): benoem dit ALTIJD expliciet met het label ⚠️ Aanname: gevolgd door wat je aanneemt en waarom.
-- Interpreteer kolommen nooit anders dan hoe ze gelabeld zijn.
-- Vul nooit ontbrekende cijfers in op basis van wat "logisch lijkt".
+Dit is de belangrijkste regel van dit rapport. Overtreedt hem nooit:
+
+VERBODEN — doe dit NOOIT:
+- Bedragen, namen, datums of rekeningen invullen die NIET letterlijk in de uploads staan
+- Tabellen vullen met nul-waarden, schattingen, gemiddelden of "typische" bedragen
+- Voorbeeldcijfers gebruiken zoals "bijv. € 1.000,00" of "circa € X"
+- Een sectie schrijven alsof er data is, terwijl die er niet is
+- Ontbrekende kolommen aanvullen op basis van wat "logisch lijkt"
+
+VERPLICHT bij ontbrekende data:
+- Cijfer ontbreekt in een tabel → schrijf "–"
+- Hele sectie heeft geen onderliggende data → schrijf: "Geen [type] aangeleverd in de stukken. Deze sectie kan niet worden ingevuld." en sla de tabel over
+- Onduidelijke kolomnaam of interpretatie nodig → label ALTIJD expliciet: ⚠️ Aanname: [wat je aanneemt en waarom]
+- Bestand niet uitgelezen of overgeslagen → benoem dit in sectie 1
 
 ═══════════════════════════════════════════
 TWEE SOORTEN INHOUD
 ═══════════════════════════════════════════
-1. CIJFERS & FEITEN → Nooit verzinnen. Gebruik ALLEEN bedragen, namen, datums en rekeningen die letterlijk in de uploads staan. Als een cijfer niet beschikbaar is: schrijf "–". Maak geen tabel als je geen enkele rij kunt invullen met echte data.
+1. CIJFERS & FEITEN → Gebruik UITSLUITEND bedragen, namen, datums en rekeningen die letterlijk in de uploads staan. Geen enkele uitzondering. Liever een lege tabel of "–" dan een verzonnen getal.
 
-2. ANALYSE & UITLEG → Bondig en scherp. Beschrijf wat opvalt, wat goed gaat en wat aandacht verdient. Geen overbodige opsommingen van wat al in de tabel staat.
+2. ANALYSE & UITLEG → Bondig en scherp. Alleen conclusies trekken die direct volgen uit de aangeleverde data. Geen oordelen over zaken waarvoor geen data beschikbaar is.
 
 ═══════════════════════════════════════════
 AFWIJKINGEN — ALTIJD SIGNALEREN
@@ -303,55 +312,58 @@ ${boekjaren.length > 1 ? `   - 3.6 Trendanalyse ${boekjaren.join(' – ')}` : ''
 ---
 
 ## 1. OPDRACHT EN WERKZAAMHEDEN
-Maximaal 3-4 zinnen: welke documenten zijn beoordeeld en wat is onderzocht.
+Noem ALLEEN de bestandsnamen die daadwerkelijk zijn aangeleverd en uitgelezen. Geen generieke omschrijvingen. Als een bestand niet uitgelezen kon worden, vermeld dat expliciet. Maximaal 3-4 zinnen.
 
 ## 2. SAMENVATTING BEVINDINGEN
-*(Opgesteld na de volledige detailanalyse in sectie 3.)*
+*(Opgesteld NA de volledige detailanalyse in sectie 3 — nooit andersom.)*
 
-[KRITISCH] of [AKKOORD] of [AANDACHTSPUNT: ...] — gebruik de juiste tags op basis van bevindingen. Gebruik concrete bedragen. Maximaal 5-8 bullet points totaal.
+Gebruik alleen bevindingen die direct uit de data blijken. Geen oordelen over zaken zonder onderliggende data.
+[KRITISCH] of [AKKOORD] of [AANDACHTSPUNT: ...] — met concrete bedragen uit de uploads. Maximaal 5-8 bullet points.
 
 ## 3. BEVINDINGEN BOEKJAAR ${huidigJaar} — HOOFDANALYSE
 
 ### 3.1 Balans en aansluiting banksaldi
-Tabel van bankrekeningen met begin- en eindsaldo en mutatie. Daarna maximaal 1 alinea analyse.
+Alleen invullen als er bankgegevens, balans of saldi in de uploads staan. Zijn die er niet → schrijf: "Geen balans- of bankgegevens aangeleverd."
 
 | Bankrekening | Type | Beginsaldo 1 jan ${huidigJaar} | Eindsaldo 31 dec ${huidigJaar} | Mutatie |
 | --- | --- | --- | --- | --- |
-[Vul alleen echte bedragen in]
+[Uitsluitend rijen invullen met gegevens die letterlijk in de uploads staan. Geen rij invullen als het saldo niet beschikbaar is.]
 
 ### 3.2 Inkoopfacturen en uitgaven
-Overzichtstabel leveranciers (naam, totaalbedrag, categorie). Daarna: bespreek ALLEEN de opvallende posten (afwijkingen >30%, ongebruikelijke betalingen, ontbrekende facturen). Geen beschrijving per individuele leverancier als er niets bijzonders is.
+Alleen invullen als er factuur- of uitgavendata in de uploads staat. Zijn die er niet → schrijf: "Geen factuurgegevens aangeleverd."
+Bespreek ALLEEN opvallende posten (afwijkingen >30%, ongebruikelijke betalingen). Geen beschrijving per leverancier als er niets bijzonders is.
 
 | Leverancier | Totaalbedrag | Categorie |
 | --- | --- | --- |
-[Vul alleen echte bedragen in]
+[Uitsluitend rijen met leveranciers en bedragen die letterlijk in de uploads staan.]
 
 ### 3.3 Exploitatieresultaat
-Tabel inkomsten en uitgaven (werkelijk, begroot, afwijking). Bespreek het resultaat en alle posten met afwijking >30% — altijd met de juiste richting (hoger/lager).
+Alleen invullen als er inkomsten/uitgaven of exploitatiedata in de uploads staat. Zijn die er niet → schrijf: "Geen exploitatiegegevens aangeleverd."
+Bespreek alle posten met afwijking >30% — altijd met richting (hoger/lager) en concreet bedrag.
 
 | Post | Werkelijk ${huidigJaar} | Begroting ${huidigJaar} | Afwijking | ${vorigeJaren.length > 0 ? `Werkelijk ${vorigeJaren[vorigeJaren.length - 1]} | Verschil` : ''} |
 | --- | --- | --- | --- | ${vorigeJaren.length > 0 ? '--- | --- |' : ''} |
-[Vul alleen echte bedragen in]
+[Uitsluitend posten en bedragen die letterlijk in de uploads staan. Gebruik "–" als begroting of vorig jaar ontbreekt.]
 
 ### 3.4 Openstaande posten en bijzonderheden
-Openstaande debiteuren/crediteuren én overige bijzonderheden (geannuleerde facturen, ontbrekende stukken, etc.). Maximaal 1 alinea per punt. Laat weg als er niets is.
+Alleen vermelden als er concrete aanwijzingen voor zijn in de uploads. Niets te melden → laat deze sectie weg of schrijf: "Geen openstaande posten geconstateerd op basis van de aangeleverde stukken."
 
 ### 3.5 Contracten en abonnementen
-Overzicht van lopende contracten met leverancier, jaarlijkse kosten en beoordeling. Alleen opnemen als er contractgegevens in de uploads staan. Maximaal 1 alinea toelichting.
+Alleen invullen als er contractgegevens in de uploads staan. Zijn die er niet → laat deze sectie weg.
 
 | Contract | Leverancier | Jaarlijkse kosten | Beoordeling |
 | --- | --- | --- | --- |
-[Vul alleen echte gegevens in]
+[Uitsluitend contracten die letterlijk in de uploads staan.]
 
 ${boekjaren.length > 1 ? `### 3.6 Trendanalyse ${boekjaren.join(' – ')}
-Tabel met de belangrijkste posten over de beschikbare jaren. Maximaal 1 alinea conclusie.
+Alleen invullen met bedragen die voor elk jaar daadwerkelijk beschikbaar zijn. Gebruik "–" voor jaren zonder data. Geen schattingen of extrapolaties.
 
 | Post | ${boekjaren.join(' | ')} | Trend |
 | --- | ${boekjaren.map(() => '---').join(' | ')} | --- |
-[Vul alleen echte bedragen in — geen schattingen]` : ''}
+[Uitsluitend posten en bedragen die letterlijk in de uploads staan — geen schattingen.]` : ''}
 
 ## 4. ADVIES AAN DE ALGEMENE LEDENVERGADERING
-Maximaal 3-5 zinnen: goedkeuring ja/nee/voorwaardelijk, concrete aanbevelingen, formele verklaring.
+Alleen adviseren op basis van wat daadwerkelijk geconstateerd is. Geen aanbevelingen doen over zaken waarvoor geen data beschikbaar was. Maximaal 3-5 zinnen: goedkeuring ja/nee/voorwaardelijk, concrete aanbevelingen, formele verklaring.
 
 *De kascommissie*
 *${verenigingNaam || 'Uw vereniging'}, ${new Date().toLocaleDateString('nl-NL', { month: 'long', year: 'numeric' })}*
