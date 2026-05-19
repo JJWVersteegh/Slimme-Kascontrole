@@ -24,6 +24,8 @@ export default function Registreer() {
   const [telefoon, setTelefoon] = useState('')
   const [adresLaden, setAdresLaden] = useState(false)
   const [vveAdresLaden, setVveAdresLaden] = useState(false)
+  const [adresNietGevonden, setAdresNietGevonden] = useState(false)
+  const [vveAdresNietGevonden, setVveAdresNietGevonden] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [succes, setSucces] = useState('')
@@ -34,14 +36,15 @@ export default function Registreer() {
   const router = useRouter()
   const adresDebounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const vveAdresDebounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
-  const postcodeRef = useRef(postcode)
-  const huisnummerRef = useRef(huisnummer)
-  const vvePostcodeRef = useRef(vvePostcode)
-  const vveHuisnummerRef = useRef(vveHuisnummer)
-  useEffect(() => { postcodeRef.current = postcode }, [postcode])
-  useEffect(() => { huisnummerRef.current = huisnummer }, [huisnummer])
-  useEffect(() => { vvePostcodeRef.current = vvePostcode }, [vvePostcode])
-  useEffect(() => { vveHuisnummerRef.current = vveHuisnummer }, [vveHuisnummer])
+  // Refs worden synchroon bijgehouden — geen useEffect nodig
+  const postcodeRef = useRef('')
+  const huisnummerRef = useRef('')
+  const vvePostcodeRef = useRef('')
+  const vveHuisnummerRef = useRef('')
+  postcodeRef.current = postcode
+  huisnummerRef.current = huisnummer
+  vvePostcodeRef.current = vvePostcode
+  vveHuisnummerRef.current = vveHuisnummer
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search)
@@ -70,11 +73,13 @@ export default function Registreer() {
     hn: string,
     setAdresFn: (waarde: string) => void,
     setPlaatsFn: (waarde: string) => void,
-    setLadenFn: (waarde: boolean) => void
+    setLadenFn: (waarde: boolean) => void,
+    setNietGevondenFn: (waarde: boolean) => void
   ) {
     const pcClean = pc.replace(/\s/g, '').toUpperCase()
     if (pcClean.length < 6 || !hn) return
     setLadenFn(true)
+    setNietGevondenFn(false)
     try {
       const res = await fetch(`https://api.pdok.nl/bzk/locatieserver/search/v3_1/free?q=${pcClean}+${hn}&fq=type:adres&rows=1`)
       const data = await res.json()
@@ -84,13 +89,14 @@ export default function Registreer() {
         const woonplaats = doc.woonplaatsnaam || ''
         setAdresFn(`${straat} ${hn}`)
         setPlaatsFn(woonplaats)
+        setNietGevondenFn(false)
       } else {
-        setAdresFn('niet gevonden')
+        setAdresFn('')
         setPlaatsFn('')
+        setNietGevondenFn(true)
       }
     } catch {
-      setAdresFn('niet gevonden')
-      setPlaatsFn('')
+      setNietGevondenFn(true)
     }
     setLadenFn(false)
   }
@@ -228,25 +234,25 @@ export default function Registreer() {
                   <div style={{ marginBottom: '16px' }}>
                     <label style={lbl}>Uw persoonlijke adres</label>
                     <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '8px', marginBottom: '8px' }}>
-                      <input type="text" value={postcode} onChange={e => { setPostcode(e.target.value); if (adresDebounceRef.current) clearTimeout(adresDebounceRef.current); adresDebounceRef.current = setTimeout(() => zoekAdres(e.target.value, huisnummerRef.current, setAdres, setPlaats, setAdresLaden), 400) }}
+                      <input type="text" value={postcode} onChange={e => { setPostcode(e.target.value); setAdres(''); setAdresNietGevonden(false); if (adresDebounceRef.current) clearTimeout(adresDebounceRef.current); adresDebounceRef.current = setTimeout(() => zoekAdres(e.target.value, huisnummerRef.current, setAdres, setPlaats, setAdresLaden, setAdresNietGevonden), 400) }}
                         style={inp} placeholder="Postcode, bijv. 1234 AB" maxLength={7} />
-                      <input type="text" value={huisnummer} onChange={e => { setHuisnummer(e.target.value); if (adresDebounceRef.current) clearTimeout(adresDebounceRef.current); adresDebounceRef.current = setTimeout(() => zoekAdres(postcodeRef.current, e.target.value, setAdres, setPlaats, setAdresLaden), 400) }}
+                      <input type="text" value={huisnummer} onChange={e => { setHuisnummer(e.target.value); setAdres(''); setAdresNietGevonden(false); if (adresDebounceRef.current) clearTimeout(adresDebounceRef.current); adresDebounceRef.current = setTimeout(() => zoekAdres(postcodeRef.current, e.target.value, setAdres, setPlaats, setAdresLaden, setAdresNietGevonden), 400) }}
                         style={inp} placeholder="Nr." />
                     </div>
                     {adresLaden && <p style={{ fontSize: '0.78rem', color: '#2563EB', margin: '0 0 6px' }}>Adres opzoeken...</p>}
-                    {adres && adres !== 'niet gevonden' && (
+                    {adres && (
                       <div style={{ background: '#f0fdf4', border: '1px solid #bbf7d0', borderRadius: '6px', padding: '8px 12px', fontSize: '0.83rem', color: '#166534' }}>
                         ✓ {adres}, {postcode.toUpperCase()} {plaats}
                       </div>
                     )}
-                    {adres === 'niet gevonden' && (
-                      <p style={{ fontSize: '0.78rem', color: '#ef4444', margin: '4px 0 0' }}>Adres niet gevonden. Vul hieronder handmatig in.</p>
-                    )}
-                    {(!adres || adres === 'niet gevonden') && postcode && huisnummer && !adresLaden && (
-                      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', marginTop: '8px' }}>
-                        <input type="text" value={adres === 'niet gevonden' ? '' : adres} onChange={e => setAdres(e.target.value)} style={{ ...inp, fontSize: '0.88rem' }} placeholder="Straatnaam + nr" />
-                        <input type="text" value={plaats} onChange={e => setPlaats(e.target.value)} style={{ ...inp, fontSize: '0.88rem' }} placeholder="Plaats" />
-                      </div>
+                    {adresNietGevonden && !adresLaden && (
+                      <>
+                        <p style={{ fontSize: '0.78rem', color: '#ef4444', margin: '4px 0 6px' }}>Adres niet gevonden. Vul handmatig in:</p>
+                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
+                          <input type="text" value={adres} onChange={e => setAdres(e.target.value)} style={{ ...inp, fontSize: '0.88rem' }} placeholder="Straatnaam + nr" />
+                          <input type="text" value={plaats} onChange={e => setPlaats(e.target.value)} style={{ ...inp, fontSize: '0.88rem' }} placeholder="Plaats" />
+                        </div>
+                      </>
                     )}
                   </div>
 
@@ -298,25 +304,25 @@ export default function Registreer() {
                   <div>
                     <label style={lbl}>Adres vereniging</label>
                     <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '8px', marginBottom: '8px' }}>
-                      <input type="text" value={vvePostcode} onChange={e => { setVvePostcode(e.target.value); if (vveAdresDebounceRef.current) clearTimeout(vveAdresDebounceRef.current); vveAdresDebounceRef.current = setTimeout(() => zoekAdres(e.target.value, vveHuisnummerRef.current, setVveAdres, setVvePlaats, setVveAdresLaden), 400) }}
+                      <input type="text" value={vvePostcode} onChange={e => { setVvePostcode(e.target.value); setVveAdres(''); setVveAdresNietGevonden(false); if (vveAdresDebounceRef.current) clearTimeout(vveAdresDebounceRef.current); vveAdresDebounceRef.current = setTimeout(() => zoekAdres(e.target.value, vveHuisnummerRef.current, setVveAdres, setVvePlaats, setVveAdresLaden, setVveAdresNietGevonden), 400) }}
                         style={inp} placeholder="Postcode vereniging" maxLength={7} />
-                      <input type="text" value={vveHuisnummer} onChange={e => { setVveHuisnummer(e.target.value); if (vveAdresDebounceRef.current) clearTimeout(vveAdresDebounceRef.current); vveAdresDebounceRef.current = setTimeout(() => zoekAdres(vvePostcodeRef.current, e.target.value, setVveAdres, setVvePlaats, setVveAdresLaden), 400) }}
+                      <input type="text" value={vveHuisnummer} onChange={e => { setVveHuisnummer(e.target.value); setVveAdres(''); setVveAdresNietGevonden(false); if (vveAdresDebounceRef.current) clearTimeout(vveAdresDebounceRef.current); vveAdresDebounceRef.current = setTimeout(() => zoekAdres(vvePostcodeRef.current, e.target.value, setVveAdres, setVvePlaats, setVveAdresLaden, setVveAdresNietGevonden), 400) }}
                         style={inp} placeholder="Nr." />
                     </div>
                     {vveAdresLaden && <p style={{ fontSize: '0.78rem', color: '#2563EB', margin: '0 0 6px' }}>Adres opzoeken...</p>}
-                    {vveAdres && vveAdres !== 'niet gevonden' && (
+                    {vveAdres && (
                       <div style={{ background: 'white', border: '1px solid #bbf7d0', borderRadius: '6px', padding: '8px 12px', fontSize: '0.83rem', color: '#166534' }}>
                         ✓ {vveAdres}, {vvePostcode.toUpperCase()} {vvePlaats}
                       </div>
                     )}
-                    {vveAdres === 'niet gevonden' && (
-                      <p style={{ fontSize: '0.78rem', color: '#ef4444', margin: '4px 0 0' }}>Adres niet gevonden. Vul hieronder handmatig in.</p>
-                    )}
-                    {(!vveAdres || vveAdres === 'niet gevonden') && vvePostcode && vveHuisnummer && !vveAdresLaden && (
-                      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', marginTop: '8px' }}>
-                        <input type="text" value={vveAdres === 'niet gevonden' ? '' : vveAdres} onChange={e => setVveAdres(e.target.value)} style={{ ...inp, fontSize: '0.88rem' }} placeholder="Straatnaam + nr" />
-                        <input type="text" value={vvePlaats} onChange={e => setVvePlaats(e.target.value)} style={{ ...inp, fontSize: '0.88rem' }} placeholder="Plaats" />
-                      </div>
+                    {vveAdresNietGevonden && !vveAdresLaden && (
+                      <>
+                        <p style={{ fontSize: '0.78rem', color: '#ef4444', margin: '4px 0 6px' }}>Adres niet gevonden. Vul handmatig in:</p>
+                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
+                          <input type="text" value={vveAdres} onChange={e => setVveAdres(e.target.value)} style={{ ...inp, fontSize: '0.88rem' }} placeholder="Straatnaam + nr" />
+                          <input type="text" value={vvePlaats} onChange={e => setVvePlaats(e.target.value)} style={{ ...inp, fontSize: '0.88rem' }} placeholder="Plaats" />
+                        </div>
+                      </>
                     )}
                   </div>
                 </div>
