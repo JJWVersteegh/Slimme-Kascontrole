@@ -1,5 +1,5 @@
 'use client'
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect } from 'react'
 import { supabase } from '@/lib/supabase'
 import { useRouter } from 'next/navigation'
 import Navbar from '@/components/Navbar'
@@ -32,9 +32,6 @@ export default function Registreer() {
   const [beheerderSlug, setBeheerderSlug] = useState('')
   const [beheerders, setBeheerders] = useState<{ id: string; naam: string; slug: string }[]>([])
   const router = useRouter()
-  const adresDebounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
-  const vveAdresDebounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
-
   useEffect(() => {
     const params = new URLSearchParams(window.location.search)
     if (params.get('mode') === 'login') setMode('login')
@@ -64,10 +61,11 @@ export default function Registreer() {
     setPlaatsFn: (waarde: string) => void,
     setLadenFn: (waarde: boolean) => void
   ) {
-    if (pc.length < 6 || !hn) return
+    const pcClean = pc.replace(/\s/g, '').toUpperCase()
+    if (pcClean.length < 6 || !hn) return
     setLadenFn(true)
     try {
-      const res = await fetch(`https://api.pdok.nl/bzk/locatieserver/search/v3_1/free?q=${pc.replace(' ','')}+${hn}&fq=type:adres&rows=1`)
+      const res = await fetch(`https://api.pdok.nl/bzk/locatieserver/search/v3_1/free?q=${pcClean}+${hn}&fq=type:adres&rows=1`)
       const data = await res.json()
       if (data.response?.docs?.[0]) {
         const doc = data.response.docs[0]
@@ -75,8 +73,14 @@ export default function Registreer() {
         const woonplaats = doc.woonplaatsnaam || ''
         setAdresFn(`${straat} ${hn}`)
         setPlaatsFn(woonplaats)
+      } else {
+        setAdresFn('niet gevonden')
+        setPlaatsFn('')
       }
-    } catch {}
+    } catch {
+      setAdresFn('niet gevonden')
+      setPlaatsFn('')
+    }
     setLadenFn(false)
   }
 
@@ -212,21 +216,28 @@ export default function Registreer() {
 
                   <div style={{ marginBottom: '16px' }}>
                     <label style={lbl}>Uw persoonlijke adres</label>
-                    <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '8px', marginBottom: '8px' }}>
-                      <input type="text" value={postcode} onChange={e => { setPostcode(e.target.value); if (adresDebounceRef.current) clearTimeout(adresDebounceRef.current); adresDebounceRef.current = setTimeout(() => zoekAdres(e.target.value, huisnummer, setAdres, setPlaats, setAdresLaden), 600) }}
+                    <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr auto', gap: '8px', marginBottom: '8px' }}>
+                      <input type="text" value={postcode} onChange={e => setPostcode(e.target.value)}
                         style={inp} placeholder="Postcode, bijv. 1234 AB" maxLength={7} />
-                      <input type="text" value={huisnummer} onChange={e => { setHuisnummer(e.target.value); if (adresDebounceRef.current) clearTimeout(adresDebounceRef.current); adresDebounceRef.current = setTimeout(() => zoekAdres(postcode, e.target.value, setAdres, setPlaats, setAdresLaden), 600) }}
+                      <input type="text" value={huisnummer} onChange={e => setHuisnummer(e.target.value)}
                         style={inp} placeholder="Nr." />
+                      <button type="button" onClick={() => zoekAdres(postcode, huisnummer, setAdres, setPlaats, setAdresLaden)}
+                        style={{ padding: '0 14px', background: '#2563EB', color: 'white', border: 'none', borderRadius: '8px', fontSize: '0.85rem', cursor: 'pointer', whiteSpace: 'nowrap', fontFamily: 'Outfit, sans-serif' }}>
+                        🔍
+                      </button>
                     </div>
-                    {adresLaden && <p style={{ fontSize: '0.78rem', color: '#2563EB', margin: '0 0 6px' }}>🔍 Persoonlijk adres opzoeken...</p>}
-                    {adres && (
+                    {adresLaden && <p style={{ fontSize: '0.78rem', color: '#2563EB', margin: '0 0 6px' }}>Adres opzoeken...</p>}
+                    {adres && adres !== 'niet gevonden' && (
                       <div style={{ background: '#f0fdf4', border: '1px solid #bbf7d0', borderRadius: '6px', padding: '8px 12px', fontSize: '0.83rem', color: '#166534' }}>
                         ✓ {adres}, {postcode.toUpperCase()} {plaats}
                       </div>
                     )}
-                    {!adres && postcode.length >= 6 && huisnummer && !adresLaden && (
+                    {adres === 'niet gevonden' && (
+                      <p style={{ fontSize: '0.78rem', color: '#ef4444', margin: '4px 0 0' }}>Adres niet gevonden. Vul hieronder handmatig in.</p>
+                    )}
+                    {(!adres || adres === 'niet gevonden') && postcode && huisnummer && !adresLaden && (
                       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', marginTop: '8px' }}>
-                        <input type="text" value={adres} onChange={e => setAdres(e.target.value)} style={{ ...inp, fontSize: '0.88rem' }} placeholder="Straatnaam + nr" />
+                        <input type="text" value={adres === 'niet gevonden' ? '' : adres} onChange={e => setAdres(e.target.value)} style={{ ...inp, fontSize: '0.88rem' }} placeholder="Straatnaam + nr" />
                         <input type="text" value={plaats} onChange={e => setPlaats(e.target.value)} style={{ ...inp, fontSize: '0.88rem' }} placeholder="Plaats" />
                       </div>
                     )}
@@ -279,21 +290,28 @@ export default function Registreer() {
 
                   <div>
                     <label style={lbl}>Adres vereniging</label>
-                    <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '8px', marginBottom: '8px' }}>
-                      <input type="text" value={vvePostcode} onChange={e => { setVvePostcode(e.target.value); if (vveAdresDebounceRef.current) clearTimeout(vveAdresDebounceRef.current); vveAdresDebounceRef.current = setTimeout(() => zoekAdres(e.target.value, vveHuisnummer, setVveAdres, setVvePlaats, setVveAdresLaden), 600) }}
-                        style={inp} placeholder="Postcode vereniging" maxLength={7} required />
-                      <input type="text" value={vveHuisnummer} onChange={e => { setVveHuisnummer(e.target.value); if (vveAdresDebounceRef.current) clearTimeout(vveAdresDebounceRef.current); vveAdresDebounceRef.current = setTimeout(() => zoekAdres(vvePostcode, e.target.value, setVveAdres, setVvePlaats, setVveAdresLaden), 600) }}
-                        style={inp} placeholder="Nr." required />
+                    <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr auto', gap: '8px', marginBottom: '8px' }}>
+                      <input type="text" value={vvePostcode} onChange={e => setVvePostcode(e.target.value)}
+                        style={inp} placeholder="Postcode vereniging" maxLength={7} />
+                      <input type="text" value={vveHuisnummer} onChange={e => setVveHuisnummer(e.target.value)}
+                        style={inp} placeholder="Nr." />
+                      <button type="button" onClick={() => zoekAdres(vvePostcode, vveHuisnummer, setVveAdres, setVvePlaats, setVveAdresLaden)}
+                        style={{ padding: '0 14px', background: '#166534', color: 'white', border: 'none', borderRadius: '8px', fontSize: '0.85rem', cursor: 'pointer', whiteSpace: 'nowrap', fontFamily: 'Outfit, sans-serif' }}>
+                        🔍
+                      </button>
                     </div>
-                    {vveAdresLaden && <p style={{ fontSize: '0.78rem', color: '#2563EB', margin: '0 0 6px' }}>🔍 Adres opzoeken...</p>}
-                    {vveAdres && (
+                    {vveAdresLaden && <p style={{ fontSize: '0.78rem', color: '#2563EB', margin: '0 0 6px' }}>Adres opzoeken...</p>}
+                    {vveAdres && vveAdres !== 'niet gevonden' && (
                       <div style={{ background: 'white', border: '1px solid #bbf7d0', borderRadius: '6px', padding: '8px 12px', fontSize: '0.83rem', color: '#166534' }}>
                         ✓ {vveAdres}, {vvePostcode.toUpperCase()} {vvePlaats}
                       </div>
                     )}
-                    {!vveAdres && vvePostcode.length >= 6 && vveHuisnummer && !vveAdresLaden && (
+                    {vveAdres === 'niet gevonden' && (
+                      <p style={{ fontSize: '0.78rem', color: '#ef4444', margin: '4px 0 0' }}>Adres niet gevonden. Vul hieronder handmatig in.</p>
+                    )}
+                    {(!vveAdres || vveAdres === 'niet gevonden') && vvePostcode && vveHuisnummer && !vveAdresLaden && (
                       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', marginTop: '8px' }}>
-                        <input type="text" value={vveAdres} onChange={e => setVveAdres(e.target.value)} style={{ ...inp, fontSize: '0.88rem' }} placeholder="Straatnaam + nr" />
+                        <input type="text" value={vveAdres === 'niet gevonden' ? '' : vveAdres} onChange={e => setVveAdres(e.target.value)} style={{ ...inp, fontSize: '0.88rem' }} placeholder="Straatnaam + nr" />
                         <input type="text" value={vvePlaats} onChange={e => setVvePlaats(e.target.value)} style={{ ...inp, fontSize: '0.88rem' }} placeholder="Plaats" />
                       </div>
                     )}
