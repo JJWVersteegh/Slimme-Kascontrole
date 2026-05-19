@@ -568,19 +568,6 @@ footer a:hover{color:#93c5fd}
   </div>
 </section>
 
-<!-- TESTIMONIALS -->
-<section>
-  <div style="max-width:1100px;margin:0 auto;text-align:center">
-    <p class="section-label fade-in" style="text-align:center">Ervaringen</p>
-    <h2 class="fade-in" style="text-align:center">Wat zeggen onze gebruikers?</h2>
-    <p class="section-sub centered fade-in" style="margin:0 auto 48px">Nederlandse verenigingen werken al met Slimme Kascontrole.</p>
-    <div class="testi-grid">
-      <div class="testi fade-in"><div class="stars">★★★★★</div><blockquote>"Vroeger kostte onze kascontrole een heel weekend. Nu is het snel klaar en ziet het rapport er ook nog eens professioneel uit."</blockquote><p class="testi-author">Penningmeester</p><p class="testi-role">Sportvereniging, Zuid-Holland</p></div>
-      <div class="testi fade-in"><div class="stars">★★★★★</div><blockquote>"De volledige controle vond een dubbele boeking die wij jarenlang over het hoofd hadden gezien. Fijn dat dit nu grondig wordt gecheckt."</blockquote><p class="testi-author">Kascommissielid</p><p class="testi-role">Buurtvereniging, Noord-Brabant</p></div>
-      <div class="testi fade-in"><div class="stars">★★★★★</div><blockquote>"Eindelijk een tool die echt voor verenigingen is gemaakt. Onze leden op de ALV waren onder de indruk van het volledige rapport."</blockquote><p class="testi-author">Secretaris</p><p class="testi-role">VvE, Amsterdam</p></div>
-    </div>
-  </div>
-</section>
 
 <!-- CONTACT -->
 <section id="contact" style="background:var(--cream)">
