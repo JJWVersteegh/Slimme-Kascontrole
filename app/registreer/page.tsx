@@ -1,5 +1,5 @@
 'use client'
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect } from 'react'
 import { supabase } from '@/lib/supabase'
 import { useRouter } from 'next/navigation'
 import Navbar from '@/components/Navbar'
@@ -34,17 +34,6 @@ export default function Registreer() {
   const [beheerderSlug, setBeheerderSlug] = useState('')
   const [beheerders, setBeheerders] = useState<{ id: string; naam: string; slug: string }[]>([])
   const router = useRouter()
-  const adresDebounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
-  const vveAdresDebounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
-  // Refs worden synchroon bijgehouden — geen useEffect nodig
-  const postcodeRef = useRef('')
-  const huisnummerRef = useRef('')
-  const vvePostcodeRef = useRef('')
-  const vveHuisnummerRef = useRef('')
-  postcodeRef.current = postcode
-  huisnummerRef.current = huisnummer
-  vvePostcodeRef.current = vvePostcode
-  vveHuisnummerRef.current = vveHuisnummer
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search)
@@ -68,37 +57,44 @@ export default function Registreer() {
     })
   }, [])
 
-  async function zoekAdres(
-    pc: string,
-    hn: string,
-    setAdresFn: (waarde: string) => void,
-    setPlaatsFn: (waarde: string) => void,
-    setLadenFn: (waarde: boolean) => void,
-    setNietGevondenFn: (waarde: boolean) => void
-  ) {
-    const pcClean = pc.replace(/\s/g, '').toUpperCase()
-    if (pcClean.length < 6 || !hn) return
-    setLadenFn(true)
-    setNietGevondenFn(false)
+  async function zoekAdresPersoonlijk(pc: string, hn: string) {
+    if (pc.replace(' ', '').length < 6 || !hn) return
+    setAdresLaden(true)
+    setAdres(''); setPlaats(''); setAdresNietGevonden(false)
     try {
-      const res = await fetch(`https://api.pdok.nl/bzk/locatieserver/search/v3_1/free?q=${pcClean}+${hn}&fq=type:adres&rows=1`)
+      const res = await fetch(`https://api.pdok.nl/bzk/locatieserver/search/v3_1/free?q=${pc.replace(' ', '')}+${hn}&fq=type:adres&rows=1`)
       const data = await res.json()
       if (data.response?.docs?.[0]) {
         const doc = data.response.docs[0]
-        const straat = doc.straatnaam || ''
-        const woonplaats = doc.woonplaatsnaam || ''
-        setAdresFn(`${straat} ${hn}`)
-        setPlaatsFn(woonplaats)
-        setNietGevondenFn(false)
+        setAdres(`${doc.straatnaam || ''} ${hn}`)
+        setPlaats(doc.woonplaatsnaam || '')
       } else {
-        setAdresFn('')
-        setPlaatsFn('')
-        setNietGevondenFn(true)
+        setAdresNietGevonden(true)
       }
     } catch {
-      setNietGevondenFn(true)
+      setAdresNietGevonden(true)
     }
-    setLadenFn(false)
+    setAdresLaden(false)
+  }
+
+  async function zoekAdresVve(pc: string, hn: string) {
+    if (pc.replace(' ', '').length < 6 || !hn) return
+    setVveAdresLaden(true)
+    setVveAdres(''); setVvePlaats(''); setVveAdresNietGevonden(false)
+    try {
+      const res = await fetch(`https://api.pdok.nl/bzk/locatieserver/search/v3_1/free?q=${pc.replace(' ', '')}+${hn}&fq=type:adres&rows=1`)
+      const data = await res.json()
+      if (data.response?.docs?.[0]) {
+        const doc = data.response.docs[0]
+        setVveAdres(`${doc.straatnaam || ''} ${hn}`)
+        setVvePlaats(doc.woonplaatsnaam || '')
+      } else {
+        setVveAdresNietGevonden(true)
+      }
+    } catch {
+      setVveAdresNietGevonden(true)
+    }
+    setVveAdresLaden(false)
   }
 
   async function handleRegistreer(e: React.FormEvent) {
@@ -234,9 +230,13 @@ export default function Registreer() {
                   <div style={{ marginBottom: '16px' }}>
                     <label style={lbl}>Uw persoonlijke adres</label>
                     <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '8px', marginBottom: '8px' }}>
-                      <input type="text" value={postcode} onChange={e => { setPostcode(e.target.value); setAdres(''); setAdresNietGevonden(false); if (adresDebounceRef.current) clearTimeout(adresDebounceRef.current); adresDebounceRef.current = setTimeout(() => zoekAdres(e.target.value, huisnummerRef.current, setAdres, setPlaats, setAdresLaden, setAdresNietGevonden), 400) }}
+                      <input type="text" value={postcode}
+                        onChange={e => { setPostcode(e.target.value); setAdres(''); setAdresNietGevonden(false) }}
+                        onBlur={e => zoekAdresPersoonlijk(e.target.value, huisnummer)}
                         style={inp} placeholder="Postcode, bijv. 1234 AB" maxLength={7} />
-                      <input type="text" value={huisnummer} onChange={e => { setHuisnummer(e.target.value); setAdres(''); setAdresNietGevonden(false); if (adresDebounceRef.current) clearTimeout(adresDebounceRef.current); adresDebounceRef.current = setTimeout(() => zoekAdres(postcodeRef.current, e.target.value, setAdres, setPlaats, setAdresLaden, setAdresNietGevonden), 400) }}
+                      <input type="text" value={huisnummer}
+                        onChange={e => { setHuisnummer(e.target.value); setAdres(''); setAdresNietGevonden(false) }}
+                        onBlur={e => zoekAdresPersoonlijk(postcode, e.target.value)}
                         style={inp} placeholder="Nr." />
                     </div>
                     {adresLaden && <p style={{ fontSize: '0.78rem', color: '#2563EB', margin: '0 0 6px' }}>Adres opzoeken...</p>}
@@ -304,9 +304,13 @@ export default function Registreer() {
                   <div>
                     <label style={lbl}>Adres vereniging</label>
                     <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '8px', marginBottom: '8px' }}>
-                      <input type="text" value={vvePostcode} onChange={e => { setVvePostcode(e.target.value); setVveAdres(''); setVveAdresNietGevonden(false); if (vveAdresDebounceRef.current) clearTimeout(vveAdresDebounceRef.current); vveAdresDebounceRef.current = setTimeout(() => zoekAdres(e.target.value, vveHuisnummerRef.current, setVveAdres, setVvePlaats, setVveAdresLaden, setVveAdresNietGevonden), 400) }}
+                      <input type="text" value={vvePostcode}
+                        onChange={e => { setVvePostcode(e.target.value); setVveAdres(''); setVveAdresNietGevonden(false) }}
+                        onBlur={e => zoekAdresVve(e.target.value, vveHuisnummer)}
                         style={inp} placeholder="Postcode vereniging" maxLength={7} />
-                      <input type="text" value={vveHuisnummer} onChange={e => { setVveHuisnummer(e.target.value); setVveAdres(''); setVveAdresNietGevonden(false); if (vveAdresDebounceRef.current) clearTimeout(vveAdresDebounceRef.current); vveAdresDebounceRef.current = setTimeout(() => zoekAdres(vvePostcodeRef.current, e.target.value, setVveAdres, setVvePlaats, setVveAdresLaden, setVveAdresNietGevonden), 400) }}
+                      <input type="text" value={vveHuisnummer}
+                        onChange={e => { setVveHuisnummer(e.target.value); setVveAdres(''); setVveAdresNietGevonden(false) }}
+                        onBlur={e => zoekAdresVve(vvePostcode, e.target.value)}
                         style={inp} placeholder="Nr." />
                     </div>
                     {vveAdresLaden && <p style={{ fontSize: '0.78rem', color: '#2563EB', margin: '0 0 6px' }}>Adres opzoeken...</p>}
