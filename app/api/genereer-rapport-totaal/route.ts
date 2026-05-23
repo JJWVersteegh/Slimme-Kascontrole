@@ -387,7 +387,8 @@ Alleen vermelden als er concrete aanwijzingen voor zijn in de uploads. Niets te 
 
 ### 3.5 Contracten en abonnementen
 Alleen invullen als er contractgegevens in de uploads staan. Zijn die er niet → laat deze sectie weg.
-Zoek actief naar ALLE soorten abonnementen in de uploads: verzekeringen, beheercontracten, schoonmaak, liften, tuinonderhoud, kranten- en tijdschriftabonnementen, software, alarmsystemen, etc. Vermeld elk abonnement dat je tegenkomt.
+Zoek actief naar ALLE soorten abonnementen en terugkerende kosten in de uploads: verzekeringen (opstal, aansprakelijkheid, rechtsbijstand — ook als deze centraal via een beheerder worden betaald), beheercontracten, schoonmaak, liften, tuinonderhoud, kranten- en tijdschriftabonnementen, software, alarmsystemen, etc.
+Let op: verzekeringen worden bij VvE's soms betaald via of doorgefactureerd door de vastgoedbeheerder/administrateur ("centraal beheer") — zoek ook in doorbelaste kosten of facturen van de beheerder naar verzekeringscomponenten. Vermeld elk abonnement en elke verzekering die je tegenkomt.
 
 | Contract/Abonnement | Leverancier | Jaarlijkse kosten | Beoordeling |
 | --- | --- | --- | --- |
