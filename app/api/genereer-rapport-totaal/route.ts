@@ -147,13 +147,29 @@ export async function POST(req: NextRequest) {
             bestandenVanUpload.push(`  [${bestandsnaam} — Excel]\n${sheetsText.join('\n\n').substring(0, 8000)}`)
           } else if (extensie === 'pdf') {
             const buffer = await data.arrayBuffer()
-            if (totalBinaryBytes + buffer.byteLength <= MAX_BINARY_BYTES) {
-              const base64 = Buffer.from(buffer).toString('base64')
-              binaryBlocks.push({ type: 'document', source: { type: 'base64', media_type: 'application/pdf', data: base64 } })
-              totalBinaryBytes += buffer.byteLength
-              bestandenVanUpload.push(`  [${bestandsnaam} — PDF, bijgevoegd als document]`)
-            } else {
-              bestandenVanUpload.push(`  [${bestandsnaam} — PDF, ${Math.round(buffer.byteLength / 1024)}KB — te groot om bij te voegen, overgeslagen]`)
+            // Probeer eerst tekst te extraheren (veel efficiënter in tokens dan binary)
+            let pdfTekstGeladen = false
+            try {
+              const pdfParse = (await import('pdf-parse')).default
+              const pdfData = await pdfParse(Buffer.from(buffer))
+              const tekst = pdfData.text?.trim()
+              if (tekst && tekst.length > 50) {
+                // PDF bevat leesbare tekst — stuur als tekst (max 12000 tekens)
+                bestandenVanUpload.push(`  [${bestandsnaam} — PDF, ${pdfData.numpages} pagina's, tekst geëxtraheerd]\n${tekst.substring(0, 12000)}`)
+                pdfTekstGeladen = true
+              }
+            } catch { /* pdf-parse mislukt → fallback naar binary */ }
+
+            if (!pdfTekstGeladen) {
+              // Gescande PDF of extractie mislukt → stuur als binary als het past
+              if (totalBinaryBytes + buffer.byteLength <= MAX_BINARY_BYTES) {
+                const base64 = Buffer.from(buffer).toString('base64')
+                binaryBlocks.push({ type: 'document', source: { type: 'base64', media_type: 'application/pdf', data: base64 } })
+                totalBinaryBytes += buffer.byteLength
+                bestandenVanUpload.push(`  [${bestandsnaam} — PDF (gescand), bijgevoegd als afbeelding]`)
+              } else {
+                bestandenVanUpload.push(`  [${bestandsnaam} — PDF (gescand), ${Math.round(buffer.byteLength / 1024)}KB — te groot om bij te voegen, overgeslagen]`)
+              }
             }
           } else if (['png', 'jpg', 'jpeg'].includes(extensie)) {
             const buffer = await data.arrayBuffer()
