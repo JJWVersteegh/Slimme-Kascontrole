@@ -283,6 +283,25 @@ B) Afwijking t.o.v. VORIG JAAR: Als werkelijk meer dan 30% afwijkt van vorig jaa
 C) Elke afwijking >30% die je in de detailanalyse benoemt, MOET ook in de Samenvatting bevindingen (sectie 2) terugkomen als AANDACHT-punt — met de juiste richting (hoger/lager) en het concrete bedrag.
 
 ═══════════════════════════════════════════
+MJOP — MEERJARENONDERHOUDSPLAN
+═══════════════════════════════════════════
+MJOP staat voor Meerjarenonderhoudsplan. Dit is een standaard en gebruikelijk onderdeel van een VvE-administratie.
+
+VERPLICHTE KENNIS OVER MJOP:
+- MJOP-kosten zijn GEEN bankkosten of financiële kosten — het zijn onderhoudskosten/reserveringskosten voor toekomstig onderhoud
+- Een post als "Winter MJOP" of vergelijkbare MJOP-posten betreffen het OPSTELLEN of ACTUALISEREN van het MJOP-rapport (een extern adviesbureau rekent hiervoor)
+- MJOP-reserveringen zijn bijdragen aan de reserves voor toekomstig groot onderhoud (dak, gevel, lift, etc.)
+- MJOP-kosten zijn NORMAAL en VERWACHT voor een VvE — geen reden voor kritische bevindingen tenzij de kosten sterk afwijken van begroting
+- Categoriseer MJOP altijd als "Onderhoud / MJOP" — nooit als "Bankkosten" of "Administratiekosten"
+
+MJOP IN HET RAPPORT:
+- Neem een apart hoofdstuk 3.X op: "MJOP — Meerjarenonderhoudsplan"
+- Beschrijf de MJOP-kosten dit boekjaar (wat is er uitgegeven en waarvoor)
+- Benoem de MJOP-reserveringen op de balans als die beschikbaar zijn
+- Geef een doorkijk: welke grote onderhoudsposten staan de komende jaren gepland (alleen als MJOP-rapport beschikbaar is in de uploads)
+- Als er geen MJOP beschikbaar is: adviseer de VvE een MJOP op te stellen
+
+═══════════════════════════════════════════
 KOLOMMEN IN EXCEL
 ═══════════════════════════════════════════
 Gebruik ALTIJD de kolom met werkelijke gerealiseerde cijfers: "werkelijk", "realisatie", "gerealiseerd", "werkelijk t/m [datum]".
@@ -323,7 +342,8 @@ RAPPORTSTRUCTUUR — GEBRUIK EXACT DEZE OPBOUW
    - 3.3 Exploitatieresultaat
    - 3.4 Openstaande posten en bijzonderheden
    - 3.5 Contracten en abonnementen
-${boekjaren.length > 1 ? `   - 3.6 Trendanalyse ${boekjaren.join(' – ')}` : ''}
+   - 3.6 MJOP — Meerjarenonderhoudsplan
+${boekjaren.length > 1 ? `   - 3.7 Trendanalyse ${boekjaren.join(' – ')}` : ''}
 4. Advies aan de Algemene Ledenvergadering
 
 ---
@@ -367,12 +387,25 @@ Alleen vermelden als er concrete aanwijzingen voor zijn in de uploads. Niets te 
 
 ### 3.5 Contracten en abonnementen
 Alleen invullen als er contractgegevens in de uploads staan. Zijn die er niet → laat deze sectie weg.
+Zoek actief naar ALLE soorten abonnementen in de uploads: verzekeringen, beheercontracten, schoonmaak, liften, tuinonderhoud, kranten- en tijdschriftabonnementen, software, alarmsystemen, etc. Vermeld elk abonnement dat je tegenkomt.
 
-| Contract | Leverancier | Jaarlijkse kosten | Beoordeling |
+| Contract/Abonnement | Leverancier | Jaarlijkse kosten | Beoordeling |
 | --- | --- | --- | --- |
-[Uitsluitend contracten die letterlijk in de uploads staan.]
+[Uitsluitend contracten en abonnementen die letterlijk in de uploads staan.]
 
-${boekjaren.length > 1 ? `### 3.6 Trendanalyse ${boekjaren.join(' – ')}
+### 3.6 MJOP — Meerjarenonderhoudsplan
+Altijd opnemen. MJOP-kosten zijn normale VvE-kosten voor toekomstig onderhoud.
+
+**MJOP-kosten dit boekjaar:**
+[Noem alle MJOP-gerelateerde uitgaven dit boekjaar: opstellen/actualiseren MJOP-rapport, MJOP-reserveringen, etc. met bedragen uit de uploads.]
+
+**MJOP-reserves:**
+[Benoem de stand van de MJOP-reserve/onderhoudsfonds op de balans, als beschikbaar.]
+
+**Geplande onderhoudswerkzaamheden:**
+[Als het MJOP-rapport beschikbaar is in de uploads: noem de belangrijkste geplande posten de komende jaren met indicatieve bedragen. Als het MJOP niet beschikbaar is → schrijf: "Het MJOP-rapport is niet aangeleverd. Geadviseerd wordt het MJOP te actualiseren en bij de stukken te voegen."]
+
+${boekjaren.length > 1 ? `### 3.7 Trendanalyse ${boekjaren.join(' – ')}
 Alleen invullen met bedragen die voor elk jaar daadwerkelijk beschikbaar zijn. Gebruik "–" voor jaren zonder data. Geen schattingen of extrapolaties.
 
 | Post | ${boekjaren.join(' | ')} | Trend |
