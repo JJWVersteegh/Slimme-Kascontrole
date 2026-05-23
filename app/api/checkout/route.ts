@@ -20,7 +20,7 @@ export async function POST(req: NextRequest) {
     const Stripe = (await import('stripe')).default
     const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, { apiVersion: '2025-01-27.acacia' as any })
 
-    const { email, user_id, boekjaar, vereniging_id, naam, vereniging, adres, postcode, plaats } = await req.json()
+    const { email, user_id, boekjaar, vereniging_id, naam, vereniging, adres, postcode, plaats, kortingscode } = await req.json()
 
     // Verifieer dat user_id overeenkomt met ingelogde gebruiker
     if (user_id && user_id !== sessionUser.id) {
@@ -28,11 +28,21 @@ export async function POST(req: NextRequest) {
     }
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://www.slimmekascontrole.nl'
 
+    // Kortingscode opzoeken indien opgegeven
+    let discounts: { promotion_code: string }[] | undefined = undefined
+    if (kortingscode) {
+      const promoCodes = await stripe.promotionCodes.list({ code: kortingscode, active: true, limit: 1 })
+      if (promoCodes.data.length === 0) {
+        return NextResponse.json({ kortingscodeError: 'Kortingscode ongeldig of verlopen.' })
+      }
+      discounts = [{ promotion_code: promoCodes.data[0].id }]
+    }
+
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['ideal', 'card'],
       mode: 'payment',
       customer_email: email,
-      allow_promotion_codes: true,
+      ...(discounts ? { discounts } : { allow_promotion_codes: true }),
       line_items: [{
         price_data: {
           currency: 'eur',

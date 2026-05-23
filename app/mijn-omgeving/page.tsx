@@ -56,6 +56,8 @@ export default function MijnOmgeving() {
   const [loading, setLoading] = useState(true)
   const [uploading, setUploading] = useState(false)
   const [betaalLoading, setBetaalLoading] = useState(false)
+  const [kortingscode, setKortingscode] = useState('')
+  const [kortingscodeError, setKortingscodeError] = useState('')
   const [rapportLoading, setRapportLoading] = useState(false)
   const [deleteLoading, setDeleteLoading] = useState<string | null>(null)
   const [files, setFiles] = useState<FileList | null>(null)
@@ -241,15 +243,17 @@ export default function MijnOmgeving() {
   async function handleBetaal() {
     if (!geselecteerdeVereniging) return
     setBetaalLoading(true)
+    setKortingscodeError('')
     try {
       const { data: { session } } = await supabase.auth.getSession()
       const res = await fetch('/api/checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${session?.access_token}` },
-        body: JSON.stringify({ email: user.email, user_id: user.id, boekjaar: rapportBoekjaar, vereniging_id: geselecteerdeVereniging.id }),
+        body: JSON.stringify({ email: user.email, user_id: user.id, boekjaar: rapportBoekjaar, vereniging_id: geselecteerdeVereniging.id, kortingscode: kortingscode.trim().toUpperCase() || undefined }),
       })
       const data = await res.json()
       if (data.url) window.location.href = data.url
+      else if (data.kortingscodeError) setKortingscodeError(data.kortingscodeError)
       else setError(data.error || 'Betalen mislukt')
     } catch { setError('Betalen mislukt') }
     setBetaalLoading(false)
@@ -1096,6 +1100,20 @@ async function zoekAdres(pc: string, hn: string) {
                 <p style={{ color: '#475569', fontSize: '0.84rem', marginBottom: '16px', lineHeight: 1.6 }}>
                   Betaal éénmalig €59 via iDEAL voor <strong>{geselecteerdeVereniging.naam}</strong> boekjaar <strong>{rapportBoekjaar}</strong>. Daarna kunt u het rapport genereren.
                 </p>
+                {heeftUploadsVoorRapportjaar && (
+                  <div style={{ marginBottom: '14px' }}>
+                    <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                      <input
+                        type="text"
+                        value={kortingscode}
+                        onChange={e => { setKortingscode(e.target.value.toUpperCase()); setKortingscodeError('') }}
+                        placeholder="Kortingscode (optioneel)"
+                        style={{ padding: '10px 14px', borderRadius: '8px', border: kortingscodeError ? '1.5px solid #ef4444' : '1.5px solid #c8e0d4', fontSize: '0.88rem', fontFamily: 'Outfit, sans-serif', width: '220px', outline: 'none', background: 'white' }}
+                      />
+                    </div>
+                    {kortingscodeError && <p style={{ color: '#ef4444', fontSize: '0.78rem', marginTop: '4px' }}>{kortingscodeError}</p>}
+                  </div>
+                )}
                 <button onClick={handleBetaal} disabled={betaalLoading || !heeftUploadsVoorRapportjaar} style={{ background: !heeftUploadsVoorRapportjaar ? '#94a3b8' : '#2563EB', color: 'white', padding: '15px 30px', borderRadius: '14px', border: 'none', fontSize: '0.84rem', fontWeight: '700', cursor: !heeftUploadsVoorRapportjaar ? 'not-allowed' : 'pointer', fontFamily: 'Outfit, sans-serif', boxShadow: !heeftUploadsVoorRapportjaar ? 'none' : '0 12px 24px rgba(37,99,235,0.2)' }}>
                   {betaalLoading ? 'Laden...' : !heeftUploadsVoorRapportjaar ? `⬆️ Upload eerst bestanden voor ${rapportBoekjaar}` : '🔒 Betaal €59 via iDEAL'}
                 </button>
