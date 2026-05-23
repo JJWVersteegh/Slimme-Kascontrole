@@ -107,8 +107,8 @@ export async function POST(req: NextRequest) {
     // Bestanden inlezen
     const uploadsContent: string[] = []
     const binaryBlocks: any[] = []  // PDF- en afbeeldingsblokken voor de Claude API
-    // Max 800KB aan originele binaire data — PDFs/afbeeldingen tellen zwaar in tokens
-    const MAX_BINARY_BYTES = 800 * 1024
+    // Max 2.5MB aan originele binaire data (base64 ≈ 3.3MB ≈ 830K tokens)
+    const MAX_BINARY_BYTES = 2.5 * 1024 * 1024
     let totalBinaryBytes = 0
 
     for (const upload of uploads) {
@@ -150,8 +150,9 @@ export async function POST(req: NextRequest) {
             // Probeer eerst tekst te extraheren (veel efficiënter in tokens dan binary)
             let pdfTekstGeladen = false
             try {
-              const pdfParse = (await import('pdf-parse')).default
-              const pdfData = await pdfParse(Buffer.from(buffer))
+              const pdfModule = await import('pdf-parse')
+              const pdfParse = pdfModule.default || pdfModule
+              const pdfData = await (pdfParse as any)(Buffer.from(buffer))
               const tekst = pdfData.text?.trim()
               if (tekst && tekst.length > 50) {
                 // PDF bevat leesbare tekst — stuur als tekst (max 12000 tekens)

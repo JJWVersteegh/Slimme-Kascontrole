@@ -110,13 +110,14 @@ export async function POST(req: NextRequest) {
         } else {
           // Controleer of de PDF leesbare tekst bevat (niet alleen scan/afbeeldingen)
           try {
-            const pdfParse = (await import('pdf-parse')).default
-            const pdfData = await pdfParse(Buffer.from(bytes))
+            const pdfModule = await import('pdf-parse')
+            const pdfParse = pdfModule.default || pdfModule
+            const pdfData = await (pdfParse as any)(Buffer.from(bytes))
             const tekst = pdfData.text?.trim() || ''
             if (tekst.length < 50) {
               waarschuwingen.push({
                 bestand: file.name,
-                melding: `⚠️ Dit lijkt een gescande PDF te zijn (alleen afbeeldingen, geen leesbare tekst). De AI kan gescande bestanden niet uitlezen. Lever indien mogelijk een digitale versie aan (bijv. exporteer vanuit uw boekhoudprogramma als PDF of Excel).`
+                melding: `ℹ️ Dit lijkt een gescande PDF te zijn (afbeeldingen). De AI leest dit visueel uit — dit werkt het best bij een duidelijke scan. Een digitale PDF of Excel geeft de meest nauwkeurige resultaten.`
               })
             }
           } catch { /* niet kritisch — upload gewoon door */ }
