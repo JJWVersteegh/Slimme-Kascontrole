@@ -283,6 +283,37 @@ B) Afwijking t.o.v. VORIG JAAR: Als werkelijk meer dan 30% afwijkt van vorig jaa
 C) Elke afwijking >30% die je in de detailanalyse benoemt, MOET ook in de Samenvatting bevindingen (sectie 2) terugkomen als AANDACHT-punt — met de juiste richting (hoger/lager) en het concrete bedrag.
 
 ═══════════════════════════════════════════
+WETTELIJKE VERPLICHTINGEN VvE — KENNISBASIS
+═══════════════════════════════════════════
+Als kascontroleur voor een VvE moet je weten welke verplichtingen er gelden. Controleer in de aangeleverde stukken of de VvE hieraan voldoet en of er voorzieningen/reserveringen voor zijn opgenomen.
+
+FINANCIEEL & ORGANISATORISCH (wettelijk verplicht):
+- Reservefonds: minimaal 0,5% herbouwwaarde/jaar storten ÓF conform goedgekeurd MJOP (art. 5:126 BW, verplicht per jan 2021). Reservefonds moet op aparte bankrekening op naam VvE staan.
+- MJOP (Meerjarenonderhoudsplan): verplicht, minimaal 10 jaar vooruit, maximaal 5 jaar oud (art. 5:126 BW)
+- Opstalverzekering: verplicht op basis van modelreglement; herbouwwaarde periodiek controleren
+- WA-verzekering: verplicht voor aansprakelijkheid VvE
+- KvK-inschrijving: verplicht voor actieve VvE
+- Jaarlijkse ALV: verplicht voor vaststelling begroting en jaarrekening
+- VvE-bijdragen: alle leden verplicht te betalen (art. 5:113 BW); achterstanden inbaar
+
+TECHNISCHE VERPLICHTINGEN (met kosten in begroting/MJOP verwacht):
+- CENTRALE ROOKGASAFVOER (CLV): De VvE is verantwoordelijk voor beheer, onderhoud en keuring van gemeenschappelijke rookgasafvoerkanalen. Verplicht gecertificeerd (Gasketelwet, 1 april 2023). Bij vervanging (levensduur >15 jaar) zijn dit VvE-kosten. Moet in MJOP staan.
+- LIFTEN: Periodieke keuring elke 18 maanden verplicht (Warenwetbesluit Liften). Keuringskosten zijn VvE-kosten. Lift-onderhoud/vervanging in MJOP opnemen.
+- BRANDVEILIGHEID: Rookmelders verplicht in alle gemeenschappelijke ruimten én woningen (sinds 1 juli 2022). Brandblussers keuren (kwartaalcontrole + herbeproeving elke 5 jaar). Vluchtwegen vrij houden. Dit zijn terugkerende VvE-kosten.
+- ASBESTINVENTARISATIE: Verplicht voor gebouwen van vóór 1994 bij bouw-/sloopwerkzaamheden. Rapport max. 3 jaar geldig. Dit zijn kosten bij elk groot onderhoudsproject.
+- ENERGIELABEL: Verplicht bij verkoop/verhuur. Nieuw labelformaat verplicht per 29 mei 2026.
+- LEGIONELLAPREVENTIE: Zorgplicht bij collectieve warm-watersystemen. Boiler minimaal op 60°C. Risicobeheersplan aanbevolen.
+- DAK, GEVEL, FUNDERING, TRAPPENHUIZEN: gemeenschappelijke delen, volledig VvE-verantwoordelijkheid, opnemen in MJOP.
+
+WAT DE KASCOMMISSIE CONTROLEERT:
+1. Is het reservefonds aanwezig en voldoende gevuld (0,5% herbouwwaarde of conform MJOP)?
+2. Is het MJOP aanwezig, actueel (max 5 jaar oud) en goedgekeurd door ALV?
+3. Is de opstalverzekering actueel en op juiste herbouwwaarde?
+4. Zijn er specifieke voorzieningen/reserveringen voor CLV, lift, brandveiligheid?
+5. Zijn keuringskosten (lift, brandblussers) in de begroting opgenomen?
+6. Zijn er achterstanden in VvE-bijdragen?
+
+═══════════════════════════════════════════
 MJOP — MEERJARENONDERHOUDSPLAN
 ═══════════════════════════════════════════
 MJOP staat voor Meerjarenonderhoudsplan. Dit is een standaard en gebruikelijk onderdeel van een VvE-administratie.
@@ -343,7 +374,8 @@ RAPPORTSTRUCTUUR — GEBRUIK EXACT DEZE OPBOUW
    - 3.4 Openstaande posten en bijzonderheden
    - 3.5 Contracten en abonnementen
    - 3.6 MJOP — Meerjarenonderhoudsplan
-${boekjaren.length > 1 ? `   - 3.7 Trendanalyse ${boekjaren.join(' – ')}` : ''}
+   - 3.7 Wettelijke verplichtingen en voorzieningen
+${boekjaren.length > 1 ? `   - 3.8 Trendanalyse ${boekjaren.join(' – ')}` : ''}
 4. Advies aan de Algemene Ledenvergadering
 
 ---
@@ -406,7 +438,23 @@ Altijd opnemen. MJOP-kosten zijn normale VvE-kosten voor toekomstig onderhoud.
 **Geplande onderhoudswerkzaamheden:**
 [Als het MJOP-rapport beschikbaar is in de uploads: noem de belangrijkste geplande posten de komende jaren met indicatieve bedragen. Als het MJOP niet beschikbaar is → schrijf: "Het MJOP-rapport is niet aangeleverd. Geadviseerd wordt het MJOP te actualiseren en bij de stukken te voegen."]
 
-${boekjaren.length > 1 ? `### 3.7 Trendanalyse ${boekjaren.join(' – ')}
+### 3.7 Wettelijke verplichtingen en voorzieningen
+Beoordeel per onderstaand onderwerp of de VvE aantoonbaar voldoet op basis van de aangeleverde stukken. Gebruik drie statussen: ✅ Aantoonbaar geregeld | ⚠️ Onduidelijk / niet aangeleverd | ❌ Ontbreekt of onvoldoende
+
+| Verplichting | Status | Toelichting |
+| --- | --- | --- |
+| Reservefonds (0,5% herbouwwaarde of MJOP-conform) | | |
+| MJOP aanwezig en actueel (max. 5 jaar oud) | | |
+| Opstalverzekering (herbouwwaarde) | | |
+| WA-verzekering VvE | | |
+| Centrale rookgasafvoer (CLV) — keuring/certificering | | |
+| Liftkeuring (max. 18 maanden) | | |
+| Brandveiligheid (rookmelders, brandblussers) | | |
+| Asbestinventarisatie (bij gebouw vóór 1994) | | |
+
+Vul alleen de rijen in waarvoor je aanwijzingen hebt in de uploads. Gebruik "⚠️ Niet aangeleverd" als er geen informatie over beschikbaar is — schrijf dan NIET dat het ontbreekt, maar dat de kascommissie dit nader moet opvragen bij het bestuur.
+
+${boekjaren.length > 1 ? `### 3.8 Trendanalyse ${boekjaren.join(' – ')}
 Alleen invullen met bedragen die voor elk jaar daadwerkelijk beschikbaar zijn. Gebruik "–" voor jaren zonder data. Geen schattingen of extrapolaties.
 
 | Post | ${boekjaren.join(' | ')} | Trend |
