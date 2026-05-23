@@ -107,6 +107,19 @@ export async function POST(req: NextRequest) {
           waarschuwingen.push({ bestand: file.name, melding: 'Dit bestand lijkt geen geldig PDF-bestand te zijn.' })
         } else if (bytes.byteLength < 500) {
           waarschuwingen.push({ bestand: file.name, melding: 'Dit PDF-bestand lijkt leeg of corrupt.' })
+        } else {
+          // Controleer of de PDF leesbare tekst bevat (niet alleen scan/afbeeldingen)
+          try {
+            const pdfParse = (await import('pdf-parse')).default
+            const pdfData = await pdfParse(Buffer.from(bytes))
+            const tekst = pdfData.text?.trim() || ''
+            if (tekst.length < 50) {
+              waarschuwingen.push({
+                bestand: file.name,
+                melding: `⚠️ Dit lijkt een gescande PDF te zijn (alleen afbeeldingen, geen leesbare tekst). De AI kan gescande bestanden niet uitlezen. Lever indien mogelijk een digitale versie aan (bijv. exporteer vanuit uw boekhoudprogramma als PDF of Excel).`
+              })
+            }
+          } catch { /* niet kritisch — upload gewoon door */ }
         }
       } else if (['png', 'jpg', 'jpeg'].includes(ext)) {
         const header = new Uint8Array(bytes.slice(0, 4))
