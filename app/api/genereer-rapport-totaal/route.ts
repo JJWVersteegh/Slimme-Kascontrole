@@ -369,6 +369,27 @@ MJOP IN HET RAPPORT:
 - Geef een doorkijk: welke grote onderhoudsposten staan de komende jaren gepland (alleen als MJOP-rapport beschikbaar is in de uploads)
 - Als er geen MJOP beschikbaar is: adviseer de VvE een MJOP op te stellen
 
+BREUKDELEN EN KOSTENVERDELING PER APPARTEMENT:
+Voor de MJOP-analyse wil je weten hoeveel elke eigenaar extra moet bijdragen. Gebruik de volgende volgorde om de verdeling te bepalen:
+
+STAP 1 — Zoek expliciete breukdelen in de stukken:
+Kijk in de aangeleverde documenten naar termen als "breukdeel", "aandeel", "quote", "splitsingsakte", of tabellen met appartementen en bijbehorende fracties (bijv. "85/1000", "0,085", "8,5%").
+→ Als gevonden: gebruik deze breukdelen voor de kostenverdeling.
+
+STAP 2 — Leid breukdelen af uit de bijdragen per appartement:
+Als er geen expliciete breukdelen zijn, zoek dan naar de maandelijkse of jaarlijkse bijdragen per appartement/eigenaar in de stukken (bijv. deelnemersoverzicht, incassolijst, contributieoverzicht).
+→ Bereken de verhouding: bijdrage appartement X / totale bijdragen alle appartementen = effectief aandeel van X.
+→ Vermeld in het rapport: "Breukdelen afgeleid uit de bijdragen per appartement (niet ontleend aan splitsingsakte)."
+
+STAP 3 — Gelijke verdeling als fallback:
+Als er geen bijdragen per appartement beschikbaar zijn, deel dan de MJOP-kosten gelijk over het aantal appartementen.
+→ Vermeld: "Exacte bedragen per appartement afhankelijk van breukdelen uit de splitsingsakte."
+
+PRESENTATIE IN SECTIE 3.6:
+Als breukdelen of bijdragenverhoudingen beschikbaar zijn → maak een tabel:
+| Appartement | Aandeel | Huidige bijdrage/jaar | Benodigde bijdrage/jaar | Verschil |
+Anders → geef alleen het totaalbedrag per jaar met de noot over breukdelen.
+
 ═══════════════════════════════════════════
 KOLOMMEN IN EXCEL
 ═══════════════════════════════════════════
