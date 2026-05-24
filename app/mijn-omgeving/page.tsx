@@ -1087,7 +1087,7 @@ async function zoekAdres(pc: string, hn: string) {
                   {heeftMjop && <span style={{ background: '#f0fdf4', border: '1px solid #bbf7d0', color: '#166534', fontSize: '0.72rem', fontWeight: '700', padding: '2px 8px', borderRadius: '999px' }}>✓ MJOP aanwezig</span>}
                 </div>
                 <p style={{ color: '#475569', fontSize: '0.82rem', marginBottom: '14px', lineHeight: 1.55 }}>
-                  Upload het Meerjarenonderhoudsplan (PDF). De AI analyseert de geplande kosten per jaar en vergelijkt deze met de huidige reserveringen — inclusief advies of de VvE-bijdrage toereikend is.
+                  Upload het Meerjarenonderhoudsplan (PDF). Wij analyseren de geplande kosten per jaar en vergelijken deze met de huidige reserveringen — inclusief advies of de VvE-bijdrage toereikend is.
                 </p>
                 <form onSubmit={handleMjopUpload} style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
                   <div

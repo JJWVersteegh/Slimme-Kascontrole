@@ -192,7 +192,7 @@ footer a:hover{color:white}
       <div class="step-card">
         <div class="step-num">03</div>
         <h3>Bestanden uploaden</h3>
-        <p>Upload uw financiële bestanden veilig via onze omgeving. Heeft u ook een MJOP? Upload dat apart — de AI analyseert dan ook de geplande onderhoudskosten en of de reserveringen toereikend zijn.</p>
+        <p>Upload uw financiële bestanden veilig via onze omgeving. Heeft u ook een MJOP? Upload dat apart — wij analyseren dan ook de geplande onderhoudskosten en of de reserveringen toereikend zijn.</p>
       </div>
       <div class="step-card">
         <div class="step-num">04</div>

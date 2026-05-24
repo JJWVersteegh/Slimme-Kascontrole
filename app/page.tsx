@@ -390,7 +390,7 @@ footer a:hover{color:#93c5fd}
         <div class="step-body">
           <div class="step-num" style="color:#bfdbfe">03</div>
           <h3>Upload uw bestanden</h3>
-          <p>Upload de jaarrekening of financieel overzicht als PDF, Excel of CSV. Heeft u een MJOP? Upload dat ook — de AI analyseert de geplande kosten voor de komende jaren en beoordeelt of de reserveringen toereikend zijn.</p>
+          <p>Upload de jaarrekening of financieel overzicht als PDF, Excel of CSV. Heeft u een MJOP? Upload dat ook — wij analyseren de geplande kosten voor de komende jaren en beoordelen of de reserveringen toereikend zijn.</p>
         </div>
       </div>
       <div class="step fade-in">
@@ -486,7 +486,7 @@ footer a:hover{color:#93c5fd}
         <div class="feature-item fade-in"><div class="feature-icon">🔍</div><div class="feature-text"><h4>Volledige controle — geen steekproeven</h4><p>Elke factuur, elk saldo, elke boeking wordt gecontroleerd. Geen steekproefsgewijze aanpak meer.</p></div></div>
         <div class="feature-item fade-in"><div class="feature-icon">📋</div><div class="feature-text"><h4>Contracten & abonnementen check</h4><p>Alle lopende contracten en abonnementen worden gecontroleerd op actualiteit. Verlopen contracten, ongebruikte abonnementen en verzekeringen worden automatisch gesignaleerd.</p></div></div>
         <div class="feature-item fade-in"><div class="feature-icon">🏢</div><div class="feature-text"><h4>Meerdere verenigingen — één account</h4><p>Lid van meerdere VvE's of verenigingen? Upload per vereniging de stukken en genereer voor elke vereniging een apart rapport. Tot 10 verenigingen per account.</p></div></div>
-        <div class="feature-item fade-in"><div class="feature-icon">🏗️</div><div class="feature-text"><h4>MJOP-analyse — is de bijdrage toereikend?</h4><p>Upload uw Meerjarenonderhoudsplan (PDF). De AI analyseert de geplande kosten per jaar, vergelijkt deze met de huidige reserveringen en adviseert of de VvE-bijdrage verhoogd moet worden.</p></div></div>
+        <div class="feature-item fade-in"><div class="feature-icon">🏗️</div><div class="feature-text"><h4>MJOP-analyse — is de bijdrage toereikend?</h4><p>Upload uw Meerjarenonderhoudsplan (PDF). Wij analyseren de geplande kosten per jaar, vergelijken deze met de huidige reserveringen en adviseren of de VvE-bijdrage verhoogd moet worden.</p></div></div>
         <div class="feature-item fade-in"><div class="feature-icon">📅</div><div class="feature-text"><h4>Trendanalyse meerdere jaren</h4><p>Upload bestanden van meerdere jaren voor een diepgaande trendanalyse en vergelijking.</p></div></div>
         <div class="feature-item fade-in"><div class="feature-icon">📄</div><div class="feature-text"><h4>Direct klaar voor de ALV</h4><p>Download als PDF en presenteer direct op uw algemene ledenvergadering.</p></div></div>
         <div class="feature-item fade-in"><div class="feature-icon">🔒</div><div class="feature-text"><h4>Veilig & vertrouwelijk</h4><p>SSL-versleuteld, AVG-conform, data opgeslagen binnen de EU. Nooit gedeeld met derden.</p></div></div>
@@ -624,7 +624,7 @@ footer a:hover{color:#93c5fd}
         </div>
         <div style="background:white;border-radius:12px;padding:20px;border:1px solid var(--border)" class="fade-in">
           <h3 style="font-weight:700;color:var(--ink);font-size:0.9rem;margin-bottom:8px">❓ Welke bestanden kan ik uploaden?</h3>
-          <p style="font-size:0.85rem;color:var(--ink-soft);line-height:1.6">PDF, Excel (.xlsx, .xls) en CSV. Exporteer vanuit Twinq, Isabel, Yuki of uw eigen kasboek. Voor VvE's kunt u ook het MJOP (Meerjarenonderhoudsplan) als PDF uploaden — de AI analyseert dan ook de geplande onderhoudskosten voor de komende jaren.</p>
+          <p style="font-size:0.85rem;color:var(--ink-soft);line-height:1.6">PDF, Excel (.xlsx, .xls) en CSV. Exporteer vanuit Twinq, Isabel, Yuki of uw eigen kasboek. Voor VvE's kunt u ook het MJOP (Meerjarenonderhoudsplan) als PDF uploaden — wij analyseren dan ook de geplande onderhoudskosten voor de komende jaren.</p>
         </div>
         <div style="background:white;border-radius:12px;padding:20px;border:1px solid var(--border)" class="fade-in">
           <h3 style="font-weight:700;color:var(--ink);font-size:0.9rem;margin-bottom:8px">❓ Is mijn financiële data veilig?</h3>
@@ -635,8 +635,8 @@ footer a:hover{color:#93c5fd}
           <p style="font-size:0.85rem;color:var(--ink-soft);line-height:1.6">Ja, uw omgeving bewaart alle uploads en rapporten. Zo kunt u eenvoudig vergelijken over de jaren heen.</p>
         </div>
         <div style="background:white;border-radius:12px;padding:20px;border:1px solid var(--border)" class="fade-in">
-          <h3 style="font-weight:700;color:var(--ink);font-size:0.9rem;margin-bottom:8px">❓ Wat doet de AI met het MJOP?</h3>
-          <p style="font-size:0.85rem;color:var(--ink-soft);line-height:1.6">Als u het MJOP uploadt, analyseert de AI de geplande werkzaamheden per jaar, de geraamde kosten per onderdeel (dak, lift, gevel, etc.) en vergelijkt deze met de huidige reserveringen. U krijgt een concreet advies: zijn de dotaties toereikend, en moet de VvE-bijdrage de komende jaren omhoog — en zo ja, met hoeveel?</p>
+          <h3 style="font-weight:700;color:var(--ink);font-size:0.9rem;margin-bottom:8px">❓ Wat gebeurt er als ik het MJOP upload?</h3>
+          <p style="font-size:0.85rem;color:var(--ink-soft);line-height:1.6">Als u het MJOP uploadt, analyseren wij de geplande werkzaamheden per jaar, de geraamde kosten per onderdeel (dak, lift, gevel, etc.) en vergelijken deze met de huidige reserveringen. U krijgt een concreet advies: zijn de dotaties toereikend, en moet de VvE-bijdrage de komende jaren omhoog — en zo ja, met hoeveel?</p>
         </div>
         <div style="background:white;border-radius:12px;padding:20px;border:1px solid var(--border)" class="fade-in">
           <h3 style="font-weight:700;color:var(--ink);font-size:0.9rem;margin-bottom:8px">❓ Wat als ik hulp nodig heb?</h3>
