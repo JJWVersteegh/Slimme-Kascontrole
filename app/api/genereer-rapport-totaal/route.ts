@@ -292,6 +292,12 @@ VERBODEN — doe dit NOOIT:
 - Een sectie schrijven alsof er data is, terwijl die er niet is
 - Ontbrekende kolommen aanvullen op basis van wat "logisch lijkt"
 
+GETALLEN EN ADRESSEN — EXTRA STRENG:
+- Kopieer huisnummers, appartementnummers, rekeningnummers en elk ander getal ALTIJD teken voor teken exact zoals ze in de bron staan. Nooit afronden, nooit omzetten, nooit "corrigeren".
+- Controleer elk getal dat je overneemt: lees het opnieuw terug in de brontekst vóór je het schrijft. Als je twijfelt of een cijfer 6, 8 of 0 is → schrijf "–" en vermeld dat het onleesbaar is.
+- Adressen (straatnaam + huisnummer) letterlijk overnemen zoals in de brontekst. Nooit zelf een huisnummer aanvullen of afleiden uit context.
+- Als hetzelfde adres op meerdere plekken in de documenten staat maar de huisnummers verschillen → benoem de tegenstrijdigheid expliciet: "In [bestand A] staat huisnummer X, in [bestand B] staat Y. Nader te controleren door de kascommissie."
+
 VERPLICHT bij ontbrekende data:
 - Cijfer ontbreekt in een tabel → schrijf "–"
 - Hele sectie heeft geen onderliggende data → schrijf: "Geen [type] aangeleverd in de stukken. Deze sectie kan niet worden ingevuld." en sla de tabel over
