@@ -107,10 +107,12 @@ export async function POST(req: NextRequest) {
     // Bestanden inlezen
     const uploadsContent: string[] = []
     const binaryBlocks: any[] = []  // PDF- en afbeeldingsblokken voor de Claude API
-    // Max 2.5MB aan originele binaire data (base64 ≈ 3.3MB ≈ 830K tokens)
+    // Max 2.5MB aan originele binaire data voor reguliere bestanden
     const MAX_BINARY_BYTES = 2.5 * 1024 * 1024
     let totalBinaryBytes = 0
-    // MJOP bestanden apart verwerken
+    // MJOP krijgt eigen binary budget (los van reguliere bestanden)
+    const MAX_MJOP_BINARY_BYTES = 4 * 1024 * 1024
+    let mjopBinaryBytes = 0
     let mjopContent = ''
 
     for (const upload of uploads) {
@@ -230,13 +232,14 @@ export async function POST(req: NextRequest) {
 
           if (tekst && tekst.length > 50) {
             mjopContent += `[${mjopNaam} — ${Math.round(mjopBuffer.byteLength / 1024)}KB, tekst geëxtraheerd]\n${tekst.substring(0, 20000)}\n\n`
-          } else if (totalBinaryBytes + mjopBuffer.byteLength <= MAX_BINARY_BYTES) {
+          } else if (mjopBinaryBytes + mjopBuffer.byteLength <= MAX_MJOP_BINARY_BYTES) {
+            // MJOP gebruikt eigen binary budget (los van reguliere bestanden)
             const base64 = Buffer.from(mjopBuffer).toString('base64')
             binaryBlocks.push({ type: 'document', source: { type: 'base64', media_type: 'application/pdf', data: base64 } })
-            totalBinaryBytes += mjopBuffer.byteLength
-            mjopContent += `[${mjopNaam} — gescande PDF bijgevoegd als document]\n\n`
+            mjopBinaryBytes += mjopBuffer.byteLength
+            mjopContent += `[${mjopNaam} — PDF bijgevoegd als document voor AI-analyse]\n\n`
           } else {
-            mjopContent += `[${mjopNaam} — ${Math.round(mjopBuffer.byteLength / 1024)}KB — te groot voor binary, sla tekst-PDF op]\n\n`
+            mjopContent += `[${mjopNaam} — ${Math.round(mjopBuffer.byteLength / 1024)}KB — bestand te groot (max 4MB). Comprimeer het PDF-bestand en upload opnieuw.]\n\n`
           }
         } catch (e: any) {
           mjopContent += `[${mjopNaam} — kon niet worden uitgelezen: ${e.message}]\n\n`
