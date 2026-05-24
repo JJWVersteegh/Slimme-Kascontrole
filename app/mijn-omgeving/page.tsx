@@ -1224,7 +1224,7 @@ async function zoekAdres(pc: string, hn: string) {
                       </div>
                     </div>
                     <h2 style={{ fontWeight: '700', color: '#0f172a', fontSize: '1.15rem', margin: 0 }}>{huidigJaarGegenereerd ? 'Rapport beschikbaar' : 'Genereer uw rapport'}</h2>
-                    <p style={{ color: '#475569', margin: '6px 0 0', fontSize: '0.84rem' }}>{huidigJaarGegenereerd ? `Gegenereerd op ${new Date(huidigRapport!.gegenereerd_op!).toLocaleDateString('nl-NL')}` : `Uw bestanden staan klaar. Klik op "Genereer rapport" om te starten — dit duurt circa 3–5 minuten.`}</p>
+                    <p style={{ color: '#475569', margin: '6px 0 0', fontSize: '0.84rem' }}>{rapportLoading ? `Rapport wordt gegenereerd — dit duurt circa 3–5 minuten. Sluit dit venster niet.` : huidigJaarGegenereerd ? `Gegenereerd op ${new Date(huidigRapport!.gegenereerd_op!).toLocaleDateString('nl-NL')}` : `Uw bestanden staan klaar. Klik op "Genereer rapport" om te starten — dit duurt circa 3–5 minuten.`}</p>
                   </div>
                   <div style={{ display: 'flex', gap: '10px', alignItems: 'center', flexWrap: 'wrap' }}>
                     {huidigJaarGegenereerd && (
