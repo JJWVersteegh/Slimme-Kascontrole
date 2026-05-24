@@ -192,7 +192,7 @@ footer a:hover{color:white}
       <div class="step-card">
         <div class="step-num">03</div>
         <h3>Bestanden uploaden</h3>
-        <p>Upload uw bestanden veilig via onze SSL-versleutelde omgeving. U kunt meerdere bestanden tegelijk selecteren.</p>
+        <p>Upload uw financiële bestanden veilig via onze omgeving. Heeft u ook een MJOP? Upload dat apart — de AI analyseert dan ook de geplande onderhoudskosten en of de reserveringen toereikend zijn.</p>
       </div>
       <div class="step-card">
         <div class="step-num">04</div>
@@ -236,6 +236,11 @@ footer a:hover{color:white}
         <div class="feature-icon">🏦</div>
         <h3>Reservefonds check</h3>
         <p>Controle of het reservefonds conform de wettelijke vereisten en vergaderbesluiten is opgebouwd.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">🏗️</div>
+        <h3>MJOP-analyse</h3>
+        <p>Upload uw Meerjarenonderhoudsplan en ontvang een analyse van de geplande kosten per jaar. De AI beoordeelt of de huidige reserveringen en VvE-bijdrage toereikend zijn voor het geplande onderhoud.</p>
       </div>
       <div class="feature">
         <div class="feature-icon">🛡️</div>

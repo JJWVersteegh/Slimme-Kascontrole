@@ -180,8 +180,8 @@ footer a:hover{color:#93c5fd}
       </div>
       <div class="taak">
         <div class="taak-icon">🏗️</div>
-        <h3>Reservefonds bewaken</h3>
-        <p>Is het reservefonds conform de wettelijke vereisten en het MJOP opgebouwd? Zijn onttrekkingen conform vergaderbesluiten?</p>
+        <h3>Reservefonds en MJOP bewaken</h3>
+        <p>Is het reservefonds conform de wettelijke vereisten opgebouwd? Upload ook het MJOP — de AI analyseert de geplande onderhoudskosten per jaar en beoordeelt of de huidige VvE-bijdrage toereikend is voor het geplande groot onderhoud.</p>
       </div>
       <div class="taak">
         <div class="taak-icon">📊</div>
@@ -217,6 +217,10 @@ footer a:hover{color:#93c5fd}
       <div class="faq-item" style="text-align:left">
         <h3>Wat kost het rapport?</h3>
         <p>Eenmalig €59 incl. btw per boekjaar. Geen abonnement, geen verborgen kosten. Een stuk goedkoper dan een extern bureau dat €250 tot €785 vraagt.</p>
+      </div>
+      <div class="faq-item" style="text-align:left">
+        <h3>Kan ik ook het MJOP laten analyseren?</h3>
+        <p>Ja. Upload het Meerjarenonderhoudsplan (PDF) als apart bestand. De AI analyseert welke werkzaamheden gepland staan, wat de geraamde kosten zijn per jaar, en of de huidige reserveringen en VvE-bijdrage toereikend zijn — of dat een verhoging nodig is.</p>
       </div>
       <div class="faq-item" style="text-align:left">
         <h3>Kan de kascommissie externe hulp inschakelen?</h3>
