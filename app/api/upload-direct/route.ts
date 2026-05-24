@@ -107,20 +107,6 @@ export async function POST(req: NextRequest) {
           waarschuwingen.push({ bestand: file.name, melding: 'Dit bestand lijkt geen geldig PDF-bestand te zijn.' })
         } else if (bytes.byteLength < 500) {
           waarschuwingen.push({ bestand: file.name, melding: 'Dit PDF-bestand lijkt leeg of corrupt.' })
-        } else {
-          // Controleer of de PDF leesbare tekst bevat (niet alleen scan/afbeeldingen)
-          try {
-            const pdfModule = await import('pdf-parse')
-            const pdfParse = pdfModule.default || pdfModule
-            const pdfData = await (pdfParse as any)(Buffer.from(bytes))
-            const tekst = pdfData.text?.trim() || ''
-            if (tekst.length < 50) {
-              waarschuwingen.push({
-                bestand: file.name,
-                melding: `ℹ️ Dit lijkt een gescande PDF te zijn (afbeeldingen). De AI leest dit visueel uit — dit werkt het best bij een duidelijke scan. Een digitale PDF of Excel geeft de meest nauwkeurige resultaten.`
-              })
-            }
-          } catch { /* niet kritisch — upload gewoon door */ }
         }
       } else if (['png', 'jpg', 'jpeg'].includes(ext)) {
         const header = new Uint8Array(bytes.slice(0, 4))
