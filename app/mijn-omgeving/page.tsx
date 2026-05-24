@@ -209,33 +209,43 @@ export default function MijnOmgeving() {
     if (!files || files.length === 0) { setUploadError('Selecteer minimaal één bestand'); return }
     if (!geselecteerdeVereniging) { setUploadError('Selecteer eerst een vereniging'); return }
     setUploading(true); setUploadError('')
-    const formData = new FormData()
-    formData.append('user_id', user.id)
-    formData.append('boekjaar', boekjaar)
-    formData.append('toelichting', toelichting)
-    formData.append('vereniging_id', geselecteerdeVereniging.id)
-    Array.from(files).forEach(f => formData.append('files', f))
-    try {
-      const { data: { session } } = await supabase.auth.getSession()
 
-      const res = await fetch('/api/upload-direct', {
-        method: 'POST',
-        headers: {
-          Authorization: `Bearer ${session?.access_token || ''}`
-        },
-        body: formData
-      })
-      const data = await res.json()
-      if (data.success) {
-        setUploadSuccess(true)
-        setUploadWaarschuwingen(data.waarschuwingen || [])
-        setFiles(null)
-        setToelichting('')
-        const fileInput = document.getElementById('fileInput') as HTMLInputElement
-        if (fileInput) fileInput.value = ''
-        await loadUploadsEnRapporten(user.id, geselecteerdeVereniging.id)
-        if (!data.waarschuwingen?.length) setTimeout(() => setUploadSuccess(false), 4000)
-      } else { setUploadError(data.error || 'Er ging iets mis') }
+    const fileArray = Array.from(files)
+    const { data: { session } } = await supabase.auth.getSession()
+    let alleWaarschuwingen: { bestand: string; melding: string }[] = []
+
+    try {
+      // Upload bestanden één voor één om Vercel's 4.5MB body-limiet te omzeilen
+      for (let i = 0; i < fileArray.length; i++) {
+        const formData = new FormData()
+        formData.append('boekjaar', boekjaar)
+        formData.append('toelichting', toelichting)
+        formData.append('vereniging_id', geselecteerdeVereniging.id)
+        formData.append('files', fileArray[i])
+        formData.append('batch_index', i.toString())
+
+        const res = await fetch('/api/upload-direct', {
+          method: 'POST',
+          headers: { Authorization: `Bearer ${session?.access_token || ''}` },
+          body: formData
+        })
+        const data = await res.json()
+        if (!data.success) {
+          setUploadError(data.error || 'Er ging iets mis')
+          setUploading(false)
+          return
+        }
+        alleWaarschuwingen = [...alleWaarschuwingen, ...(data.waarschuwingen || [])]
+      }
+
+      setUploadSuccess(true)
+      setUploadWaarschuwingen(alleWaarschuwingen)
+      setFiles(null)
+      setToelichting('')
+      const fileInput = document.getElementById('fileInput') as HTMLInputElement
+      if (fileInput) fileInput.value = ''
+      await loadUploadsEnRapporten(user.id, geselecteerdeVereniging.id)
+      if (!alleWaarschuwingen.length) setTimeout(() => setUploadSuccess(false), 4000)
     } catch { setUploadError('Er ging iets mis') }
     setUploading(false)
   }
