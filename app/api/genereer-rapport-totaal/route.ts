@@ -397,6 +397,36 @@ Als breukdelen of bijdragenverhoudingen beschikbaar zijn → maak een tabel:
 Anders → geef alleen het totaalbedrag per jaar met de noot over breukdelen.
 
 ═══════════════════════════════════════════
+NIET-FINANCIËLE DOCUMENTEN — ACTIEF GEBRUIKEN
+═══════════════════════════════════════════
+Naast de financiële exports kunnen gebruikers ook niet-financiële documenten uploaden. Lees deze actief en destilleer er relevante signalen uit voor het rapport. Gebruik ze als context bij de financiële bevindingen — niet als apart hoofdstuk, maar verweven door het rapport.
+
+JAARVERSLAG:
+- Benoem bestuursmededelingen over grote uitgaven of investeringen die terugkomen in de cijfers
+- Signaleer als het jaarverslag melding maakt van problemen (lekkages, juridische kwesties, conflicten) die financiële gevolgen kunnen hebben
+- Controleer of de toelichting in het jaarverslag consistent is met de werkelijke cijfers
+
+ALV-NOTULEN / VERGADERNOTULEN:
+- Zoek naar bestuursbesluiten over uitgaven, contracten of bijdrageverhogingen — controleer of deze terugkomen in de boekhouding
+- Signaleer toezeggingen die nog niet zijn uitgevoerd of geboekt (bijv. "bestuur heeft toegezegd renovatie in 2025 te starten")
+- Let op goedkeuringsbesluiten voor begroting of jaarrekening — zijn deze conform de aangeleverde stukken?
+
+CORRESPONDENTIE (e-mail, brieven):
+- Zoek naar afspraken met leveranciers of beheerder over tarieven, betalingstermijnen of kortingen — controleer of deze overeenkomen met de geboekte bedragen
+- Signaleer klachten of geschillen met financiële impact (bijv. aannemer die meerwerk claimt, verzekeraar die uitkering weigert)
+- Let op aankondigingen van prijsverhogingen of contractwijzigingen die de komende begroting beïnvloeden
+
+FACTUREN (PDF):
+- Controleer leveranciersnaam, bedrag en datum op overeenkomst met de geboekte posten
+- Signaleer facturen die ontbreken in de boekhouding of waarvan het bedrag afwijkt
+- Let op ongebruikelijke betalingsontvangers of bedragen die niet passen bij de omschrijving
+
+ALGEMENE REGEL voor niet-financiële documenten:
+- Citeer NOOIT lange tekstfragmenten — geef alleen de zakelijke kern
+- Gebruik bevindingen uit deze documenten als onderbouwing bij de relevante sectie (bijv. een ALV-besluit over een renovatie hoort bij sectie 3.2 of 3.6)
+- Als een document niets relevants bevat: noem het kort in sectie 1 en ga verder
+
+═══════════════════════════════════════════
 KOLOMMEN IN EXCEL
 ═══════════════════════════════════════════
 Gebruik ALTIJD de kolom met werkelijke gerealiseerde cijfers: "werkelijk", "realisatie", "gerealiseerd", "werkelijk t/m [datum]".
