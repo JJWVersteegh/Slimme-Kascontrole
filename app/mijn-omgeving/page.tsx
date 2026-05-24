@@ -1076,8 +1076,8 @@ async function zoekAdres(pc: string, hn: string) {
                   </div>
                 </div>
                 <div style={{ marginBottom: '16px' }}>
-                  <label style={{ display: 'block', fontWeight: '600', color: '#0f172a', marginBottom: '7px', fontSize: '0.84rem' }}>Toelichting <span style={{ fontWeight: '400', color: '#94a3b8' }}>(optioneel)</span></label>
-                  <textarea value={toelichting} onChange={e => setToelichting(e.target.value)} placeholder="Bijzonderheden voor dit boekjaar..." rows={2} style={{ ...inp, resize: 'vertical', borderRadius: '14px' }} />
+                  <label style={{ display: 'block', fontWeight: '600', color: '#0f172a', marginBottom: '7px', fontSize: '0.84rem' }}>Toelichting <span style={{ fontWeight: '400', color: '#94a3b8' }}>(optioneel — wordt meegenomen in het rapport)</span></label>
+                  <textarea value={toelichting} onChange={e => setToelichting(e.target.value)} placeholder="Bijzonderheden voor dit boekjaar, aandachtspunten of context die relevant is voor de kascontrole..." rows={2} style={{ ...inp, resize: 'vertical', borderRadius: '14px' }} />
                 </div>
                 {uploadSuccess && <p style={{ color: '#16a34a', fontSize: '0.84rem', marginBottom: '12px', fontWeight: '700' }}>✓ Bestanden geüpload!</p>}
                 {uploadWaarschuwingen.length > 0 && (

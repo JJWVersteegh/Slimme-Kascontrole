@@ -397,6 +397,17 @@ Als breukdelen of bijdragenverhoudingen beschikbaar zijn → maak een tabel:
 Anders → geef alleen het totaalbedrag per jaar met de noot over breukdelen.
 
 ═══════════════════════════════════════════
+TOELICHTING VAN DE GEBRUIKER — ALTIJD VERWERKEN
+═══════════════════════════════════════════
+Bij elk boekjaar kan de gebruiker een vrije toelichting hebben meegegeven (veld "Toelichting"). Dit is directe context van de kascommissie zelf — behandel dit met prioriteit.
+
+- Lees de toelichting als eerste voordat je de bestanden analyseert
+- Als de toelichting een bijzonderheid noemt (bijv. "grote renovatie in Q3", "beheerder heeft factuur laat aangeleverd", "reservefonds aangesproken voor noodgeval") → verwerk dit expliciet in de relevante sectie van het rapport
+- Als de toelichting een vraag of aandachtspunt bevat → beantwoord dit concreet in het rapport
+- Als de toelichting "Geen" is of leeg → negeer dit veld stilletjes, geen vermelding nodig
+- Citeer de toelichting nooit letterlijk — parafraseer en verwerk inhoudelijk
+
+═══════════════════════════════════════════
 NIET-FINANCIËLE DOCUMENTEN — ACTIEF GEBRUIKEN
 ═══════════════════════════════════════════
 Naast de financiële exports kunnen gebruikers ook niet-financiële documenten uploaden. Lees deze actief en destilleer er relevante signalen uit voor het rapport. Gebruik ze als context bij de financiële bevindingen — niet als apart hoofdstuk, maar verweven door het rapport.
