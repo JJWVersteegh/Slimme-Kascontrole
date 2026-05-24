@@ -1107,16 +1107,16 @@ async function zoekAdres(pc: string, hn: string) {
                   {heeftMjop && <span style={{ background: '#f0fdf4', border: '1px solid #bbf7d0', color: '#166534', fontSize: '0.72rem', fontWeight: '700', padding: '2px 8px', borderRadius: '999px' }}>✓ MJOP aanwezig</span>}
                 </div>
                 <p style={{ color: '#475569', fontSize: '0.82rem', marginBottom: '14px', lineHeight: 1.55 }}>
-                  Upload het Meerjarenonderhoudsplan (PDF). Wij analyseren de geplande kosten per jaar en vergelijken deze met de huidige reserveringen — inclusief advies of de VvE-bijdrage toereikend is.
+                  Upload het Meerjarenonderhoudsplan (PDF of Excel). Wij analyseren de geplande kosten per jaar en vergelijken deze met de huidige reserveringen — inclusief advies of de VvE-bijdrage toereikend is.
                 </p>
                 <form onSubmit={handleMjopUpload} style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
                   <div
                     onClick={() => document.getElementById('mjopFileInput')?.click()}
                     style={{ border: `2px dashed ${heeftMjop ? '#86efac' : '#93c5fd'}`, borderRadius: '12px', padding: '12px 18px', cursor: 'pointer', background: mjopFiles ? '#f0fdf4' : '#f8fafc', fontSize: '0.82rem', color: mjopFiles ? '#166534' : '#475569', fontWeight: '600', minWidth: '220px' }}
                   >
-                    {mjopFiles ? `✓ ${mjopFiles[0].name}` : heeftMjop ? '🔄 Vervang MJOP' : '📎 Selecteer MJOP (PDF)'}
+                    {mjopFiles ? `✓ ${mjopFiles[0].name}` : heeftMjop ? '🔄 Vervang MJOP' : '📎 Selecteer MJOP (PDF of Excel)'}
                   </div>
-                  <input id="mjopFileInput" type="file" accept=".pdf" style={{ display: 'none' }} onChange={e => setMjopFiles(e.target.files)} />
+                  <input id="mjopFileInput" type="file" accept=".pdf,.xlsx,.xls,.ods,.csv" style={{ display: 'none' }} onChange={e => setMjopFiles(e.target.files)} />
                   <button type="submit" disabled={mjopUploading || !mjopFiles} style={{ background: mjopFiles ? '#0f172a' : '#e2e8f0', color: mjopFiles ? 'white' : '#94a3b8', padding: '11px 20px', borderRadius: '12px', border: 'none', fontSize: '0.82rem', fontWeight: '700', cursor: mjopFiles && !mjopUploading ? 'pointer' : 'not-allowed', fontFamily: 'Outfit, sans-serif' }}>
                     {mjopUploading ? 'Uploaden...' : '📤 Upload MJOP'}
                   </button>

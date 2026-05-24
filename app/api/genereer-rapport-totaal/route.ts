@@ -220,26 +220,55 @@ export async function POST(req: NextRequest) {
           .download(mjopPad)
         if (mjopError || !mjopData) continue
         const mjopNaam = mjopPad.split('/').pop() || ''
+        const mjopExt = mjopNaam.split('.').pop()?.toLowerCase() || ''
         try {
           const mjopBuffer = await mjopData.arrayBuffer()
-          let tekst = ''
-          try {
-            const pdfModule = await import('pdf-parse')
-            const pdfParse = pdfModule.default || pdfModule
-            const pdfData = await (pdfParse as any)(Buffer.from(mjopBuffer))
-            tekst = pdfData.text?.trim() || ''
-          } catch { /* tekst extractie mislukt, probeer binary */ }
 
-          if (tekst && tekst.length > 50) {
-            mjopContent += `[${mjopNaam} — ${Math.round(mjopBuffer.byteLength / 1024)}KB, tekst geëxtraheerd]\n${tekst.substring(0, 20000)}\n\n`
-          } else if (mjopBinaryBytes + mjopBuffer.byteLength <= MAX_MJOP_BINARY_BYTES) {
-            // MJOP gebruikt eigen binary budget (los van reguliere bestanden)
-            const base64 = Buffer.from(mjopBuffer).toString('base64')
-            binaryBlocks.push({ type: 'document', source: { type: 'base64', media_type: 'application/pdf', data: base64 } })
-            mjopBinaryBytes += mjopBuffer.byteLength
-            mjopContent += `[${mjopNaam} — PDF bijgevoegd als document voor AI-analyse]\n\n`
+          if (['xlsx', 'xls', 'xlsm', 'ods'].includes(mjopExt)) {
+            // Excel MJOP
+            const XLSX = await import('xlsx')
+            const workbook = XLSX.read(mjopBuffer, { type: 'array', cellDates: true })
+            const sheetsText: string[] = []
+            for (const sheetName of workbook.SheetNames) {
+              const ws = workbook.Sheets[sheetName]
+              const rows: any[][] = XLSX.utils.sheet_to_json(ws, { header: 1, defval: '' })
+              const gevuldeRijen = rows.filter((r: any[]) => r.some((cel: any) => cel !== '' && cel !== null && cel !== undefined))
+              if (gevuldeRijen.length === 0) continue
+              const rijen = gevuldeRijen.slice(0, 500).map((rij: any[]) =>
+                rij.map((cel: any) => {
+                  if (cel === '' || cel === null || cel === undefined) return ''
+                  if (typeof cel === 'number') return Number.isInteger(cel) ? cel.toString() : cel.toFixed(2)
+                  if (cel instanceof Date) return cel.toLocaleDateString('nl-NL')
+                  return String(cel).trim()
+                }).join('\t')
+              ).join('\n')
+              sheetsText.push(`  --- Tabblad: ${sheetName} ---\n${rijen}`)
+            }
+            mjopContent += `[${mjopNaam} — Excel MJOP]\n${sheetsText.join('\n\n').substring(0, 20000)}\n\n`
+          } else if (['csv', 'txt'].includes(mjopExt)) {
+            // CSV MJOP
+            const tekst = new TextDecoder().decode(mjopBuffer)
+            mjopContent += `[${mjopNaam} — CSV MJOP]\n${tekst.substring(0, 20000)}\n\n`
           } else {
-            mjopContent += `[${mjopNaam} — ${Math.round(mjopBuffer.byteLength / 1024)}KB — bestand te groot (max 4MB). Comprimeer het PDF-bestand en upload opnieuw.]\n\n`
+            // PDF MJOP (standaard)
+            let tekst = ''
+            try {
+              const pdfModule = await import('pdf-parse')
+              const pdfParse = pdfModule.default || pdfModule
+              const pdfData = await (pdfParse as any)(Buffer.from(mjopBuffer))
+              tekst = pdfData.text?.trim() || ''
+            } catch { /* tekst extractie mislukt, probeer binary */ }
+
+            if (tekst && tekst.length > 50) {
+              mjopContent += `[${mjopNaam} — ${Math.round(mjopBuffer.byteLength / 1024)}KB, tekst geëxtraheerd]\n${tekst.substring(0, 20000)}\n\n`
+            } else if (mjopBinaryBytes + mjopBuffer.byteLength <= MAX_MJOP_BINARY_BYTES) {
+              const base64 = Buffer.from(mjopBuffer).toString('base64')
+              binaryBlocks.push({ type: 'document', source: { type: 'base64', media_type: 'application/pdf', data: base64 } })
+              mjopBinaryBytes += mjopBuffer.byteLength
+              mjopContent += `[${mjopNaam} — PDF bijgevoegd als document voor AI-analyse]\n\n`
+            } else {
+              mjopContent += `[${mjopNaam} — ${Math.round(mjopBuffer.byteLength / 1024)}KB — bestand te groot (max 4MB). Comprimeer het PDF-bestand en upload opnieuw.]\n\n`
+            }
           }
         } catch (e: any) {
           mjopContent += `[${mjopNaam} — kon niet worden uitgelezen: ${e.message}]\n\n`
