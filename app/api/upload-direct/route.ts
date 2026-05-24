@@ -48,6 +48,8 @@ export async function POST(req: NextRequest) {
     const files = formData.getAll('files') as File[]
     // batch_index: 0 = eerste bestand in batch (vervangen), > 0 = toevoegen aan bestaand record
     const batchIndex = parseInt(formData.get('batch_index') as string || '0', 10)
+    // is_mjop: als true, sla op in mjop_bestanden i.p.v. bestanden
+    const isMjop = formData.get('is_mjop') === 'true'
 
     
 
@@ -142,18 +144,42 @@ export async function POST(req: NextRequest) {
     }
 
     // Kijk of er al een upload bestaat voor dit boekjaar + vereniging
-    let bestaandeQuery = supabase.from('uploads').select('id, bestanden, toelichting').eq('user_id', userId).eq('boekjaar', boekjaar)
+    let bestaandeQuery = supabase.from('uploads').select('id, bestanden, toelichting, mjop_bestanden').eq('user_id', userId).eq('boekjaar', boekjaar)
     if (verenigingId) bestaandeQuery = bestaandeQuery.eq('vereniging_id', verenigingId)
     else bestaandeQuery = bestaandeQuery.is('vereniging_id', null)
     const { data: bestaande } = await bestaandeQuery
 
-    if (batchIndex > 0 && bestaande && bestaande.length > 0) {
+    if (isMjop) {
+      // MJOP-modus: sla op in mjop_bestanden, verwijder eventuele oude MJOP-bestanden
+      if (bestaande && bestaande.length > 0) {
+        const bestaandRecord = bestaande[0] as any
+        const oudeMjop = bestaandRecord.mjop_bestanden || []
+        if (oudeMjop.length > 0) {
+          await supabase.storage.from('kascontrole-bestanden').remove(oudeMjop)
+        }
+        await supabase.from('uploads').update({ mjop_bestanden: uploadedFiles }).eq('id', bestaandRecord.id)
+      } else {
+        // Nog geen financieel record — maak één aan met alleen MJOP-bestanden
+        await supabase.from('uploads').insert({
+          user_id: userId,
+          boekjaar,
+          toelichting: '',
+          bestanden: [],
+          mjop_bestanden: uploadedFiles,
+          status: 'ontvangen',
+          rapport_beschikbaar: false,
+          upload_datum: new Date().toISOString(),
+          ...(verenigingId ? { vereniging_id: verenigingId } : {}),
+        })
+      }
+    } else if (batchIndex > 0 && bestaande && bestaande.length > 0) {
       // Toevoegmodus: voeg bestanden toe aan bestaand record (batch upload, niet eerste bestand)
       const bestaandRecord = bestaande[0] as any
       const nieuweBestanden = [...(bestaandRecord.bestanden || []), ...uploadedFiles]
       await supabase.from('uploads').update({ bestanden: nieuweBestanden }).eq('id', bestaandRecord.id)
     } else {
-      // Vervangemodus: verwijder alle oude bestanden en maak nieuw record
+      // Vervangemodus: verwijder alle oude financiële bestanden maar bewaar mjop_bestanden
+      const bewaardeMjop = (bestaande?.[0] as any)?.mjop_bestanden || []
       if (bestaande && bestaande.length > 0) {
         const oudeBestanden = bestaande.flatMap((u: any) => u.bestanden || [])
         if (oudeBestanden.length > 0) {
@@ -167,6 +193,7 @@ export async function POST(req: NextRequest) {
         boekjaar,
         toelichting: toelichting || (bestaande?.[0] as any)?.toelichting || '',
         bestanden: uploadedFiles,
+        mjop_bestanden: bewaardeMjop,
         status: 'ontvangen',
         rapport_beschikbaar: false,
         upload_datum: new Date().toISOString(),

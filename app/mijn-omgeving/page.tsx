@@ -13,6 +13,7 @@ interface Upload {
   upload_datum: string
   toelichting: string
   bestanden: string[]
+  mjop_bestanden?: string[]
   vereniging_id?: string
 }
 
@@ -68,6 +69,10 @@ export default function MijnOmgeving() {
   const [uploadWaarschuwingen, setUploadWaarschuwingen] = useState<{ bestand: string; melding: string }[]>([])
   const [error, setError] = useState('')
   const [uploadError, setUploadError] = useState('')
+  const [mjopFiles, setMjopFiles] = useState<FileList | null>(null)
+  const [mjopUploading, setMjopUploading] = useState(false)
+  const [mjopUploadSuccess, setMjopUploadSuccess] = useState(false)
+  const [mjopUploadError, setMjopUploadError] = useState('')
   const [rapportError, setRapportError] = useState('')
   const [toonRapport, setToonRapport] = useState(false)
   const [bevestigDelete, setBevestigDelete] = useState<string | null>(null)
@@ -248,6 +253,35 @@ export default function MijnOmgeving() {
       if (!alleWaarschuwingen.length) setTimeout(() => setUploadSuccess(false), 4000)
     } catch { setUploadError('Er ging iets mis') }
     setUploading(false)
+  }
+
+  async function handleMjopUpload(e: React.FormEvent) {
+    e.preventDefault()
+    if (!mjopFiles || mjopFiles.length === 0) { setMjopUploadError('Selecteer een MJOP-bestand'); return }
+    if (!geselecteerdeVereniging) return
+    setMjopUploading(true); setMjopUploadError(''); setMjopUploadSuccess(false)
+    const { data: { session } } = await supabase.auth.getSession()
+    try {
+      const formData = new FormData()
+      formData.append('boekjaar', rapportBoekjaar)
+      formData.append('vereniging_id', geselecteerdeVereniging.id)
+      formData.append('files', mjopFiles[0])
+      formData.append('is_mjop', 'true')
+      const res = await fetch('/api/upload-direct', {
+        method: 'POST',
+        headers: { Authorization: `Bearer ${session?.access_token || ''}` },
+        body: formData
+      })
+      const data = await res.json()
+      if (data.success) {
+        setMjopUploadSuccess(true)
+        setMjopFiles(null)
+        const inp = document.getElementById('mjopFileInput') as HTMLInputElement
+        if (inp) inp.value = ''
+        await loadUploadsEnRapporten(user.id, geselecteerdeVereniging.id)
+      } else { setMjopUploadError(data.error || 'Er ging iets mis') }
+    } catch { setMjopUploadError('Er ging iets mis') }
+    setMjopUploading(false)
   }
 
   async function handleBetaal() {
@@ -620,6 +654,8 @@ async function zoekAdres(pc: string, hn: string) {
   const rapportTekstVoorWeergave = huidigRapport?.rapport_tekst
   const uploadsVoorRapportjaar = uploads.filter(u => u.boekjaar === rapportBoekjaar)
   const heeftUploadsVoorRapportjaar = uploadsVoorRapportjaar.length > 0
+  const mjopVoorRapportjaar = uploadsVoorRapportjaar.flatMap(u => u.mjop_bestanden || [])
+  const heeftMjop = mjopVoorRapportjaar.length > 0
   const huidigeStap = !geselecteerdeVereniging
     ? 1
     : !rapportBoekjaar
@@ -1042,6 +1078,32 @@ async function zoekAdres(pc: string, hn: string) {
                   {uploading ? 'Uploaden...' : '📤 Upload bestanden'}
                 </button>
               </form>
+
+              {/* MJOP upload sectie */}
+              <div style={{ borderTop: '1px solid #e2e8f0', marginTop: '24px', paddingTop: '20px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '8px' }}>
+                  <span style={{ fontSize: '1rem' }}>📋</span>
+                  <h2 style={{ fontSize: '0.95rem', fontWeight: '700', color: '#0f172a', margin: 0 }}>MJOP uploaden <span style={{ fontWeight: '400', color: '#64748b', fontSize: '0.82rem' }}>(optioneel — voor meerjarenanalyse)</span></h2>
+                  {heeftMjop && <span style={{ background: '#f0fdf4', border: '1px solid #bbf7d0', color: '#166534', fontSize: '0.72rem', fontWeight: '700', padding: '2px 8px', borderRadius: '999px' }}>✓ MJOP aanwezig</span>}
+                </div>
+                <p style={{ color: '#475569', fontSize: '0.82rem', marginBottom: '14px', lineHeight: 1.55 }}>
+                  Upload het Meerjarenonderhoudsplan (PDF). De AI analyseert de geplande kosten per jaar en vergelijkt deze met de huidige reserveringen — inclusief advies of de VvE-bijdrage toereikend is.
+                </p>
+                <form onSubmit={handleMjopUpload} style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
+                  <div
+                    onClick={() => document.getElementById('mjopFileInput')?.click()}
+                    style={{ border: `2px dashed ${heeftMjop ? '#86efac' : '#93c5fd'}`, borderRadius: '12px', padding: '12px 18px', cursor: 'pointer', background: mjopFiles ? '#f0fdf4' : '#f8fafc', fontSize: '0.82rem', color: mjopFiles ? '#166534' : '#475569', fontWeight: '600', minWidth: '220px' }}
+                  >
+                    {mjopFiles ? `✓ ${mjopFiles[0].name}` : heeftMjop ? '🔄 Vervang MJOP' : '📎 Selecteer MJOP (PDF)'}
+                  </div>
+                  <input id="mjopFileInput" type="file" accept=".pdf" style={{ display: 'none' }} onChange={e => setMjopFiles(e.target.files)} />
+                  <button type="submit" disabled={mjopUploading || !mjopFiles} style={{ background: mjopFiles ? '#0f172a' : '#e2e8f0', color: mjopFiles ? 'white' : '#94a3b8', padding: '11px 20px', borderRadius: '12px', border: 'none', fontSize: '0.82rem', fontWeight: '700', cursor: mjopFiles && !mjopUploading ? 'pointer' : 'not-allowed', fontFamily: 'Outfit, sans-serif' }}>
+                    {mjopUploading ? 'Uploaden...' : '📤 Upload MJOP'}
+                  </button>
+                </form>
+                {mjopUploadSuccess && <p style={{ color: '#16a34a', fontSize: '0.82rem', marginTop: '10px', fontWeight: '700' }}>✓ MJOP geüpload!</p>}
+                {mjopUploadError && <p style={{ color: '#ef4444', fontSize: '0.82rem', marginTop: '10px', fontWeight: '700' }}>{mjopUploadError}</p>}
+              </div>
 
               <div style={{ borderTop: '1px solid #e2e8f0', marginTop: '20px', paddingTop: '18px' }}>
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '12px', flexWrap: 'wrap', marginBottom: '12px' }}>

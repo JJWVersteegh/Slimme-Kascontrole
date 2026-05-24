@@ -110,6 +110,8 @@ export async function POST(req: NextRequest) {
     // Max 2.5MB aan originele binaire data (base64 ≈ 3.3MB ≈ 830K tokens)
     const MAX_BINARY_BYTES = 2.5 * 1024 * 1024
     let totalBinaryBytes = 0
+    // MJOP bestanden apart verwerken
+    let mjopContent = ''
 
     for (const upload of uploads) {
       const bestandenVanUpload: string[] = []
@@ -208,6 +210,38 @@ export async function POST(req: NextRequest) {
         `Toelichting: ${upload.toelichting || 'Geen'}\n` +
         `Bestanden:\n${bestandenVanUpload.join('\n')}`
       )
+
+      // Verwerk MJOP-bestanden apart
+      for (const mjopPad of (upload.mjop_bestanden || [])) {
+        const { data: mjopData, error: mjopError } = await supabase.storage
+          .from('kascontrole-bestanden')
+          .download(mjopPad)
+        if (mjopError || !mjopData) continue
+        const mjopNaam = mjopPad.split('/').pop() || ''
+        try {
+          const mjopBuffer = await mjopData.arrayBuffer()
+          let tekst = ''
+          try {
+            const pdfModule = await import('pdf-parse')
+            const pdfParse = pdfModule.default || pdfModule
+            const pdfData = await (pdfParse as any)(Buffer.from(mjopBuffer))
+            tekst = pdfData.text?.trim() || ''
+          } catch { /* tekst extractie mislukt, probeer binary */ }
+
+          if (tekst && tekst.length > 50) {
+            mjopContent += `[${mjopNaam} — ${Math.round(mjopBuffer.byteLength / 1024)}KB, tekst geëxtraheerd]\n${tekst.substring(0, 20000)}\n\n`
+          } else if (totalBinaryBytes + mjopBuffer.byteLength <= MAX_BINARY_BYTES) {
+            const base64 = Buffer.from(mjopBuffer).toString('base64')
+            binaryBlocks.push({ type: 'document', source: { type: 'base64', media_type: 'application/pdf', data: base64 } })
+            totalBinaryBytes += mjopBuffer.byteLength
+            mjopContent += `[${mjopNaam} — gescande PDF bijgevoegd als document]\n\n`
+          } else {
+            mjopContent += `[${mjopNaam} — ${Math.round(mjopBuffer.byteLength / 1024)}KB — te groot voor binary, sla tekst-PDF op]\n\n`
+          }
+        } catch (e: any) {
+          mjopContent += `[${mjopNaam} — kon niet worden uitgelezen: ${e.message}]\n\n`
+        }
+      }
     }
 
     const alleBoekjaren = uploads.map(u => u.boekjaar).sort()
@@ -361,6 +395,24 @@ GEÜPLOADE FINANCIËLE GEGEVENS (${uploads.length} upload(s))
 ${uploadsContent.join('\n\n')}
 
 ═══════════════════════════════════════════
+MJOP-DOCUMENT (apart geüpload)
+═══════════════════════════════════════════
+${mjopContent ? `Het volgende MJOP-document is beschikbaar en moet worden verwerkt in sectie 3.6:
+
+${mjopContent}
+
+MJOP-ANALYSE — doe dit in sectie 3.6:
+1. Welke onderdelen worden in het MJOP behandeld (dak, lift, gevel, etc.)?
+2. Welke werkzaamheden staan gepland en in welke jaren?
+3. Wat zijn de geraamde kosten per onderdeel / per jaar?
+4. Wat is de totale benodigde jaarlijkse reservering conform het MJOP?
+5. Vergelijk de huidige jaarlijkse dotaties (uit de financiële administratie) met de MJOP-vereisten:
+   - Zijn de huidige dotaties toereikend?
+   - Is er een jaarlijks tekort of overschot per onderdeel?
+6. Geef een concreet advies: moet de VvE-bijdrage omhoog? Zo ja, met hoeveel per jaar en/of per lid?
+Maak een overzichtelijke tabel met de geplande kosten per jaar.` : 'Geen MJOP-document geüpload. Adviseer de VvE het MJOP beschikbaar te stellen.'}
+
+═══════════════════════════════════════════
 RAPPORTSTRUCTUUR — GEBRUIK EXACT DEZE OPBOUW
 ═══════════════════════════════════════════
 
@@ -430,13 +482,21 @@ Let op: verzekeringen worden bij VvE's soms betaald via of doorgefactureerd door
 Altijd opnemen. MJOP-kosten zijn normale VvE-kosten voor toekomstig onderhoud.
 
 **MJOP-kosten dit boekjaar:**
-[Noem alle MJOP-gerelateerde uitgaven dit boekjaar: opstellen/actualiseren MJOP-rapport, MJOP-reserveringen, etc. met bedragen uit de uploads.]
+[Noem alle MJOP-gerelateerde uitgaven dit boekjaar: opstellen/actualiseren MJOP-rapport, MJOP-reserveringen/dotaties, etc. met bedragen uit de financiële administratie.]
 
-**MJOP-reserves:**
-[Benoem de stand van de MJOP-reserve/onderhoudsfonds op de balans, als beschikbaar.]
+**MJOP-reserves per 31-12-${huidigJaar}:**
+[Benoem de stand per voorziening op de balans als beschikbaar. Tabel met voorziening | stand | dotatie dit jaar.]
 
-**Geplande onderhoudswerkzaamheden:**
-[Als het MJOP-rapport beschikbaar is in de uploads: noem de belangrijkste geplande posten de komende jaren met indicatieve bedragen. Als het MJOP niet beschikbaar is → schrijf: "Het MJOP-rapport is niet aangeleverd. Geadviseerd wordt het MJOP te actualiseren en bij de stukken te voegen."]
+${mjopContent ? `**Geplande werkzaamheden en meerjarenbegroting (uit MJOP-document):**
+Maak een tabel op basis van het MJOP-document:
+
+| Jaar | Onderdeel | Geraamde kosten |
+| --- | --- | --- |
+[Vul in op basis van het MJOP-document — alleen bedragen die daadwerkelijk in het MJOP staan]
+
+**Toereikendheid reserveringen:**
+[Vergelijk de huidige jaarlijkse dotaties met de MJOP-vereisten. Bereken het jaarlijkse tekort of overschot. Geef een concreet advies: is de huidige VvE-bijdrage voldoende of moet deze verhoogd worden, en zo ja met hoeveel per jaar?]` : `**Geplande onderhoudswerkzaamheden:**
+Het MJOP-document is niet afzonderlijk geüpload. Op basis van de financiële administratie zijn de volgende reserveringen zichtbaar. Adviseer het bestuur het volledige MJOP bij de vergaderstukken te voegen zodat de ALV de toereikendheid kan beoordelen.`}
 
 ### 3.7 Wettelijke verplichtingen en voorzieningen
 Beoordeel per onderstaand onderwerp of de VvE aantoonbaar voldoet op basis van de aangeleverde stukken. Gebruik drie statussen: ✅ Aantoonbaar geregeld | ⚠️ Onduidelijk / niet aangeleverd | ❌ Ontbreekt of onvoldoende
