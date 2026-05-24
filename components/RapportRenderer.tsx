@@ -57,13 +57,26 @@ export function RapportRenderer({ tekst }: { tekst: string }) {
     if (tableRows.length < 1) { tableRows = []; inTable = false; return }
     const headers = tableRows[0]
     const dataRows = tableRows.slice(1)
+    const colCount = headers.length
+
+    // Bepaal uitlijning per kolom op basis van datawaarden (niet headers)
+    const colAlign: ('left' | 'right')[] = Array.from({ length: colCount }, (_, ci) => {
+      const dataCells = dataRows.map(r => (r[ci] || '').trim()).filter(Boolean)
+      const numericCount = dataCells.filter(isNumericCell).length
+      // Rechts uitlijnen als >50% van de datawaarden numeriek zijn
+      return numericCount > 0 && numericCount >= dataCells.length * 0.5 ? 'right' : 'left'
+    })
+
+    // Bepaal min-breedte per kolom
+    const colMinWidth = colAlign.map(a => a === 'right' ? '110px' : undefined)
+
     elements.push(
       <div key={k()} className='rapport-table-wrapper' style={{ overflowX: 'auto', margin: '16px 0' }}>
         <table className="rapport-table" style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.85rem', borderRadius: '8px', overflow: 'hidden' }}>
           <thead>
             <tr style={{ background: '#1e3a8a' }}>
               {headers.map((h, j) => (
-                <th key={j} style={{ padding: '10px 14px', textAlign: isNumericCell(h.trim()) ? 'right' : 'left', fontWeight: '600', color: 'white', whiteSpace: 'nowrap', minWidth: isNumericCell(h.trim()) ? '110px' : undefined, fontFamily: 'Outfit, sans-serif' }}
+                <th key={j} style={{ padding: '10px 14px', textAlign: colAlign[j] ?? 'left', fontWeight: '600', color: 'white', whiteSpace: 'nowrap', minWidth: colMinWidth[j], fontFamily: 'Outfit, sans-serif' }}
                   dangerouslySetInnerHTML={{ __html: formatInline(h.trim()) }} />
               ))}
             </tr>
@@ -71,10 +84,13 @@ export function RapportRenderer({ tekst }: { tekst: string }) {
           <tbody>
             {dataRows.map((row, ri) => (
               <tr key={ri} style={{ background: ri % 2 === 0 ? 'white' : '#f8fafc', borderBottom: '1px solid #e2e8f0' }}>
-                {row.map((cell, ci) => (
-                  <td key={ci} style={{ padding: '9px 14px', color: '#0f172a', verticalAlign: 'top', textAlign: isNumericCell(cell.trim()) ? 'right' : 'left', whiteSpace: isNumericCell(cell.trim()) ? 'nowrap' : 'normal', minWidth: isNumericCell(cell.trim()) ? '110px' : undefined }}
-                    dangerouslySetInnerHTML={{ __html: formatCell(cell.trim()) }} />
-                ))}
+                {row.map((cell, ci) => {
+                  const align = colAlign[ci] ?? 'left'
+                  return (
+                    <td key={ci} style={{ padding: '9px 14px', color: '#0f172a', verticalAlign: 'top', textAlign: align, whiteSpace: align === 'right' ? 'nowrap' : 'normal', minWidth: colMinWidth[ci] }}
+                      dangerouslySetInnerHTML={{ __html: formatCell(cell.trim()) }} />
+                  )
+                })}
               </tr>
             ))}
           </tbody>
