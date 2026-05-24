@@ -52,6 +52,15 @@ export default function TwinqBron() {
               <div key={i} style={{ fontSize: '0.88rem', color: '#1e3a8a', fontWeight: '500' }}>{item}</div>
             ))}
           </div>
+          <div style={{ marginTop: '16px', borderTop: '1px solid #bfdbfe', paddingTop: '14px', display: 'flex', alignItems: 'flex-start', gap: '12px' }}>
+            <span style={{ fontSize: '1.2rem' }}>🏗️</span>
+            <div>
+              <div style={{ fontSize: '0.88rem', color: '#1e3a8a', fontWeight: '700', marginBottom: '4px' }}>Optioneel: MJOP (Meerjarenonderhoudsplan)</div>
+              <div style={{ fontSize: '0.83rem', color: '#3b5a9a', lineHeight: 1.6 }}>
+                Heeft uw VvE een MJOP? Upload dit als PDF via de aparte MJOP-sectie in uw omgeving. Wij analyseren dan de geplande onderhoudskosten per jaar, vergelijken deze met de huidige reserveringen en geven een concreet advies: is de VvE-bijdrage toereikend, en zo niet — met hoeveel per jaar moet deze omhoog?
+              </div>
+            </div>
+          </div>
         </div>
 
         {/* Screenshot Twinq menu */}
@@ -189,6 +198,35 @@ export default function TwinqBron() {
           ))}
         </div>
 
+
+        {/* MJOP tip */}
+        <div style={{ background: '#eff6ff', borderRadius: '16px', padding: '28px', border: '1px solid #bfdbfe', marginTop: '24px' }}>
+          <div style={{ display: 'flex', gap: '16px', alignItems: 'flex-start' }}>
+            <div style={{ width: '36px', height: '36px', background: '#1e3a8a', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1rem', flexShrink: 0 }}>🏗️</div>
+            <div>
+              <h3 style={{ fontWeight: '700', color: '#1e3a8a', fontSize: '1rem', marginBottom: '6px' }}>Optioneel: MJOP uploaden voor meerjarenanalyse</h3>
+              <p style={{ color: '#1e40af', fontSize: '0.88rem', lineHeight: 1.6, marginBottom: '14px' }}>
+                Heeft uw VvE een Meerjarenonderhoudsplan? Upload dit als PDF via de aparte <strong>MJOP-sectie</strong> in uw omgeving (los van de reguliere bestanden). Wij analyseren dan automatisch:
+              </p>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', marginBottom: '14px' }}>
+                {[
+                  'Welke onderhoudskosten staan gepland (dak, lift, gevel, etc.) en in welke jaren',
+                  'Wat de totale benodigde jaarlijkse reservering is conform het MJOP',
+                  'Of de huidige dotaties toereikend zijn',
+                  'Met hoeveel de VvE-bijdrage per jaar omhoog moet als er een tekort is',
+                ].map((punt, i) => (
+                  <div key={i} style={{ display: 'flex', gap: '10px', fontSize: '0.85rem', color: '#1e3a8a' }}>
+                    <span style={{ color: '#2563EB', fontWeight: '700', flexShrink: 0 }}>✓</span>
+                    <span>{punt}</span>
+                  </div>
+                ))}
+              </div>
+              <p style={{ fontSize: '0.83rem', color: '#3b5a9a', lineHeight: 1.5 }}>
+                Het MJOP wordt apart verwerkt en staat los van de financiële exports. U vindt de uploadoptie in stap 3 van uw Slimme Kascontrole omgeving.
+              </p>
+            </div>
+          </div>
+        </div>
 
         {/* Mappen tip */}
         <div style={{ background: '#fefce8', borderRadius: '12px', padding: '20px', margin: '32px 0', border: '1px solid #fde68a' }}>

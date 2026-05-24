@@ -353,7 +353,7 @@ footer a:hover{color:#93c5fd}
         <div class="price-divider"></div>
         <div class="price-checks">
           <div class="price-check"><span>✓</span>Volledig gecontroleerd rapport</div>
-          <div class="price-check"><span>✓</span>Trendanalyse meerdere jaren</div>
+          <div class="price-check"><span>✓</span>MJOP-analyse + bijdrageadvies</div>
           <div class="price-check"><span>✓</span>Geen abonnement</div>
         </div>
       </div>
