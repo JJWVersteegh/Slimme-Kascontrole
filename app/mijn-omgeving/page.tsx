@@ -112,6 +112,23 @@ export default function MijnOmgeving() {
     if (toonRapport) window.scrollTo(0, 0)
   }, [toonRapport])
 
+  async function downloadWord() {
+    const { data: { session } } = await supabase.auth.getSession()
+    const params = new URLSearchParams({ boekjaar: rapportBoekjaar })
+    if (geselecteerdeVereniging?.id) params.set('vereniging_id', geselecteerdeVereniging.id)
+    const res = await fetch(`/api/download-rapport-word?${params}`, {
+      headers: { Authorization: `Bearer ${session?.access_token || ''}` }
+    })
+    if (!res.ok) { alert('Downloaden mislukt'); return }
+    const blob = await res.blob()
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = `Kascontrolerapport-${rapportBoekjaar}.docx`
+    a.click()
+    URL.revokeObjectURL(url)
+  }
+
   useEffect(() => {
     const params = new URLSearchParams(window.location.search)
     if (params.get('betaald') === 'true' && !loading) {
@@ -685,14 +702,16 @@ async function zoekAdres(pc: string, hn: string) {
         className="no-print"
         links={[{ href: '/', label: '← Terug naar home' }]}
         rightContent={(
-          <div style={{ display: 'flex', gap: '12px' }}>
+          <div style={{ display: 'flex', gap: '8px' }}>
             <button onClick={() => window.print()} style={{ background: '#2563EB', color: 'white', padding: '10px 20px', borderRadius: '8px', border: 'none', cursor: 'pointer', fontWeight: '600', fontSize: '0.84rem', fontFamily: 'Outfit, sans-serif' }}>🖨️ Afdrukken / PDF</button>
+            <button onClick={downloadWord} style={{ background: 'white', color: '#2563EB', padding: '10px 20px', borderRadius: '8px', border: '1.5px solid #2563EB', cursor: 'pointer', fontWeight: '600', fontSize: '0.84rem', fontFamily: 'Outfit, sans-serif' }}>📝 Download Word</button>
             <button onClick={() => setToonRapport(false)} style={{ background: 'white', color: '#1e3a8a', padding: '10px 20px', borderRadius: '8px', border: '1.5px solid #bfdbfe', cursor: 'pointer', fontWeight: '600', fontSize: '0.84rem', fontFamily: 'Outfit, sans-serif' }}>← Terug</button>
           </div>
         )}
         mobileExtra={(
           <div style={{ borderTop: '1px solid #e2e8f0', marginTop: '8px', paddingTop: '12px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
             <button onClick={() => window.print()} style={{ background: '#2563EB', color: 'white', padding: '12px 16px', borderRadius: '8px', border: 'none', cursor: 'pointer', fontWeight: '700', fontSize: '0.84rem', fontFamily: 'Outfit, sans-serif' }}>🖨️ Afdrukken / PDF</button>
+            <button onClick={downloadWord} style={{ background: 'white', color: '#2563EB', padding: '12px 16px', borderRadius: '8px', border: '1.5px solid #2563EB', cursor: 'pointer', fontWeight: '700', fontSize: '0.84rem', fontFamily: 'Outfit, sans-serif' }}>📝 Download Word</button>
             <button onClick={() => setToonRapport(false)} style={{ background: 'white', color: '#1e3a8a', padding: '12px 16px', borderRadius: '8px', border: '1.5px solid #bfdbfe', cursor: 'pointer', fontWeight: '600', fontSize: '0.84rem', fontFamily: 'Outfit, sans-serif' }}>← Terug</button>
           </div>
         )}
