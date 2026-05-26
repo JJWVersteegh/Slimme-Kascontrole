@@ -727,6 +727,11 @@ async function zoekAdres(pc: string, hn: string) {
             </div>
             <h1 style={{ fontFamily: 'Outfit, sans-serif', fontSize: '1.6rem', fontWeight: '600', color: '#0f172a', margin: '0 0 8px' }}>KASCOMMISSIE RAPPORT</h1>
             <p style={{ color: '#475569', margin: 0, fontSize: '0.84rem' }}>{geselecteerdeVereniging?.naam} · Boekjaar {rapportBoekjaar}</p>
+            {huidigRapport?.gegenereerd_op && (
+              <p style={{ color: '#94a3b8', margin: '4px 0 0', fontSize: '0.78rem' }}>
+                Gegenereerd op {new Date(huidigRapport.gegenereerd_op).toLocaleDateString('nl-NL')} om {new Date(huidigRapport.gegenereerd_op).toLocaleTimeString('nl-NL', { hour: '2-digit', minute: '2-digit' })}
+              </p>
+            )}
           </div>
           <RapportRenderer tekst={rapportTekstVoorWeergave!} />
         </div>
@@ -1171,7 +1176,7 @@ async function zoekAdres(pc: string, hn: string) {
                   <div key={r.boekjaar} style={{ padding: '16px 24px', borderBottom: '1px solid #f1f5f9', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '12px' }}>
                     <div>
                       <span style={{ fontWeight: '600', color: '#0f172a' }}>Boekjaar {r.boekjaar}</span>
-                      {r.gegenereerd_op && <span style={{ fontSize: '0.8rem', color: '#94a3b8', marginLeft: '12px' }}>Gegenereerd op {new Date(r.gegenereerd_op).toLocaleDateString('nl-NL')}</span>}
+                      {r.gegenereerd_op && <span style={{ fontSize: '0.8rem', color: '#94a3b8', marginLeft: '12px' }}>Gegenereerd op {new Date(r.gegenereerd_op).toLocaleDateString('nl-NL')} om {new Date(r.gegenereerd_op).toLocaleTimeString('nl-NL', { hour: '2-digit', minute: '2-digit' })}</span>}
                     </div>
                     <button onClick={() => { setRapportBoekjaar(r.boekjaar); setToonRapport(true); window.scrollTo(0, 0) }} style={{ background: 'white', color: '#2563EB', padding: '9px 16px', borderRadius: '10px', border: '1.5px solid #2563EB', fontSize: '0.85rem', fontWeight: '700', cursor: 'pointer', fontFamily: 'Outfit, sans-serif' }}>
                       📄 Bekijk
@@ -1225,7 +1230,7 @@ async function zoekAdres(pc: string, hn: string) {
                       </div>
                     </div>
                     <h2 style={{ fontWeight: '700', color: '#0f172a', fontSize: '1.15rem', margin: 0 }}>{huidigJaarGegenereerd ? 'Rapport beschikbaar' : 'Genereer uw rapport'}</h2>
-                    <p style={{ color: '#475569', margin: '6px 0 0', fontSize: '0.84rem' }}>{rapportLoading ? `Rapport wordt gegenereerd — dit duurt circa 3–5 minuten. Sluit dit venster niet.` : huidigJaarGegenereerd ? `Gegenereerd op ${new Date(huidigRapport!.gegenereerd_op!).toLocaleDateString('nl-NL')}` : `Uw bestanden staan klaar. Klik op "Genereer rapport" om te starten — dit duurt circa 3–5 minuten.`}</p>
+                    <p style={{ color: '#475569', margin: '6px 0 0', fontSize: '0.84rem' }}>{rapportLoading ? `Rapport wordt gegenereerd — dit duurt circa 3–5 minuten. Sluit dit venster niet.` : huidigJaarGegenereerd ? `Gegenereerd op ${new Date(huidigRapport!.gegenereerd_op!).toLocaleDateString('nl-NL')} om ${new Date(huidigRapport!.gegenereerd_op!).toLocaleTimeString('nl-NL', { hour: '2-digit', minute: '2-digit' })}` : `Uw bestanden staan klaar. Klik op "Genereer rapport" om te starten — dit duurt circa 3–5 minuten.`}</p>
                   </div>
                   <div style={{ display: 'flex', gap: '10px', alignItems: 'center', flexWrap: 'wrap' }}>
                     {huidigJaarGegenereerd && (
