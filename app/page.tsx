@@ -326,7 +326,7 @@ footer a:hover{color:#93c5fd}
   </div>
   <div class="hero-content">
     <div class="hero-inner">
-      <h1>Kascontrole voor uw VvE of vereniging (sportvereniging). <em>€59. Klaar in minuten.</em></h1>
+      <h1>Kascontrole voor uw VvE of vereniging. <em>€59. Klaar in minuten.</em></h1>
       <p class="hero-sub">Upload uw financiële bestanden en MJOP en ontvang binnen minuten een volledig gecontroleerd kascontrolerapport. Eenmalig €59 incl. btw — geen abonnement.</p>
       <div class="hero-ctas-vertical">
         <div class="hero-btn-row">
