@@ -1,7 +1,8 @@
 import { createClient } from '@supabase/supabase-js'
 import { NextRequest } from 'next/server'
+import { ADMIN_EMAIL } from '@/lib/constants'
 
-export const ADMIN_EMAIL = 'info@slimmekascontrole.nl'
+export { ADMIN_EMAIL }
 
 export async function requireAdmin(req: NextRequest) {
   const authHeader = req.headers.get('Authorization') || ''

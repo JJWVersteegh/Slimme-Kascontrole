@@ -6,6 +6,7 @@ import { RapportRenderer } from '@/components/RapportRenderer'
 import Navbar from '@/components/Navbar'
 import { User } from '@supabase/supabase-js'
 import { zoekAdresViaPostcode } from '@/lib/pdok'
+import { ADMIN_EMAIL } from '@/lib/constants'
 
 interface Upload {
   id: string
@@ -108,7 +109,7 @@ export default function MijnOmgeving() {
   const rapportJaren = [currentYear - 1, currentYear]  // 2025, 2026
   const uploadJaren = [currentYear - 3, currentYear - 2, currentYear - 1, currentYear]  // 2023, 2024, 2025, 2026
   const jaren = rapportJaren  // alias voor bestaande code
-  const ADMIN_EMAIL = 'info@slimmekascontrole.nl'
+
 
   useEffect(() => {
     if (toonRapport) window.scrollTo(0, 0)
