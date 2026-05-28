@@ -1,5 +1,5 @@
 import { requireAdmin } from '../_adminAuth'
-import { NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
 
 export const dynamic = 'force-dynamic'
 

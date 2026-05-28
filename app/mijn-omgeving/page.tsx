@@ -4,6 +4,8 @@ import { supabase } from '@/lib/supabase'
 import { useRouter } from 'next/navigation'
 import { RapportRenderer } from '@/components/RapportRenderer'
 import Navbar from '@/components/Navbar'
+import { User } from '@supabase/supabase-js'
+import { zoekAdresViaPostcode } from '@/lib/pdok'
 
 interface Upload {
   id: string
@@ -47,7 +49,7 @@ interface Rapport {
 }
 
 export default function MijnOmgeving() {
-  const [user, setUser] = useState<any>(null)
+  const [user, setUser] = useState<User | null>(null)
   const [klant, setKlant] = useState<Klant | null>(null)
   const [verenigingen, setVerenigingen] = useState<Vereniging[]>([])
   const [geselecteerdeVereniging, setGeselecteerdeVereniging] = useState<Vereniging | null>(null)
@@ -355,6 +357,7 @@ export default function MijnOmgeving() {
     try {
       const upload = uploads.find(u => u.id === uploadId)
       if (upload?.bestanden?.length) await supabase.storage.from('kascontrole-bestanden').remove(upload.bestanden)
+      if (upload?.mjop_bestanden?.length) await supabase.storage.from('kascontrole-bestanden').remove(upload.mjop_bestanden)
       const { error: delError } = await supabase.from('uploads').delete().eq('id', uploadId)
       if (delError) throw delError
       setUploads(prev => prev.filter(u => u.id !== uploadId))
@@ -430,16 +433,10 @@ async function zoekAdres(pc: string, hn: string) {
     setVerenigingHuisnummer(hn)
     setAdresLaden(true)
     setVerenigingForm(p => ({ ...p, adres: '', plaats: '' }))
-    try {
-      const res = await fetch(`https://api.pdok.nl/bzk/locatieserver/search/v3_1/free?q=${pc.replace(' ', '')}+${hn}&fq=type:adres&rows=1`)
-      const data = await res.json()
-      if (data.response?.docs?.[0]) {
-        const doc = data.response.docs[0]
-        setVerenigingForm(p => ({ ...p, adres: `${doc.straatnaam || ''} ${hn}`, plaats: doc.woonplaatsnaam || '' }))
-      } else {
-        setVerenigingForm(p => ({ ...p, adres: 'niet gevonden', plaats: '' }))
-      }
-    } catch {
+    const result = await zoekAdresViaPostcode(pc, hn)
+    if (result) {
+      setVerenigingForm(p => ({ ...p, adres: result.adres, plaats: result.plaats }))
+    } else {
       setVerenigingForm(p => ({ ...p, adres: 'niet gevonden', plaats: '' }))
     }
     setAdresLaden(false)
@@ -450,16 +447,10 @@ async function zoekAdres(pc: string, hn: string) {
     setProfielHuisnummer(hn)
     setProfielAdresLaden(true)
     setProfielForm(p => ({ ...p, adres: '', plaats: '' }))
-    try {
-      const res = await fetch(`https://api.pdok.nl/bzk/locatieserver/search/v3_1/free?q=${pc.replace(' ', '')}+${hn}&fq=type:adres&rows=1`)
-      const data = await res.json()
-      if (data.response?.docs?.[0]) {
-        const doc = data.response.docs[0]
-        setProfielForm(p => ({ ...p, postcode: pc, adres: `${doc.straatnaam || ''} ${hn}`, plaats: doc.woonplaatsnaam || '' }))
-      } else {
-        setProfielForm(p => ({ ...p, adres: 'niet gevonden', plaats: '' }))
-      }
-    } catch {
+    const result = await zoekAdresViaPostcode(pc, hn)
+    if (result) {
+      setProfielForm(p => ({ ...p, postcode: pc, adres: result.adres, plaats: result.plaats }))
+    } else {
       setProfielForm(p => ({ ...p, adres: 'niet gevonden', plaats: '' }))
     }
     setProfielAdresLaden(false)
@@ -473,7 +464,7 @@ async function zoekAdres(pc: string, hn: string) {
       let updateData = {
         naam: profielForm.naam,
         telefoon: profielForm.telefoon,
-        adres: profielForm.adres,
+        adres: profielForm.adres === 'niet gevonden' ? '' : profielForm.adres,
         postcode: profielForm.postcode,
         plaats: profielForm.plaats,
       }
@@ -481,23 +472,14 @@ async function zoekAdres(pc: string, hn: string) {
       // Als de gebruiker direct na postcode/huisnummer op Opslaan klikt,
       // kan de onBlur-adrescheck nog bezig zijn. Daarom checken we hier nogmaals.
       if (profielForm.postcode && profielHuisnummer) {
-        try {
-          const pc = profielForm.postcode
-          const hn = profielHuisnummer
-          const res = await fetch(`https://api.pdok.nl/bzk/locatieserver/search/v3_1/free?q=${pc.replace(' ', '')}+${hn}&fq=type:adres&rows=1`)
-          const data = await res.json()
-
-          if (data.response?.docs?.[0]) {
-            const doc = data.response.docs[0]
-            updateData = {
-              ...updateData,
-              postcode: pc,
-              adres: `${doc.straatnaam || ''} ${hn}`,
-              plaats: doc.woonplaatsnaam || '',
-            }
+        const pdok = await zoekAdresViaPostcode(profielForm.postcode, profielHuisnummer)
+        if (pdok) {
+          updateData = {
+            ...updateData,
+            postcode: profielForm.postcode,
+            adres: pdok.adres,
+            plaats: pdok.plaats,
           }
-        } catch {
-          // Als lookup faalt, slaan we de handmatig ingevulde velden alsnog op.
         }
       }
 
@@ -552,28 +534,20 @@ async function zoekAdres(pc: string, hn: string) {
     if (!verenigingForm.naam) return
     setVerenigingSaving(true)
     try {
-      let saveData = { ...verenigingForm }
+      let saveData = { ...verenigingForm, adres: verenigingForm.adres === 'niet gevonden' ? '' : verenigingForm.adres }
 
       // Ook bij direct opslaan na postcode/huisnummer nogmaals ophalen,
       // zodat het echte adresveld inclusief huisnummer wordt opgeslagen.
       if (verenigingForm.postcode && verenigingHuisnummer) {
-        try {
-          const pc = verenigingForm.postcode
-          const hn = verenigingHuisnummer
-          const res = await fetch(`https://api.pdok.nl/bzk/locatieserver/search/v3_1/free?q=${pc.replace(' ', '')}+${hn}&fq=type:adres&rows=1`)
-          const data = await res.json()
-          if (data.response?.docs?.[0]) {
-            const doc = data.response.docs[0]
-            saveData = {
-              ...saveData,
-              postcode: pc,
-              adres: `${doc.straatnaam || ''} ${hn}`,
-              plaats: doc.woonplaatsnaam || '',
-            }
-            setVerenigingForm(saveData)
+        const pdok = await zoekAdresViaPostcode(verenigingForm.postcode, verenigingHuisnummer)
+        if (pdok) {
+          saveData = {
+            ...saveData,
+            postcode: verenigingForm.postcode,
+            adres: pdok.adres,
+            plaats: pdok.plaats,
           }
-        } catch {
-          // Als lookup faalt, slaan we handmatig ingevulde velden alsnog op.
+          setVerenigingForm(saveData)
         }
       }
 
@@ -1237,9 +1211,14 @@ async function zoekAdres(pc: string, hn: string) {
                       <button onClick={() => { setToonRapport(true); window.scrollTo(0, 0) }} style={{ background: 'white', color: '#166534', padding: '10px 18px', borderRadius: '10px', border: '1.5px solid #86efac', fontSize: '0.84rem', fontWeight: '700', cursor: 'pointer', fontFamily: 'Outfit, sans-serif' }}>📄 Bekijk rapport</button>
                     )}
                     <button onClick={() => setBevestigDeleteRapport({ boekjaar: rapportBoekjaar, vereniging_id: geselecteerdeVereniging?.id || null })} style={{ background: 'white', border: '1.5px solid #fecaca', color: '#ef4444', padding: '10px 12px', borderRadius: '10px', cursor: 'pointer', fontSize: '0.85rem' }} title="Boekjaar verwijderen">🗑️</button>
-                    <button onClick={handleGenereerRapport} disabled={rapportLoading} style={{ background: '#16a34a', color: 'white', padding: '10px 20px', borderRadius: '10px', border: 'none', fontSize: '0.84rem', fontWeight: '700', cursor: rapportLoading ? 'not-allowed' : 'pointer', fontFamily: 'Outfit, sans-serif' }}>
-                      {rapportLoading ? '⏳ Genereren...' : huidigJaarGegenereerd ? '🔄 Vernieuwen' : '📊 Genereer rapport'}
-                    </button>
+                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '4px' }}>
+                      <button onClick={handleGenereerRapport} disabled={rapportLoading} style={{ background: '#16a34a', color: 'white', padding: '10px 20px', borderRadius: '10px', border: 'none', fontSize: '0.84rem', fontWeight: '700', cursor: rapportLoading ? 'not-allowed' : 'pointer', fontFamily: 'Outfit, sans-serif' }}>
+                        {rapportLoading ? '⏳ Genereren...' : huidigJaarGegenereerd ? '🔄 Vernieuwen' : '📊 Genereer rapport'}
+                      </button>
+                      {rapportLoading && (
+                        <span style={{ fontSize: '0.75rem', color: '#64748b' }}>Dit kan 1–3 minuten duren...</span>
+                      )}
+                    </div>
                   </div>
                 </div>
               </div>

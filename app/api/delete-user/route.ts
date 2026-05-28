@@ -1,8 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { ADMIN_EMAIL } from '../_adminAuth'
 
 export const dynamic = 'force-dynamic'
-
-const ADMIN_EMAIL = 'info@slimmekascontrole.nl'
 
 export async function POST(req: NextRequest) {
   try {

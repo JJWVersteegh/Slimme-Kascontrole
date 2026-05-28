@@ -1,10 +1,11 @@
 'use client'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useMemo } from 'react'
 import { supabase } from '@/lib/supabase'
 import { useRouter } from 'next/navigation'
 import { RapportRenderer } from '@/components/RapportRenderer'
-
-const ADMIN_EMAIL = 'info@slimmekascontrole.nl'
+import { User } from '@supabase/supabase-js'
+import { ADMIN_EMAIL } from '../api/_adminAuth'
+import { zoekAdresViaPostcode } from '@/lib/pdok'
 
 interface Klant {
   id: string
@@ -73,7 +74,7 @@ interface Coupon {
 }
 
 export default function AdminPortal() {
-  const [user, setUser] = useState<any>(null)
+  const [user, setUser] = useState<User | null>(null)
   const [loading, setLoading] = useState(true)
   const [klanten, setKlanten] = useState<Klant[]>([])
   const [verenigingen, setVerenigingen] = useState<Vereniging[]>([])
@@ -111,6 +112,7 @@ export default function AdminPortal() {
   const [adminHuisnummer, setAdminHuisnummer] = useState('')
   const [adminProfielAdresLaden, setAdminProfielAdresLaden] = useState(false)
   const [adminProfielHuisnummer, setAdminProfielHuisnummer] = useState('')
+  const [bevestigDeleteId, setBevestigDeleteId] = useState<string | null>(null)
   const [bewerkVve, setBewerkVve] = useState<Vereniging | null>(null)
   const [bewerkVveData, setBewerkVveData] = useState<Partial<Vereniging>>({})
   const [bewerkVveAdresLaden, setBewerkVveAdresLaden] = useState(false)
@@ -166,9 +168,9 @@ export default function AdminPortal() {
       }
     } catch (e) {
       console.error('Fout bij laden:', e)
+    } finally {
+      setLoading(false)
     }
-
-    setLoading(false)
   }
 
   async function loadCoupons() {
@@ -288,15 +290,21 @@ export default function AdminPortal() {
     return uploads.filter(u => u.user_id === userId)
   }
 
+  const heeftBetaaldSet = useMemo(() => {
+    const s = new Set<string>()
+    rapporten.forEach(r => { if (r.betaald) s.add(r.user_id) })
+    return s
+  }, [rapporten])
+
   function heeftBetaald(userId: string) {
-    return rapporten.some(r => r.user_id === userId && r.betaald)
+    return heeftBetaaldSet.has(userId)
   }
 
   function heeftRapport(userId: string) {
     return rapporten.some(r => r.user_id === userId && r.rapport_tekst)
   }
 
-  const gefilterd = klanten.filter(k => {
+  const gefilterd = useMemo(() => klanten.filter(k => {
     if (k.email === ADMIN_EMAIL) return false
     const zoek = zoekterm.toLowerCase()
     const klantVerenigingen = verenigingen.filter(v => v.user_id === k.user_id)
@@ -306,11 +314,11 @@ export default function AdminPortal() {
       klantVerenigingen.some(v => v.naam?.toLowerCase().includes(zoek))
     const matchFilter =
       filter === 'alle' ? true :
-      filter === 'betaald' ? heeftBetaald(k.user_id) :
-      filter === 'onbetaald' ? !heeftBetaald(k.user_id) :
+      filter === 'betaald' ? heeftBetaaldSet.has(k.user_id) :
+      filter === 'onbetaald' ? !heeftBetaaldSet.has(k.user_id) :
       filter === 'rapport_klaar' ? heeftRapport(k.user_id) : true
     return matchZoek && matchFilter
-  })
+  }), [klanten, rapporten, verenigingen, zoekterm, filter, heeftBetaaldSet])
 
   async function handleLogout() {
     await supabase.auth.signOut()
@@ -349,23 +357,15 @@ export default function AdminPortal() {
 
     // Ook in admin opnieuw ophalen bij opslaan, zodat adres + huisnummer echt worden opgeslagen.
     if (klantUpdate.postcode && adminProfielHuisnummer) {
-      try {
-        const pc = klantUpdate.postcode
-        const hn = adminProfielHuisnummer
-        const res = await fetch(`https://api.pdok.nl/bzk/locatieserver/search/v3_1/free?q=${pc.replace(' ', '')}+${hn}&fq=type:adres&rows=1`)
-        const data = await res.json()
-        if (data.response?.docs?.[0]) {
-          const doc = data.response.docs[0]
-          klantUpdate = {
-            ...klantUpdate,
-            postcode: pc,
-            adres: `${doc.straatnaam || ''} ${hn}`,
-            plaats: doc.woonplaatsnaam || '',
-          }
-          setBewerkData(d => ({ ...d, ...klantUpdate }))
+      const pdok = await zoekAdresViaPostcode(klantUpdate.postcode, adminProfielHuisnummer)
+      if (pdok) {
+        klantUpdate = {
+          ...klantUpdate,
+          postcode: klantUpdate.postcode,
+          adres: pdok.adres,
+          plaats: pdok.plaats,
         }
-      } catch {
-        // Als lookup faalt, slaan we handmatig ingevulde velden alsnog op.
+        setBewerkData(d => ({ ...d, ...klantUpdate }))
       }
     }
 
@@ -457,8 +457,8 @@ export default function AdminPortal() {
   }
 
   async function handleDeleteUpload(uploadId: string) {
-    if (!confirm("Upload verwijderen?")) return
     await supabase.from("uploads").delete().eq("id", uploadId)
+    setBevestigDeleteId(null)
     loadData()
   }
 
@@ -1033,14 +1033,8 @@ export default function AdminPortal() {
                       if (pc.replace(' ','').length < 6 || !hn) return
                       setAdminProfielHuisnummer(hn)
                       setAdminProfielAdresLaden(true)
-                      try {
-                        const res = await fetch(`https://api.pdok.nl/bzk/locatieserver/search/v3_1/free?q=${pc.replace(' ','')}+${hn}&fq=type:adres&rows=1`)
-                        const data = await res.json()
-                        if (data.response?.docs?.[0]) {
-                          const doc = data.response.docs[0]
-                          setBewerkData(d => ({ ...d, adres: `${doc.straatnaam || ''} ${hn}`, plaats: doc.woonplaatsnaam || '' }))
-                        }
-                      } catch {}
+                      const pdok = await zoekAdresViaPostcode(pc, hn)
+                      if (pdok) setBewerkData(d => ({ ...d, adres: pdok.adres, plaats: pdok.plaats }))
                       setAdminProfielAdresLaden(false)
                     }} placeholder="Nr" style={{ padding: '9px 14px', border: '1.5px solid #e2e8f0', borderRadius: '8px', fontSize: '0.88rem', fontFamily: 'Outfit, sans-serif', outline: 'none', boxSizing: 'border-box', width: '100%', maxWidth: '100%', minWidth: 0 }} />
                   </div>
@@ -1097,14 +1091,8 @@ export default function AdminPortal() {
                       if (pc.replace(' ','').length < 6 || !hn) return
                       setBewerkVveHuisnummer(hn)
                       setBewerkVveAdresLaden(true)
-                      try {
-                        const res = await fetch(`https://api.pdok.nl/bzk/locatieserver/search/v3_1/free?q=${pc.replace(' ','')}+${hn}&fq=type:adres&rows=1`)
-                        const data = await res.json()
-                        if (data.response?.docs?.[0]) {
-                          const doc = data.response.docs[0]
-                          setBewerkVveData(d => ({ ...d, adres: `${doc.straatnaam || ''} ${hn}`, plaats: doc.woonplaatsnaam || '' }))
-                        }
-                      } catch {}
+                      const pdok = await zoekAdresViaPostcode(pc, hn)
+                      if (pdok) setBewerkVveData(d => ({ ...d, adres: pdok.adres, plaats: pdok.plaats }))
                       setBewerkVveAdresLaden(false)
                     }} placeholder="Nr" style={{ padding: '9px 14px', border: '1.5px solid #e2e8f0', borderRadius: '8px', fontSize: '0.88rem', fontFamily: 'Outfit, sans-serif', outline: 'none', boxSizing: 'border-box', width: '100%', maxWidth: '100%', minWidth: 0 }} />
                   </div>
@@ -1129,23 +1117,10 @@ export default function AdminPortal() {
 
                   // Ook in admin opnieuw ophalen bij opslaan, zodat adres + huisnummer echt worden opgeslagen.
                   if (vveUpdate.postcode && bewerkVveHuisnummer) {
-                    try {
-                      const pc = vveUpdate.postcode
-                      const hn = bewerkVveHuisnummer
-                      const res = await fetch(`https://api.pdok.nl/bzk/locatieserver/search/v3_1/free?q=${String(pc).replace(' ', '')}+${hn}&fq=type:adres&rows=1`)
-                      const data = await res.json()
-                      if (data.response?.docs?.[0]) {
-                        const doc = data.response.docs[0]
-                        vveUpdate = {
-                          ...vveUpdate,
-                          postcode: pc,
-                          adres: `${doc.straatnaam || ''} ${hn}`,
-                          plaats: doc.woonplaatsnaam || '',
-                        }
-                        setBewerkVveData(d => ({ ...d, ...vveUpdate }))
-                      }
-                    } catch {
-                      // Als lookup faalt, slaan we handmatig ingevulde velden alsnog op.
+                    const pdok = await zoekAdresViaPostcode(vveUpdate.postcode, bewerkVveHuisnummer)
+                    if (pdok) {
+                      vveUpdate = { ...vveUpdate, postcode: vveUpdate.postcode, adres: pdok.adres, plaats: pdok.plaats }
+                      setBewerkVveData(d => ({ ...d, ...vveUpdate }))
                     }
                   }
 
@@ -1167,6 +1142,21 @@ export default function AdminPortal() {
                 {bewerkVveSaving ? 'Opslaan...' : 'Opslaan'}
               </button>
               <button onClick={() => setBewerkVve(null)} style={{ flex: 1, background: '#f1f5f9', color: '#475569', border: 'none', padding: '11px', borderRadius: '8px', cursor: 'pointer', fontSize: '0.9rem', fontFamily: 'Outfit, sans-serif' }}>Annuleren</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Upload verwijderen bevestiging */}
+      {bevestigDeleteId && (
+        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)', zIndex: 1000, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px' }}>
+          <div style={{ background: 'white', borderRadius: '16px', padding: '28px', maxWidth: '380px', width: '100%' }}>
+            <div style={{ fontSize: '2rem', marginBottom: '12px' }}>🗑️</div>
+            <h3 style={{ fontWeight: '600', color: '#0f172a', marginBottom: '8px' }}>Upload verwijderen?</h3>
+            <p style={{ color: '#475569', fontSize: '0.84rem', marginBottom: '24px' }}>Dit verwijdert de upload record. De bijbehorende bestanden in storage worden niet automatisch verwijderd.</p>
+            <div style={{ display: 'flex', gap: '12px' }}>
+              <button onClick={() => setBevestigDeleteId(null)} style={{ flex: 1, padding: '11px', background: 'white', border: '1.5px solid #e2e8f0', borderRadius: '8px', cursor: 'pointer', fontWeight: '600', fontFamily: 'Outfit, sans-serif' }}>Annuleren</button>
+              <button onClick={() => handleDeleteUpload(bevestigDeleteId)} style={{ flex: 1, padding: '11px', background: '#ef4444', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer', fontWeight: '700', fontFamily: 'Outfit, sans-serif' }}>Ja, verwijder</button>
             </div>
           </div>
         </div>

@@ -2,6 +2,9 @@ import { NextRequest, NextResponse } from 'next/server'
 
 export const dynamic = 'force-dynamic'
 
+const ALLOWED_EXT = ['pdf', 'xlsx', 'xls', 'csv', 'txt', 'ods', 'docx', 'doc', 'png', 'jpg', 'jpeg', 'heic']
+const MAX_FILE_SIZE = 10 * 1024 * 1024
+
 export async function POST(req: NextRequest) {
   try {
     const { createClient } = await import('@supabase/supabase-js')
@@ -15,6 +18,16 @@ export async function POST(req: NextRequest) {
 
     const { data: klant } = await supabase.from('klanten').select('*').eq('upload_token', token).single()
     if (!klant) return NextResponse.json({ error: 'Ongeldige upload link' }, { status: 401 })
+
+    for (const file of files) {
+      const ext = file.name.split('.').pop()?.toLowerCase() || ''
+      if (!ALLOWED_EXT.includes(ext)) {
+        return NextResponse.json({ error: `Bestandstype .${ext} is niet toegestaan. Gebruik PDF, Excel, CSV, Word, PNG, JPG of HEIC.` }, { status: 400 })
+      }
+      if (file.size > MAX_FILE_SIZE) {
+        return NextResponse.json({ error: `Bestand ${file.name} is te groot (max 10MB per bestand).` }, { status: 400 })
+      }
+    }
 
     const uploadedFiles: string[] = []
     for (const file of files) {

@@ -1,6 +1,7 @@
 'use client'
 
 import { ReactNode, useState, useEffect } from 'react'
+import { createClient } from '@supabase/supabase-js'
 
 type NavLink = { href: string; label: string; primary?: boolean; outline?: boolean; active?: boolean }
 
@@ -28,13 +29,20 @@ export default function Navbar({ links = publicLinks, rightContent, mobileExtra,
   const isSingleBackLink = links.length === 1
 
   useEffect(() => {
-    try {
-      const authKey = Object.keys(localStorage).find(k => k.startsWith('sb-') && k.endsWith('-auth-token'))
-      if (authKey) {
-        const d = JSON.parse(localStorage.getItem(authKey) || '{}')
-        if (d.access_token) setIsLoggedIn(true)
-      }
-    } catch {}
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+    const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+    if (!supabaseUrl || !supabaseAnonKey) return
+    const supabase = createClient(supabaseUrl, supabaseAnonKey)
+
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setIsLoggedIn(!!session)
+    })
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setIsLoggedIn(!!session)
+    })
+
+    return () => subscription.unsubscribe()
   }, [])
 
   return (

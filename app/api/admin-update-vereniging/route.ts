@@ -1,8 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { ADMIN_EMAIL } from '../_adminAuth'
 
 export const dynamic = 'force-dynamic'
-
-const ADMIN_EMAIL = 'info@slimmekascontrole.nl'
 
 export async function PATCH(req: NextRequest) {
   try {
@@ -26,7 +25,13 @@ export async function PATCH(req: NextRequest) {
       process.env.SUPABASE_SERVICE_ROLE_KEY!
     )
 
-    const { error } = await supabase.from('verenigingen').update(data).eq('id', vereniging_id)
+    const allowedFields: (keyof typeof data)[] = ['naam', 'kvk', 'adres', 'postcode', 'plaats']
+    const cleanData: Record<string, unknown> = {}
+    for (const field of allowedFields) {
+      if (field in data) cleanData[field] = data[field]
+    }
+
+    const { error } = await supabase.from('verenigingen').update(cleanData).eq('id', vereniging_id)
     if (error) return NextResponse.json({ error: error.message }, { status: 500 })
 
     return NextResponse.json({ success: true })

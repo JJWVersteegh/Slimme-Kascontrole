@@ -76,7 +76,9 @@ async function maakMoneybirdFactuur(klant: {
   const kortingExclBTW = (parseFloat(volPrijsExclBTW) - klant.amountTotal / 121).toFixed(2)
   const vandaag = new Date().toISOString().split('T')[0]
   const heeftKorting = klant.amountTotal < 5900  // ook bij 0 (100% korting)
-  console.log('Moneybird factuur — amountTotal:', klant.amountTotal, 'heeftKorting:', heeftKorting, 'kortingscode:', klant.kortingscode, 'kortingExclBTW:', kortingExclBTW)
+  if (process.env.NODE_ENV === 'development') {
+    console.log('Moneybird factuur — amountTotal:', klant.amountTotal, 'heeftKorting:', heeftKorting, 'kortingscode:', klant.kortingscode, 'kortingExclBTW:', kortingExclBTW)
+  }
 
   const omschrijving = `Kascontrole boekjaar ${klant.boekjaar} — Slimme Kascontrole`
   const kortingOmschrijving = klant.kortingscode
@@ -175,7 +177,8 @@ export async function POST(req: NextRequest) {
     const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!)
 
     const body = await req.text()
-    const sig = req.headers.get('stripe-signature')!
+    const sig = req.headers.get('stripe-signature')
+    if (!sig) return NextResponse.json({ error: 'stripe-signature header ontbreekt' }, { status: 400 })
     const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET!
 
     let event: any
@@ -318,7 +321,9 @@ export async function POST(req: NextRequest) {
             } catch {}
           }
         }
-        console.log('Stripe expanded — amountTotal:', amountTotal, 'kortingscode:', kortingscode, 'discounts:', JSON.stringify(discounts?.[0]))
+        if (process.env.NODE_ENV === 'development') {
+          console.log('Stripe expanded — amountTotal:', amountTotal, 'kortingscode:', kortingscode, 'discounts:', JSON.stringify(discounts?.[0]))
+        }
       } catch (e) {
         console.error('Kortingscode ophalen mislukt:', e)
       }
@@ -335,9 +340,11 @@ export async function POST(req: NextRequest) {
       }
 
       // Bevestigingsmail
+      const bevestigingEmail = email || klantInfo.email
+      if (!bevestigingEmail) return NextResponse.json({ received: true })
       await resend.emails.send({
         from: 'Slimme Kascontrole <noreply@slimmekascontrole.nl>',
-        to: email,
+        to: bevestigingEmail,
         subject: `✓ Betaling ontvangen – Kascontrole boekjaar ${boekjaar}`,
         html: `<div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto">
           <div style="background:#1e3a8a;padding:32px;text-align:center">

@@ -1,9 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
+import { ADMIN_EMAIL } from '../_adminAuth'
 
 export const dynamic = 'force-dynamic'
-
-const ADMIN_EMAIL = 'info@slimmekascontrole.nl'
 
 async function requireAdmin(req: NextRequest) {
   const anonClient = createClient(
