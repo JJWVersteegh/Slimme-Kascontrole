@@ -292,7 +292,6 @@ footer a:hover{color:#93c5fd}
     <li><a href="#waarom">Waarom</a></li>
     <li><a href="#handleidingen">Handleidingen</a></li>
     <li><a href="#over-ons">Over ons</a></li>
-    <li><a href="#tarieven">Tarieven</a></li>
     <li><a href="#contact">Contact</a></li>
     <li style="display:flex;gap:8px;align-items:center;">
       <a href="/registreer?mode=login" class="btn-nav-outline">Inloggen</a>
@@ -312,7 +311,6 @@ footer a:hover{color:#93c5fd}
   <a href="#waarom" onclick="closeMenu()">Waarom</a>
   <a href="#handleidingen" onclick="closeMenu()">Handleidingen</a>
   <a href="#over-ons" onclick="closeMenu()">Over ons</a>
-  <a href="#tarieven" onclick="closeMenu()">Tarieven</a>
   <a href="#contact" onclick="closeMenu()">Contact</a>
   <a href="/registreer?mode=login" onclick="closeMenu()" class="mobile-btn-outline">Inloggen</a>
   <a href="/registreer" class="mobile-btn">Account aanmaken</a>
@@ -545,30 +543,6 @@ footer a:hover{color:#93c5fd}
       <div class="sec-card fade-in"><div class="sec-icon">🇪🇺</div><div class="sec-title">Data in de EU</div><div class="sec-desc">Uw gegevens worden opgeslagen op servers binnen de EU.</div></div>
       <div class="sec-card fade-in"><div class="sec-icon">👁️</div><div class="sec-title">Strikt vertrouwelijk</div><div class="sec-desc">Uw financiële gegevens worden nooit gedeeld met derden.</div></div>
       <div class="sec-card fade-in"><div class="sec-icon">⚖️</div><div class="sec-title">AVG-conform</div><div class="sec-desc">Wij voldoen volledig aan de Europese privacywetgeving.</div></div>
-    </div>
-  </div>
-</section>
-
-<!-- TARIEVEN -->
-<section class="pricing-bg" id="tarieven">
-  <div style="max-width:760px;margin:0 auto;text-align:center">
-    <p class="section-label fade-in" style="text-align:center">Tarieven</p>
-    <h2 class="fade-in" style="text-align:center">Eenmalig tarief, <em>geen abonnement</em></h2>
-    <p class="section-sub centered fade-in">U betaalt eenmalig €59 incl. btw per kascontrole. U kunt bestanden van meerdere jaren uploaden voor een trendanalyse — maar u betaalt slechts voor één kascontrole.</p>
-  </div>
-  <div style="max-width:420px;margin:0 auto">
-    <div class="price-card featured fade-in">
-      <h3>Vereniging / VvE / Stichting</h3>
-      <p style="font-size:0.82rem;color:rgba(255,255,255,0.55);margin-bottom:6px">Voor alle Nederlandse verenigingen</p>
-      <div class="price-amount">€ 59</div>
-      <p class="price-note">eenmalig incl. btw per kascontrole</p>
-      <div class="feat-li">Volledig gecontroleerd rapport</div>
-      <div class="feat-li">Trendanalyse tot 4 jaar</div>
-      <div class="feat-li">MJOP-analyse + bijdrageadvies</div>
-      <div class="feat-li">PDF- én Word-export voor de ALV</div>
-      <div class="feat-li">Geen abonnement</div>
-      <div class="feat-li">E-mail ondersteuning</div>
-      <a href="/registreer" class="btn-plan btn-plan-blue">Account aanmaken</a>
     </div>
   </div>
 </section>
