@@ -69,15 +69,16 @@ async function maakMoneybirdFactuur(klant: {
     return
   }
 
-  // Vaste prijs is €59 incl. BTW = €48,76 excl. BTW (59 / 1.21)
-  const volPrijsExclBTW = (5900 / 121).toFixed(2)  // €48.76
-  const betaaldInclBTW = (klant.amountTotal / 100).toFixed(2)
-  // Korting = verschil tussen volle prijs en betaald bedrag (excl. BTW)
-  const kortingExclBTW = (parseFloat(volPrijsExclBTW) - klant.amountTotal / 121).toFixed(2)
+  // Prijzen incl. BTW — zo vermijden we afrondingsfouten bij de BTW-berekening.
+  // Stripe geeft altijd een exact centbedrag terug; door incl. BTW te werken
+  // klopt het factuurtotaal altijd precies met het betaalde bedrag.
+  const volPrijsInclBTW = '59.00'                                    // €59,00 vaste prijs
+  const betaaldInclBTW = (klant.amountTotal / 100).toFixed(2)        // werkelijk betaald
+  const kortingInclBTW = ((5900 - klant.amountTotal) / 100).toFixed(2)  // verschil = korting
   const vandaag = new Date().toISOString().split('T')[0]
   const heeftKorting = klant.amountTotal < 5900  // ook bij 0 (100% korting)
   if (process.env.NODE_ENV === 'development') {
-    console.log('Moneybird factuur — amountTotal:', klant.amountTotal, 'heeftKorting:', heeftKorting, 'kortingscode:', klant.kortingscode, 'kortingExclBTW:', kortingExclBTW)
+    console.log('Moneybird factuur — amountTotal:', klant.amountTotal, 'heeftKorting:', heeftKorting, 'kortingscode:', klant.kortingscode, 'kortingInclBTW:', kortingInclBTW)
   }
 
   const omschrijving = `Kascontrole boekjaar ${klant.boekjaar} — Slimme Kascontrole`
@@ -85,18 +86,18 @@ async function maakMoneybirdFactuur(klant: {
     ? `Korting — kortingscode: ${klant.kortingscode}`
     : `Korting — promotieactie`
 
-  // Bouw details: altijd volle prijs, en indien korting een negatieve kortingsregel
+  // Bouw details: altijd volle prijs incl. BTW, en indien korting een negatieve kortingsregel
   // Belangrijk: tax_rate_id en ledger_account_id NIET meesturen als null — Moneybird verwerpt die dan
   const details: any[] = [{
     description: omschrijving,
-    price: volPrijsExclBTW,
+    price: volPrijsInclBTW,
     amount: '1',
   }]
 
   if (heeftKorting) {
     details.push({
       description: kortingOmschrijving,
-      price: `-${kortingExclBTW}`,
+      price: `-${kortingInclBTW}`,
       amount: '1',
     })
   }
@@ -112,7 +113,7 @@ async function maakMoneybirdFactuur(klant: {
           invoice_date: vandaag,
           due_date: vandaag,
           currency: 'EUR',
-          prices_are_incl_tax: false,
+          prices_are_incl_tax: true,
           details_attributes: details,
           send_invoice: true,
         }
