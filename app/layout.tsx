@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { Analytics } from "@vercel/analytics/next";
+import AuthHashRedirect from "@/components/AuthHashRedirect";
 
 const siteUrl = "https://www.slimmekascontrole.nl";
 
@@ -69,7 +70,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
-      <body>{children}<Analytics /></body>
+      <body><AuthHashRedirect />{children}<Analytics /></body>
     </html>
   );
 }
