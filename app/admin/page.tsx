@@ -120,7 +120,25 @@ export default function AdminPortal() {
   const [bewerkVveSaving, setBewerkVveSaving] = useState(false)
 
   const [lastLogins, setLastLogins] = useState<Record<string, string>>({})
+  const [resetUserId, setResetUserId] = useState('')
+  const [resetWachtwoord, setResetWachtwoord] = useState('')
+  const [resetLoading, setResetLoading] = useState(false)
+  const [resetResultaat, setResetResultaat] = useState('')
   const router = useRouter()
+
+  async function handleResetWachtwoord(e: React.FormEvent) {
+    e.preventDefault()
+    setResetLoading(true); setResetResultaat('')
+    const { data: { session } } = await supabase.auth.getSession()
+    const res = await fetch('/api/admin-reset-password', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${session?.access_token}` },
+      body: JSON.stringify({ user_id: resetUserId.trim(), nieuw_wachtwoord: resetWachtwoord }),
+    })
+    const json = await res.json()
+    setResetResultaat(json.success ? '✅ Wachtwoord bijgewerkt!' : `❌ ${json.error}`)
+    setResetLoading(false)
+  }
 
   function haalHuisnummerUitAdres(adres?: string) {
     const match = (adres || '').match(/\b(\d+[A-Za-z0-9\-]*)\b\s*$/)
@@ -1004,6 +1022,25 @@ export default function AdminPortal() {
                 </div>
               )}
               <button onClick={loadOrphans} style={{ marginTop: '16px', background: '#f1f5f9', color: '#475569', border: 'none', padding: '8px 16px', borderRadius: '8px', cursor: 'pointer', fontSize: '0.84rem', fontFamily: 'Outfit, sans-serif' }}>🔄 Vernieuwen</button>
+            </div>
+
+            <div style={{ background: 'white', borderRadius: '16px', border: '1px solid #e2e8f0', padding: '24px', marginTop: '16px' }}>
+              <h2 style={{ fontSize: '1rem', fontWeight: '700', color: '#0f172a', margin: '0 0 6px' }}>🔑 Wachtwoord instellen</h2>
+              <p style={{ fontSize: '0.84rem', color: '#64748b', margin: '0 0 16px' }}>Stel direct een nieuw wachtwoord in voor een gebruiker via hun UID.</p>
+              <form onSubmit={handleResetWachtwoord}>
+                <div style={{ marginBottom: '10px' }}>
+                  <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: '600', color: '#475569', marginBottom: '4px' }}>User ID (UID)</label>
+                  <input value={resetUserId} onChange={e => setResetUserId(e.target.value)} required placeholder="b.v. 846ca891-ef6c-489f-..." style={{ width: '100%', padding: '9px 12px', borderRadius: '8px', border: '1.5px solid #e2e8f0', fontSize: '0.84rem', fontFamily: 'Outfit, sans-serif', boxSizing: 'border-box' }} />
+                </div>
+                <div style={{ marginBottom: '12px' }}>
+                  <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: '600', color: '#475569', marginBottom: '4px' }}>Nieuw wachtwoord (min. 8 tekens)</label>
+                  <input type="password" value={resetWachtwoord} onChange={e => setResetWachtwoord(e.target.value)} required minLength={8} style={{ width: '100%', padding: '9px 12px', borderRadius: '8px', border: '1.5px solid #e2e8f0', fontSize: '0.84rem', fontFamily: 'Outfit, sans-serif', boxSizing: 'border-box' }} />
+                </div>
+                {resetResultaat && <p style={{ fontSize: '0.84rem', marginBottom: '10px', padding: '8px 12px', borderRadius: '6px', background: resetResultaat.startsWith('✅') ? '#f0fdf4' : '#fee2e2', color: resetResultaat.startsWith('✅') ? '#166534' : '#991b1b' }}>{resetResultaat}</p>}
+                <button type="submit" disabled={resetLoading} style={{ background: '#2563EB', color: 'white', border: 'none', padding: '9px 20px', borderRadius: '8px', cursor: resetLoading ? 'not-allowed' : 'pointer', fontSize: '0.84rem', fontWeight: '700', fontFamily: 'Outfit, sans-serif', opacity: resetLoading ? 0.7 : 1 }}>
+                  {resetLoading ? 'Bezig...' : 'Wachtwoord instellen'}
+                </button>
+              </form>
             </div>
           </div>
         )}
