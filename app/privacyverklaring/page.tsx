@@ -19,7 +19,7 @@ export default function Privacyverklaring() {
         {[
           {
             t: '1. Wie zijn wij',
-            c: 'Slimme Kascontrole is een dienst van Vertras B.V., gevestigd te Bergschenhoek, Nederland. Wij zijn verantwoordelijk voor de verwerking van uw persoonsgegevens zoals beschreven in deze privacyverklaring. Vragen? Neem contact op via info@slimmekascontrole.nl.'
+            c: 'Slimme Kascontrole is een dienst van Vertras B.V., gevestigd te Bergschenhoek, Nederland. Wij zijn verantwoordelijk voor de verwerking van uw persoonsgegevens zoals beschreven in deze privacyverklaring. Vragen? Neem contact op via info@vertras.nl.'
           },
           {
             t: '2. Welke gegevens verwerken wij',
@@ -43,7 +43,7 @@ export default function Privacyverklaring() {
           },
           {
             t: '7. Uw rechten',
-            c: 'Op grond van de AVG heeft u het recht op inzage in uw persoonsgegevens, correctie van onjuiste gegevens, verwijdering van uw gegevens ("recht op vergetelheid"), beperking van de verwerking, en overdraagbaarheid van gegevens. Om gebruik te maken van uw rechten kunt u contact opnemen via info@slimmekascontrole.nl. Wij reageren binnen 30 dagen.'
+            c: 'Op grond van de AVG heeft u het recht op inzage in uw persoonsgegevens, correctie van onjuiste gegevens, verwijdering van uw gegevens ("recht op vergetelheid"), beperking van de verwerking, en overdraagbaarheid van gegevens. Om gebruik te maken van uw rechten kunt u contact opnemen via info@vertras.nl. Wij reageren binnen 30 dagen.'
           },
           {
             t: '8. Cookies',
@@ -51,7 +51,7 @@ export default function Privacyverklaring() {
           },
           {
             t: '9. Klachten',
-            c: 'Als u een klacht heeft over de verwerking van uw persoonsgegevens, kunt u contact opnemen via info@slimmekascontrole.nl. U heeft ook het recht een klacht in te dienen bij de Autoriteit Persoonsgegevens (autoriteitpersoonsgegevens.nl).'
+            c: 'Als u een klacht heeft over de verwerking van uw persoonsgegevens, kunt u contact opnemen via info@vertras.nl. U heeft ook het recht een klacht in te dienen bij de Autoriteit Persoonsgegevens (autoriteitpersoonsgegevens.nl).'
           },
           {
             t: '10. Wijzigingen',
@@ -66,7 +66,7 @@ export default function Privacyverklaring() {
         <div style={{ marginTop: '40px', padding: '20px', background: '#eff6ff', borderRadius: '12px', border: '1px solid #bfdbfe' }}>
           <p style={{ fontSize: '0.88rem', color: '#1e3a8a', lineHeight: 1.7 }}>
             <strong>Contact:</strong> Vertras B.V. · Bergschenhoek, Nederland<br />
-            E-mail: <a href="mailto:info@slimmekascontrole.nl" style={{ color: '#2563EB' }}>info@slimmekascontrole.nl</a> · Tel: <a href="tel:0624235829" style={{ color: '#2563EB' }}>06-24235829</a>
+            E-mail: <a href="mailto:info@vertras.nl" style={{ color: '#2563EB' }}>info@vertras.nl</a> · Tel: <a href="tel:0624235829" style={{ color: '#2563EB' }}>06-24235829</a>
           </p>
         </div>
       </div>

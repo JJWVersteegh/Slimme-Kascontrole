@@ -566,7 +566,7 @@ footer a:hover{color:#93c5fd}
         <div style="background:white;border-radius:16px;padding:28px;border:1px solid var(--border)" class="fade-in">
           <div style="font-size:1.5rem;margin-bottom:12px">✉️</div>
           <h3 style="font-weight:700;color:var(--ink);margin-bottom:4px;font-size:1rem">E-mail</h3>
-          <a href="mailto:info@slimmekascontrole.nl" style="color:var(--blue);text-decoration:none;font-weight:600;font-size:1rem">info@slimmekascontrole.nl</a>
+          <a href="mailto:info@vertras.nl" style="color:var(--blue);text-decoration:none;font-weight:600;font-size:1rem">info@vertras.nl</a>
           <p style="font-size:0.82rem;color:#94a3b8;margin-top:4px">Reactie binnen 1 werkdag</p>
         </div>
         <div style="background:#dcfce7;border-radius:16px;padding:28px;border:1px solid #86efac" class="fade-in">

@@ -344,7 +344,7 @@ export async function POST(req: NextRequest) {
       const bevestigingEmail = email || klantInfo.email
       if (!bevestigingEmail) return NextResponse.json({ received: true })
       await resend.emails.send({
-        from: 'Slimme Kascontrole <noreply@slimmekascontrole.nl>',
+        from: 'Slimme Kascontrole <noreply@vertras.nl>',
         to: bevestigingEmail,
         subject: `✓ Betaling ontvangen – Kascontrole boekjaar ${boekjaar}`,
         html: `<div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto">

@@ -49,7 +49,7 @@ All API routes are in `app/api/`. Key patterns:
   const anonClient = createClient(url, anonKey, { global: { headers: { Authorization: authHeader } } })
   const { data: { user } } = await anonClient.auth.getUser()
   ```
-- **Admin routes** — use `requireAdmin()` from `app/api/_adminAuth.ts`. Only `info@slimmekascontrole.nl` is admin.
+- **Admin routes** — use `requireAdmin()` from `app/api/_adminAuth.ts`. Only `info@vertras.nl` is admin.
 - **Service role** — created inline in routes that need it (bypasses RLS). Never export or share the service role client.
 
 | Route | Purpose |

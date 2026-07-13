@@ -40,7 +40,7 @@ const jsonLd = {
   "url": siteUrl,
   "logo": `${siteUrl}/og-image.jpg`,
   "telephone": "06-24235829",
-  "email": "info@slimmekascontrole.nl",
+  "email": "info@vertras.nl",
   "address": {
     "@type": "PostalAddress",
     "addressCountry": "NL"

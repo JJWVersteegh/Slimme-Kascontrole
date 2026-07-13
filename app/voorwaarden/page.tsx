@@ -32,7 +32,7 @@ export default function Voorwaarden() {
           { t: '4. Privacy en gegevens', c: 'Uw financiële gegevens worden vertrouwelijk behandeld en nooit gedeeld met derden. Alle gegevens worden opgeslagen op beveiligde servers binnen de Europese Unie. Wij voldoen aan de AVG (GDPR).' },
           { t: '5. Beveiliging', c: 'Alle verbindingen zijn beveiligd met SSL-encryptie. Uw gegevens zijn beschermd met industrie-standaard beveiligingsmaatregelen.' },
           { t: '6. Aansprakelijkheid en disclaimer', c: 'Het kascontrolerapport is informatief van aard en wordt opgesteld op basis van de door u aangeleverde documenten. Slimme Kascontrole is een hulpmiddel voor de kascommissie — geen vervanging van de eigen controle. Wij adviseren de kascontroleur om het rapport te gebruiken als ondersteuning bij zijn of haar eigen werkzaamheden en de bevindingen zelf te verifiëren. Vertras B.V. is niet aansprakelijk voor eventuele fouten, onvolledigheden of beslissingen die worden genomen op basis van het rapport. De verantwoordelijkheid voor de kascontrole blijft te allen tijde bij de kascommissie.' },
-          { t: '7. Klachten', c: 'Bij klachten kunt u contact opnemen via info@slimmekascontrole.nl of 06-24235829. Wij streven ernaar klachten binnen 5 werkdagen te behandelen.' },
+          { t: '7. Klachten', c: 'Bij klachten kunt u contact opnemen via info@vertras.nl of 06-24235829. Wij streven ernaar klachten binnen 5 werkdagen te behandelen.' },
           { t: '8. Toepasselijk recht', c: 'Op deze voorwaarden is Nederlands recht van toepassing. Geschillen worden voorgelegd aan de bevoegde rechter in Rotterdam.' },
         ].map((item, i) => (
           <div key={i} style={{ marginBottom: '28px' }}>
@@ -42,7 +42,7 @@ export default function Voorwaarden() {
         ))}
         <div style={{ marginTop: '40px', padding: '20px', background: '#eff6ff', borderRadius: '10px', border: '1px solid #bfdbfe' }}>
           <p style={{ fontSize: '0.88rem', color: '#1e3a8a' }}>
-            <strong>Contact:</strong> Vertras B.V. · info@slimmekascontrole.nl · 06-24235829 · Bergschenhoek, Nederland
+            <strong>Contact:</strong> Vertras B.V. · info@vertras.nl · 06-24235829 · Bergschenhoek, Nederland
           </p>
         </div>
       </div>
